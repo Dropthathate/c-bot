@@ -57,6 +57,19 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        soma: {
+          teal: "hsl(var(--soma-teal))",
+          "teal-light": "hsl(var(--soma-teal-light))",
+          "teal-dark": "hsl(var(--soma-teal-dark))",
+          blue: "hsl(var(--soma-blue))",
+          "blue-light": "hsl(var(--soma-blue-light))",
+          green: "hsl(var(--soma-green))",
+          "green-light": "hsl(var(--soma-green-light))",
+          purple: "hsl(var(--soma-purple))",
+          "purple-light": "hsl(var(--soma-purple-light))",
+          orange: "hsl(var(--soma-orange))",
+          "orange-light": "hsl(var(--soma-orange-light))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -65,25 +78,24 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        shimmer: {
+          "100%": { transform: "translateX(100%)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        shimmer: "shimmer 2s infinite",
+      },
+      boxShadow: {
+        glow: "var(--shadow-glow)",
       },
     },
   },

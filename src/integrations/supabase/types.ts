@@ -14,16 +14,212 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      legal_templates: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          modality: string
+          pdf_url: string | null
+          template_name: string
+          template_type: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          modality: string
+          pdf_url?: string | null
+          template_name: string
+          template_type: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          modality?: string
+          pdf_url?: string | null
+          template_name?: string
+          template_type?: string
+        }
+        Relationships: []
+      }
+      mobilization_techniques: {
+        Row: {
+          body_part: string
+          created_at: string
+          id: string
+          indication: string | null
+          oxford_reference_page: string | null
+          technique_name: string
+          technique_number: number
+          travell_reference: string | null
+          video_url: string | null
+        }
+        Insert: {
+          body_part: string
+          created_at?: string
+          id?: string
+          indication?: string | null
+          oxford_reference_page?: string | null
+          technique_name: string
+          technique_number: number
+          travell_reference?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          body_part?: string
+          created_at?: string
+          id?: string
+          indication?: string | null
+          oxford_reference_page?: string | null
+          technique_name?: string
+          technique_number?: number
+          travell_reference?: string | null
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          onboarding_completed: boolean
+          subscription_tier: Database["public"]["Enums"]["subscription_tier"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          onboarding_completed?: boolean
+          subscription_tier?: Database["public"]["Enums"]["subscription_tier"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          onboarding_completed?: boolean
+          subscription_tier?: Database["public"]["Enums"]["subscription_tier"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      soap_notes: {
+        Row: {
+          assessment: string | null
+          client_name: string
+          created_at: string
+          id: string
+          objective: string | null
+          plan: string | null
+          raw_notes: string | null
+          session_date: string
+          subjective: string | null
+          therapist_id: string
+          updated_at: string
+        }
+        Insert: {
+          assessment?: string | null
+          client_name: string
+          created_at?: string
+          id?: string
+          objective?: string | null
+          plan?: string | null
+          raw_notes?: string | null
+          session_date?: string
+          subjective?: string | null
+          therapist_id: string
+          updated_at?: string
+        }
+        Update: {
+          assessment?: string | null
+          client_name?: string
+          created_at?: string
+          id?: string
+          objective?: string | null
+          plan?: string | null
+          raw_notes?: string | null
+          session_date?: string
+          subjective?: string | null
+          therapist_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_subscription_tier: {
+        Args: { _user_id: string }
+        Returns: Database["public"]["Enums"]["subscription_tier"]
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "patient" | "therapist"
+      subscription_tier: "free" | "active_recovery" | "pro"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +346,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["patient", "therapist"],
+      subscription_tier: ["free", "active_recovery", "pro"],
+    },
   },
 } as const

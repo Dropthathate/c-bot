@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Mic, Brain, FileText } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
@@ -37,9 +38,11 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up" style={{ animationDelay: "0.2s" }}>
-            <Button variant="hero" size="xl">
-              Start Free Trial
-              <ArrowRight className="w-5 h-5" />
+            <Button variant="hero" size="xl" asChild>
+              <Link to="/auth">
+                Get Started Free
+                <ArrowRight className="w-5 h-5" />
+              </Link>
             </Button>
             <Button variant="hero-outline" size="xl">
               Watch Demo

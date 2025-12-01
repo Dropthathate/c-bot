@@ -24,7 +24,7 @@ const HeroSection = () => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 animate-fade-in animate-bounce-subtle">
             <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-            <span className="text-sm font-medium text-foreground">Evidence-Based Empathy</span>
+            <span className="text-sm font-medium text-foreground">Where West Meets East</span>
           </div>
 
           {/* Main Heading */}
@@ -38,10 +38,10 @@ const HeroSection = () => {
 
           {/* Subheading */}
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-slide-up delay-100">
-            The AI-powered clinical assistant that merges{" "}
-            <span className="text-primary font-semibold">holistic care</span> with{" "}
-            <span className="text-soma-purple font-semibold">legal compliance</span>.
-            For patients seeking relief and therapists seeking protection.
+            The first AI clinical assistant powered by{" "}
+            <span className="text-primary font-semibold">Eastern wisdom</span> and{" "}
+            <span className="text-soma-purple font-semibold">Western science</span>.
+            Oxford Orthopaedics meets Traditional Healing—protected by C-Bot.
           </p>
 
           {/* CTA Buttons */}

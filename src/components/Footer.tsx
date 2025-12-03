@@ -25,6 +25,9 @@ const Footer = () => {
                 variant="outline"
                 className="inline-flex flex-col items-start gap-0.5 rounded-full bg-background/90 px-4 py-2 text-xs md:text-sm border border-background/20 shadow-sm"
               >
+                <span className="text-[0.65rem] md:text-xs uppercase tracking-[0.16em] opacity-80">
+                  Developed by
+                </span>
                 <span className="font-semibold">
                   Neuromuscular Practitioner + Holistic Health Educator
                 </span>

@@ -1,4 +1,5 @@
 import { Activity, Mail, Twitter, Linkedin } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const Footer = () => {
   return (
@@ -19,6 +20,19 @@ const Footer = () => {
               Empowering physical therapists with AI-powered clinical documentation. 
               Streamline assessments, reduce paperwork, and focus on what matters most — your patients.
             </p>
+            <div className="mt-4">
+              <Badge
+                variant="outline"
+                className="inline-flex flex-col items-start gap-0.5 rounded-full bg-background/90 px-4 py-2 text-xs md:text-sm border border-background/20 shadow-sm"
+              >
+                <span className="font-semibold">
+                  Neuromuscular Practitioner + Holistic Health Educator
+                </span>
+                <span className="opacity-80">
+                  Credential #168806 • 1200+ hrs hands-on training across Eastern and Western modalities
+                </span>
+              </Badge>
+            </div>
             <div className="flex gap-3">
               <a href="#" className="w-10 h-10 rounded-lg bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors">
                 <Twitter className="w-4 h-4" />

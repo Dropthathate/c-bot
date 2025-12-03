@@ -40,7 +40,7 @@ const tiers: Tier[] = [
     name: "Active Recovery",
     price: "$19",
     period: "/month",
-    description: "Full access to the healing toolkit",
+    description: "Full access to the pain-relief toolkit",
     icon: Sparkles,
     iconBg: "bg-primary/10",
     iconColor: "text-primary",
@@ -96,10 +96,10 @@ const PricingSection = () => {
             <span className="text-sm font-medium text-accent-foreground">Simple, Transparent Pricing</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span className="gradient-text">Choose Your Healing Path</span>
+            <span className="gradient-text">Choose Your Pain Relief Path</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Whether you're healing yourself or healing others, we have a plan that fits.
+            Whether you're relieving your own pain or supporting others, we have a plan that fits.
           </p>
         </div>
 

@@ -20,7 +20,7 @@ const CBotSection = () => {
           </h2>
           <p className="text-lg text-muted-foreground">
             Your AI guardian that screens every input for safety while drawing from the 
-            world's most comprehensive healing knowledge—where{" "}
+            world's most comprehensive pain-relief knowledge—where{" "}
             <span className="text-primary font-semibold">Western medicine</span> meets{" "}
             <span className="text-soma-orange font-semibold">Eastern tradition</span>.
           </p>
@@ -67,7 +67,7 @@ const CBotSection = () => {
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-foreground">Eastern Wisdom</h3>
-                <p className="text-muted-foreground">Traditional Healing Arts</p>
+                <p className="text-muted-foreground">Traditional Pain-Relief Arts</p>
               </div>
             </div>
             <ul className="space-y-3">

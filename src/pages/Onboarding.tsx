@@ -101,7 +101,7 @@ const Onboarding = () => {
             </div>
           </div>
           <h1 className="text-4xl font-bold text-foreground">
-            Who are you healing today?
+            Who are you relieving pain for today?
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Choose your path to personalized care. Your selection helps us tailor
@@ -130,7 +130,7 @@ const Onboarding = () => {
               </div>
               <div className="flex-1">
                 <h3 className="text-2xl font-bold text-foreground mb-2">
-                  I'm Healing Myself
+                  I'm Relieving My Own Pain
                 </h3>
                 <p className="text-muted-foreground mb-4">
                   Seeking relief, self-care guidance, and holistic wellness support
@@ -179,7 +179,7 @@ const Onboarding = () => {
               </div>
               <div className="flex-1">
                 <h3 className="text-2xl font-bold text-foreground mb-2">
-                  I'm Healing Others
+                  I'm Helping Others Relieve Pain
                 </h3>
                 <p className="text-muted-foreground mb-4">
                   Practice management, legal compliance, and clinical documentation

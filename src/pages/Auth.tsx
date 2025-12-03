@@ -144,8 +144,8 @@ const Auth = () => {
             </h2>
             <p className="text-muted-foreground">
               {isLogin
-                ? "Sign in to continue your wellness journey"
-                : "Start your journey to holistic healing"}
+                ? "Sign in to continue your pain relief journey"
+                : "Start your journey to holistic pain relief"}
             </p>
           </div>
 

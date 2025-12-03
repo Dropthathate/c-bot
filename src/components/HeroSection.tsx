@@ -32,7 +32,7 @@ const HeroSection = () => {
             <span className="gradient-text">SomaSync AI</span>
             <br />
             <span className="text-foreground text-3xl md:text-4xl lg:text-5xl">
-              Heal Smarter. Live Better.
+              Relieve Pain. Live Better.
             </span>
           </h1>
 
@@ -41,14 +41,14 @@ const HeroSection = () => {
             The first AI clinical assistant powered by{" "}
             <span className="text-primary font-semibold">Eastern wisdom</span> and{" "}
             <span className="text-soma-purple font-semibold">Western science</span>.
-            Oxford Orthopaedics meets Traditional Healing—protected by C-Bot.
+            Oxford Orthopaedics meets traditional pain relief practices—protected by C-Bot.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up delay-200">
             <Button variant="hero" size="xl" asChild className="group shadow-glow animate-pulse-glow">
               <Link to="/auth">
-                Start Healing Free
+                Start Pain Relief Free
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>

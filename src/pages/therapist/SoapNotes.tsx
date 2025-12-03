@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { FileText, Plus, Calendar, User, Loader2 } from "lucide-react";
+import { z } from "zod";
 
 interface SoapNote {
   id: string;
@@ -21,6 +22,12 @@ interface SoapNote {
   plan: string | null;
   created_at: string;
 }
+
+const clientNameSchema = z
+  .string()
+  .trim()
+  .min(1, { message: "Client name is required" })
+  .max(255, { message: "Client name must be 255 characters or less" });
 
 const SoapNotes = () => {
   const [notes, setNotes] = useState<SoapNote[]>([]);
@@ -53,21 +60,28 @@ const SoapNotes = () => {
   };
 
   const createNewNote = async () => {
-    if (!clientName.trim()) {
+    const result = clientNameSchema.safeParse(clientName);
+
+    if (!result.success) {
+      const message = result.error.issues[0]?.message ??
+        "Please enter a valid client name (max 255 characters).";
+
       toast({
-        title: "Client name required",
-        description: "Please enter a client name to create a new note.",
+        title: "Invalid client name",
+        description: message,
         variant: "destructive",
       });
       return;
     }
+
+    const normalizedName = result.data;
 
     try {
       const { data, error } = await supabase
         .from("soap_notes")
         .insert({
           therapist_id: user?.id,
-          client_name: clientName,
+          client_name: normalizedName,
           session_date: new Date().toISOString().split("T")[0],
         })
         .select()

@@ -48,7 +48,7 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up delay-200">
             <Button variant="hero" size="xl" asChild className="group shadow-glow animate-pulse-glow">
               <Link to="/auth">
-                Start Pain Relief Free
+                Start Free
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>

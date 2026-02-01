@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { Send, Bot, User, Loader2, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   role: "user" | "assistant";
@@ -37,14 +38,35 @@ const ChatInterface = ({
   }, [messages]);
 
   const streamChat = async (userMessages: Message[]) => {
+    // Get the current session token for authenticated requests
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session?.access_token) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to use the chat feature.",
+        variant: "destructive",
+      });
+      throw new Error("Not authenticated");
+    }
+
     const resp = await fetch(CHAT_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        Authorization: `Bearer ${session.access_token}`,
       },
       body: JSON.stringify({ messages: userMessages, mode }),
     });
+
+    if (resp.status === 401) {
+      toast({
+        title: "Session Expired",
+        description: "Please sign in again to continue.",
+        variant: "destructive",
+      });
+      throw new Error("Unauthorized");
+    }
 
     if (resp.status === 429) {
       toast({

@@ -103,69 +103,79 @@ const PricingSection = () => {
           </p>
         </div>
 
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {tiers.map((tier, index) => (
-            <div
-              key={tier.name}
-              className={`relative rounded-2xl p-8 animate-slide-up hover-lift ${
-                tier.popular
-                  ? "gradient-border bg-card shadow-glow"
-                  : "bg-card border border-border shadow-lg"
-              }`}
-              style={{ animationDelay: `${index * 150}ms` }}
-            >
-              {/* Popular Badge */}
-              {tier.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="px-4 py-1.5 rounded-full text-sm font-semibold bg-primary text-primary-foreground shadow-lg animate-pulse-glow">
-                    Most Popular
-                  </span>
-                </div>
-              )}
-
-              {/* Icon */}
-              <div className={`w-14 h-14 rounded-xl ${tier.iconBg} flex items-center justify-center mb-6`}>
-                <tier.icon className={`w-7 h-7 ${tier.iconColor}`} />
-              </div>
-
-              {/* Tier Info */}
-              <h3 className="text-2xl font-bold text-foreground mb-2">{tier.name}</h3>
-              <p className="text-muted-foreground mb-4">{tier.description}</p>
-
-              {/* Price */}
-              <div className="flex items-baseline gap-1 mb-6">
-                <span className={`text-5xl font-bold ${tier.popular ? "gradient-text" : "text-foreground"}`}>
-                  {tier.price}
-                </span>
-                {tier.period && (
-                  <span className="text-muted-foreground">{tier.period}</span>
-                )}
-              </div>
-
-              {/* Features */}
-              <ul className="space-y-3 mb-8">
-                {tier.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <div className={`w-5 h-5 rounded-full ${tier.checkBg} flex items-center justify-center flex-shrink-0 mt-0.5`}>
-                      <Check className={`w-3 h-3 ${tier.checkColor}`} />
-                    </div>
-                    <span className="text-foreground">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* CTA */}
-              <Button
-                asChild
-                className="w-full"
-                variant={tier.popular ? "default" : "outline"}
-                size="lg"
-              >
-                <Link to="/auth">{tier.cta}</Link>
-              </Button>
+        {/* Pricing Cards - Greyed out for MVP */}
+        <div className="relative">
+          {/* Coming Soon Overlay */}
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <div className="bg-card/95 backdrop-blur-sm border border-border rounded-2xl px-8 py-6 shadow-xl text-center">
+              <span className="text-2xl font-bold gradient-text">Coming Soon</span>
+              <p className="text-muted-foreground mt-2">Early Access available now!</p>
             </div>
-          ))}
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto opacity-30 pointer-events-none select-none">
+            {tiers.map((tier, index) => (
+              <div
+                key={tier.name}
+                className={`relative rounded-2xl p-8 grayscale ${
+                  tier.popular
+                    ? "gradient-border bg-card shadow-glow"
+                    : "bg-card border border-border shadow-lg"
+                }`}
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                {/* Popular Badge */}
+                {tier.popular && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                    <span className="px-4 py-1.5 rounded-full text-sm font-semibold bg-primary text-primary-foreground shadow-lg">
+                      Most Popular
+                    </span>
+                  </div>
+                )}
+
+                {/* Icon */}
+                <div className={`w-14 h-14 rounded-xl ${tier.iconBg} flex items-center justify-center mb-6`}>
+                  <tier.icon className={`w-7 h-7 ${tier.iconColor}`} />
+                </div>
+
+                {/* Tier Info */}
+                <h3 className="text-2xl font-bold text-foreground mb-2">{tier.name}</h3>
+                <p className="text-muted-foreground mb-4">{tier.description}</p>
+
+                {/* Price */}
+                <div className="flex items-baseline gap-1 mb-6">
+                  <span className={`text-5xl font-bold ${tier.popular ? "gradient-text" : "text-foreground"}`}>
+                    {tier.price}
+                  </span>
+                  {tier.period && (
+                    <span className="text-muted-foreground">{tier.period}</span>
+                  )}
+                </div>
+
+                {/* Features */}
+                <ul className="space-y-3 mb-8">
+                  {tier.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className={`w-5 h-5 rounded-full ${tier.checkBg} flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                        <Check className={`w-3 h-3 ${tier.checkColor}`} />
+                      </div>
+                      <span className="text-foreground">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <Button
+                  className="w-full"
+                  variant={tier.popular ? "default" : "outline"}
+                  size="lg"
+                  disabled
+                >
+                  {tier.cta}
+                </Button>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Trust badges */}

@@ -21,6 +21,7 @@ const DashboardLayout = ({ children, requiredRole, requiredTier }: DashboardLayo
         return;
       }
 
+      // If you're stuck in a loop, comment out these next 4 lines
       if (!profile?.onboardingCompleted) {
         navigate("/onboarding");
         return;
@@ -31,7 +32,6 @@ const DashboardLayout = ({ children, requiredRole, requiredTier }: DashboardLayo
         return;
       }
 
-      // Check tier requirements
       if (requiredTier) {
         const hasAccess = 
           requiredTier === "active_recovery" 
@@ -47,8 +47,9 @@ const DashboardLayout = ({ children, requiredRole, requiredTier }: DashboardLayo
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+        <div className="text-xl font-black tracking-tighter mb-4">ΛΛLIYΛH<span className="text-blue-600">.IO</span></div>
+        <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
       </div>
     );
   }
@@ -56,10 +57,15 @@ const DashboardLayout = ({ children, requiredRole, requiredTier }: DashboardLayo
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-white flex">
+      {/* Sidebar stays on the left */}
       <DashboardSidebar />
-      <main className="flex-1 overflow-auto">
-        {children}
+      
+      <main className="flex-1 overflow-auto bg-slate-50/50">
+        {/* Your Intake Grid or Chat will show up here */}
+        <div className="p-8">
+           {children}
+        </div>
       </main>
     </div>
   );

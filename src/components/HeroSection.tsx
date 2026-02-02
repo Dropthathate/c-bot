@@ -38,10 +38,10 @@ const HeroSection = () => {
 
           {/* Subheading */}
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-slide-up delay-100">
-            The first AI clinical assistant powered by{" "}
+            The first in-ear AI clinical assistant powered by{" "}
             <span className="text-primary font-semibold">Eastern wisdom</span> and{" "}
             <span className="text-soma-purple font-semibold">Western science</span>.
-            Oxford Orthopaedics meets traditional pain relief practices—protected by C-Bot.
+            Oxford Orthopaedics meets traditional pain relief practices—protected by .
           </p>
 
           {/* CTA Buttons */}

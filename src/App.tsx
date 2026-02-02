@@ -3,17 +3,18 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+// THE FIX: pointing to the 'layouts' folder with an 's'
+import DashboardLayout from "./layouts/DashboardLayout"; 
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
-import PatientDashboard from "./pages/patient/PatientDashboard";
-import PatientChat from "./pages/patient/PatientChat";
 import TherapistDashboard from "./pages/therapist/TherapistDashboard";
-import TherapistChat from "./pages/therapist/TherapistChat";
-import SoapNotes from "./pages/therapist/SoapNotes";
-import LegalForms from "./pages/therapist/LegalForms";
-import Intake from "./pages/therapist/Intake"; // <--- ADD THIS LINE
-import VideoLibrary from "./pages/VideoLibrary";
+import Intake from "./pages/therapist/Intake";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,25 +26,46 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Public Routes */}
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/onboarding" element={<Onboarding />} />
 
-          {/* Patient Routes */}
-          <Route path="/patient" element={<PatientDashboard />} />
-          <Route path="/patient/chat" element={<PatientChat />} />
-          <Route path="/patient/videos" element={<VideoLibrary />} />
-
           {/* Therapist Routes */}
-          <Route path="/therapist" element={<TherapistDashboard />} />
-          <Route path="/therapist/intake" element={<Intake />} /> {/* <--- ADD THIS LINE */}
-          <Route path="/therapist/chat" element={<TherapistChat />} />
-          <Route path="/therapist/soap" element={<SoapNotes />} />
-          <Route path="/therapist/legal" element={<LegalForms />} />
-          <Route path="/therapist/videos" element={<VideoLibrary />} />
+          <Route path="/therapist" element={<DashboardLayout requiredRole="therapist"><TherapistDashboard /></DashboardLayout>} />
+          <Route path="/therapist/intake" element={<DashboardLayout requiredRole="therapist"><Intake /></DashboardLayout>} />
 
-          {/* Catch-all */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
+
+export default App; // Ensure this path is correct
+import Index from "./pages/Index";
+import Auth from "./pages/Auth";
+import Onboarding from "./pages/Onboarding";
+import TherapistDashboard from "./pages/therapist/TherapistDashboard";
+import Intake from "./pages/therapist/Intake";
+import NotFound from "./pages/NotFound";
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/onboarding" element={<Onboarding />} />
+
+          {/* Therapist Routes wrapped in Layout */}
+          <Route path="/therapist" element={<DashboardLayout requiredRole="therapist"><TherapistDashboard /></DashboardLayout>} />
+          <Route path="/therapist/intake" element={<DashboardLayout requiredRole="therapist"><Intake /></DashboardLayout>} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

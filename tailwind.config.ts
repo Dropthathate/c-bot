@@ -1,138 +1,63 @@
-import type { Config } from "tailwindcss";
+import React, { useState } from 'react';
 
-export default {
-  darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
-  prefix: "",
-  theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
-    extend: {
-      colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
-        soma: {
-          teal: "hsl(var(--soma-teal))",
-          "teal-light": "hsl(var(--soma-teal-light))",
-          "teal-dark": "hsl(var(--soma-teal-dark))",
-          blue: "hsl(var(--soma-blue))",
-          "blue-light": "hsl(var(--soma-blue-light))",
-          green: "hsl(var(--soma-green))",
-          "green-light": "hsl(var(--soma-green-light))",
-          purple: "hsl(var(--soma-purple))",
-          "purple-light": "hsl(var(--soma-purple-light))",
-          orange: "hsl(var(--soma-orange))",
-          "orange-light": "hsl(var(--soma-orange-light))",
-        },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        shimmer: {
-          "100%": { transform: "translateX(100%)" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-        "pulse-glow": {
-          "0%, 100%": { opacity: "1", boxShadow: "0 0 20px hsl(var(--primary) / 0.4)" },
-          "50%": { opacity: "0.8", boxShadow: "0 0 40px hsl(var(--primary) / 0.6)" },
-        },
-        "gradient-x": {
-          "0%, 100%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-        },
-        "slide-up": {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "scale-in": {
-          "0%": { opacity: "0", transform: "scale(0.95)" },
-          "100%": { opacity: "1", transform: "scale(1)" },
-        },
-        "bounce-subtle": {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-5px)" },
-        },
-        wiggle: {
-          "0%, 100%": { transform: "rotate(-2deg)" },
-          "50%": { transform: "rotate(2deg)" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        shimmer: "shimmer 2s infinite",
-        float: "float 6s ease-in-out infinite",
-        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
-        "gradient-x": "gradient-x 3s ease infinite",
-        "slide-up": "slide-up 0.6s ease-out",
-        "scale-in": "scale-in 0.3s ease-out",
-        "bounce-subtle": "bounce-subtle 2s ease-in-out infinite",
-        wiggle: "wiggle 1s ease-in-out infinite",
-      },
-      boxShadow: {
-        glow: "var(--shadow-glow)",
-      },
-    },
-  },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+const icd10Codes = [
+  { code: 'M54.2', desc: 'Cervicalgia' },
+  { code: 'M54.50', desc: 'Low Back Pain' },
+  { code: 'M79.1', desc: 'Myalgia' },
+  { code: 'M54.6', desc: 'Thoracic Pain' },
+  { code: 'M25.511', desc: 'Shoulder (R)' },
+  { code: 'M62.838', desc: 'Spasm' },
+  { code: 'M43.6', desc: 'Torticollis' },
+  { code: 'G44.209', desc: 'Tension HA' },
+  { code: 'M77.9', desc: 'Tendonitis' },
+  { code: 'R51.9', desc: 'Headache' }
+];
+
+const Intake = () => {
+  const [selectedCodes, setSelectedCodes] = useState<string[]>([]);
+
+  const toggleCode = (code: string) => {
+    setSelectedCodes(prev => 
+      prev.includes(code) ? prev.filter(c => c !== code) : [...prev, code]
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-white p-8 text-slate-900 font-sans">
+      <div className="max-w-4xl mx-auto">
+        <header className="mb-12">
+          <h1 className="text-xs uppercase tracking-[0.2em] text-slate-400 font-bold mb-2">Clinical Intake</h1>
+          <h2 className="text-3xl font-light">Select diagnostic context.</h2>
+        </header>
+        
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          {icd10Codes.map((item) => (
+            <div
+              key={item.code}
+              onClick={() => toggleCode(item.code)}
+              className={`cursor-pointer border-b-2 p-4 transition-all duration-300 ${
+                selectedCodes.includes(item.code) 
+                ? 'border-blue-600 bg-blue-50/30' 
+                : 'border-slate-100 hover:border-slate-300'
+              }`}
+            >
+              <div className="text-sm font-bold tracking-tight">{item.code}</div>
+              <div className="text-[10px] uppercase tracking-wider text-slate-400 mt-1">{item.desc}</div>
+            </div>
+          ))}
+        </div>
+
+        <footer className="mt-20 flex justify-between items-center border-t border-slate-100 pt-8">
+          <div className="text-[10px] text-slate-400 uppercase tracking-widest">
+            {selectedCodes.length} Codes Selected
+          </div>
+          <button className="text-xs font-bold uppercase tracking-[0.3em] hover:text-blue-600 transition-colors">
+            Initialize Session →
+          </button>
+        </footer>
+      </div>
+    </div>
+  );
+};
+
+export default Intake;

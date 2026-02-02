@@ -3,9 +3,40 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
-import { Send, Bot, User, Loader2, AlertTriangle } from "lucide-react";
+import { Send, Bot, User, Loader2, AlertTriangle, Mic, MicOff } from "lucide-react"; // Added Mic icons
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+
+// --- 1. THE SOUND ENGINE (No MP3s needed) ---
+const playFeedbackTone = (type: 'pop' | 'ding') => {
+  const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+  if (!AudioContext) return;
+
+  const ctx = new AudioContext();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  if (type === 'pop') {
+    // Subtle "Pop" for text capture
+    osc.frequency.value = 600; 
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+  } else {
+    // Louder "Ding" for Commands
+    osc.frequency.value = 1000; 
+    osc.type = 'triangle';
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.5);
+  }
+};
 
 interface Message {
   role: "user" | "assistant";
@@ -28,6 +59,11 @@ const ChatInterface = ({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  
+  // --- VOICE STATE ---
+  const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = useRef<any>(null);
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -37,8 +73,96 @@ const ChatInterface = ({
     }
   }, [messages]);
 
+  // --- 2. VOICE LOGIC INTEGRATION ---
+  useEffect(() => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      recognition.onresult = (event: any) => {
+        const current = event.resultIndex;
+        const result = event.results[current][0];
+        const transcript = result.transcript;
+        const confidence = result.confidence; 
+        const isFinal = event.results[current].isFinal;
+
+        if (isFinal) {
+            // --- CONFIDENCE CHECK ---
+            if (confidence < 0.75) {
+                console.log("Low confidence:", confidence);
+                const synth = window.speechSynthesis;
+                synth.speak(new SpeechSynthesisUtterance("I didn't catch that, please repeat."));
+                return; 
+            }
+
+            // High Confidence: Process Text
+            console.log("Captured:", transcript);
+            playFeedbackTone('pop'); // Success Sound
+
+            const lower = transcript.toLowerCase().trim();
+
+            // --- HOT WORDS (COMMANDS) ---
+            if (lower.includes("send message") || lower.includes("send chat")) {
+                playFeedbackTone('ding');
+                handleSubmit(); // Auto-send
+                return;
+            }
+
+            if (lower.includes("clear input")) {
+                playFeedbackTone('ding');
+                setInput("");
+                return;
+            }
+
+            if (lower.includes("stop listening")) {
+                playFeedbackTone('ding');
+                stopRecording();
+                return;
+            }
+
+            // Normal Text: Append to input box
+            setInput(prev => prev + (prev.length > 0 ? " " : "") + transcript);
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.error("Speech Error:", event.error);
+        setIsRecording(false);
+      };
+
+      recognitionRef.current = recognition;
+    }
+  }, [input]); // Dependency on input allows appending to latest state
+
+  const toggleRecording = () => {
+    if (!recognitionRef.current) {
+        toast({ title: "Not Supported", description: "Browser does not support speech recognition.", variant: "destructive" });
+        return;
+    }
+
+    if (isRecording) {
+        stopRecording();
+    } else {
+        recognitionRef.current.start();
+        setIsRecording(true);
+        playFeedbackTone('ding'); // Start Sound
+        toast({ title: "Listening", description: "Speak clearly. Say 'Send Message' to submit." });
+    }
+  };
+
+  const stopRecording = () => {
+    if (recognitionRef.current) {
+        recognitionRef.current.stop();
+        setIsRecording(false);
+    }
+  };
+
+  // --- EXISTING CHAT LOGIC ---
   const streamChat = async (userMessages: Message[]) => {
-    // Get the current session token for authenticated requests
     const { data: { session } } = await supabase.auth.getSession();
     
     if (!session?.access_token) {
@@ -59,44 +183,24 @@ const ChatInterface = ({
       body: JSON.stringify({ messages: userMessages, mode }),
     });
 
-    if (resp.status === 401) {
-      toast({
-        title: "Session Expired",
-        description: "Please sign in again to continue.",
-        variant: "destructive",
-      });
-      throw new Error("Unauthorized");
-    }
-
-    if (resp.status === 429) {
-      toast({
-        title: "Rate Limited",
-        description: "Too many requests. Please wait a moment and try again.",
-        variant: "destructive",
-      });
-      throw new Error("Rate limited");
-    }
-
-    if (resp.status === 402) {
-      toast({
-        title: "Credits Needed",
-        description: "Please add credits to continue using the AI features.",
-        variant: "destructive",
-      });
-      throw new Error("Payment required");
-    }
-
-    if (!resp.ok || !resp.body) {
-      throw new Error("Failed to start stream");
-    }
+    if (resp.status === 401) throw new Error("Unauthorized");
+    if (resp.status === 429) throw new Error("Rate limited");
+    if (resp.status === 402) throw new Error("Payment required");
+    if (!resp.ok || !resp.body) throw new Error("Failed to start stream");
 
     return resp;
   };
 
   const handleSubmit = async () => {
-    if (!input.trim() || isLoading) return;
+    // If triggered by voice but input is empty, ignore
+    if (!input.trim() && !isLoading) return; 
+    // Stop recording if active so Aliyah doesn't hear herself
+    if (isRecording) stopRecording();
 
-    const userMsg: Message = { role: "user", content: input.trim() };
+    const currentInput = input; // Capture current state
+    if (!currentInput.trim()) return;
+
+    const userMsg: Message = { role: "user", content: currentInput.trim() };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
     setInput("");
@@ -110,7 +214,6 @@ const ChatInterface = ({
       const decoder = new TextDecoder();
       let textBuffer = "";
 
-      // Add empty assistant message
       setMessages(prev => [...prev, { role: "assistant", content: "" }]);
 
       while (true) {
@@ -149,7 +252,6 @@ const ChatInterface = ({
         }
       }
 
-      // Check for technique references
       if (onTechniqueReference) {
         const techniqueMatches = assistantContent.match(/Technique #?(\d+)/gi);
         if (techniqueMatches) {
@@ -168,7 +270,6 @@ const ChatInterface = ({
           variant: "destructive",
         });
       }
-      // Remove the empty assistant message on error
       setMessages(prev => prev.filter((_, i) => i !== prev.length - 1 || prev[i].role !== "assistant"));
     } finally {
       setIsLoading(false);
@@ -241,8 +342,11 @@ const ChatInterface = ({
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={placeholder}
-            className="min-h-[60px] max-h-[120px] resize-none"
+            placeholder={isRecording ? "Listening... (Say 'Send Message' to submit)" : placeholder}
+            className={cn(
+                "min-h-[60px] max-h-[120px] resize-none",
+                isRecording && "border-red-500 ring-1 ring-red-500"
+            )}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -250,11 +354,22 @@ const ChatInterface = ({
               }
             }}
           />
+          
+          {/* VOICE BUTTON ADDED HERE */}
+          <Button
+            onClick={toggleRecording}
+            variant={isRecording ? "destructive" : "secondary"}
+            size="icon"
+            className={cn("h-[60px] w-[60px] shrink-0", isRecording && "animate-pulse")}
+          >
+             {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+          </Button>
+
           <Button
             onClick={handleSubmit}
             disabled={!input.trim() || isLoading}
             size="icon"
-            className="h-[60px] w-[60px]"
+            className="h-[60px] w-[60px] shrink-0"
           >
             {isLoading ? (
               <Loader2 className="h-5 w-5 animate-spin" />

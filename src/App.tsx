@@ -12,6 +12,7 @@ import TherapistDashboard from "./pages/therapist/TherapistDashboard";
 import TherapistChat from "./pages/therapist/TherapistChat";
 import SoapNotes from "./pages/therapist/SoapNotes";
 import LegalForms from "./pages/therapist/LegalForms";
+import Intake from "./pages/therapist/Intake"; // <--- ADD THIS LINE
 import VideoLibrary from "./pages/VideoLibrary";
 import NotFound from "./pages/NotFound";
 
@@ -36,6 +37,7 @@ const App = () => (
 
           {/* Therapist Routes */}
           <Route path="/therapist" element={<TherapistDashboard />} />
+          <Route path="/therapist/intake" element={<Intake />} /> {/* <--- ADD THIS LINE */}
           <Route path="/therapist/chat" element={<TherapistChat />} />
           <Route path="/therapist/soap" element={<SoapNotes />} />
           <Route path="/therapist/legal" element={<LegalForms />} />

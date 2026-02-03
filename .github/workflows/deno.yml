@@ -27,3 +27,6 @@ jobs:
 
       - name: Run tests
         run: deno test -A
+      - name: Build project
+        run: deno task build
+        

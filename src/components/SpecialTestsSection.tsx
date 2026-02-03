@@ -24,7 +24,7 @@ const SpecialTestsSection = () => {
         {/* Tab Switcher */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex rounded-lg bg-muted p-1">
-            <button
+            <button type="button"
               onClick={() => setActiveTab("tests")}
               className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                 activeTab === "tests"
@@ -34,7 +34,7 @@ const SpecialTestsSection = () => {
             >
               Special Tests
             </button>
-            <button
+            <button type="button"
               onClick={() => setActiveTab("patterns")}
               className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                 activeTab === "patterns"
@@ -56,7 +56,7 @@ const SpecialTestsSection = () => {
                   key={test.id}
                   className="bg-card rounded-xl border border-border shadow-sm overflow-hidden"
                 >
-                  <button
+                  <button type="button"
                     onClick={() => setExpandedTest(expandedTest === test.id ? null : test.id)}
                     className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-accent/50 transition-colors"
                   >

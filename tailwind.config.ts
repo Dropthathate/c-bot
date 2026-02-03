@@ -1,3 +1,17 @@
+import type { Config } from "npm:tailwindcss";
+
+export default {
+  content: ["./src/**/*.{ts,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        // Your custom colors here
+      }
+    },
+  },
+  plugins: [],
+} satisfies Config;
+
 import React, { useState } from 'react';
 
 const icd10Codes = [

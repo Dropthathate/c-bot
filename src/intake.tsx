@@ -35,7 +35,7 @@ export const IntakePage = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {icd10Codes.map((item) => (
-          <button
+          <"button"
             key={item.code}
             onClick={() => toggleCode(item.code)}
             className={`p-4 text-left border-b-2 transition-all duration-200 ${
@@ -46,7 +46,7 @@ export const IntakePage = () => {
           >
             <span className="font-bold text-sm tracking-tight">{item.code}</span>
             <p className="text-[10px] uppercase tracking-wider text-gray-400 mt-1">{item.desc}</p>
-          </button>
+          </"button">
         ))}
       </div>
 
@@ -64,9 +64,9 @@ export const IntakePage = () => {
         </div>
       </div>
 
-      <button className="mt-8 w-full py-5 bg-black text-white text-xs font-bold uppercase tracking-[0.3em] rounded-full hover:bg-blue-600 transition-colors">
+      <"button" className="mt-8 w-full py-5 bg-black text-white text-xs font-bold uppercase tracking-[0.3em] rounded-full hover:bg-blue-600 transition-colors">
         START BLUETOOTH SESSION
-      </button>
+      </"button">
     </div>
   );
 };

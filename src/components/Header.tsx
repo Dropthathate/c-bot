@@ -47,7 +47,7 @@ const Header = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <"button"
+          <button type="button"
             className="md:hidden p-2 rounded-lg hover:bg-accent"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >

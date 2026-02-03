@@ -112,7 +112,7 @@ const Onboarding = () => {
         {/* Role Selection Cards */}
         <div className="grid md:grid-cols-2 gap-6">
           {/* Patient Card */}
-          <button
+          <button type="button"
             onClick={() => setSelectedRole("patient")}
             className={`p-8 rounded-2xl border-2 text-left transition-all duration-300 hover:shadow-lg ${
               selectedRole === "patient"
@@ -161,7 +161,7 @@ const Onboarding = () => {
           </button>
 
           {/* Therapist Card */}
-          <button
+          <button type="button"
             onClick={() => setSelectedRole("therapist")}
             className={`p-8 rounded-2xl border-2 text-left transition-all duration-300 hover:shadow-lg ${
               selectedRole === "therapist"

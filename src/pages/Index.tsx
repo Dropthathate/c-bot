@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
+import TrustBar from "@/components/TrustBar"; // New component
 import CBotSection from "@/components/CBotSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import PricingSection from "@/components/PricingSection";
@@ -13,6 +14,8 @@ const Index = () => {
       <Header />
       <main>
         <HeroSection />
+        {/* Establish authority immediately after the pitch */}
+        <TrustBar /> 
         <CBotSection />
         <FeaturesSection />
         <PricingSection />

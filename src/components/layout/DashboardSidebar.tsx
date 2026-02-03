@@ -6,7 +6,6 @@ import {
   Activity,
   MessageSquare,
   Video,
-  FileText,
   Shield,
   Settings,
   LogOut,

@@ -22,7 +22,7 @@ const Intake = () => {
         {/* Selection Area */}
         <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
           {icd10Codes.map((item) => (
-            <button
+            <button type="button"
               key={item.code}
               onClick={() => setSelectedCodes(prev => prev.includes(item.code) ? prev.filter(c => c !== item.code) : [...prev, item.code])}
               className={`p-6 text-left border-b-2 transition-all ${
@@ -48,7 +48,7 @@ const Intake = () => {
               <p className="text-[11px] leading-relaxed text-slate-400">Differentiating between peripheral trigger points and central sensitization patterns.</p>
             </div>
           </div>
-          <button className="mt-12 w-full py-4 bg-blue-600 text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-blue-500 transition-all">
+          <button type="button" className="mt-12 w-full py-4 bg-blue-600 text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-blue-500 transition-all">
             Initialize 10m+ Session
           </button>
         </div>

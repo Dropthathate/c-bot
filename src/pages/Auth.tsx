@@ -109,11 +109,19 @@ const Auth = () => {
             Evidence-Based Empathy
           </h1>
           <p className="text-xl text-primary-foreground/80">
-            Where clinical precision meets compassionate care. Powered by Travell's Trigger Points and Oxford Orthopaedics.
+          <div className="mt-6 border-l-2 border-primary pl-4">
+  <h3 className="text-sm font-bold uppercase tracking-wider text-primary">Global Medical Intelligence</h3>
+  <p className="text-muted-foreground text-sm leading-relaxed">
+     "Where clinical precision meets compassionate care"
+     Trained on clinical datasets from the **NIH** and world-class universities, ensuring 
+    higher precision than standard models. AALIYAH.IO provides 10+ minutes of efficiency 
+    by automating documentation with verified medical accuracy.
+  </p>
+</div>
           </p>
           <div className="flex gap-4">
             <div className="px-4 py-2 rounded-lg bg-primary-foreground/20 text-primary-foreground text-sm font-medium">
-              C-Bot Safety Engine
+              Built In Safety Engine
             </div>
             <div className="px-4 py-2 rounded-lg bg-primary-foreground/20 text-primary-foreground text-sm font-medium">
               HIPAA Compliant
@@ -122,7 +130,7 @@ const Auth = () => {
         </div>
 
         <p className="text-primary-foreground/60 text-sm">
-          © 2024 SomaSync AI. All rights reserved.
+          © 2026 SomaSync AI. 
         </p>
       </div>
 

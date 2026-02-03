@@ -1,47 +1,52 @@
-body {
-  font-family: system-ui, -apple-system, sans-serif;
-  margin: 0;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* SomaSync AI Design System - Medical/Clinical Aesthetic */
+/* SomaSync AI Design System - Medical and Clinical Aesthetic */
 
 @layer base {
   :root {
+    /* Background and foreground - space separated for Tailwind opacity compatibility */
     --background: 210 40% 98%;
     --foreground: 210 40% 10%;
 
+    /* Card colors */
     --card: 0 0% 100%;
     --card-foreground: 210 40% 10%;
 
+    /* Popover colors */
     --popover: 0 0% 100%;
     --popover-foreground: 210 40% 10%;
 
+    /* Primary brand colors */
     --primary: 180 55% 45%;
     --primary-foreground: 0 0% 100%;
 
+    /* Secondary colors */
     --secondary: 210 30% 95%;
     --secondary-foreground: 210 40% 20%;
 
+    /* Muted colors */
     --muted: 210 20% 96%;
     --muted-foreground: 210 20% 45%;
 
+    /* Accent colors */
     --accent: 180 45% 92%;
     --accent-foreground: 180 55% 30%;
 
+    /* Destructive actions */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
+    /* Borders and inputs */
     --border: 210 25% 90%;
     --input: 210 25% 90%;
     --ring: 180 55% 45%;
 
+    /* Global border radius */
     --radius: 0.75rem;
 
-    /* Custom SomaSync colors */
+    /* Custom SomaSync brand colors */
     --soma-teal: 180 55% 45%;
     --soma-teal-light: 180 50% 95%;
     --soma-teal-dark: 180 60% 30%;
@@ -54,93 +59,23 @@ body {
     --soma-orange: 25 90% 55%;
     --soma-orange-light: 25 80% 95%;
 
-    /* Gradients */
+    /* Gradients (Using standard CSS syntax) */
     --gradient-hero: linear-gradient(135deg, hsl(180 55% 45%) 0%, hsl(210 70% 50%) 100%);
     --gradient-hero-soft: linear-gradient(135deg, hsl(180 50% 95%) 0%, hsl(210 60% 95%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 30% 98%) 100%);
-    
-    /* Shadows */
-    --shadow-sm: 0 1px 2px 0 hsl(210 20% 10% / 0.05);
-    --shadow-md: 0 4px 6px -1px hsl(210 20% 10% / 0.07), 0 2px 4px -2px hsl(210 20% 10% / 0.05);
-    --shadow-lg: 0 10px 15px -3px hsl(210 20% 10% / 0.08), 0 4px 6px -4px hsl(210 20% 10% / 0.05);
-    --shadow-xl: 0 20px 25px -5px hsl(210 20% 10% / 0.1), 0 8px 10px -6px hsl(210 20% 10% / 0.05);
-    --shadow-glow: 0 0 40px hsl(180 55% 45% / 0.2);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Shadows (Standard CSS syntax) */
+    --shadow-glow: 0 0 40px hsla(180, 55%, 45%, 0.2);
   }
 
-  .dark {
-    --background: 210 40% 6%;
-    --foreground: 210 20% 98%;
-
-    --card: 210 35% 10%;
-    --card-foreground: 210 20% 98%;
-
-    --popover: 210 35% 10%;
-    --popover-foreground: 210 20% 98%;
-
-    --primary: 180 55% 50%;
-    --primary-foreground: 210 40% 6%;
-
-    --secondary: 210 30% 15%;
-    --secondary-foreground: 210 20% 90%;
-
-    --muted: 210 25% 15%;
-    --muted-foreground: 210 15% 60%;
-
-    --accent: 180 40% 15%;
-    --accent-foreground: 180 50% 80%;
-
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 210 25% 20%;
-    --input: 210 25% 20%;
-    --ring: 180 55% 50%;
-
-    --soma-teal: 180 55% 50%;
-    --soma-teal-light: 180 40% 15%;
-    --soma-teal-dark: 180 60% 70%;
-    --soma-blue: 210 70% 55%;
-    --soma-blue-light: 210 50% 15%;
-    --soma-green: 160 50% 50%;
-    --soma-green-light: 160 40% 15%;
-    --soma-purple: 260 50% 60%;
-    --soma-purple-light: 260 40% 15%;
-    --soma-orange: 25 90% 60%;
-    --soma-orange-light: 25 70% 15%;
-
-    --gradient-hero: linear-gradient(135deg, hsl(180 55% 40%) 0%, hsl(210 60% 40%) 100%);
-    --gradient-hero-soft: linear-gradient(135deg, hsl(180 40% 12%) 0%, hsl(210 40% 12%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(210 35% 12%) 0%, hsl(210 35% 8%) 100%);
-
-    --shadow-glow: 0 0 40px hsl(180 55% 50% / 0.15);
-
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: system-ui, -apple-system, sans-serif;
+    margin: 0;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
@@ -169,80 +104,12 @@ body {
   .shadow-glow {
     box-shadow: var(--shadow-glow);
   }
-
-  .gradient-text {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--soma-blue)) 50%, hsl(var(--soma-purple)) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .gradient-border {
-    position: relative;
-    background: hsl(var(--card));
-    border-radius: var(--radius);
-  }
-
-  .gradient-border::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    padding: 2px;
-    border-radius: inherit;
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--soma-purple)));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-  }
-
-  .glass-card {
-    background: hsl(var(--card) / 0.8);
-    backdrop-filter: blur(12px);
-    border: 1px solid hsl(var(--border) / 0.5);
-  }
-
-  .hover-lift {
-    @apply transition-all duration-300;
-  }
-
-  .hover-lift:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px -10px hsl(var(--primary) / 0.2);
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .animate-slide-up {
-    animation: slideUp 0.6s ease-out forwards;
-    opacity: 0;
-  }
-
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-    opacity: 0;
-  }
-
-  .delay-100 { animation-delay: 100ms; }
-  .delay-200 { animation-delay: 200ms; }
-  .delay-300 { animation-delay: 300ms; }
-  .delay-400 { animation-delay: 400ms; }
-  .delay-500 { animation-delay: 500ms; }
 }
 
+/* Animations - Defined globally to ensure build tool compatibility */
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
 
 @keyframes slideUp {
@@ -257,10 +124,6 @@ body {
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

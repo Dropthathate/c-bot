@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-// Define proper interfaces for the Speech Recognition API
 interface SpeechRecognitionEvent extends Event {
   results: {
     [key: number]: {
@@ -9,10 +8,6 @@ interface SpeechRecognitionEvent extends Event {
       };
     };
   };
-}
-
-interface SpeechRecognitionErrorEvent extends Event {
-  error: string;
 }
 
 interface WindowWithSpeech extends Window {
@@ -24,9 +19,6 @@ interface WindowWithSpeech extends Window {
 const ChatInterface: React.FC = () => {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
   const [input, setInput] = useState('');
-  
-  // Use proper types instead of any
-  const AudioContextClass = globalThis.AudioContext || (window as unknown as WindowWithSpeech).webkitAudioContext;
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
@@ -36,51 +28,47 @@ const ChatInterface: React.FC = () => {
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
       recognition.continuous = true;
-      recognition.interimResults = true;
-
       recognition.onresult = (event: SpeechRecognitionEvent) => {
-        const transcript = Array.from(event.results)
-          .map(result => result[0])
-          .map(result => result.transcript)
-          .join('');
+        const transcript = event.results[event.results.length - 1][0].transcript;
         setInput(transcript);
       };
-
-      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-        console.error('Speech recognition error:', event.error);
-      };
-
       recognitionRef.current = recognition;
     }
   }, []);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
-    setMessages([...messages, { role: 'user', content: input }]);
+    const newMessages = [...messages, { role: 'user', content: input }];
+    setMessages(newMessages);
     setInput('');
+
+    // Logic to call your Supabase Edge Function
+    // const { data } = await supabase.functions.invoke('chat', { body: { messages: newMessages } });
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+    <div className="flex flex-col h-screen max-w-2xl mx-auto p-4">
+      <div className="flex-1 overflow-y-auto mb-4 space-y-4">
         {messages.map((m, i) => (
-          <div key={i} className={`p-3 rounded-lg ${m.role === 'user' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'}`}>
+          <div key={i} className={`p-4 rounded-2xl max-w-[80%] ${
+            m.role === 'user' ? 'bg-black text-white ml-auto' : 'bg-gray-100 text-black'
+          }`}>
             {m.content}
           </div>
         ))}
       </div>
-      <div className="p-4 border-t flex gap-2">
+      <div className="flex gap-2">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 border rounded px-3 py-2"
-          placeholder="Type a message..."
+          className="flex-1 p-4 bg-gray-100 rounded-full focus:outline-none"
+          placeholder="Message c-bot..."
         />
         <button 
-          type="button" 
+          type="button"
           onClick={handleSend}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="bg-black text-white px-6 py-4 rounded-full font-bold"
         >
           Send
         </button>

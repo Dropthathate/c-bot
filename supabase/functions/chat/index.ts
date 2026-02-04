@@ -212,16 +212,17 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Validate Authorization header
+    // ✅ SECURITY FIX #1: Validate Authorization header
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
+      console.error("Missing or invalid Authorization header");
       return new Response(
         JSON.stringify({ error: "Unauthorized - Missing or invalid authorization header" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Create Supabase client and validate user
+    // ✅ SECURITY FIX #2: Create Supabase client with user's token
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
     
@@ -229,22 +230,54 @@ Deno.serve(async (req) => {
       global: { headers: { Authorization: authHeader } },
     });
 
-    // Validate the JWT token and get user claims
-    const token = authHeader.replace("Bearer ", "");
-    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
+    // ✅ SECURITY FIX #3: Verify the user is authenticated
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
     
-    if (claimsError || !claimsData?.claims) {
-      console.error("Auth error:", claimsError);
+    if (authError || !user) {
+      console.error("Auth verification failed:", authError);
       return new Response(
         JSON.stringify({ error: "Unauthorized - Invalid token" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    const userId = claimsData.claims.sub;
-    console.log(`Clinical documentation request from therapist: ${userId}`);
+    console.log(`✅ Authenticated request from user: ${user.id}`);
 
-    const { messages, mode } = await req.json();
+    // ✅ SECURITY FIX #4: Validate input
+    const requestBody = await req.json();
+    const { messages, mode } = requestBody;
+
+    if (!messages || !Array.isArray(messages)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid request - messages must be an array" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (messages.length === 0) {
+      return new Response(
+        JSON.stringify({ error: "Invalid request - messages array is empty" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // ✅ SECURITY FIX #5: Sanitize message content
+    const sanitizedMessages = messages.map((msg: any) => {
+      if (!msg.role || !msg.content) {
+        throw new Error("Invalid message format - role and content required");
+      }
+      if (typeof msg.content !== "string") {
+        throw new Error("Invalid message format - content must be a string");
+      }
+      if (msg.content.length > 10000) {
+        throw new Error("Message too long - maximum 10,000 characters");
+      }
+      return {
+        role: msg.role === "user" || msg.role === "assistant" ? msg.role : "user",
+        content: msg.content.trim()
+      };
+    });
+
     const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
     
     if (!OPENAI_API_KEY) {
@@ -252,7 +285,7 @@ Deno.serve(async (req) => {
     }
 
     // Get the last user message (therapist dictation)
-    const lastUserMessage = messages.filter((m: any) => m.role === "user").pop();
+    const lastUserMessage = sanitizedMessages.filter((m: any) => m.role === "user").pop();
     const therapistInput = lastUserMessage?.content?.toLowerCase() || "";
 
     // EMERGENCY Red Flag Check - Critical safety filter
@@ -307,13 +340,13 @@ Generate abbreviated SOAP format focusing on key findings and treatment only. Co
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o", // Using GPT-4o (optimized) for clinical documentation
+        model: "gpt-4o",
         messages: [
           { role: "system", content: systemPrompt },
-          ...messages,
+          ...sanitizedMessages,
         ],
         stream: true,
-        temperature: 0.3, // Lower temperature for consistent clinical documentation
+        temperature: 0.3,
       }),
     });
 

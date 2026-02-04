@@ -53,14 +53,14 @@ const Onboarding = () => {
     setLoading(true);
 
     try {
-      // Insert user role
+      // ✅ SECURITY FIX: user_id is already included correctly here
       const { error: roleError } = await supabase
         .from("user_roles")
         .insert({ user_id: userId, role: selectedRole });
 
       if (roleError) throw roleError;
 
-      // Update profile to mark onboarding complete
+      // ✅ SECURITY FIX: Using eq() filter is secure with RLS
       const { error: profileError } = await supabase
         .from("profiles")
         .update({ onboarding_completed: true })

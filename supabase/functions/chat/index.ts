@@ -1,22 +1,46 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
 interface ChatMessage {
   role: "system" | "user" | "assistant";
   content: string;
 }
 
 serve(async (req: Request) => {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
   try {
     const { messages } = await req.json() as { messages: ChatMessage[] };
     
     const lastUserMessage = messages.filter((m: ChatMessage) => m.role === "user").pop();
 
     if (!lastUserMessage) {
-      return new Response("No user message found", { status: 400 });
+      return new Response(JSON.stringify({ error: "No user message found" }), { 
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const apiKey = Deno.env.get("OPENAI_API_KEY");
     
+    if (!apiKey) {
+      console.error("OPENAI_API_KEY not configured");
+      return new Response(
+        JSON.stringify({ error: "Server configuration error" }),
+        { 
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
     // Calling OpenAI API directly
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -35,14 +59,14 @@ serve(async (req: Request) => {
 
     const data = await response.json();
     return new Response(JSON.stringify(data), {
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
 
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return new Response(JSON.stringify({ error: errorMessage }), {
       status: 500,
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });

@@ -1,77 +1,99 @@
-import type { Config } from "npm:tailwindcss";
+import type { Config } from "tailwindcss";
 
 export default {
-  content: ["./src/**/*.{ts,tsx}"],
+  darkMode: ["class"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
+  prefix: "",
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       colors: {
-        // Your custom colors here
-      }
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+        },
+        "soma-teal": "hsl(var(--soma-teal))",
+        "soma-teal-light": "hsl(var(--soma-teal-light))",
+        "soma-teal-dark": "hsl(var(--soma-teal-dark))",
+        "soma-blue": "hsl(var(--soma-blue))",
+        "soma-blue-light": "hsl(var(--soma-blue-light))",
+        "soma-green": "hsl(var(--soma-green))",
+        "soma-green-light": "hsl(var(--soma-green-light))",
+        "soma-purple": "hsl(var(--soma-purple))",
+        "soma-purple-light": "hsl(var(--soma-purple-light))",
+        "soma-orange": "hsl(var(--soma-orange))",
+        "soma-orange-light": "hsl(var(--soma-orange-light))",
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;
-
-import React, { useState } from 'react';
-
-const icd10Codes = [
-  { code: 'M54.2', desc: 'Cervicalgia' },
-  { code: 'M54.50', desc: 'Low Back Pain' },
-  { code: 'M79.1', desc: 'Myalgia' },
-  { code: 'M54.6', desc: 'Thoracic Pain' },
-  { code: 'M25.511', desc: 'Shoulder (R)' },
-  { code: 'M62.838', desc: 'Spasm' },
-  { code: 'M43.6', desc: 'Torticollis' },
-  { code: 'G44.209', desc: 'Tension HA' },
-  { code: 'M77.9', desc: 'Tendonitis' },
-  { code: 'R51.9', desc: 'Headache' }
-];
-
-const Intake = () => {
-  const [selectedCodes, setSelectedCodes] = useState<string[]>([]);
-
-  const toggleCode = (code: string) => {
-    setSelectedCodes(prev => 
-      prev.includes(code) ? prev.filter(c => c !== code) : [...prev, code]
-    );
-  };
-
-  return (
-    <div className="min-h-screen bg-white p-8 text-slate-900 font-sans">
-      <div className="max-w-4xl mx-auto">
-        <header className="mb-12">
-          <h1 className="text-xs uppercase tracking-[0.2em] text-slate-400 font-bold mb-2">Clinical Intake</h1>
-          <h2 className="text-3xl font-light">Select diagnostic context.</h2>
-        </header>
-        
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {icd10Codes.map((item) => (
-            <div
-              key={item.code}
-              onClick={() => toggleCode(item.code)}
-              className={`cursor-pointer border-b-2 p-4 transition-all duration-300 ${
-                selectedCodes.includes(item.code) 
-                ? 'border-blue-600 bg-blue-50/30' 
-                : 'border-slate-100 hover:border-slate-300'
-              }`}
-            >
-              <div className="text-sm font-bold tracking-tight">{item.code}</div>
-              <div className="text-[10px] uppercase tracking-wider text-slate-400 mt-1">{item.desc}</div>
-            </div>
-          ))}
-        </div>
-
-        <footer className="mt-20 flex justify-between items-center border-t border-slate-100 pt-8">
-          <div className="text-[10px] text-slate-400 uppercase tracking-widest">
-            {selectedCodes.length} Codes Selected
-          </div>
-          <button className="text-xs font-bold uppercase tracking-[0.3em] hover:text-blue-600 transition-colors">
-            Initialize Session →
-          </button>
-        </footer>
-      </div>
-    </div>
-  );
-};
-
-export default Intake;

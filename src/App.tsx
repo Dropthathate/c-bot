@@ -8,7 +8,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import TherapistDashboard from "./pages/therapist/TherapistDashboard";
-import Intake from "./pages/therapist/Intake";
+import Intake from "./pages/therapist/intake";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

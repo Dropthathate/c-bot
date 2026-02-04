@@ -81,7 +81,7 @@ const VideoLibrary = () => {
   const requiredRole = location.pathname.includes("/therapist") ? "therapist" : "patient";
 
   return (
-    <DashboardLayout requiredTier={requiredTier as unknown as ExpectedType}>
+    <DashboardLayout requiredTier={requiredTier}>
       <div className="p-8 max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">

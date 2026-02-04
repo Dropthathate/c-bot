@@ -1,36 +1,62 @@
 import React, { useState, useRef, useEffect } from 'react';
 
+interface SpeechRecognitionResult {
+  transcript: string;
+  confidence: number;
+}
+
+interface SpeechRecognitionResultList {
+  readonly length: number;
+  item(index: number): SpeechRecognitionResult[];
+  [index: number]: SpeechRecognitionResult[];
+}
+
 interface SpeechRecognitionEvent extends Event {
-  results: {
-    [key: number]: {
-      [key: number]: {
-        transcript: string;
-      };
-    };
-  };
+  results: SpeechRecognitionResultList;
 }
 
 interface WindowWithSpeech extends Window {
   webkitAudioContext: typeof AudioContext;
-  SpeechRecognition: any;
-  webkitSpeechRecognition: any;
+  SpeechRecognition: new () => SpeechRecognition;
+  webkitSpeechRecognition: new () => SpeechRecognition;
 }
 
-const ChatInterface: React.FC = () => {
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+
+interface ChatInterfaceProps {
+  mode?: 'chat' | 'soap';
+  placeholder?: string;
+}
+
+const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
+  mode = 'chat', 
+  placeholder = "Message ΛΛLIYΛH..." 
+}) => {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
   const [input, setInput] = useState('');
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   useEffect(() => {
     const Win = window as unknown as WindowWithSpeech;
-    const SpeechRecognition = Win.SpeechRecognition || Win.webkitSpeechRecognition;
+    const SpeechRecognitionClass = Win.SpeechRecognition || Win.webkitSpeechRecognition;
 
-    if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
+    if (SpeechRecognitionClass) {
+      const recognition = new SpeechRecognitionClass();
       recognition.continuous = true;
       recognition.onresult = (event: SpeechRecognitionEvent) => {
-        const transcript = event.results[event.results.length - 1][0].transcript;
-        setInput(transcript);
+        const resultsLength = event.results.length;
+        if (resultsLength > 0) {
+          const lastResult = event.results[resultsLength - 1];
+          if (lastResult && lastResult[0]) {
+            const transcript = lastResult[0].transcript;
+            setInput(transcript);
+          }
+        }
       };
       recognitionRef.current = recognition;
     }
@@ -47,11 +73,11 @@ const ChatInterface: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen max-w-2xl mx-auto p-4">
+    <div className="flex flex-col h-full max-w-2xl mx-auto p-4">
       <div className="flex-1 overflow-y-auto mb-4 space-y-4">
         {messages.map((m, i) => (
           <div key={i} className={`p-4 rounded-2xl max-w-[80%] ${
-            m.role === 'user' ? 'bg-black text-white ml-auto' : 'bg-gray-100 text-black'
+            m.role === 'user' ? 'bg-primary text-primary-foreground ml-auto' : 'bg-muted text-foreground'
           }`}>
             {m.content}
           </div>
@@ -62,13 +88,13 @@ const ChatInterface: React.FC = () => {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 p-4 bg-gray-100 rounded-full focus:outline-none"
-          placeholder="Message c-bot..."
+          className="flex-1 p-4 bg-muted rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+          placeholder={placeholder}
         />
         <button 
           type="button"
           onClick={handleSend}
-          className="bg-black text-white px-6 py-4 rounded-full font-bold"
+          className="bg-primary text-primary-foreground px-6 py-4 rounded-full font-bold hover:opacity-90 transition-opacity"
         >
           Send
         </button>

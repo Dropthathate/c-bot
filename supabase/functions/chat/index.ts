@@ -1,16 +1,14 @@
-import { serve } from "std/http/server.ts";
-import { createClient } from "@supabase/supabase-js";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 interface ChatMessage {
   role: "system" | "user" | "assistant";
   content: string;
 }
 
-serve(async (req) => {
+serve(async (req: Request) => {
   try {
     const { messages } = await req.json() as { messages: ChatMessage[] };
     
-    // Fix: Proper typing for filter
     const lastUserMessage = messages.filter((m: ChatMessage) => m.role === "user").pop();
 
     if (!lastUserMessage) {
@@ -27,9 +25,9 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4", // or your preferred model
+        model: "gpt-4",
         messages: [
-          { role: "system", content: "You are a helpful assistant for c-bot." },
+          { role: "system", content: "You are ΛΛLIYΛH, a helpful clinical assistant for massage therapists and physical therapists. You provide evidence-based guidance using Oxford terminology and Travell trigger point patterns." },
           ...messages
         ],
       }),
@@ -40,8 +38,9 @@ serve(async (req) => {
       headers: { "Content-Type": "application/json" },
     });
 
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+    return new Response(JSON.stringify({ error: errorMessage }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });

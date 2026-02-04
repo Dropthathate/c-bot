@@ -22,7 +22,7 @@ const features = [
   {
     icon: Shield,
     title: "Controlled Vocabulary",
-    description: "40+ validated anatomical terms ensure accurate recognition and clinical consistency.",
+    description: "2,000+ validated anatomical terms ensure accurate recognition and clinical consistency.",
     color: "bg-soma-green-light text-soma-green",
   },
   {
@@ -33,7 +33,7 @@ const features = [
   },
   {
     icon: Clock,
-    title: "Save 5+ Minutes Per Session",
+    title: "Save 10+ Minutes Per Session",
     description: "Reduce documentation time significantly compared to manual note-taking methods.",
     color: "bg-accent text-primary",
   },
@@ -49,14 +49,14 @@ const FeaturesSection = () => {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-            Powered by Oxford & Travell
+            Trained on NIH, Stanford, Mayo Clinic & Johns Hopkins
           </span>
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
             <span className="gradient-text">Built for Clinical Excellence</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            SomaSync AI combines voice recognition, clinical knowledge, and intelligent documentation 
-            to transform how you conduct postural assessments.
+            SomaSync AI is trained on datasets from the NIH, Stanford Medicine, Mayo Clinic, and Johns Hopkins—combining 
+            Oxford Orthopaedics & Travell's Trigger Point methodology for insurance-compliant, medically accurate documentation.
           </p>
         </div>
 

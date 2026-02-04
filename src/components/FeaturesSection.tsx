@@ -49,7 +49,7 @@ const FeaturesSection = () => {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-            Trained on NIH, Stanford, Mayo Clinic & Johns Hopkins
+            Trained on 2,000+ Anatomical Terms from NIH, Stanford, Mayo Clinic & Johns Hopkins
           </span>
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
             <span className="gradient-text">Built for Clinical Excellence</span>

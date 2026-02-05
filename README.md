@@ -1,60 +1,62 @@
+ 🎧 SomaSync AI
 
+#The First Live In-Ear Neuromuscular Assistant
 
-**URL**: somasyncai.com
+Real-time, hands-free postural assessment and clinical documentation for bodywork practitioners using voice AI technology.
 
-## How can I edit this code?
+🌟 What is This?
 
-There are several ways of editing your application.
+SomaSync AI is a voice-controlled assistant that lives in your **Bluetooth earpiece** and helps bodywork practitioners:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- 🎤 Document hands-free** while treating clients
+- 🧠 Get real-time insights** on patterns like Upper Crossed Syndrome
+- 📝 Auto-generate SOAP notes** from your voice observations
+- 🌐 See population trends** with SomaSphere 3D visualization
+- 📚 Learn instantly** with SyncLearn contextual modules
 
-Follow these steps:
+ 🎤 Voice Commands
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- "Start session" - Begin recording
+- "Pause" - Pause recording
+- "Resume" - Continue recording
+- "End session" - Finish and generate SOAP note
+- "Open SomaSphere" - View 3D patterns
+- "Show SyncLearn" - Access learning modules
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+ 🎧 Why In-Ear?
 
-# Step 3: Install the necessary dependencies.
-npm i
+Traditional documentation interrupts your workflow. SomaSync AI works through a wireless earpiece so:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.npm run dev
-```
+✅ Both hands stay free for treatment
+✅ Private audio feedback only you hear
+✅ Document while you work, not after
+✅ No tablets or keyboards on the treatment table
 
-**Edit a file directly in GitHub**
+ 🚀 Status
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Under Active Development - Building the first live in-ear neuromuscular assistant for bodywork professionals.
 
-**Use GitHub Codespaces**
+ Planned Features:
+- [ ] Voice-controlled SOAP/DAP note generation
+- [ ] Real-time pattern recognition (TCM + Western anatomy)
+- [ ] ICD-10 code suggestions
+- [ ] SomaSphere 3D visualization
+- [ ] SyncLearn educational modules
+- [ ] Bluetooth earpiece integration
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+ 🛠️ Tech Stack
 
-## What technologies are used for this project?
+- Voice: Web Speech API
+- Frontend: React + TailwindCSS
+- 3D: Three.js
+- AI: GPT-4/Claude for pattern recognition
 
-This project is built with:
+ 📄 License
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+MIT License - Open Source
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/f1203b58-8397-4b22-b186-c85f96c13d5b) and click on Share -> Publish.
+**Made with ❤️ for bodywork practitioners worldwide**
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+⭐ Star this repo if you're interested in voice-first clinical documentation!

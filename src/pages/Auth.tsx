@@ -109,11 +109,11 @@ const Auth = () => {
             Evidence-Based Empathy
           </h1>
           <p className="text-xl text-primary-foreground/80">
-            Where clinical precision meets compassionate care. Powered by Travell's Trigger Points and Oxford Orthopaedics.
+           Where clinical precision meets compassionate care. An evidence-informed approach aligned with research standards from the National Institutes of Health, Johns Hopkins Medicine, and Stanford, integrating Travell’s Trigger Points and Oxford Orthopaedics.
           </p>
           <div className="flex gap-4">
             <div className="px-4 py-2 rounded-lg bg-primary-foreground/20 text-primary-foreground text-sm font-medium">
-              C-Bot Safety Engine
+              ΛΛLIYΛH.IO Safety Engine
             </div>
             <div className="px-4 py-2 rounded-lg bg-primary-foreground/20 text-primary-foreground text-sm font-medium">
               HIPAA Compliant
@@ -122,7 +122,7 @@ const Auth = () => {
         </div>
 
         <p className="text-primary-foreground/60 text-sm">
-          © 2024 SomaSync AI. All rights reserved.
+          © 2026 SomaSync AI - ΛΛLIYΛH.IO
         </p>
       </div>
 

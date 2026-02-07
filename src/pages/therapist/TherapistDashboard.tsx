@@ -196,7 +196,7 @@ const TherapistDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                C-Bot monitors your documentation for techniques that may fall outside your license type. 
+                ΛΛLIYΛH.IO monitors your documentation for techniques that may fall outside your license type. 
                 Examples of flagged activities:
               </p>
               <div className="space-y-2 text-sm">

@@ -16,7 +16,7 @@ const CBotSection = () => {
             <span className="text-sm font-medium text-soma-purple">Dual-Core Intelligence</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
-            Meet <span className="gradient-text">C-Bot</span>
+            Meet <span className="gradient-text">ΛΛLIYΛH.IO</span>
           </h2>
           <p className="text-lg text-muted-foreground">
             Your AI guardian that screens every input for safety while drawing from the 

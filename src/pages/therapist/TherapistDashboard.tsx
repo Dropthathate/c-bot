@@ -21,7 +21,7 @@ const TherapistDashboard = () => {
             Therapist Command Center
           </h1>
           <p className="text-muted-foreground">
-            Welcome back, {profile?.fullName?.split(" ")[0] || "Doctor"}. Manage your practice with C-Bot compliance protection.
+            Welcome back, {profile?.fullName?.split(" ")[0] || "Doctor"}. Manage your practice with ΛΛLIYΛH.IO compliance protection.
           </p>
         </div>
 

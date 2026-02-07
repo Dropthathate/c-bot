@@ -82,7 +82,7 @@ const HeroSection = () => {
               <div className="text-sm text-muted-foreground">Video Techniques</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold gradient-text">40+</div>
+              <div className="text-3xl md:text-4xl font-bold gradient-text">2500+</div>
               <div className="text-sm text-muted-foreground">Clinical Terms</div>
             </div>
             <div className="text-center">

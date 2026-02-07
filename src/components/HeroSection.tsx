@@ -24,7 +24,7 @@ const HeroSection = () => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 animate-fade-in animate-bounce-subtle">
             <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-            <span className="text-sm font-medium text-foreground">Where West Meets East</span>
+            <span className="text-sm font-medium text-foreground">Where The West Meets East</span>
           </div>
 
           {/* Main Heading */}

@@ -36,7 +36,7 @@ const TherapistDashboard = () => {
                 <div>
                   <h3 className="font-semibold text-foreground">Unlock Pro Features</h3>
                   <p className="text-sm text-muted-foreground">
-                    Get SOAP note generation, legal templates, and unlimited C-Bot audits
+                    Get SOAP note generation, legal templates, and unlimited ΛΛLIYΛH.IO audits
                   </p>
                 </div>
               </div>

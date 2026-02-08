@@ -38,10 +38,9 @@ const HeroSection = () => {
 
           {/* Subheading */}
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-slide-up delay-100">
-            The first in-ear AI clinical assistant powered by{" "}
-            <span className="text-primary font-semibold">Eastern wisdom</span> and{" "}
-            <span className="text-soma-purple font-semibold">Western science</span>.
-            Oxford Orthopaedics meets traditional pain relief practices—protected by .
+            The first in-ear AI NMT clinical assistant for medical documentation powered by{" "}
+            <span className="text-primary font-semibold">ΛΛLIYΛH.IO</span> and{" "}
+            <span className="text-soma-purple font-semibold">is trained on datasets from Eastern medicine the NIH (National Institutes of Health), Stanford Medicine, Mayo Clinic, Johns Hopkins, and other leading clinical research institutions—ensuring insurance-compliant and medically accurate documentation..
           </p>
 
           {/* CTA Buttons */}

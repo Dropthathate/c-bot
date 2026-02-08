@@ -9,7 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import { FileText, Plus, Calendar, User, Loader2 } from "lucide-react";
+import { FileText, Plus, Calendar, User, Loader2, Trash2 } from "lucide-react";
 import { z } from "zod";
 
 interface SoapNote {
@@ -48,12 +48,18 @@ const SoapNotes = () => {
       const { data, error } = await supabase
         .from("soap_notes")
         .select("*")
+        .eq("therapist_id", user?.id) // 🔒 CRITICAL FIX: Filter by therapist
         .order("created_at", { ascending: false });
 
       if (error) throw error;
       setNotes(data || []);
     } catch (error) {
       console.error("Error fetching notes:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load notes",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -105,6 +111,60 @@ const SoapNotes = () => {
     }
   };
 
+  const deleteNote = async (noteId: string) => {
+    if (!confirm("Are you sure you want to delete this note? This cannot be undone.")) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("soap_notes")
+        .delete()
+        .eq("id", noteId)
+        .eq("therapist_id", user?.id); // Security: ensure they own the note
+
+      if (error) throw error;
+
+      setNotes(prev => prev.filter(n => n.id !== noteId));
+      if (selectedNote?.id === noteId) {
+        setSelectedNote(null);
+      }
+
+      toast({
+        title: "Note deleted",
+        description: "The SOAP note has been permanently deleted.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete note",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSoapGenerated = (soapData: {
+    subjective: string;
+    objective: string;
+    assessment: string;
+    plan: string;
+  }) => {
+    // Update the selected note with the generated SOAP data
+    if (selectedNote) {
+      setSelectedNote({
+        ...selectedNote,
+        ...soapData
+      });
+
+      // Update in the notes list
+      setNotes(prev => prev.map(note => 
+        note.id === selectedNote.id 
+          ? { ...note, ...soapData }
+          : note
+      ));
+    }
+  };
+
   return (
     <DashboardLayout requiredRole="therapist" requiredTier="pro">
       <div className="h-screen flex">
@@ -119,6 +179,7 @@ const SoapNotes = () => {
                   id="clientName"
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && createNewNote()}
                   placeholder="Client name..."
                 />
               </div>
@@ -136,29 +197,40 @@ const SoapNotes = () => {
                   <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                 </div>
               ) : notes.length === 0 ? (
-                <p className="text-center text-muted-foreground py-8">
+                <p className="text-center text-muted-foreground py-8 text-sm">
                   No notes yet. Create your first one!
                 </p>
               ) : (
                 notes.map((note) => (
-                  <button
+                  <div
                     key={note.id}
-                    onClick={() => setSelectedNote(note)}
-                    className={`w-full text-left p-3 rounded-lg transition-colors ${
+                    className={`relative group rounded-lg transition-colors ${
                       selectedNote?.id === note.id
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted hover:bg-accent"
                     }`}
                   >
-                    <div className="flex items-center gap-2 mb-1">
-                      <User className="h-4 w-4" />
-                      <span className="font-medium truncate">{note.client_name}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs opacity-80">
-                      <Calendar className="h-3 w-3" />
-                      <span>{new Date(note.session_date).toLocaleDateString()}</span>
-                    </div>
-                  </button>
+                    <button
+                      onClick={() => setSelectedNote(note)}
+                      className="w-full text-left p-3"
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <User className="h-4 w-4" />
+                        <span className="font-medium truncate">{note.client_name}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs opacity-80">
+                        <Calendar className="h-3 w-3" />
+                        <span>{new Date(note.session_date).toLocaleDateString()}</span>
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => deleteNote(note.id)}
+                      className="absolute top-2 right-2 p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/20 rounded"
+                      title="Delete note"
+                    >
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </button>
+                  </div>
                 ))
               )}
             </div>
@@ -186,7 +258,7 @@ const SoapNotes = () => {
                 </div>
               </div>
 
-              {/* SOAP Display */}
+              {/* SOAP Display or Chat Interface */}
               {selectedNote.subjective || selectedNote.objective || selectedNote.assessment || selectedNote.plan ? (
                 <ScrollArea className="flex-1 p-4">
                   <div className="grid grid-cols-2 gap-4 max-w-4xl">
@@ -231,12 +303,23 @@ const SoapNotes = () => {
                       </CardContent>
                     </Card>
                   </div>
+                  
+                  <div className="mt-4 text-center">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setSelectedNote({ ...selectedNote, subjective: null, objective: null, assessment: null, plan: null })}
+                    >
+                      Edit / Regenerate Note
+                    </Button>
+                  </div>
                 </ScrollArea>
               ) : (
                 <div className="flex-1 overflow-hidden">
                   <ChatInterface
                     mode="soap"
                     placeholder="Dictate your clinical observations... (e.g., 'Patient presents with right shoulder pain, limited ROM in flexion...')"
+                    soapNoteId={selectedNote.id}
+                    onSoapGenerated={handleSoapGenerated}
                   />
                 </div>
               )}

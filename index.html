@@ -3,145 +3,544 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SomaSync AI - Voice Assistant</title>
+  <title>SomaSync AI - Clinical Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
+    
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --border: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --text-tertiary: #94a3b8;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
     }
-    .container {
-      max-width: 1000px;
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      height: 100vh;
+      max-width: 1920px;
       margin: 0 auto;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
     }
-    .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
       color: white;
-      padding: 30px;
+      letter-spacing: -1px;
+    }
+
+    .logo-text {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text-primary);
+    }
+
+    .status-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--text-tertiary);
+      position: relative;
+    }
+
+    .status-indicator.active {
+      background: var(--success);
+    }
+
+    .status-indicator.active::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: var(--success);
+      opacity: 0.2;
+      animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes ping {
+      75%, 100% {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .status-indicator.paused { background: var(--warning); }
+    .status-indicator.generating { background: var(--accent); }
+
+    .status-text {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    /* CONTROLS */
+    .controls {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-btn {
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+
+    .control-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .control-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .control-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    /* TRANSCRIPT */
+    .transcript-section {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+    }
+
+    .transcript-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .transcript-empty {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .transcript-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .transcript-meta {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .transcript-text {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .topbar {
+      padding: 20px 32px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-primary);
+    }
+
+    .topbar-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      margin-bottom: 2px;
+    }
+
+    .topbar-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .content-area {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+      background: var(--bg-secondary);
+    }
+
+    .soap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+      gap: 16px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .soap-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 200px;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .soap-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .soap-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .soap-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .subjective .soap-badge {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+
+    .objective .soap-badge {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+    }
+
+    .assessment .soap-badge {
+      background: rgba(139, 92, 246, 0.1);
+      color: #8b5cf6;
+    }
+
+    .plan .soap-badge {
+      background: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+    }
+
+    .soap-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+    }
+
+    .soap-body {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-primary);
+      white-space: pre-wrap;
+    }
+
+    .soap-empty {
+      color: var(--text-tertiary);
+      font-style: italic;
+    }
+
+    .warning-banner {
+      grid-column: 1 / -1;
+      background: rgba(245, 158, 11, 0.05);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+
+    .warning-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #d97706;
+      margin-bottom: 10px;
+    }
+
+    .warning-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+      color: #b45309;
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 32px;
       text-align: center;
     }
-    .status {
-      display: inline-block;
-      padding: 10px 20px;
-      border-radius: 20px;
-      margin-top: 15px;
-      font-weight: bold;
+
+    .empty-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      opacity: 0.3;
     }
-    .status.idle { background: #95a5a6; }
-    .status.active { background: #27ae60; animation: pulse 2s infinite; }
-    .status.paused { background: #f39c12; }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+
+    .empty-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
     }
-    .main {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
+
+    .empty-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .loading-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 32px;
       gap: 20px;
-      padding: 30px;
     }
-    .transcript {
-      background: #f8f9fa;
-      border-radius: 10px;
-      padding: 20px;
-      height: 400px;
-      overflow-y: auto;
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
     }
-    .entry {
-      background: white;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      border-left: 4px solid #667eea;
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
-    .controls {
-      background: #f8f9fa;
-      border-radius: 10px;
-      padding: 20px;
+
+    .loading-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
     }
-    button {
-      width: 100%;
-      padding: 15px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s;
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
     }
-    button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-start { background: #27ae60; color: white; }
-    .btn-pause { background: #f39c12; color: white; }
-    .btn-end { background: #e74c3c; color: white; }
-    .soap-note {
-      margin-top: 20px;
-      padding: 15px;
-      background: white;
-      border-radius: 8px;
-      max-height: 200px;
-      overflow-y: auto;
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
     }
-    .soap-section { margin-bottom: 15px; }
-    .soap-section h4 { color: #667eea; font-size: 12px; text-transform: uppercase; }
-    .soap-content { font-size: 13px; margin-top: 5px; color: #555; }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-tertiary);
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>🎧 SomaSync AI</h1>
-      <p>Voice-Controlled Clinical Documentation</p>
-      <div class="status idle" id="status">Idle - Click Start</div>
-    </div>
-    
-    <div class="main">
-      <div>
-        <h2>Session Transcript</h2>
-        <div class="transcript" id="transcript">
-          <p style="color: #999; text-align: center; padding: 50px 20px;">
-            Click "Start Session" or say "start session" to begin
-          </p>
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-mark">SS</div>
+          <div class="logo-text">SomaSync AI</div>
+        </div>
+        <div class="status-card">
+          <div class="status-indicator" id="statusIndicator"></div>
+          <div class="status-text" id="statusText">Ready to start</div>
         </div>
       </div>
-      
-      <div>
-        <div class="controls">
-          <h3>Controls</h3>
-          <button class="btn-start" id="startBtn" onclick="startSession()">
-            ▶️ Start Session
-          </button>
-          <button class="btn-pause" id="pauseBtn" onclick="pauseSession()" disabled>
-            ⏸️ Pause
-          </button>
-          <button class="btn-start" id="resumeBtn" onclick="resumeSession()" disabled>
-            ▶️ Resume
-          </button>
-          <button class="btn-end" id="endBtn" onclick="endSession()" disabled>
-            ⏹️ End & Generate Note
-          </button>
+
+      <div class="controls">
+        <button class="control-btn btn-primary" id="startBtn" onclick="startSession()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="7" fill="currentColor"/>
+          </svg>
+          Start Recording
+        </button>
+        <button class="control-btn btn-warning" id="pauseBtn" onclick="pauseSession()" disabled>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="4" y="3" width="3" height="10" fill="currentColor"/>
+            <rect x="9" y="3" width="3" height="10" fill="currentColor"/>
+          </svg>
+          Pause
+        </button>
+        <button class="control-btn btn-secondary" id="resumeBtn" onclick="resumeSession()" disabled>
+          Resume
+        </button>
+        <button class="control-btn btn-danger" id="endBtn" onclick="endSession()" disabled>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="3" y="3" width="10" height="10" fill="currentColor"/>
+          </svg>
+          Generate Note
+        </button>
+      </div>
+
+      <div class="transcript-section">
+        <div class="section-title">Session Transcript</div>
+        <div class="transcript-list" id="transcript">
+          <div class="transcript-empty">
+            Click "Start Recording" to begin<br>
+            <span style="font-size: 12px; color: var(--text-tertiary);">AI will convert your voice to clinical documentation</span>
+          </div>
         </div>
-        
-        <div class="soap-note">
-          <h4>SOAP Note Preview</h4>
-          <div id="soapPreview">Start a session to see documentation</div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <div class="topbar">
+        <div class="topbar-title">SOAP Documentation</div>
+        <div class="topbar-subtitle">AI-Generated Clinical Note</div>
+      </div>
+
+      <div class="content-area" id="contentArea">
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <div class="empty-title">No documentation yet</div>
+          <div class="empty-subtitle">Record a session and generate a SOAP note to view results</div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
+    // ⚙️ CONFIGURATION
+    const SUPABASE_URL = 'https://ucqprtpuuyflnxjmatwo.supabase.co';
+    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE'; // ⬅️ REPLACE THIS
+
     let recognition;
     let state = 'idle';
-    let transcript = [];
-    let soapNote = { subjective: [], objective: [], assessment: [], plan: [] };
+    let rawTranscript = [];
 
     // Initialize Speech Recognition
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -154,29 +553,22 @@
       recognition.onresult = (event) => {
         const result = event.results[event.results.length - 1];
         if (result.isFinal) {
-          const text = result[0].transcript.trim();
-          handleSpeech(text);
+          handleSpeech(result[0].transcript.trim());
         }
       };
 
-      recognition.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
-      };
-
-      recognition.onend = () => {
-        if (state === 'active') {
-          recognition.start(); // Auto-restart
-        }
-      };
+      recognition.onerror = (event) => console.error('Speech error:', event.error);
+      recognition.onend = () => { if (state === 'active') try { recognition.start(); } catch(e) {} };
     } else {
-      alert('Speech recognition not supported in this browser. Use Chrome.');
+      alert('Speech recognition not supported. Use Chrome.');
     }
 
     function startSession() {
       state = 'active';
+      rawTranscript = [];
+      document.getElementById('transcript').innerHTML = '';
       recognition.start();
       updateUI();
-      speak('Starting assessment session. I am listening.');
       addToTranscript('Session started', 'system');
     }
 
@@ -184,150 +576,187 @@
       state = 'paused';
       recognition.stop();
       updateUI();
-      speak('Session paused');
-      addToTranscript('Session paused', 'system');
+      addToTranscript('Paused', 'system');
     }
 
     function resumeSession() {
       state = 'active';
       recognition.start();
       updateUI();
-      speak('Session resumed');
-      addToTranscript('Session resumed', 'system');
+      addToTranscript('Resumed', 'system');
     }
 
-    function endSession() {
-      state = 'idle';
+    async function endSession() {
+      state = 'generating';
       recognition.stop();
       updateUI();
-      generateSOAPNote();
-      speak('Session ended. SOAP note generated.');
-      addToTranscript('Session ended', 'system');
+      
+      const fullTranscript = rawTranscript.join('. ');
+      if (!fullTranscript.trim()) {
+        alert('No content recorded.');
+        state = 'idle';
+        updateUI();
+        return;
+      }
+
+      showLoading();
+      await generateSOAP(fullTranscript);
     }
 
     function handleSpeech(text) {
-      const lower = text.toLowerCase();
+      if (text.toLowerCase().includes('pause session')) return pauseSession();
+      if (text.toLowerCase().includes('end session')) return endSession();
+      rawTranscript.push(text);
+      addToTranscript(text, 'voice');
+    }
 
-      // Voice commands
-      if (lower.includes('pause')) {
-        pauseSession();
-      } else if (lower.includes('resume') || lower.includes('continue')) {
-        resumeSession();
-      } else if (lower.includes('end session')) {
-        endSession();
-      } else {
-        // Process as clinical observation
-        addToTranscript(text, 'observation');
-        categorizeObservation(text);
+    async function generateSOAP(rawNotes) {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/generate-soap`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify({ rawNotes, conversationHistory: [] })
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        displaySOAP(data.soap, data.warnings || []);
+        addToTranscript('Note generated', 'system');
+        state = 'idle';
+        updateUI();
+      } catch (error) {
+        showError(error.message);
+        state = 'idle';
+        updateUI();
       }
     }
 
-    function categorizeObservation(text) {
-      const lower = text.toLowerCase();
+    function displaySOAP(soap, warnings) {
+      let html = '<div class="soap-grid">';
       
-      // Simple keyword-based categorization
-      if (lower.match(/pain|complains?|reports?|states?|feels?/)) {
-        soapNote.subjective.push(text);
-      } else if (lower.match(/observed?|palpation|tender|tight|restricted|range of motion|rom/)) {
-        soapNote.objective.push(text);
-      } else if (lower.match(/diagnosis|pattern|syndrome|indicates?|suggests?/)) {
-        soapNote.assessment.push(text);
-      } else if (lower.match(/treatment|plan|recommend|follow.?up|exercise/)) {
-        soapNote.plan.push(text);
-      } else {
-        soapNote.subjective.push(text); // Default to subjective
+      html += `
+        <div class="soap-card subjective">
+          <div class="soap-header">
+            <div class="soap-badge">S</div>
+            <div class="soap-label">Subjective</div>
+          </div>
+          <div class="soap-body">${soap.subjective || '<span class="soap-empty">Not documented</span>'}</div>
+        </div>
+
+        <div class="soap-card objective">
+          <div class="soap-header">
+            <div class="soap-badge">O</div>
+            <div class="soap-label">Objective</div>
+          </div>
+          <div class="soap-body">${soap.objective || '<span class="soap-empty">Not documented</span>'}</div>
+        </div>
+
+        <div class="soap-card assessment">
+          <div class="soap-header">
+            <div class="soap-badge">A</div>
+            <div class="soap-label">Assessment</div>
+          </div>
+          <div class="soap-body">${soap.assessment || '<span class="soap-empty">Not documented</span>'}</div>
+        </div>
+
+        <div class="soap-card plan">
+          <div class="soap-header">
+            <div class="soap-badge">P</div>
+            <div class="soap-label">Plan</div>
+          </div>
+          <div class="soap-body">${soap.plan || '<span class="soap-empty">Not documented</span>'}</div>
+        </div>
+      `;
+
+      if (warnings.length) {
+        html += `
+          <div class="warning-banner">
+            <div class="warning-header">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 2L2 14h12L8 2z" fill="currentColor"/>
+              </svg>
+              Scope of Practice Warnings
+            </div>
+            <div class="warning-list">${warnings.map(w => `<div>• ${w}</div>`).join('')}</div>
+          </div>
+        `;
       }
 
-      updateSOAPPreview();
+      document.getElementById('contentArea').innerHTML = html + '</div>';
+    }
+
+    function showLoading() {
+      document.getElementById('contentArea').innerHTML = `
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <div class="loading-text">Generating SOAP note...</div>
+        </div>
+      `;
+    }
+
+    function showError(msg) {
+      document.getElementById('contentArea').innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon" style="color: var(--danger);">⚠</div>
+          <div class="empty-title">Error</div>
+          <div class="empty-subtitle">${msg}</div>
+        </div>
+      `;
     }
 
     function addToTranscript(text, type) {
-      transcript.push({ text, type, time: new Date().toLocaleTimeString() });
-      
       const div = document.createElement('div');
-      div.className = 'entry';
+      div.className = 'transcript-item';
       div.innerHTML = `
-        <small style="color: #999;">${new Date().toLocaleTimeString()} - ${type}</small>
-        <p style="margin-top: 5px;">${text}</p>
+        <div class="transcript-meta">${new Date().toLocaleTimeString()} · ${type}</div>
+        <div class="transcript-text">${text}</div>
       `;
       
       const container = document.getElementById('transcript');
+      if (container.querySelector('.transcript-empty')) container.innerHTML = '';
       container.appendChild(div);
       container.scrollTop = container.scrollHeight;
     }
 
-    function updateSOAPPreview() {
-      const preview = document.getElementById('soapPreview');
-      let html = '';
-
-      if (soapNote.subjective.length) {
-        html += `<div class="soap-section">
-          <h4>SUBJECTIVE</h4>
-          <div class="soap-content">${soapNote.subjective.join('. ')}</div>
-        </div>`;
-      }
-      if (soapNote.objective.length) {
-        html += `<div class="soap-section">
-          <h4>OBJECTIVE</h4>
-          <div class="soap-content">${soapNote.objective.join('. ')}</div>
-        </div>`;
-      }
-      if (soapNote.assessment.length) {
-        html += `<div class="soap-section">
-          <h4>ASSESSMENT</h4>
-          <div class="soap-content">${soapNote.assessment.join('. ')}</div>
-        </div>`;
-      }
-      if (soapNote.plan.length) {
-        html += `<div class="soap-section">
-          <h4>PLAN</h4>
-          <div class="soap-content">${soapNote.plan.join('. ')}</div>
-        </div>`;
-      }
-
-      preview.innerHTML = html || 'Start speaking to build the note...';
-    }
-
-    function generateSOAPNote() {
-      updateSOAPPreview();
-      console.log('Complete SOAP Note:', soapNote);
-      // Here you would save/export the note
-    }
-
-    function speak(text) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 1.1;
-      window.speechSynthesis.speak(utterance);
-    }
-
     function updateUI() {
-      const statusEl = document.getElementById('status');
-      const startBtn = document.getElementById('startBtn');
-      const pauseBtn = document.getElementById('pauseBtn');
-      const resumeBtn = document.getElementById('resumeBtn');
-      const endBtn = document.getElementById('endBtn');
+      const indicator = document.getElementById('statusIndicator');
+      const text = document.getElementById('statusText');
+      const btns = {
+        start: document.getElementById('startBtn'),
+        pause: document.getElementById('pauseBtn'),
+        resume: document.getElementById('resumeBtn'),
+        end: document.getElementById('endBtn')
+      };
 
+      indicator.className = 'status-indicator';
+      
       if (state === 'active') {
-        statusEl.textContent = 'Recording Session';
-        statusEl.className = 'status active';
-        startBtn.disabled = true;
-        pauseBtn.disabled = false;
-        resumeBtn.disabled = true;
-        endBtn.disabled = false;
+        indicator.classList.add('active');
+        text.textContent = 'Recording';
+        btns.start.disabled = true;
+        btns.pause.disabled = false;
+        btns.resume.disabled = true;
+        btns.end.disabled = false;
       } else if (state === 'paused') {
-        statusEl.textContent = 'Paused';
-        statusEl.className = 'status paused';
-        startBtn.disabled = true;
-        pauseBtn.disabled = true;
-        resumeBtn.disabled = false;
-        endBtn.disabled = false;
+        indicator.classList.add('paused');
+        text.textContent = 'Paused';
+        btns.start.disabled = true;
+        btns.pause.disabled = true;
+        btns.resume.disabled = false;
+        btns.end.disabled = false;
+      } else if (state === 'generating') {
+        indicator.classList.add('generating');
+        text.textContent = 'Generating...';
+        Object.values(btns).forEach(btn => btn.disabled = true);
       } else {
-        statusEl.textContent = 'Idle - Click Start';
-        statusEl.className = 'status idle';
-        startBtn.disabled = false;
-        pauseBtn.disabled = true;
-        resumeBtn.disabled = true;
-        endBtn.disabled = true;
+        text.textContent = 'Ready to start';
+        btns.start.disabled = false;
+        btns.pause.disabled = true;
+        btns.resume.disabled = true;
+        btns.end.disabled = true;
       }
     }
   </script>

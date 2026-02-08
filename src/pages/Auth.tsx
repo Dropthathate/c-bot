@@ -17,32 +17,25 @@ const Auth = () => {
   const { toast } = useToast();
 
   const checkOnboardingStatus = useCallback(async (userId: string) => {
-    try {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("onboarding_completed")
-        .eq("user_id", userId)
-        .single();
+  try {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("onboarding_completed")
+      .eq("user_id", userId)
+      .single();
 
-      if (profile?.onboarding_completed) {
-        const { data: roles } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", userId)
-          .single();
-
-        if (roles?.role === "therapist") {
-          navigate("/therapist", { replace: true });
-        } else {
-          navigate("/patient", { replace: true });
-        }
-      } else {
-        navigate("/onboarding", { replace: true });
-      }
-    } catch (error) {
-      console.error("Error checking onboarding status:", error);
+    if (profile?.onboarding_completed) {
+      // Remove the role check since you only have therapist portal now
+      navigate("/therapist", { replace: true });
+    } else {
+      navigate("/onboarding", { replace: true });
     }
-  }, [navigate]);
+  } catch (error) {
+    console.error("Error checking onboarding status:", error);
+    // Optional: navigate to a safe fallback if profile doesn't exist
+    navigate("/onboarding", { replace: true });
+  }
+}, [navigate]);
 
   useEffect(() => {
     let isSubscribed = true;

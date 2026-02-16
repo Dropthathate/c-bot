@@ -1,134 +1,35 @@
-import { useEffect, useRef, useState } from "react";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Auth from "@/pages/Auth";
+import Onboarding from "@/pages/Onboarding";
+import TherapistDashboard from "@/pages/therapist/TherapistDashboard";
+import TherapistChat from "@/pages/therapist/TherapistChat";
+import VoiceSoap from "@/components/VoiceSoap";
+import NotFound from "@/pages/NotFound";
 
-declare global {
-  interface Window {
-    webkitSpeechRecognition: any;
-  }
-}
+const queryClient = new QueryClient();
 
-const SUPABASE_URL = "https://ucqprtpuuyflnxjmatwo.supabase.co";
-const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjcXBydHB1dXlmbG54am1hdHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMDE5MDYsImV4cCI6MjA3MzU3NzkwNn0.6bbdGyQ4rURrbrujTBaq-G6Kd9OymOk_0KcxKjPo2OU"; 
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Navigate to="/auth" replace />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/therapist" element={<TherapistDashboard />} />
+          <Route path="/therapist/chat" element={<TherapistChat />} />
+          <Route path="/therapist/soap" element={<VoiceSoap />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
-export default function App() {
-  const recognitionRef = useRef<any>(null);
-
-  const [state, setState] = useState<"idle" | "active" | "paused" | "generating">("idle");
-  const [transcript, setTranscript] = useState<string[]>([]);
-  const [soap, setSoap] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!("webkitSpeechRecognition" in window)) {
-      setError("Speech recognition only works in Chrome.");
-      return;
-    }
-
-    const recognition = new window.webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = false;
-    recognition.lang = "en-US";
-
-    recognition.onresult = (e: any) => {
-      const text = e.results[e.results.length - 1][0].transcript.trim();
-      handleSpeech(text);
-    };
-
-    recognition.onend = () => {
-      if (state === "active") recognition.start();
-    };
-
-    recognitionRef.current = recognition;
-  }, [state]);
-
-  function handleSpeech(text: string) {
-    const t = text.toLowerCase();
-    if (t.includes("pause")) return pause();
-    if (t.includes("end session")) return end();
-
-    setTranscript((prev) => [...prev, text]);
-  }
-
-  function start() {
-    setTranscript([]);
-    setSoap(null);
-    setError(null);
-    setState("active");
-    recognitionRef.current.start();
-  }
-
-  function pause() {
-    setState("paused");
-    recognitionRef.current.stop();
-  }
-
-  function resume() {
-    setState("active");
-    recognitionRef.current.start();
-  }
-
-  async function end() {
-    recognitionRef.current.stop();
-    setState("generating");
-
-    const notes = transcript.join(". ");
-    if (!notes) {
-      setError("No content recorded.");
-      setState("idle");
-      return;
-    }
-
-    try {
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/generate-soap`, {
-        method: "POST",
-       headers: {
-  "Content-Type": "application/json",
-  "apikey": SUPABASE_ANON_KEY,
-  "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-},
-
-        body: JSON.stringify({ rawNotes: notes }),
-      });
-
-      if (!res.ok) throw new Error("Generation failed");
-      const data = await res.json();
-      setSoap(data.soap);
-    } catch (e: any) {
-      setError(e.message);
-    } finally {
-      setState("idle");
-    }
-  }
-
-  return (
-    <div style={{ padding: 40 }}>
-      <h1>SomaSync AI</h1>
-      <p>Status: {state}</p>
-
-      <button onClick={start} disabled={state !== "idle"}>Start</button>
-      <button onClick={pause} disabled={state !== "active"}>Pause</button>
-      <button onClick={resume} disabled={state !== "paused"}>Resume</button>
-      <button onClick={end} disabled={state === "idle"}>Generate</button>
-
-      <hr />
-
-      <h3>Transcript</h3>
-      {transcript.map((t, i) => (
-        <div key={i}>{t}</div>
-      ))}
-
-      {state === "generating" && <p>Generating SOAP…</p>}
-
-      {soap && (
-        <>
-          <h2>SOAP Note</h2>
-          <h3>Subjective</h3><p>{soap.subjective}</p>
-          <h3>Objective</h3><p>{soap.objective}</p>
-          <h3>Assessment</h3><p>{soap.assessment}</p>
-          <h3>Plan</h3><p>{soap.plan}</p>
-        </>
-      )}
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
-  );
-}
+export default App;

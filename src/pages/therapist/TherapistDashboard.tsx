@@ -10,7 +10,7 @@ import {
 
 const TherapistDashboard = () => {
   const { profile, subscriptionTier } = useAuth();
-  const hasPro = subscriptionTier === "pro";
+  const hasPro = true; // All features active for beta;
 
   return (
     <DashboardLayout requiredRole="therapist">
@@ -133,12 +133,12 @@ const TherapistDashboard = () => {
           </Card>
 
           {/* Video Library */}
-          <Card className="hover:shadow-lg transition-shadow border-2 hover:border-primary/50">
-            <CardHeader>
-              <div className="w-12 h-12 rounded-xl bg-soma-teal-light flex items-center justify-center mb-3">
-                <Video className="h-6 w-6 text-primary" />
-              </div>
-              <CardTitle>Technique Library</CardTitle>
+          <Card className="hover:shadow-lg transition-shadow border-2 opacity-50 pointer-events-none">
+  <CardHeader>
+    <div className="w-12 h-12 rounded-xl bg-soma-teal-light flex items-center justify-center mb-3">
+      <Video className="h-6 w-6 text-primary" />
+    </div>
+    <CardTitle className="flex items-center gap-2">Technique Library <Crown className="h-4 w-4 text-soma-orange" /></CardTitle>
               <CardDescription>
                 276 mobilization techniques with Oxford references
               </CardDescription>

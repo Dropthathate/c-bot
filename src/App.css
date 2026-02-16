@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: #0f172a;
+  color: #f1f5f9;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  height: 100vh;
+}
+
+.sidebar {
+  padding: 20px;
+  background: #1e293b;
+  overflow-y: auto;
+}
+
+button {
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.transcript {
+  margin-top: 16px;
+  font-size: 13px;
+}
+
+.main {
+  padding: 32px;
+  overflow-y: auto;
+}
+
+.soap section {
+  margin-bottom: 20px;
+}

@@ -24,7 +24,7 @@ const HeroSection = () => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 animate-fade-in animate-bounce-subtle">
             <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-            <span className="text-sm font-medium text-foreground">Where West Meets East</span>
+            <span className="text-sm font-medium text-foreground">Where The West Meets East</span>
           </div>
 
           {/* Main Heading */}
@@ -38,10 +38,9 @@ const HeroSection = () => {
 
           {/* Subheading */}
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-slide-up delay-100">
-            The first in-ear AI clinical assistant powered by{" "}
-            <span className="text-primary font-semibold">Eastern wisdom</span> and{" "}
-            <span className="text-soma-purple font-semibold">Western science</span>.
-            Oxford Orthopaedics meets traditional pain relief practices—protected by .
+            The first in-ear AI NMT clinical assistant for medical documentation powered by{" "}
+            <span className="text-primary font-semibold">ΛΛLIYΛH.IO</span> and{" "}
+            <span className="text-soma-purple font-semibold">is trained on datasets from Eastern medicine the NIH (National Institutes of Health), Stanford Medicine, Mayo Clinic, Johns Hopkins, and other leading clinical research institutions—ensuring insurance-compliant and medically accurate documentation..
           </p>
 
           {/* CTA Buttons */}
@@ -82,7 +81,7 @@ const HeroSection = () => {
               <div className="text-sm text-muted-foreground">Video Techniques</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold gradient-text">40+</div>
+              <div className="text-3xl md:text-4xl font-bold gradient-text">2500+</div>
               <div className="text-sm text-muted-foreground">Clinical Terms</div>
             </div>
             <div className="text-center">

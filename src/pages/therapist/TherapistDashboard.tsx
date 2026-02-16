@@ -21,7 +21,7 @@ const TherapistDashboard = () => {
             Therapist Command Center
           </h1>
           <p className="text-muted-foreground">
-            Welcome back, {profile?.fullName?.split(" ")[0] || "Doctor"}. Manage your practice with C-Bot compliance protection.
+            Welcome back, {profile?.fullName?.split(" ")[0] || "Doctor"}. Manage your practice with ΛΛLIYΛH.IO compliance protection.
           </p>
         </div>
 
@@ -36,7 +36,7 @@ const TherapistDashboard = () => {
                 <div>
                   <h3 className="font-semibold text-foreground">Unlock Pro Features</h3>
                   <p className="text-sm text-muted-foreground">
-                    Get SOAP note generation, legal templates, and unlimited C-Bot audits
+                    Get SOAP note generation, legal templates, and unlimited ΛΛLIYΛH.IO audits
                   </p>
                 </div>
               </div>
@@ -196,7 +196,7 @@ const TherapistDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                C-Bot monitors your documentation for techniques that may fall outside your license type. 
+                ΛΛLIYΛH.IO monitors your documentation for techniques that may fall outside your license type. 
                 Examples of flagged activities:
               </p>
               <div className="space-y-2 text-sm">

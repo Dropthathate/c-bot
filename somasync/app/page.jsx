@@ -1,50 +1,42 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 
-declare global {
-  interface Window {
-    webkitSpeechRecognition: any;
-  }
-}
+export default function Page() {
+  const recognitionRef = useRef(null);
 
-const SUPABASE_URL = "https://ucqprtpuuyflnxjmatwo.supabase.co";
-const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjcXBydHB1dXlmbG54am1hdHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMDE5MDYsImV4cCI6MjA3MzU3NzkwNn0.6bbdGyQ4rURrbrujTBaq-G6Kd9OymOk_0KcxKjPo2OU"; 
-
-export default function App() {
-  const recognitionRef = useRef<any>(null);
-
-  const [state, setState] = useState<"idle" | "active" | "paused" | "generating">("idle");
-  const [transcript, setTranscript] = useState<string[]>([]);
-  const [soap, setSoap] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState("idle");
+  const [transcript, setTranscript] = useState([]);
+  const [soap, setSoap] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!("webkitSpeechRecognition" in window)) {
-      setError("Speech recognition only works in Chrome.");
+      setError("Speech recognition not supported in this browser.");
       return;
     }
 
-    const recognition = new window.webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = false;
-    recognition.lang = "en-US";
+    const r = new window.webkitSpeechRecognition();
+    r.continuous = true;
+    r.interimResults = false;
+    r.lang = "en-US";
 
-    recognition.onresult = (e: any) => {
+    r.onresult = (e) => {
       const text = e.results[e.results.length - 1][0].transcript.trim();
       handleSpeech(text);
     };
 
-    recognition.onend = () => {
-      if (state === "active") recognition.start();
+    r.onend = () => {
+      if (state === "active") r.start();
     };
 
-    recognitionRef.current = recognition;
+    recognitionRef.current = r;
   }, [state]);
 
-  function handleSpeech(text: string) {
+  function handleSpeech(text) {
     const t = text.toLowerCase();
     if (t.includes("pause")) return pause();
     if (t.includes("end session")) return end();
-
     setTranscript((prev) => [...prev, text]);
   }
 
@@ -72,27 +64,22 @@ export default function App() {
 
     const notes = transcript.join(". ");
     if (!notes) {
-      setError("No content recorded.");
+      setError("No content recorded");
       setState("idle");
       return;
     }
 
     try {
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/generate-soap`, {
+      const res = await fetch("/api/generate", {
         method: "POST",
-       headers: {
-  "Content-Type": "application/json",
-  "apikey": SUPABASE_ANON_KEY,
-  "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-},
-
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ rawNotes: notes }),
       });
 
       if (!res.ok) throw new Error("Generation failed");
       const data = await res.json();
       setSoap(data.soap);
-    } catch (e: any) {
+    } catch (e) {
       setError(e.message);
     } finally {
       setState("idle");
@@ -100,7 +87,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ padding: 40 }}>
+    <main style={{ padding: 32 }}>
       <h1>SomaSync AI</h1>
       <p>Status: {state}</p>
 
@@ -125,10 +112,22 @@ export default function App() {
           <h3>Objective</h3><p>{soap.objective}</p>
           <h3>Assessment</h3><p>{soap.assessment}</p>
           <h3>Plan</h3><p>{soap.plan}</p>
+
+          <h3>ICD-10</h3>
+          {soap.icd10?.map(c => (
+            <div key={c.code}>{c.code} — {c.description}</div>
+          ))}
+
+          <h3>CPT</h3>
+          {soap.cpt?.map(c => (
+            <div key={c.code}>
+              {c.code} — {c.description} {c.units && `(${c.units}u)`}
+            </div>
+          ))}
         </>
       )}
 
       {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+    </main>
   );
 }

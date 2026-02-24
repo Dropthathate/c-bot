@@ -1,15 +1,32 @@
-import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
 import HeroSection from './components/HeroSection';
-import './App.css'; // Make sure your styles are linked
+import FeaturesSection from './components/FeaturesSection';
+import PricingSection from './components/PricingSection';
+import Footer from './components/Footer';
+import Auth from './pages/Auth';
+import NotFound from './pages/NotFound';
+import './App.css';
+
+function LandingPage() {
+  return (
+    <>
+      <Header />
+      <HeroSection />
+      <FeaturesSection />
+      <PricingSection />
+      <Footer />
+    </>
+  );
+}
 
 function App() {
   return (
-    <div className="App">
-      {/* This is the main bridge to your new Clinical Tool */}
-      <HeroSection />
-      
-      {/* You can add your Footer or other sections below */}
-    </div>
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/auth" element={<Auth />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 

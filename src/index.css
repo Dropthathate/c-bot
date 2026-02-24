@@ -1,3 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 13%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 186 100% 50%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 20%;
+    --input: 217 33% 20%;
+    --ring: 186 100% 50%;
+    --radius: 0.75rem;
+    --soma-teal: 186 100% 50%;
+    --soma-teal-light: 186 100% 15%;
+    --soma-teal-dark: 186 100% 35%;
+    --soma-navy: 222 47% 11%;
+    --soma-navy-light: 222 47% 15%;
+    --soma-slate: 217 33% 17%;
+    --soma-slate-light: 217 33% 25%;
+    --soma-success: 142 76% 36%;
+    --soma-success-light: 142 76% 15%;
+    --soma-warning: 38 92% 50%;
+    --soma-warning-light: 38 92% 15%;
+    --sidebar-background: 222 47% 9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 186 100% 50%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 20%;
+    --sidebar-ring: 186 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-cyan-300;
+  }
+  .gradient-hero {
+    @apply bg-gradient-to-br from-primary to-cyan-400;
+  }
+  .shadow-glow {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
+  }
+}
+
 /* SOMASync AI HERO STYLING */
 .hero-section {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -9,56 +78,6 @@
     color: #ffffff;
 }
 
-.container {
-    max-width: 1200px;
-    width: 100%;
-    text-align: center;
-}
-
-/* 3-COLUMN DASHBOARD PREVIEW */
-.dashboard-preview {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-top: 50px;
-}
-
-.column {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 25px;
-    text-align: left;
-    transition: transform 0.3s ease;
-}
-
-.column:hover {
-    transform: translateY(-5px);
-    border-color: #00f2fe; /* SomaSync Brand Cyan */
-}
-
-/* ANOMALY ALERT STYLING */
-.anomaly-alert {
-    background: rgba(255, 77, 77, 0.15);
-    border-left: 4px solid #ff4d4d;
-    padding: 10px;
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: #ff8080;
-}
-
-/* LIVE PULSE INDICATOR */
-.pulse {
-    height: 10px;
-    width: 10px;
-    background-color: #00ff00;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 8px;
-    box-shadow: 0 0 0 rgba(0, 255, 0, 0.4);
-    animation: pulse-animation 2s infinite;
-}
 .insight-card {
     padding: 12px;
     margin-bottom: 10px;
@@ -70,6 +89,17 @@
 .insight-card.anomaly { border-color: #ff4d4d; background: rgba(255, 77, 77, 0.1); }
 .insight-card.success { border-color: #00ff00; background: rgba(0, 255, 0, 0.1); }
 .insight-card.nmt { border-color: #00f2fe; background: rgba(0, 242, 254, 0.1); }
+
+.pulse {
+    height: 10px;
+    width: 10px;
+    background-color: #00ff00;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    animation: pulse-animation 2s infinite;
+}
+
 @keyframes pulse-animation {
     0% { box-shadow: 0 0 0 0px rgba(0, 255, 0, 0.4); }
     70% { box-shadow: 0 0 0 10px rgba(0, 255, 0, 0); }

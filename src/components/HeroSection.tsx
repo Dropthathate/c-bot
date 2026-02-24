@@ -47,7 +47,7 @@ const HeroSection: React.FC = () => {
         <section className="hero-section">
             <header className="dashboard-header">
                 <div className="logo-container">
-                    <img src="/images/ss.jpg" alt="SomaSync" style={{height: '50px'}} />
+                    <img src="/images/ss.png" alt="SomaSync" style={{height: '50px'}} />
                     <div className="divider" style={{width:'1px', height:'40px', background:'#555', margin:'0 20px'}}></div>
                     <img src="/images/newicon.jpg" alt="Aaliyah" style={{height: '50px', borderRadius:'50%'}} />
                     <h2 style={{marginLeft:'10px'}}>ΛΛLIYΛH.IO</h2>

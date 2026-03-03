@@ -834,6 +834,59 @@ footer{padding:28px 40px;border-top:1px solid var(--border);display:flex;justify
   .email-row{flex-direction:column;}
   footer{flex-direction:column;text-align:center;padding:24px 16px;}
 }
+/* ── INVESTORS ── */
+.inv-section{background:var(--dark);padding:100px 32px;position:relative;overflow:hidden;}
+.inv-satin{position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,0.04) 0%,transparent 40%,rgba(48,217,192,0.07) 80%,rgba(10,132,255,0.04) 100%);}
+.inv-inner{max-width:1060px;margin:0 auto;position:relative;z-index:1;}
+.inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:56px;}
+.inv-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.inv-metric{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:24px;position:relative;overflow:hidden;}
+.inv-metric::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.04),transparent);pointer-events:none;}
+.inv-metric-val{font-size:36px;font-weight:900;letter-spacing:-0.05em;color:#fff;margin-bottom:4px;}
+.inv-metric-val span{background:linear-gradient(135deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.inv-metric-lbl{font-size:12px;color:rgba(255,255,255,0.3);font-weight:500;letter-spacing:0.02em;}
+.inv-metric-note{font-size:11px;color:var(--teal-deep);margin-top:6px;font-weight:600;}
+.inv-points{list-style:none;margin-top:0;}
+.inv-points li{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;}
+.inv-points li:last-child{border-bottom:none;}
+.inv-dot{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));display:flex;align-items:center;justify-content:center;color:#061412;font-size:10px;font-weight:900;flex-shrink:0;margin-top:1px;}
+.inv-cta{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap;}
+.btn-inv{background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));color:#061412;border:none;cursor:pointer;padding:14px 28px;border-radius:980px;font-size:14px;font-weight:800;font-family:inherit;display:inline-flex;align-items:center;gap:8px;transition:all 0.25s;text-decoration:none;box-shadow:0 6px 24px rgba(30,196,172,0.3);}
+.btn-inv:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(30,196,172,0.4);}
+.btn-inv-ghost{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);padding:14px 28px;border-radius:980px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;}
+.btn-inv-ghost:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.inv-badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
+.inv-badge{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:980px;padding:6px 14px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.04em;text-transform:uppercase;}
+
+/* ── CONTACT ── */
+.contact-section{background:var(--bg2);padding:100px 32px;}
+.contact-inner{max-width:1060px;margin:0 auto;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:56px;}
+.contact-info h3{font-size:28px;font-weight:800;letter-spacing:-0.04em;margin-bottom:16px;}
+.contact-info p{font-size:16px;color:var(--ink3);line-height:1.7;font-weight:300;margin-bottom:28px;}
+.contact-methods{display:flex;flex-direction:column;gap:14px;}
+.contact-method{display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--bg);border:1px solid var(--border);border-radius:14px;text-decoration:none;transition:all 0.2s;position:relative;overflow:hidden;}
+.contact-method::before{content:'';position:absolute;inset:0;background:var(--satin);pointer-events:none;opacity:0.7;}
+.contact-method:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
+.cm-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.cm-label{font-size:11px;font-weight:700;color:var(--ink4);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:3px;}
+.cm-value{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-0.01em;}
+.contact-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:36px;box-shadow:var(--shadow-md);position:relative;overflow:hidden;}
+.contact-card::before{content:'';position:absolute;inset:0;background:var(--satin);pointer-events:none;opacity:0.8;}
+.contact-card>*{position:relative;z-index:1;}
+.contact-card h3{font-size:22px;font-weight:800;letter-spacing:-0.04em;margin-bottom:6px;}
+.contact-card p{font-size:13px;color:var(--ink4);margin-bottom:24px;}
+.btn-contact{width:100%;background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));color:#061412;border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;transition:all 0.25s;letter-spacing:-0.02em;margin-top:4px;box-shadow:0 4px 16px rgba(30,196,172,0.25);}
+.btn-contact:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(30,196,172,0.4);}
+
+@media(max-width:900px){
+  .inv-grid,.contact-grid{grid-template-columns:1fr;}
+  .inv-metrics{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .inv-metrics{grid-template-columns:1fr;}
+}
+
 `
 
 const HTML = `<!-- BETA BANNER -->
@@ -852,6 +905,8 @@ const HTML = `<!-- BETA BANNER -->
     <li><a href="#sphere">Sphere</a></li>
     <li><a href="#analytics">Analytics</a></li>
     <li><a href="#hub">Practitioner Hub</a></li>
+    <li><a href="#investors">Investors</a></li>
+    <li><a href="#contact">Contact</a></li>
     <li><a href="#access">Request Access</a></li>
   </ul>
   <div class="nav-right">
@@ -1349,6 +1404,144 @@ const HTML = `<!-- BETA BANNER -->
 </section>
 
 <!-- ══════════ CTA ══════════ -->
+
+<!-- ══════════ INVESTORS ══════════ -->
+<section class="inv-section" id="investors">
+  <div class="inv-satin"></div>
+  <div class="inv-inner">
+    <div class="s-head" style="text-align:left;max-width:700px;margin:0;">
+      <div class="s-tag">For Investors</div>
+      <h2 class="s-h2" style="color:#fff;">The Clinical AI Infrastructure<br>Nobody Built. Until Now.</h2>
+      <p class="s-p">Manual therapy is a $20B+ industry with zero purpose-built AI documentation. SomaSync AI is capturing it — from the ground up, with proprietary hardware, a clinical LLM, and a global practitioner network.</p>
+    </div>
+    <div class="inv-badge-row" style="margin-top:24px;">
+      <span class="inv-badge">Pre-Seed Stage</span>
+      <span class="inv-badge">Active Beta</span>
+      <span class="inv-badge">Hardware + Software</span>
+      <span class="inv-badge">Global Roadmap</span>
+      <span class="inv-badge">HIPAA-Aligned Architecture</span>
+    </div>
+    <div class="inv-grid">
+      <div>
+        <div class="inv-metrics">
+          <div class="inv-metric">
+            <div class="inv-metric-val"><span>$20B+</span></div>
+            <div class="inv-metric-lbl">Manual therapy market size</div>
+            <div class="inv-metric-note">Underpenetrated by AI</div>
+          </div>
+          <div class="inv-metric">
+            <div class="inv-metric-val"><span>88%</span></div>
+            <div class="inv-metric-lbl">AI confidence score in beta</div>
+            <div class="inv-metric-note">Trending upward weekly</div>
+          </div>
+          <div class="inv-metric">
+            <div class="inv-metric-val"><span>3×</span></div>
+            <div class="inv-metric-lbl">Faster documentation</div>
+            <div class="inv-metric-note">vs. manual baseline</div>
+          </div>
+          <div class="inv-metric">
+            <div class="inv-metric-val"><span>∞</span></div>
+            <div class="inv-metric-lbl">LLM update cycles</div>
+            <div class="inv-metric-note">Continuously learning</div>
+          </div>
+        </div>
+        <div class="inv-cta" style="margin-top:28px;">
+          <a href="mailto:streetwisesomatics@gmail.com?subject=SomaSync AI — Investor Inquiry" class="btn-inv">Request Pitch Deck →</a>
+          <a href="mailto:streetwisesomatics@gmail.com?subject=SomaSync AI — Partnership Inquiry" class="btn-inv-ghost">Partner With Us</a>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
+          <a href="https://www.instagram.com/Somasync_AI" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color=\'rgba(255,255,255,0.7)\'" onmouseout="this.style.color=\'rgba(255,255,255,0.3)\'">📸 @Somasync_AI</a>
+          <a href="https://www.linkedin.com/in/somasyncsantos" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color=\'rgba(255,255,255,0.7)\'" onmouseout="this.style.color=\'rgba(255,255,255,0.3)\'">💼 linkedin.com/in/somasyncsantos</a>
+          <a href="tel:+12092849066" style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color=\'rgba(255,255,255,0.7)\'" onmouseout="this.style.color=\'rgba(255,255,255,0.3)\'">📞 (209) 284-9066</a>
+        </div>
+      </div>
+      <div>
+        <ul class="inv-points">
+          <li><div class="inv-dot">1</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Proprietary Hardware Ecosystem</strong>SomaSync Sphere™ — earpiece, table sensor, and dashboard — creates a closed-loop data moat no competitor can replicate without starting from scratch.</div></li>
+          <li><div class="inv-dot">2</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Clinical LLM Trained on Real Data</strong>Knowledge base built from NIH, Stanford, Harvard, WHO, and peer-reviewed massage and manual therapy research — continuously updated, never static.</div></li>
+          <li><div class="inv-dot">3</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Multi-Revenue Architecture</strong>SaaS subscription, hardware device sales, practitioner hub licensing, and enterprise partnerships with clinics, insurance networks, and workers comp platforms.</div></li>
+          <li><div class="inv-dot">4</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Global Expansion Built In</strong>Multilingual support roadmap spanning 10+ languages. East-to-West clinical knowledge bridge makes SomaSync the first truly global manual therapy AI platform.</div></li>
+          <li><div class="inv-dot">5</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Founded by a Practitioner</strong>Built by a working NMT with deep clinical expertise, professional networks, and firsthand understanding of the documentation crisis in manual therapy.</div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="s-head" style="text-align:left;max-width:700px;margin:0 0 0 0;">
+      <div class="s-tag">Get In Touch</div>
+      <h2 class="s-h2">Let's Talk.</h2>
+      <p class="s-p">Whether you're a practitioner ready to test, an investor interested in the vision, or a clinic looking to partner — reach out directly.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>AALIYAH.IO · SomaSync AI</h3>
+        <p>Direct access to the founder. No gatekeeping, no sales funnel — just a real conversation about clinical AI, the future of manual therapy documentation, and how we can work together.</p>
+        <div class="contact-methods">
+          <a href="mailto:streetwisesomatics@gmail.com" class="contact-method">
+            <div class="cm-icon" style="background:rgba(234,67,53,0.1);">✉️</div>
+            <div>
+              <div class="cm-label">Email</div>
+              <div class="cm-value">streetwisesomatics@gmail.com</div>
+            </div>
+          </a>
+          <a href="tel:+12092849066" class="contact-method">
+            <div class="cm-icon" style="background:rgba(52,199,89,0.1);">📞</div>
+            <div>
+              <div class="cm-label">Phone / Text</div>
+              <div class="cm-value">(209) 284-9066</div>
+            </div>
+          </a>
+          <a href="https://www.instagram.com/Somasync_AI" target="_blank" rel="noopener" class="contact-method">
+            <div class="cm-icon" style="background:rgba(191,90,242,0.1);">📸</div>
+            <div>
+              <div class="cm-label">Instagram</div>
+              <div class="cm-value">@Somasync_AI</div>
+            </div>
+          </a>
+          <a href="https://www.linkedin.com/in/somasyncsantos" target="_blank" rel="noopener" class="contact-method">
+            <div class="cm-icon" style="background:rgba(10,102,194,0.1);">💼</div>
+            <div>
+              <div class="cm-label">LinkedIn</div>
+              <div class="cm-value">linkedin.com/in/somasyncsantos</div>
+            </div>
+          </a>
+          <a href="mailto:streetwisesomatics@gmail.com?subject=SomaSync AI — Investor Inquiry" class="contact-method">
+            <div class="cm-icon" style="background:rgba(48,217,192,0.1);">💰</div>
+            <div>
+              <div class="cm-label">Investor Inquiries</div>
+              <div class="cm-value">streetwisesomatics@gmail.com</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <h3>Send a Message</h3>
+        <p>We respond within 24 hours.</p>
+        <div class="fg"><label>Your Name</label><input class="fi-input" type="text" id="cName" placeholder="Full name"></div>
+        <div class="fg"><label>Email Address</label><input class="fi-input" type="email" id="cEmail" placeholder="your@email.com"></div>
+        <div class="fg"><label>I Am A...</label>
+          <select class="fi-input" id="cType" style="cursor:pointer;">
+            <option value="">Select one</option>
+            <option>Practitioner / Therapist</option>
+            <option>Investor</option>
+            <option>Clinic / Practice Owner</option>
+            <option>Insurance / Billing Professional</option>
+            <option>Researcher / Academic</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Message</label><textarea class="fi-input" id="cMsg" rows="4" placeholder="What's on your mind?" style="resize:vertical;min-height:100px;"></textarea></div>
+        <button class="btn-contact" id="contactBtn">Send Message →</button>
+        <div class="form-disclaimer" style="margin-top:14px;">Messages go directly to streetwisesomatics@gmail.com. We do not share your information with third parties.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="cta-wrap">
   <div class="cta-box">
     <div class="cta-content">
@@ -1388,7 +1581,7 @@ const HTML = `<!-- BETA BANNER -->
       <h5>Limitation of Liability</h5>
       To the maximum extent permitted by applicable law, AALIYAH.IO shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from use of or reliance on AI-generated outputs from this Platform.
       <h5>Contact</h5>
-      For questions regarding access, disclaimers, or data practices, submit a request through the AALIYAH.IO dashboard access form. © 2026 AALIYAH.IO. All rights reserved.
+      For questions regarding access, disclaimers, or data practices, submit a request through the AALIYAH.IO dashboard access form. © 2026 AALIYAH.IO. 
     </div>
   </div>
 </section>
@@ -1398,15 +1591,19 @@ const HTML = `<!-- BETA BANNER -->
   <div class="footer-left">
     <img src="/favicon.png" alt="SomaSync" class="footer-logo-img" onerror="this.style.display='none'">
     <img src="/aaliyah-logo.png" alt="AALIYAH.IO" class="footer-logo-img" onerror="this.style.display='none'">
-    <span class="footer-copy">© 2026 AALIYAH.IO · SomaSync AI. All rights reserved.</span>
+    <span class="footer-copy">© 2026 AALIYAH.IO · SomaSync AI. </span>
   </div>
   <div class="footer-links">
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms of Use</a>
-    <a href="#">AI Disclaimer</a>
+    <a href="#investors">Investors</a>
+    <a href="#contact">Privacy Policy</a>
+    <a href="#contact">Terms of Use</a>
+    <a href="#contact">AI Disclaimer</a>
     <a href="#access">Request Access</a>
     <a href="#sphere">Sphere™</a>
-    <a href="#">Contact</a>
+    <a href="https://www.instagram.com/Somasync_AI" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.linkedin.com/in/somasyncsantos" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="tel:+12092849066">Call / Text</a>
+    <a href="mailto:streetwisesomatics@gmail.com">Contact</a>
   </div>
 </footer>
 
@@ -1822,6 +2019,27 @@ document.addEventListener('keydown',e=>{
 });
 
 log('Analytics engine initialized. Session:',sessionId);
+
+// Contact form
+const contactBtn = document.getElementById('contactBtn');
+if(contactBtn){
+  contactBtn.addEventListener('click', () => {
+    const name = document.getElementById('cName')?.value || '';
+    const email = document.getElementById('cEmail')?.value || '';
+    const type = document.getElementById('cType')?.value || '';
+    const msg = document.getElementById('cMsg')?.value || '';
+    if(!email.includes('@')){ alert('Please enter a valid email.'); return; }
+    if(!msg.trim()){ alert('Please enter a message.'); return; }
+    // Open mailto with prefilled content
+    const subject = encodeURIComponent(`SomaSync AI — ${type || 'Inquiry'} from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nType: ${type}\n\nMessage:\n${msg}`);
+    window.location.href = `mailto:streetwisesomatics@gmail.com?subject=${subject}&body=${body}`;
+    contactBtn.textContent = '✓ Opening your email client...';
+    contactBtn.style.background = '#34c759';
+    SA.track('contact_form_submit', {type, hasMessage: !!msg});
+  });
+}
+
 log('Press Alt+Shift+A to open the analytics dashboard.');
 
 })();
@@ -2231,6 +2449,27 @@ document.addEventListener('keydown',e=>{
 });
 
 log('Analytics engine initialized. Session:',sessionId);
+
+// Contact form
+const contactBtn = document.getElementById('contactBtn');
+if(contactBtn){
+  contactBtn.addEventListener('click', () => {
+    const name = document.getElementById('cName')?.value || '';
+    const email = document.getElementById('cEmail')?.value || '';
+    const type = document.getElementById('cType')?.value || '';
+    const msg = document.getElementById('cMsg')?.value || '';
+    if(!email.includes('@')){ alert('Please enter a valid email.'); return; }
+    if(!msg.trim()){ alert('Please enter a message.'); return; }
+    // Open mailto with prefilled content
+    const subject = encodeURIComponent(`SomaSync AI — ${type || 'Inquiry'} from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nType: ${type}\n\nMessage:\n${msg}`);
+    window.location.href = `mailto:streetwisesomatics@gmail.com?subject=${subject}&body=${body}`;
+    contactBtn.textContent = '✓ Opening your email client...';
+    contactBtn.style.background = '#34c759';
+    SA.track('contact_form_submit', {type, hasMessage: !!msg});
+  });
+}
+
 log('Press Alt+Shift+A to open the analytics dashboard.');
 
 })();

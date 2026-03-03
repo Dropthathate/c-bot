@@ -273,23 +273,30 @@ nav{
 .ticker-section{background:var(--bg2);padding:52px 0;overflow:hidden;}
 .ticker-label{text-align:center;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:28px;}
 .ticker-label span{color:var(--teal-deep);}
-.ticker-track{display:flex;gap:0;overflow:hidden;}
+.ticker-track{display:flex;overflow:hidden;width:100%;}
 .ticker-inner{
-  display:flex;align-items:center;gap:56px;
-  animation:ticker 30s linear infinite;
-  white-space:nowrap;flex-shrink:0;
-  padding:0 28px;
+  display:flex;flex-direction:row;align-items:center;
+  animation:ticker 45s linear infinite;
+  flex-shrink:0;white-space:nowrap;
+  will-change:transform;
 }
-.ticker-inner2{animation-delay:-15s;}
+.ticker-inner2{animation-delay:-22.5s;}
 @keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-100%)}}
 .ticker-item{
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  opacity:0.45;transition:opacity 0.3s;flex-shrink:0;
+  display:inline-flex;flex-direction:row;align-items:center;gap:12px;
+  flex-shrink:0;padding:0 44px;
+  opacity:0.55;transition:opacity 0.3s;
+  border-right:1px solid var(--border);
+  white-space:nowrap;
 }
-.ticker-item:hover{opacity:0.9;}
-.ticker-logo-text{font-size:15px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);}
-.ticker-logo-sub{font-size:9px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink4);}
-.ticker-dot{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:4px;}
+.ticker-item:hover{opacity:1;}
+.ticker-badge{
+  width:40px;height:40px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:900;letter-spacing:-0.03em;
+}
+.ticker-logo-text{font-size:14px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);}
+.ticker-logo-sub{font-size:10px;font-weight:500;color:var(--ink4);margin-top:1px;display:block;}
 
 /* ═══════════════════════════════════════════════════
    SECTION SHELL
@@ -949,36 +956,10 @@ const HTML = `<!-- BETA BANNER -->
 
 <!-- ══════════ KNOWLEDGE BASE TICKER ══════════ -->
 <div class="ticker-section">
-  <div class="ticker-label">Knowledge Base: <span>Powered by peer-reviewed research from leading institutions — continuously updated</span></div>
+  <div class="ticker-label">Knowledge Base: <span>Data-driven intelligence from leading medical institutions — continuously updated</span></div>
   <div class="ticker-track">
-    <div class="ticker-inner" id="t1">
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(139,0,0,0.12);">🏥</div><div class="ticker-logo-text">Stanford Medicine</div><div class="ticker-logo-sub">Clinical Research</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,74,128,0.12);">🔬</div><div class="ticker-logo-text">NIH</div><div class="ticker-logo-sub">Natl. Inst. of Health</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(139,0,0,0.12);">🏛</div><div class="ticker-logo-text">Harvard Medical</div><div class="ticker-logo-sub">Clinical Studies</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,47,108,0.12);">⚕️</div><div class="ticker-logo-text">Johns Hopkins</div><div class="ticker-logo-sub">Medicine</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(206,17,38,0.12);">🧬</div><div class="ticker-logo-text">Mayo Clinic</div><div class="ticker-logo-sub">Applied Research</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,100,164,0.12);">🌿</div><div class="ticker-logo-text">WHO</div><div class="ticker-logo-sub">Eastern Medicine</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(100,61,136,0.12);">🧠</div><div class="ticker-logo-text">Biopsychosocial</div><div class="ticker-logo-sub">Pain Model Research</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,134,100,0.12);">📋</div><div class="ticker-logo-text">ICD-10 / WHO</div><div class="ticker-logo-sub">Diagnostic Standards</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(180,60,0,0.12);">🏫</div><div class="ticker-logo-text">UCLA Health</div><div class="ticker-logo-sub">Integrative Medicine</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,60,113,0.12);">📊</div><div class="ticker-logo-text">PubMed / NCBI</div><div class="ticker-logo-sub">Evidence Base</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(100,10,10,0.12);">🔭</div><div class="ticker-logo-text">ABMP / AMTA</div><div class="ticker-logo-sub">Massage Standards</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,80,50,0.12);">🌏</div><div class="ticker-logo-text">TCM Research</div><div class="ticker-logo-sub">Eastern Practices</div></div>
-    </div>
-    <div class="ticker-inner ticker-inner2" aria-hidden="true">
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(139,0,0,0.12);">🏥</div><div class="ticker-logo-text">Stanford Medicine</div><div class="ticker-logo-sub">Clinical Research</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,74,128,0.12);">🔬</div><div class="ticker-logo-text">NIH</div><div class="ticker-logo-sub">Natl. Inst. of Health</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(139,0,0,0.12);">🏛</div><div class="ticker-logo-text">Harvard Medical</div><div class="ticker-logo-sub">Clinical Studies</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,47,108,0.12);">⚕️</div><div class="ticker-logo-text">Johns Hopkins</div><div class="ticker-logo-sub">Medicine</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(206,17,38,0.12);">🧬</div><div class="ticker-logo-text">Mayo Clinic</div><div class="ticker-logo-sub">Applied Research</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,100,164,0.12);">🌿</div><div class="ticker-logo-text">WHO</div><div class="ticker-logo-sub">Eastern Medicine</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(100,61,136,0.12);">🧠</div><div class="ticker-logo-text">Biopsychosocial</div><div class="ticker-logo-sub">Pain Model Research</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,134,100,0.12);">📋</div><div class="ticker-logo-text">ICD-10 / WHO</div><div class="ticker-logo-sub">Diagnostic Standards</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(180,60,0,0.12);">🏫</div><div class="ticker-logo-text">UCLA Health</div><div class="ticker-logo-sub">Integrative Medicine</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,60,113,0.12);">📊</div><div class="ticker-logo-text">PubMed / NCBI</div><div class="ticker-logo-sub">Evidence Base</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(100,10,10,0.12);">🔭</div><div class="ticker-logo-text">ABMP / AMTA</div><div class="ticker-logo-sub">Massage Standards</div></div>
-      <div class="ticker-item"><div class="ticker-dot" style="background:rgba(0,80,50,0.12);">🌏</div><div class="ticker-logo-text">TCM Research</div><div class="ticker-logo-sub">Eastern Practices</div></div>
-    </div>
+    <div class="ticker-inner" id="t1"><div class="ticker-item"><div class="ticker-badge" style="background:#8c1515;color:#fff;">S</div><div><div class="ticker-logo-text">Stanford Medicine</div><span class="ticker-logo-sub">Clinical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#003f8a;color:#fff;">NIH</div><div><div class="ticker-logo-text">Natl. Institutes of Health</div><span class="ticker-logo-sub">Federal Health Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#a51c30;color:#fff;">H</div><div><div class="ticker-logo-text">Harvard Medical School</div><span class="ticker-logo-sub">Clinical Studies</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#002d62;color:#fff;">JH</div><div><div class="ticker-logo-text">Johns Hopkins Medicine</div><span class="ticker-logo-sub">Medical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#c8102e;color:#fff;">M</div><div><div class="ticker-logo-text">Mayo Clinic</div><span class="ticker-logo-sub">Applied Clinical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#009cbd;color:#fff;">WHO</div><div><div class="ticker-logo-text">World Health Organization</div><span class="ticker-logo-sub">Eastern &amp; Western Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#2774ae;color:#fff;">UCLA</div><div><div class="ticker-logo-text">UCLA Health</div><span class="ticker-logo-sub">Integrative Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#004b87;color:#fff;">NCBI</div><div><div class="ticker-logo-text">PubMed / NCBI</div><span class="ticker-logo-sub">Evidence-Based Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#5b2d8e;color:#fff;">BPS</div><div><div class="ticker-logo-text">Biopsychosocial Model</div><span class="ticker-logo-sub">Pain Science Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#006747;color:#fff;">TCM</div><div><div class="ticker-logo-text">Traditional Chinese Medicine</div><span class="ticker-logo-sub">Eastern Practices</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#1a1a2e;color:#fff;">ABMP</div><div><div class="ticker-logo-text">ABMP &amp; AMTA</div><span class="ticker-logo-sub">Massage Therapy Standards</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#cc0000;color:#fff;">ICD</div><div><div class="ticker-logo-text">ICD-10 Framework</div><span class="ticker-logo-sub">Diagnostic Standards</span></div></div></div>
+    <div class="ticker-inner ticker-inner2" aria-hidden="true"><div class="ticker-item"><div class="ticker-badge" style="background:#8c1515;color:#fff;">S</div><div><div class="ticker-logo-text">Stanford Medicine</div><span class="ticker-logo-sub">Clinical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#003f8a;color:#fff;">NIH</div><div><div class="ticker-logo-text">Natl. Institutes of Health</div><span class="ticker-logo-sub">Federal Health Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#a51c30;color:#fff;">H</div><div><div class="ticker-logo-text">Harvard Medical School</div><span class="ticker-logo-sub">Clinical Studies</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#002d62;color:#fff;">JH</div><div><div class="ticker-logo-text">Johns Hopkins Medicine</div><span class="ticker-logo-sub">Medical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#c8102e;color:#fff;">M</div><div><div class="ticker-logo-text">Mayo Clinic</div><span class="ticker-logo-sub">Applied Clinical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#009cbd;color:#fff;">WHO</div><div><div class="ticker-logo-text">World Health Organization</div><span class="ticker-logo-sub">Eastern &amp; Western Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#2774ae;color:#fff;">UCLA</div><div><div class="ticker-logo-text">UCLA Health</div><span class="ticker-logo-sub">Integrative Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#004b87;color:#fff;">NCBI</div><div><div class="ticker-logo-text">PubMed / NCBI</div><span class="ticker-logo-sub">Evidence-Based Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#5b2d8e;color:#fff;">BPS</div><div><div class="ticker-logo-text">Biopsychosocial Model</div><span class="ticker-logo-sub">Pain Science Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#006747;color:#fff;">TCM</div><div><div class="ticker-logo-text">Traditional Chinese Medicine</div><span class="ticker-logo-sub">Eastern Practices</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#1a1a2e;color:#fff;">ABMP</div><div><div class="ticker-logo-text">ABMP &amp; AMTA</div><span class="ticker-logo-sub">Massage Therapy Standards</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#cc0000;color:#fff;">ICD</div><div><div class="ticker-logo-text">ICD-10 Framework</div><span class="ticker-logo-sub">Diagnostic Standards</span></div></div></div>
   </div>
 </div>
 

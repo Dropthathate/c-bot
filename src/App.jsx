@@ -916,9 +916,9 @@ const HTML = `<!-- BETA BANNER -->
 
   <div class="hero-inner">
     <div class="hero-eyebrow">
-      <img src="/Aaliyah-logo.png" alt="AALIYAH.IO" class="eyebrow-img" onerror="this.style.display='none'">
+      <img src="/Aaliyah-logo.png" alt="ΛΛLIYΛH.IO" class="eyebrow-img" onerror="this.style.display='none'">
       <div class="eyebrow-pulse"></div>
-      Introducing SomaSync AI · AALIYAH.IO
+      Introducing SomaSync AI · ΛΛLIYΛH.IO
     </div>
     <h1>Intelligence<br>That <span class="grad">Listens</span></h1>
     <p class="hero-sub">From rough clinical observations to ICD-10-aligned SOAP notes — automatically, in real time. The gold standard for clinical documentation.</p>
@@ -954,7 +954,7 @@ const HTML = `<!-- BETA BANNER -->
 <div class="wave-section">
   <div class="wave-card">
     <div class="wave-card-inner">
-      <div class="wave-label">⚡ Live Session Processing · AALIYAH Engine Active</div>
+      <div class="wave-label">⚡ Live Session Processing · ΛΛLIYΛH Engine Active</div>
       <div class="wave-bars" id="wbars"></div>
       <div class="wave-status">
         <div class="wave-dot"></div>
@@ -962,7 +962,7 @@ const HTML = `<!-- BETA BANNER -->
       </div>
       <div class="wave-transcript">
         <div class="wt-line">
-          <span class="wt-tag wt-ai">AALIYAH</span>
+          <span class="wt-tag wt-ai">ΛΛLIYΛH</span>
           Session started. Listening for contraindications and biopsychosocial markers.
         </div>
         <div class="wt-line">
@@ -970,7 +970,7 @@ const HTML = `<!-- BETA BANNER -->
           "Pain is maybe a 6 out of 10... mostly in my lower back, sometimes it shoots down my left leg."
         </div>
         <div class="wt-line">
-          <span class="wt-tag wt-ai">AALIYAH</span>
+          <span class="wt-tag wt-ai">ΛΛLIYΛH</span>
           <span style="color:rgba(255,255,255,0.7);">Flagging: radicular pattern detected → <span style="color:var(--teal);">M54.42 Lumbago w/ sciatica L</span></span>
         </div>
         <div class="wt-line">
@@ -978,7 +978,7 @@ const HTML = `<!-- BETA BANNER -->
           <span style="color:rgba(255,69,58,0.8);">Biopsychosocial note: client reports high work stress, poor sleep. Document in plan.</span>
         </div>
         <div class="wt-line">
-          <span class="wt-tag wt-ai">AALIYAH</span>
+          <span class="wt-tag wt-ai">ΛΛLIYΛH</span>
           SOAP note generating... ICD-10 codes confirmed. Confidence: 91.2%
         </div>
       </div>
@@ -1004,7 +1004,7 @@ const HTML = `<!-- BETA BANNER -->
   </div>
   <div class="flow-grid">
     <div class="flow-card" data-delay="0"><div class="step-n">Step 01</div><div class="flow-ico fi1">🎙</div><h3>Listen</h3><p>Captures practitioner observations, rough spoken notes, and client responses in real time via therapist earpiece and session mic.</p></div>
-    <div class="flow-card" data-delay="100"><div class="step-n">Step 02</div><div class="flow-ico fi2">⚡</div><h3>Analyze</h3><p>AALIYAH interprets posture, movement, pain patterns, and biopsychosocial context with deep clinical logic trained on peer-reviewed data.</p></div>
+    <div class="flow-card" data-delay="100"><div class="step-n">Step 02</div><div class="flow-ico fi2">⚡</div><h3>Analyze</h3><p>ΛΛLIYΛH interprets posture, movement, pain patterns, and biopsychosocial context with deep clinical logic trained on peer-reviewed data.</p></div>
     <div class="flow-card" data-delay="200"><div class="step-n">Step 03</div><div class="flow-ico fi3">🔄</div><h3>Translate</h3><p>Converts messy clinical observations into structured, billable diagnostic language. ICD-10 codes, CPT codes, and terminology auto-generated.</p></div>
     <div class="flow-card" data-delay="300"><div class="step-n">Step 04</div><div class="flow-ico fi4">📄</div><h3>Document</h3><p>Outputs complete SOAP notes, treatment plans, and billing-ready documentation — aligned with ICD-10 frameworks and payer standards.</p></div>
   </div>
@@ -1135,7 +1135,7 @@ const HTML = `<!-- BETA BANNER -->
         <div class="sc-icon">🎧</div>
         <span class="sc-badge" style="background:rgba(48,217,192,0.1);color:var(--teal);">Component 01</span>
         <h4>Therapist Earpiece</h4>
-        <p>Sleek, discreet Bluetooth earpiece worn by the therapist. AALIYAH whispers real-time assistance — flagging contraindications, suggesting questions, and transcribing client feedback during active bodywork. Completely hands-free.</p>
+        <p>Sleek, discreet Bluetooth earpiece worn by the therapist. ΛΛLIYΛH whispers real-time assistance — flagging contraindications, suggesting questions, and transcribing client feedback during active bodywork. Completely hands-free.</p>
       </div>
       <div class="sc-card" data-delay="100">
         <div class="sc-icon">📡</div>
@@ -1147,7 +1147,7 @@ const HTML = `<!-- BETA BANNER -->
         <div class="sc-icon">🖥</div>
         <span class="sc-badge" style="background:rgba(191,90,242,0.1);color:var(--purple);">Component 03</span>
         <h4>Dashboard Portal</h4>
-        <p>The full AALIYAH.IO dashboard interface — a therapist portal for securely saving patient session data, reviewing AI-generated SOAP notes, managing ICD-10 codes, and completing documentation between sessions or in real time.</p>
+        <p>The full ΛΛLIYΛH.IO dashboard interface — a therapist portal for securely saving patient session data, reviewing AI-generated SOAP notes, managing ICD-10 codes, and completing documentation between sessions or in real time.</p>
       </div>
     </div>
   </div>
@@ -1280,7 +1280,7 @@ const HTML = `<!-- BETA BANNER -->
   <div class="s-head">
     <div class="s-tag">Practitioner Hub</div>
     <h2 class="s-h2">Everything You Need.<br>One Place.</h2>
-    <p class="s-p">The AALIYAH.IO Practitioner Hub is your complete clinical command center — from intake to invoice, from consent to communication.</p>
+    <p class="s-p">The ΛΛLIYΛH.IO Practitioner Hub is your complete clinical command center — from intake to invoice, from consent to communication.</p>
   </div>
   <div class="hub-grid">
     <div class="hub-card" data-delay="0"><div class="hub-icon">📋</div><h4>Document Library</h4><p>Consent forms, liability waivers, SOAP note templates, assessment sheets, intake forms — all accessible, fillable, and exportable as professional PDFs instantly.</p></div>
@@ -1342,15 +1342,15 @@ const HTML = `<!-- BETA BANNER -->
 <section class="access-section" id="access">
   <div class="access-inner">
     <div class="s-head" style="margin-bottom:52px;">
-      <div class="s-tag">AALIYAH.IO Dashboard</div>
+      <div class="s-tag">ΛΛLIYΛH.IO Dashboard</div>
       <h2 class="s-h2">Request Access to the Full Platform</h2>
       <p class="s-p">Closed beta — SOAP generator, ICD-10 coder, Sphere integration, and the full Practitioner Hub. Access granted by review within 48 hours.</p>
     </div>
     <div class="access-grid">
       <div class="access-left">
-        <img src="/Aaliyah-logo.png" alt="AALIYAH.IO" style="height:36px;width:auto;margin-bottom:20px;opacity:0.85;" onerror="this.style.display='none'">
+        <img src="/Aaliyah-logo.png" alt="ΛΛLIYΛH.IO" style="height:36px;width:auto;margin-bottom:20px;opacity:0.85;" onerror="this.style.display='none'">
         <h2>Your Clinical Assistant<br><em style="font-weight:300;font-style:italic;">is Ready.</em></h2>
-        <p>The AALIYAH.IO dashboard is a closed MVP beta. Approved practitioners receive full access to the SomaSync AI documentation suite — live SOAP generation, ICD-10 coding, confidence scoring, and export-ready clinical notes.</p>
+        <p>The ΛΛLIYΛH.IO dashboard is a closed MVP beta. Approved practitioners receive full access to the SomaSync AI documentation suite — live SOAP generation, ICD-10 coding, confidence scoring, and export-ready clinical notes.</p>
         <p>Fill out the form. Access is granted within 48 hours for qualified applicants. No payment required during beta.</p>
         <div class="beta-notice">
           <div class="bn-title">⚠️ Beta Testing Notice</div>
@@ -1359,7 +1359,7 @@ const HTML = `<!-- BETA BANNER -->
       </div>
       <div class="access-card">
         <div class="access-title">Request Dashboard Access</div>
-        <div class="access-sub">AALIYAH.IO · SomaSync MVP Beta</div>
+        <div class="access-sub">ΛΛLIYΛH.IO · SomaSync MVP Beta</div>
         <ul class="feat-list">
           <li><div class="fl-dot"></div>SOAP Note Generator (AI-powered, real-time)</li>
           <li><div class="fl-dot"></div>ICD-10 Auto-Coding with confidence scores</li>
@@ -1439,14 +1439,14 @@ const HTML = `<!-- BETA BANNER -->
     </div>
     <div class="contact-grid">
       <div class="contact-info">
-        <h3>AALIYAH.IO · SomaSync AI</h3>
+        <h3>ΛΛLIYΛH.IO · SomaSync AI</h3>
         <p>Direct access to the founder. Real conversations about clinical AI and the future of manual therapy documentation.</p>
         <div class="contact-methods">
-          <a href="mailto:streetwisesomatics@gmail.com" class="contact-method"><div class="cm-icon" style="background:rgba(234,67,53,0.1);">✉️</div><div><div class="cm-label">Email</div><div class="cm-value">streetwisesomatics@gmail.com</div></div></a>
-          <a href="tel:+12092849066" class="contact-method"><div class="cm-icon" style="background:rgba(52,199,89,0.1);">📞</div><div><div class="cm-label">Phone / Text</div><div class="cm-value">(209) 284-9066</div></div></a>
-          <a href="https://www.instagram.com/Somasync_AI" target="_blank" class="contact-method"><div class="cm-icon" style="background:rgba(191,90,242,0.1);">📸</div><div><div class="cm-label">Instagram</div><div class="cm-value">@Somasync_AI</div></div></a>
-          <a href="https://www.linkedin.com/in/somasyncsantos" target="_blank" class="contact-method"><div class="cm-icon" style="background:rgba(10,102,194,0.1);">💼</div><div><div class="cm-label">LinkedIn</div><div class="cm-value">linkedin.com/in/somasyncsantos</div></div></a>
-          <a href="mailto:streetwisesomatics@gmail.com?subject=SomaSync AI — Investor Inquiry" class="contact-method"><div class="cm-icon" style="background:rgba(48,217,192,0.1);">💰</div><div><div class="cm-label">Investor Inquiries</div><div class="cm-value">streetwisesomatics@gmail.com</div></div></a>
+          <a href="mailto:streetwisesomatics@gmail.com" class="contact-method"><div class="cm-icon" style="background:rgba(234,67,53,0.15);border:1px solid rgba(234,67,53,0.2);">✉️</div><div><div class="cm-label">Email</div><div class="cm-value">streetwisesomatics@gmail.com</div></div></a>
+          <a href="tel:+12092849066" class="contact-method"><div class="cm-icon" style="background:rgba(52,199,89,0.15);border:1px solid rgba(52,199,89,0.2);">📞</div><div><div class="cm-label">Phone / Text</div><div class="cm-value">(209) 284-9066</div></div></a>
+          <a href="https://www.instagram.com/Somasync_AI" target="_blank" class="contact-method"><div class="cm-icon" style="background:rgba(191,90,242,0.15);border:1px solid rgba(191,90,242,0.2);">📸</div><div><div class="cm-label">Instagram</div><div class="cm-value">@Somasync_AI</div></div></a>
+          <a href="https://www.linkedin.com/in/somasyncsantos" target="_blank" class="contact-method"><div class="cm-icon" style="background:rgba(10,102,194,0.15);border:1px solid rgba(10,102,194,0.2);">💼</div><div><div class="cm-label">LinkedIn</div><div class="cm-value">linkedin.com/in/somasyncsantos</div></div></a>
+          <a href="mailto:streetwisesomatics@gmail.com?subject=SomaSync AI — Investor Inquiry" class="contact-method"><div class="cm-icon" style="background:rgba(48,217,192,0.15);border:1px solid rgba(48,217,192,0.2);">💰</div><div><div class="cm-label">Investor Inquiries</div><div class="cm-value">streetwisesomatics@gmail.com</div></div></a>
         </div>
       </div>
       <div class="contact-card">
@@ -1498,21 +1498,21 @@ const HTML = `<!-- BETA BANNER -->
     </div>
     <div class="legal-full">
       <h5>Full AI & Clinical Disclaimer</h5>
-      SomaSync AI ("the Platform") is an artificial intelligence-powered documentation assistance tool developed by AALIYAH.IO. The Platform is designed to assist licensed healthcare and manual therapy practitioners in drafting clinical notes and identifying potentially relevant diagnostic codes. THE PLATFORM DOES NOT PROVIDE MEDICAL ADVICE AND IS NOT A LICENSED MEDICAL DEVICE.
+      SomaSync AI ("the Platform") is an artificial intelligence-powered documentation assistance tool developed by ΛΛLIYΛH.IO. The Platform is designed to assist licensed healthcare and manual therapy practitioners in drafting clinical notes and identifying potentially relevant diagnostic codes. THE PLATFORM DOES NOT PROVIDE MEDICAL ADVICE AND IS NOT A LICENSED MEDICAL DEVICE.
       <h5>No Clinical Reliance</h5>
       Outputs generated by the Platform — including SOAP notes, ICD-10 code suggestions, CPT code suggestions, and confidence scores — are provided for informational and administrative assistance purposes only. These outputs are NOT a substitute for professional clinical evaluation, diagnosis, or treatment planning. A licensed clinician must review, verify, and take full responsibility for all documentation before use in any clinical, legal, billing, or insurance context.
       <h5>Billing & Coding Disclaimer</h5>
       ICD-10 and CPT code suggestions are not guaranteed to be accurate, complete, or appropriate for any specific patient or payer. The Platform does not guarantee reimbursement. Practitioners are solely responsible for ensuring accuracy and compliance with applicable federal, state, and payer regulations.
       <h5>Beta Software Notice</h5>
-      SomaSync AI is in pre-release beta testing. The software is provided "as is" without warranty of any kind. AALIYAH.IO makes no representations regarding accuracy, reliability, or fitness for a particular purpose. Use during beta is at the user's sole risk.
+      SomaSync AI is in pre-release beta testing. The software is provided "as is" without warranty of any kind. ΛΛLIYΛH.IO makes no representations regarding accuracy, reliability, or fitness for a particular purpose. Use during beta is at the user's sole risk.
       <h5>Privacy & HIPAA</h5>
       Users are responsible for ensuring that any patient information entered into the Platform complies with applicable privacy laws, including HIPAA. Do not enter identifiable patient information during the beta testing phase unless appropriate data use agreements are in place.
       <h5>Knowledge Base</h5>
       SomaSync AI's knowledge base draws from publicly available peer-reviewed research, clinical guidelines, and published medical literature including sources from NIH, Stanford, WHO, and related institutions. References to these institutions do not imply endorsement, affiliation, or partnership. The Platform continuously updates its training data to improve accuracy and compliance with current standards.
       <h5>Limitation of Liability</h5>
-      To the maximum extent permitted by applicable law, AALIYAH.IO shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from use of or reliance on AI-generated outputs from this Platform.
+      To the maximum extent permitted by applicable law, ΛΛLIYΛH.IO shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from use of or reliance on AI-generated outputs from this Platform.
       <h5>Contact</h5>
-      For questions regarding access, disclaimers, or data practices, submit a request through the AALIYAH.IO dashboard access form. © 2026 AALIYAH.IO. 
+      For questions regarding access, disclaimers, or data practices, submit a request through the ΛΛLIYΛH.IO dashboard access form. © 2026 ΛΛLIYΛH.IO. 
     </div>
   </div>
 </section>
@@ -1521,8 +1521,8 @@ const HTML = `<!-- BETA BANNER -->
 <footer>
   <div class="footer-left">
     <img src="/favicon.png" alt="SomaSync" class="footer-logo-img" onerror="this.style.display='none'">
-    <img src="/Aaliyah-logo.png" alt="AALIYAH.IO" class="footer-logo-img" onerror="this.style.display='none'">
-    <span class="footer-copy">© 2026 AALIYAH.IO · SomaSync AI</span>
+    <img src="/Aaliyah-logo.png" alt="ΛΛLIYΛH.IO" class="footer-logo-img" onerror="this.style.display='none'">
+    <span class="footer-copy">© 2026 ΛΛLIYΛH.IO · SomaSync AI</span>
   </div>
   <div class="footer-links">
     <a href="#">Privacy Policy</a>

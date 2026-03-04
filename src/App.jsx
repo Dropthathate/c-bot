@@ -1573,10 +1573,23 @@ if(window.Chart){
 async function submitForm(data,btn,msg){
   btn.textContent='Sending...';btn.disabled=true;
   try{
-    const r=await fetch('https://formspree.io/f/maqjjzoy',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
-    if(r.ok){btn.textContent=msg;btn.style.background='#34c759';}
-    else{btn.textContent='Error — email streetwisesomatics@gmail.com';btn.style.background='#ff453a';btn.disabled=false;}
-  }catch(e){btn.textContent='Error — email streetwisesomatics@gmail.com';btn.style.background='#ff453a';btn.disabled=false;}
+    const payload=Object.assign({},data,{access_key:'e4930b3b-f424-4d8e-aec5-c4b856545061'});
+    const r=await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    const json=await r.json();
+    if(json.success){
+      btn.textContent=msg;btn.style.background='#34c759';
+    } else {
+      btn.textContent='Error — text (209) 284-9066';
+      btn.style.background='#ff453a';btn.disabled=false;
+    }
+  }catch(e){
+    btn.textContent='Error — text (209) 284-9066';
+    btn.style.background='#ff453a';btn.disabled=false;
+  }
 }
 
 /* ACCESS FORM */

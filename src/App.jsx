@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 
 export default function App() {
   useEffect(() => {
@@ -21,7 +22,12 @@ export default function App() {
     document.head.appendChild(chart)
   }, [])
 
-  return <div dangerouslySetInnerHTML={{ __html: HTML }} />
+  return (
+    <>
+      <div dangerouslySetInnerHTML={{ __html: HTML }} />
+      <Analytics />
+    </>
+  )
 }
 
 const CSS = `

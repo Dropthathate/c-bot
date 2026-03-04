@@ -916,7 +916,7 @@ const HTML = `<!-- BETA BANNER -->
 
   <div class="hero-inner">
     <div class="hero-eyebrow">
-      <img src="/aaliyah-logo.png" alt="AALIYAH.IO" class="eyebrow-img" onerror="this.style.display='none'">
+      <img src="/Aaliyah-logo.png" alt="AALIYAH.IO" class="eyebrow-img" onerror="this.style.display='none'">
       <div class="eyebrow-pulse"></div>
       Introducing SomaSync AI · AALIYAH.IO
     </div>
@@ -1348,7 +1348,7 @@ const HTML = `<!-- BETA BANNER -->
     </div>
     <div class="access-grid">
       <div class="access-left">
-        <img src="/aaliyah-logo.png" alt="AALIYAH.IO" style="height:36px;width:auto;margin-bottom:20px;opacity:0.85;" onerror="this.style.display='none'">
+        <img src="/Aaliyah-logo.png" alt="AALIYAH.IO" style="height:36px;width:auto;margin-bottom:20px;opacity:0.85;" onerror="this.style.display='none'">
         <h2>Your Clinical Assistant<br><em style="font-weight:300;font-style:italic;">is Ready.</em></h2>
         <p>The AALIYAH.IO dashboard is a closed MVP beta. Approved practitioners receive full access to the SomaSync AI documentation suite — live SOAP generation, ICD-10 coding, confidence scoring, and export-ready clinical notes.</p>
         <p>Fill out the form. Access is granted within 48 hours for qualified applicants. No payment required during beta.</p>
@@ -1521,7 +1521,7 @@ const HTML = `<!-- BETA BANNER -->
 <footer>
   <div class="footer-left">
     <img src="/favicon.png" alt="SomaSync" class="footer-logo-img" onerror="this.style.display='none'">
-    <img src="/aaliyah-logo.png" alt="AALIYAH.IO" class="footer-logo-img" onerror="this.style.display='none'">
+    <img src="/Aaliyah-logo.png" alt="AALIYAH.IO" class="footer-logo-img" onerror="this.style.display='none'">
     <span class="footer-copy">© 2026 AALIYAH.IO · SomaSync AI</span>
   </div>
   <div class="footer-links">

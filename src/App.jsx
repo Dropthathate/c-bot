@@ -1686,15 +1686,7 @@ document.getElementById('accessBtn').addEventListener('click',()=>{
   btn.textContent='✓ Request Submitted — We\\'ll review and respond within 48 hours';
   btn.style.background='#34c759';btn.disabled=true;
 });
-function handleCTA(){
-  const el=document.getElementById('ctaEmail');
-  if(el.value.includes('@')){
-    SA.track('waitlist_signup',{email:el.value,source:'cta_bottom',timestamp:new Date().toISOString()});
-    el.value='';el.placeholder='✓ You\\'re on the list!';
-    document.querySelector('.btn-teal').textContent='Done ✓';
-    document.querySelector('.btn-teal').style.background='#34c759';
-  }
-}
+
 </script>
 
 <!-- ════════════════════════════════════════════════
@@ -2020,23 +2012,90 @@ document.addEventListener('keydown',e=>{
 
 log('Analytics engine initialized. Session:',sessionId);
 
-// Contact form
+
+// ── FORMSPREE SUBMIT HELPER ──────────────────────
+async function submitToFormspree(data, btn, successMsg) {
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  try {
+    const res = await fetch('https://formspree.io/f/maqjjzoy', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (res.ok) {
+      btn.textContent = successMsg;
+      btn.style.background = '#34c759';
+      btn.style.color = '#fff';
+      return true;
+    } else {
+      btn.textContent = 'Error — try emailing us directly';
+      btn.disabled = false;
+      btn.style.background = '#ff453a';
+      return false;
+    }
+  } catch(e) {
+    btn.textContent = 'Error — try emailing us directly';
+    btn.disabled = false;
+    btn.style.background = '#ff453a';
+    return false;
+  }
+}
+
+// ── CONTACT FORM ──────────────────────────────────
 const contactBtn = document.getElementById('contactBtn');
-if(contactBtn){
-  contactBtn.addEventListener('click', () => {
+if(contactBtn) {
+  contactBtn.addEventListener('click', async () => {
     const name = document.getElementById('cName')?.value || '';
     const email = document.getElementById('cEmail')?.value || '';
     const type = document.getElementById('cType')?.value || '';
     const msg = document.getElementById('cMsg')?.value || '';
-    if(!email.includes('@')){ alert('Please enter a valid email.'); return; }
-    if(!msg.trim()){ alert('Please enter a message.'); return; }
-    // Open mailto with prefilled content
-    const subject = encodeURIComponent(`SomaSync AI — ${type || 'Inquiry'} from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nType: ${type}\n\nMessage:\n${msg}`);
-    window.location.href = `mailto:streetwisesomatics@gmail.com?subject=${subject}&body=${body}`;
-    contactBtn.textContent = '✓ Opening your email client...';
-    contactBtn.style.background = '#34c759';
-    SA.track('contact_form_submit', {type, hasMessage: !!msg});
+    if(!email.includes('@')) { alert('Please enter a valid email.'); return; }
+    if(!msg.trim()) { alert('Please enter a message.'); return; }
+    const ok = await submitToFormspree({
+      _subject: 'SomaSync AI — ' + (type || 'Inquiry') + ' from ' + name,
+      name, email, type, message: msg, _source: 'contact_form'
+    }, contactBtn, '✓ Message sent — we\'ll respond within 24hrs');
+    if(ok) SA.track('contact_form_submit', {type, hasMessage: !!msg});
+  });
+}
+
+// ── ACCESS REQUEST FORM ───────────────────────────
+const accessBtn = document.getElementById('accessBtn');
+if(accessBtn) {
+  accessBtn.addEventListener('click', async () => {
+    const inputs = document.querySelectorAll('#access .fi-input');
+    const name = inputs[0]?.value || '';
+    const email = inputs[1]?.value || '';
+    const specialty = inputs[2]?.value || '';
+    const state = inputs[3]?.value || '';
+    const referral = inputs[4]?.value || '';
+    if(!email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    const ok = await submitToFormspree({
+      _subject: 'SomaSync Beta Access Request — ' + name,
+      name, email, specialty, state, referral,
+      _source: 'access_request_form'
+    }, accessBtn, '✓ Request received — access granted within 48hrs');
+    if(ok) SA.track('access_request', {name, email, specialty, state});
+  });
+}
+
+// ── CTA WAITLIST ──────────────────────────────────
+function handleCTA() {
+  const el = document.getElementById('ctaEmail');
+  const btn = document.querySelector('.btn-teal');
+  if(!el || !btn) return;
+  if(!el.value.includes('@')) { alert('Please enter a valid email.'); return; }
+  submitToFormspree({
+    _subject: 'SomaSync AI — Waitlist Signup',
+    email: el.value,
+    _source: 'cta_waitlist'
+  }, btn, '✓ You\'re on the list!').then(ok => {
+    if(ok) {
+      el.value = '';
+      SA.track('waitlist_signup', {email: el.value, source: 'cta_bottom'});
+    }
   });
 }
 
@@ -2112,26 +2171,8 @@ new Chart(document.getElementById('bigChart'),{type:'bar',data:{
 }}});
 
 /* FORMS */
-document.getElementById('accessBtn').addEventListener('click',()=>{
-  const btn=document.getElementById('accessBtn');
-  const name=document.querySelector('.fi-input[type="text"]')?.value||'';
-  const email=document.querySelector('.fi-input[type="email"]')?.value||'';
-  const specialty=document.querySelectorAll('.fi-input[type="text"]')[1]?.value||'';
-  const state=document.querySelectorAll('.fi-input[type="text"]')[2]?.value||'';
-  if(!email.includes('@')){alert('Please enter a valid email address.');return;}
-  SA.track('access_request',{name,email,specialty,state,timestamp:new Date().toISOString()});
-  btn.textContent='✓ Request Submitted — We\\'ll review and respond within 48 hours';
-  btn.style.background='#34c759';btn.disabled=true;
-});
-function handleCTA(){
-  const el=document.getElementById('ctaEmail');
-  if(el.value.includes('@')){
-    SA.track('waitlist_signup',{email:el.value,source:'cta_bottom',timestamp:new Date().toISOString()});
-    el.value='';el.placeholder='✓ You\\'re on the list!';
-    document.querySelector('.btn-teal').textContent='Done ✓';
-    document.querySelector('.btn-teal').style.background='#34c759';
-  }
-}
+// forms handled below
+
 
 
 (function(){
@@ -2450,25 +2491,77 @@ document.addEventListener('keydown',e=>{
 
 log('Analytics engine initialized. Session:',sessionId);
 
-// Contact form
+
+// ── FORMSPREE SUBMIT HELPER ──────────────────────
+async function submitToFormspree(data, btn, successMsg) {
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  try {
+    const res = await fetch('https://formspree.io/f/maqjjzoy', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (res.ok) {
+      btn.textContent = successMsg;
+      btn.style.background = '#34c759';
+      btn.style.color = '#fff';
+      return true;
+    } else {
+      btn.textContent = 'Error — try emailing us directly';
+      btn.disabled = false;
+      btn.style.background = '#ff453a';
+      return false;
+    }
+  } catch(e) {
+    btn.textContent = 'Error — try emailing us directly';
+    btn.disabled = false;
+    btn.style.background = '#ff453a';
+    return false;
+  }
+}
+
+// ── CONTACT FORM ──────────────────────────────────
 const contactBtn = document.getElementById('contactBtn');
-if(contactBtn){
-  contactBtn.addEventListener('click', () => {
+if(contactBtn) {
+  contactBtn.addEventListener('click', async () => {
     const name = document.getElementById('cName')?.value || '';
     const email = document.getElementById('cEmail')?.value || '';
     const type = document.getElementById('cType')?.value || '';
     const msg = document.getElementById('cMsg')?.value || '';
-    if(!email.includes('@')){ alert('Please enter a valid email.'); return; }
-    if(!msg.trim()){ alert('Please enter a message.'); return; }
-    // Open mailto with prefilled content
-    const subject = encodeURIComponent(`SomaSync AI — ${type || 'Inquiry'} from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nType: ${type}\n\nMessage:\n${msg}`);
-    window.location.href = `mailto:streetwisesomatics@gmail.com?subject=${subject}&body=${body}`;
-    contactBtn.textContent = '✓ Opening your email client...';
-    contactBtn.style.background = '#34c759';
-    SA.track('contact_form_submit', {type, hasMessage: !!msg});
+    if(!email.includes('@')) { alert('Please enter a valid email.'); return; }
+    if(!msg.trim()) { alert('Please enter a message.'); return; }
+    const ok = await submitToFormspree({
+      _subject: 'SomaSync AI — ' + (type || 'Inquiry') + ' from ' + name,
+      name, email, type, message: msg, _source: 'contact_form'
+    }, contactBtn, '✓ Message sent — we\'ll respond within 24hrs');
+    if(ok) SA.track('contact_form_submit', {type, hasMessage: !!msg});
   });
 }
+
+// ── ACCESS REQUEST FORM ───────────────────────────
+const accessBtn = document.getElementById('accessBtn');
+if(accessBtn) {
+  accessBtn.addEventListener('click', async () => {
+    const inputs = document.querySelectorAll('#access .fi-input');
+    const name = inputs[0]?.value || '';
+    const email = inputs[1]?.value || '';
+    const specialty = inputs[2]?.value || '';
+    const state = inputs[3]?.value || '';
+    const referral = inputs[4]?.value || '';
+    if(!email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    const ok = await submitToFormspree({
+      _subject: 'SomaSync Beta Access Request — ' + name,
+      name, email, specialty, state, referral,
+      _source: 'access_request_form'
+    }, accessBtn, '✓ Request received — access granted within 48hrs');
+    if(ok) SA.track('access_request', {name, email, specialty, state});
+  });
+}
+
+// ── CTA WAITLIST ──────────────────────────────────
+
 
 log('Press Alt+Shift+A to open the analytics dashboard.');
 

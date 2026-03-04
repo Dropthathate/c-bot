@@ -2,18 +2,15 @@ import { useEffect } from 'react'
 
 export default function App() {
   useEffect(() => {
-    // Inject CSS
     const style = document.createElement('style')
     style.textContent = CSS
     document.head.appendChild(style)
 
-    // Google Fonts
     const link = document.createElement('link')
     link.rel = 'stylesheet'
     link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap'
     document.head.appendChild(link)
 
-    // Chart.js then run main JS
     const chart = document.createElement('script')
     chart.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js'
     chart.onload = () => {
@@ -274,29 +271,22 @@ nav{
 .ticker-label{text-align:center;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:28px;}
 .ticker-label span{color:var(--teal-deep);}
 .ticker-track{display:flex;overflow:hidden;width:100%;}
-.ticker-inner{
-  display:flex;flex-direction:row;align-items:center;
-  animation:ticker 45s linear infinite;
-  flex-shrink:0;white-space:nowrap;
-  will-change:transform;
-}
+.ticker-inner{display:flex;flex-direction:row;align-items:center;animation:ticker 45s linear infinite;flex-shrink:0;white-space:nowrap;will-change:transform;}
 .ticker-inner2{animation-delay:-22.5s;}
 @keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-100%)}}
-.ticker-item{
-  display:inline-flex;flex-direction:row;align-items:center;gap:12px;
-  flex-shrink:0;padding:0 44px;
-  opacity:0.55;transition:opacity 0.3s;
-  border-right:1px solid var(--border);
-  white-space:nowrap;
-}
+.ticker-item{display:inline-flex;flex-direction:row;align-items:center;gap:12px;flex-shrink:0;padding:0 44px;opacity:0.55;transition:opacity 0.3s;border-right:1px solid var(--border);white-space:nowrap;}
 .ticker-item:hover{opacity:1;}
-.ticker-badge{
-  width:40px;height:40px;border-radius:10px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:900;letter-spacing:-0.03em;
-}
+.ticker-badge{width:40px;height:40px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:900;letter-spacing:-0.03em;}
 .ticker-logo-text{font-size:14px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);}
-.ticker-logo-sub{font-size:10px;font-weight:500;color:var(--ink4);margin-top:1px;display:block;}
+.ticker-logo-sub{font-size:10px;font-weight:500;color:var(--ink4);margin-top:1px;display:block;}to{transform:translateX(-100%)}}
+.ticker-item{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  opacity:0.45;transition:opacity 0.3s;flex-shrink:0;
+}
+.ticker-item:hover{opacity:0.9;}
+.ticker-logo-text{font-size:15px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);}
+.ticker-logo-sub{font-size:9px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink4);}
+.ticker-dot{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:4px;}
 
 /* ═══════════════════════════════════════════════════
    SECTION SHELL
@@ -834,6 +824,7 @@ footer{padding:28px 40px;border-top:1px solid var(--border);display:flex;justify
   .email-row{flex-direction:column;}
   footer{flex-direction:column;text-align:center;padding:24px 16px;}
 }
+
 /* ── INVESTORS ── */
 .inv-section{background:var(--dark);padding:100px 32px;position:relative;overflow:hidden;}
 .inv-satin{position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,0.04) 0%,transparent 40%,rgba(48,217,192,0.07) 80%,rgba(10,132,255,0.04) 100%);}
@@ -841,23 +832,20 @@ footer{padding:28px 40px;border-top:1px solid var(--border);display:flex;justify
 .inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:56px;}
 .inv-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .inv-metric{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:24px;position:relative;overflow:hidden;}
-.inv-metric::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.04),transparent);pointer-events:none;}
 .inv-metric-val{font-size:36px;font-weight:900;letter-spacing:-0.05em;color:#fff;margin-bottom:4px;}
 .inv-metric-val span{background:linear-gradient(135deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.inv-metric-lbl{font-size:12px;color:rgba(255,255,255,0.3);font-weight:500;letter-spacing:0.02em;}
+.inv-metric-lbl{font-size:12px;color:rgba(255,255,255,0.3);font-weight:500;}
 .inv-metric-note{font-size:11px;color:var(--teal-deep);margin-top:6px;font-weight:600;}
 .inv-points{list-style:none;margin-top:0;}
 .inv-points li{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;}
 .inv-points li:last-child{border-bottom:none;}
 .inv-dot{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));display:flex;align-items:center;justify-content:center;color:#061412;font-size:10px;font-weight:900;flex-shrink:0;margin-top:1px;}
-.inv-cta{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap;}
-.btn-inv{background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));color:#061412;border:none;cursor:pointer;padding:14px 28px;border-radius:980px;font-size:14px;font-weight:800;font-family:inherit;display:inline-flex;align-items:center;gap:8px;transition:all 0.25s;text-decoration:none;box-shadow:0 6px 24px rgba(30,196,172,0.3);}
-.btn-inv:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(30,196,172,0.4);}
-.btn-inv-ghost{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);padding:14px 28px;border-radius:980px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;}
-.btn-inv-ghost:hover{background:rgba(255,255,255,0.1);color:#fff;}
 .inv-badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
 .inv-badge{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:980px;padding:6px 14px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.04em;text-transform:uppercase;}
-
+.btn-inv{background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));color:#061412;border:none;cursor:pointer;padding:14px 28px;border-radius:980px;font-size:14px;font-weight:800;font-family:inherit;display:inline-flex;align-items:center;gap:8px;transition:all 0.25s;text-decoration:none;box-shadow:0 6px 24px rgba(30,196,172,0.3);margin-right:12px;margin-bottom:10px;}
+.btn-inv:hover{transform:translateY(-2px);}
+.btn-inv-ghost{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);padding:14px 28px;border-radius:980px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;}
+.btn-inv-ghost:hover{background:rgba(255,255,255,0.1);color:#fff;}
 /* ── CONTACT ── */
 .contact-section{background:var(--bg2);padding:100px 32px;}
 .contact-inner{max-width:1060px;margin:0 auto;}
@@ -865,28 +853,17 @@ footer{padding:28px 40px;border-top:1px solid var(--border);display:flex;justify
 .contact-info h3{font-size:28px;font-weight:800;letter-spacing:-0.04em;margin-bottom:16px;}
 .contact-info p{font-size:16px;color:var(--ink3);line-height:1.7;font-weight:300;margin-bottom:28px;}
 .contact-methods{display:flex;flex-direction:column;gap:14px;}
-.contact-method{display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--bg);border:1px solid var(--border);border-radius:14px;text-decoration:none;transition:all 0.2s;position:relative;overflow:hidden;}
-.contact-method::before{content:'';position:absolute;inset:0;background:var(--satin);pointer-events:none;opacity:0.7;}
+.contact-method{display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--bg);border:1px solid var(--border);border-radius:14px;text-decoration:none;transition:all 0.2s;}
 .contact-method:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
 .cm-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
 .cm-label{font-size:11px;font-weight:700;color:var(--ink4);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:3px;}
-.cm-value{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-0.01em;}
-.contact-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:36px;box-shadow:var(--shadow-md);position:relative;overflow:hidden;}
-.contact-card::before{content:'';position:absolute;inset:0;background:var(--satin);pointer-events:none;opacity:0.8;}
-.contact-card>*{position:relative;z-index:1;}
+.cm-value{font-size:14px;font-weight:600;color:var(--ink);}
+.contact-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:36px;box-shadow:var(--shadow-md);}
 .contact-card h3{font-size:22px;font-weight:800;letter-spacing:-0.04em;margin-bottom:6px;}
 .contact-card p{font-size:13px;color:var(--ink4);margin-bottom:24px;}
-.btn-contact{width:100%;background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));color:#061412;border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;transition:all 0.25s;letter-spacing:-0.02em;margin-top:4px;box-shadow:0 4px 16px rgba(30,196,172,0.25);}
-.btn-contact:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(30,196,172,0.4);}
-
-@media(max-width:900px){
-  .inv-grid,.contact-grid{grid-template-columns:1fr;}
-  .inv-metrics{grid-template-columns:1fr 1fr;}
-}
-@media(max-width:480px){
-  .inv-metrics{grid-template-columns:1fr;}
-}
-
+.btn-contact{width:100%;background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));color:#061412;border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;transition:all 0.25s;margin-top:4px;}
+.btn-contact:hover{transform:translateY(-2px);}
+@media(max-width:900px){.inv-grid,.contact-grid{grid-template-columns:1fr;}.inv-metrics{grid-template-columns:1fr 1fr;}}
 `
 
 const HTML = `<!-- BETA BANNER -->
@@ -1013,8 +990,8 @@ const HTML = `<!-- BETA BANNER -->
 <div class="ticker-section">
   <div class="ticker-label">Knowledge Base: <span>Data-driven intelligence from leading medical institutions — continuously updated</span></div>
   <div class="ticker-track">
-    <div class="ticker-inner" id="t1"><div class="ticker-item"><div class="ticker-badge" style="background:#8c1515;color:#fff;">S</div><div><div class="ticker-logo-text">Stanford Medicine</div><span class="ticker-logo-sub">Clinical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#003f8a;color:#fff;">NIH</div><div><div class="ticker-logo-text">Natl. Institutes of Health</div><span class="ticker-logo-sub">Federal Health Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#a51c30;color:#fff;">H</div><div><div class="ticker-logo-text">Harvard Medical School</div><span class="ticker-logo-sub">Clinical Studies</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#002d62;color:#fff;">JH</div><div><div class="ticker-logo-text">Johns Hopkins Medicine</div><span class="ticker-logo-sub">Medical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#c8102e;color:#fff;">M</div><div><div class="ticker-logo-text">Mayo Clinic</div><span class="ticker-logo-sub">Applied Clinical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#009cbd;color:#fff;">WHO</div><div><div class="ticker-logo-text">World Health Organization</div><span class="ticker-logo-sub">Eastern &amp; Western Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#2774ae;color:#fff;">UCLA</div><div><div class="ticker-logo-text">UCLA Health</div><span class="ticker-logo-sub">Integrative Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#004b87;color:#fff;">NCBI</div><div><div class="ticker-logo-text">PubMed / NCBI</div><span class="ticker-logo-sub">Evidence-Based Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#5b2d8e;color:#fff;">BPS</div><div><div class="ticker-logo-text">Biopsychosocial Model</div><span class="ticker-logo-sub">Pain Science Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#006747;color:#fff;">TCM</div><div><div class="ticker-logo-text">Traditional Chinese Medicine</div><span class="ticker-logo-sub">Eastern Practices</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#1a1a2e;color:#fff;">ABMP</div><div><div class="ticker-logo-text">ABMP &amp; AMTA</div><span class="ticker-logo-sub">Massage Therapy Standards</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#cc0000;color:#fff;">ICD</div><div><div class="ticker-logo-text">ICD-10 Framework</div><span class="ticker-logo-sub">Diagnostic Standards</span></div></div></div>
-    <div class="ticker-inner ticker-inner2" aria-hidden="true"><div class="ticker-item"><div class="ticker-badge" style="background:#8c1515;color:#fff;">S</div><div><div class="ticker-logo-text">Stanford Medicine</div><span class="ticker-logo-sub">Clinical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#003f8a;color:#fff;">NIH</div><div><div class="ticker-logo-text">Natl. Institutes of Health</div><span class="ticker-logo-sub">Federal Health Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#a51c30;color:#fff;">H</div><div><div class="ticker-logo-text">Harvard Medical School</div><span class="ticker-logo-sub">Clinical Studies</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#002d62;color:#fff;">JH</div><div><div class="ticker-logo-text">Johns Hopkins Medicine</div><span class="ticker-logo-sub">Medical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#c8102e;color:#fff;">M</div><div><div class="ticker-logo-text">Mayo Clinic</div><span class="ticker-logo-sub">Applied Clinical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#009cbd;color:#fff;">WHO</div><div><div class="ticker-logo-text">World Health Organization</div><span class="ticker-logo-sub">Eastern &amp; Western Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#2774ae;color:#fff;">UCLA</div><div><div class="ticker-logo-text">UCLA Health</div><span class="ticker-logo-sub">Integrative Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#004b87;color:#fff;">NCBI</div><div><div class="ticker-logo-text">PubMed / NCBI</div><span class="ticker-logo-sub">Evidence-Based Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#5b2d8e;color:#fff;">BPS</div><div><div class="ticker-logo-text">Biopsychosocial Model</div><span class="ticker-logo-sub">Pain Science Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#006747;color:#fff;">TCM</div><div><div class="ticker-logo-text">Traditional Chinese Medicine</div><span class="ticker-logo-sub">Eastern Practices</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#1a1a2e;color:#fff;">ABMP</div><div><div class="ticker-logo-text">ABMP &amp; AMTA</div><span class="ticker-logo-sub">Massage Therapy Standards</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#cc0000;color:#fff;">ICD</div><div><div class="ticker-logo-text">ICD-10 Framework</div><span class="ticker-logo-sub">Diagnostic Standards</span></div></div></div>
+    <div class="ticker-inner" id="t1"><div class="ticker-item"><div class="ticker-badge" style="background:#8c1515;color:#fff;font-size:11px;">S</div><div><div class="ticker-logo-text">Stanford Medicine</div><span class="ticker-logo-sub">Clinical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#003f8a;color:#fff;font-size:11px;">NIH</div><div><div class="ticker-logo-text">Natl. Institutes of Health</div><span class="ticker-logo-sub">Federal Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#a51c30;color:#fff;font-size:11px;">H</div><div><div class="ticker-logo-text">Harvard Medical School</div><span class="ticker-logo-sub">Clinical Studies</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#002d62;color:#fff;font-size:11px;">JH</div><div><div class="ticker-logo-text">Johns Hopkins Medicine</div><span class="ticker-logo-sub">Medical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#c8102e;color:#fff;font-size:11px;">M</div><div><div class="ticker-logo-text">Mayo Clinic</div><span class="ticker-logo-sub">Applied Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#009cbd;color:#fff;font-size:10px;">WHO</div><div><div class="ticker-logo-text">World Health Organization</div><span class="ticker-logo-sub">Eastern &amp; Western Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#2774ae;color:#fff;font-size:10px;">UCLA</div><div><div class="ticker-logo-text">UCLA Health</div><span class="ticker-logo-sub">Integrative Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#004b87;color:#fff;font-size:10px;">NCBI</div><div><div class="ticker-logo-text">PubMed / NCBI</div><span class="ticker-logo-sub">Evidence Base</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#5b2d8e;color:#fff;font-size:10px;">BPS</div><div><div class="ticker-logo-text">Biopsychosocial Model</div><span class="ticker-logo-sub">Pain Science</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#006747;color:#fff;font-size:10px;">TCM</div><div><div class="ticker-logo-text">Traditional Chinese Medicine</div><span class="ticker-logo-sub">Eastern Practices</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#1a1a2e;color:#fff;font-size:9px;">ABMP</div><div><div class="ticker-logo-text">ABMP &amp; AMTA</div><span class="ticker-logo-sub">Massage Standards</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#cc0000;color:#fff;font-size:10px;">ICD</div><div><div class="ticker-logo-text">ICD-10 Framework</div><span class="ticker-logo-sub">Diagnostic Standards</span></div></div></div>
+    <div class="ticker-inner ticker-inner2" aria-hidden="true"><div class="ticker-item"><div class="ticker-badge" style="background:#8c1515;color:#fff;font-size:11px;">S</div><div><div class="ticker-logo-text">Stanford Medicine</div><span class="ticker-logo-sub">Clinical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#003f8a;color:#fff;font-size:11px;">NIH</div><div><div class="ticker-logo-text">Natl. Institutes of Health</div><span class="ticker-logo-sub">Federal Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#a51c30;color:#fff;font-size:11px;">H</div><div><div class="ticker-logo-text">Harvard Medical School</div><span class="ticker-logo-sub">Clinical Studies</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#002d62;color:#fff;font-size:11px;">JH</div><div><div class="ticker-logo-text">Johns Hopkins Medicine</div><span class="ticker-logo-sub">Medical Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#c8102e;color:#fff;font-size:11px;">M</div><div><div class="ticker-logo-text">Mayo Clinic</div><span class="ticker-logo-sub">Applied Research</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#009cbd;color:#fff;font-size:10px;">WHO</div><div><div class="ticker-logo-text">World Health Organization</div><span class="ticker-logo-sub">Eastern &amp; Western Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#2774ae;color:#fff;font-size:10px;">UCLA</div><div><div class="ticker-logo-text">UCLA Health</div><span class="ticker-logo-sub">Integrative Medicine</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#004b87;color:#fff;font-size:10px;">NCBI</div><div><div class="ticker-logo-text">PubMed / NCBI</div><span class="ticker-logo-sub">Evidence Base</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#5b2d8e;color:#fff;font-size:10px;">BPS</div><div><div class="ticker-logo-text">Biopsychosocial Model</div><span class="ticker-logo-sub">Pain Science</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#006747;color:#fff;font-size:10px;">TCM</div><div><div class="ticker-logo-text">Traditional Chinese Medicine</div><span class="ticker-logo-sub">Eastern Practices</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#1a1a2e;color:#fff;font-size:9px;">ABMP</div><div><div class="ticker-logo-text">ABMP &amp; AMTA</div><span class="ticker-logo-sub">Massage Standards</span></div></div><div class="ticker-item"><div class="ticker-badge" style="background:#cc0000;color:#fff;font-size:10px;">ICD</div><div><div class="ticker-logo-text">ICD-10 Framework</div><span class="ticker-logo-sub">Diagnostic Standards</span></div></div></div>
   </div>
 </div>
 
@@ -1405,117 +1382,71 @@ const HTML = `<!-- BETA BANNER -->
 
 <!-- ══════════ CTA ══════════ -->
 
-<!-- ══════════ INVESTORS ══════════ -->
+<!-- INVESTORS -->
 <section class="inv-section" id="investors">
   <div class="inv-satin"></div>
   <div class="inv-inner">
-    <div class="s-head" style="text-align:left;max-width:700px;margin:0;">
+    <div class="s-head" style="text-align:left;max-width:700px;margin:0 0 24px;">
       <div class="s-tag">For Investors</div>
-      <h2 class="s-h2" style="color:#fff;">The Clinical AI Infrastructure<br>Nobody Built. Until Now.</h2>
-      <p class="s-p">Manual therapy is a $20B+ industry with zero purpose-built AI documentation. SomaSync AI is capturing it — from the ground up, with proprietary hardware, a clinical LLM, and a global practitioner network.</p>
+      <h2 class="s-h2" style="color:#fff;">The Clinical AI Infrastructure Nobody Built. Until Now.</h2>
+      <p class="s-p">Manual therapy is a $20B+ industry with zero purpose-built AI documentation. SomaSync AI is capturing it — proprietary hardware, a clinical LLM, and a global practitioner network.</p>
     </div>
-    <div class="inv-badge-row" style="margin-top:24px;">
+    <div class="inv-badge-row">
       <span class="inv-badge">Pre-Seed Stage</span>
       <span class="inv-badge">Active Beta</span>
       <span class="inv-badge">Hardware + Software</span>
       <span class="inv-badge">Global Roadmap</span>
-      <span class="inv-badge">HIPAA-Aligned Architecture</span>
+      <span class="inv-badge">HIPAA-Aligned</span>
     </div>
     <div class="inv-grid">
       <div>
         <div class="inv-metrics">
-          <div class="inv-metric">
-            <div class="inv-metric-val"><span>$20B+</span></div>
-            <div class="inv-metric-lbl">Manual therapy market size</div>
-            <div class="inv-metric-note">Underpenetrated by AI</div>
-          </div>
-          <div class="inv-metric">
-            <div class="inv-metric-val"><span>88%</span></div>
-            <div class="inv-metric-lbl">AI confidence score in beta</div>
-            <div class="inv-metric-note">Trending upward weekly</div>
-          </div>
-          <div class="inv-metric">
-            <div class="inv-metric-val"><span>3×</span></div>
-            <div class="inv-metric-lbl">Faster documentation</div>
-            <div class="inv-metric-note">vs. manual baseline</div>
-          </div>
-          <div class="inv-metric">
-            <div class="inv-metric-val"><span>∞</span></div>
-            <div class="inv-metric-lbl">LLM update cycles</div>
-            <div class="inv-metric-note">Continuously learning</div>
-          </div>
+          <div class="inv-metric"><div class="inv-metric-val"><span>$20B+</span></div><div class="inv-metric-lbl">Manual therapy market</div><div class="inv-metric-note">Underpenetrated by AI</div></div>
+          <div class="inv-metric"><div class="inv-metric-val"><span>88%</span></div><div class="inv-metric-lbl">AI confidence score</div><div class="inv-metric-note">Trending up weekly</div></div>
+          <div class="inv-metric"><div class="inv-metric-val"><span>3×</span></div><div class="inv-metric-lbl">Faster documentation</div><div class="inv-metric-note">vs. manual baseline</div></div>
+          <div class="inv-metric"><div class="inv-metric-val"><span>∞</span></div><div class="inv-metric-lbl">LLM update cycles</div><div class="inv-metric-note">Continuously learning</div></div>
         </div>
-        <div class="inv-cta" style="margin-top:28px;">
-          <a href="mailto:streetwisesomatics@gmail.com?subject=SomaSync AI — Investor Inquiry" class="btn-inv">Request Pitch Deck →</a>
+        <div style="margin-top:28px;">
+          <a href="mailto:streetwisesomatics@gmail.com?subject=SomaSync AI — Investor Inquiry — Pitch Deck Request" class="btn-inv">Request Pitch Deck →</a>
           <a href="mailto:streetwisesomatics@gmail.com?subject=SomaSync AI — Partnership Inquiry" class="btn-inv-ghost">Partner With Us</a>
         </div>
-        <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
-          <a href="https://www.instagram.com/Somasync_AI" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color=\'rgba(255,255,255,0.7)\'" onmouseout="this.style.color=\'rgba(255,255,255,0.3)\'">📸 @Somasync_AI</a>
-          <a href="https://www.linkedin.com/in/somasyncsantos" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color=\'rgba(255,255,255,0.7)\'" onmouseout="this.style.color=\'rgba(255,255,255,0.3)\'">💼 linkedin.com/in/somasyncsantos</a>
-          <a href="tel:+12092849066" style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color=\'rgba(255,255,255,0.7)\'" onmouseout="this.style.color=\'rgba(255,255,255,0.3)\'">📞 (209) 284-9066</a>
+        <div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap;">
+          <a href="https://www.instagram.com/Somasync_AI" target="_blank" style="font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;">📸 @Somasync_AI</a>
+          <a href="https://www.linkedin.com/in/somasyncsantos" target="_blank" style="font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;">💼 linkedin.com/in/somasyncsantos</a>
+          <a href="tel:+12092849066" style="font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;">📞 (209) 284-9066</a>
         </div>
       </div>
       <div>
         <ul class="inv-points">
-          <li><div class="inv-dot">1</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Proprietary Hardware Ecosystem</strong>SomaSync Sphere™ — earpiece, table sensor, and dashboard — creates a closed-loop data moat no competitor can replicate without starting from scratch.</div></li>
-          <li><div class="inv-dot">2</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Clinical LLM Trained on Real Data</strong>Knowledge base built from NIH, Stanford, Harvard, WHO, and peer-reviewed massage and manual therapy research — continuously updated, never static.</div></li>
-          <li><div class="inv-dot">3</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Multi-Revenue Architecture</strong>SaaS subscription, hardware device sales, practitioner hub licensing, and enterprise partnerships with clinics, insurance networks, and workers comp platforms.</div></li>
-          <li><div class="inv-dot">4</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Global Expansion Built In</strong>Multilingual support roadmap spanning 10+ languages. East-to-West clinical knowledge bridge makes SomaSync the first truly global manual therapy AI platform.</div></li>
-          <li><div class="inv-dot">5</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Founded by a Practitioner</strong>Built by a working NMT with deep clinical expertise, professional networks, and firsthand understanding of the documentation crisis in manual therapy.</div></li>
+          <li><div class="inv-dot">1</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Proprietary Hardware Ecosystem</strong>SomaSync Sphere — earpiece, table sensor, and dashboard — creates a closed-loop data moat no competitor can replicate.</div></li>
+          <li><div class="inv-dot">2</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Clinical LLM Trained on Real Data</strong>Knowledge base built from NIH, Stanford, Harvard, WHO, and peer-reviewed manual therapy research — continuously updated.</div></li>
+          <li><div class="inv-dot">3</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Multi-Revenue Architecture</strong>SaaS subscriptions, hardware sales, practitioner hub licensing, and enterprise partnerships with clinics and insurance networks.</div></li>
+          <li><div class="inv-dot">4</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Global Expansion Built In</strong>Multilingual support spanning 10+ languages. East-to-West clinical knowledge bridge makes SomaSync the first truly global manual therapy AI.</div></li>
+          <li><div class="inv-dot">5</div><div><strong style="color:#fff;display:block;margin-bottom:3px;">Founded by a Practitioner</strong>Built by a working NMT with deep clinical expertise, professional networks, and firsthand understanding of the documentation crisis.</div></li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ CONTACT ══════════ -->
+<!-- CONTACT -->
 <section class="contact-section" id="contact">
   <div class="contact-inner">
-    <div class="s-head" style="text-align:left;max-width:700px;margin:0 0 0 0;">
+    <div class="s-head" style="text-align:left;max-width:700px;margin:0 0 0;">
       <div class="s-tag">Get In Touch</div>
       <h2 class="s-h2">Let's Talk.</h2>
-      <p class="s-p">Whether you're a practitioner ready to test, an investor interested in the vision, or a clinic looking to partner — reach out directly.</p>
+      <p class="s-p">Practitioner, investor, clinic, or just curious — reach out directly. No gatekeeping.</p>
     </div>
     <div class="contact-grid">
       <div class="contact-info">
         <h3>AALIYAH.IO · SomaSync AI</h3>
-        <p>Direct access to the founder. No gatekeeping, no sales funnel — just a real conversation about clinical AI, the future of manual therapy documentation, and how we can work together.</p>
+        <p>Direct access to the founder. Real conversations about clinical AI and the future of manual therapy documentation.</p>
         <div class="contact-methods">
-          <a href="mailto:streetwisesomatics@gmail.com" class="contact-method">
-            <div class="cm-icon" style="background:rgba(234,67,53,0.1);">✉️</div>
-            <div>
-              <div class="cm-label">Email</div>
-              <div class="cm-value">streetwisesomatics@gmail.com</div>
-            </div>
-          </a>
-          <a href="tel:+12092849066" class="contact-method">
-            <div class="cm-icon" style="background:rgba(52,199,89,0.1);">📞</div>
-            <div>
-              <div class="cm-label">Phone / Text</div>
-              <div class="cm-value">(209) 284-9066</div>
-            </div>
-          </a>
-          <a href="https://www.instagram.com/Somasync_AI" target="_blank" rel="noopener" class="contact-method">
-            <div class="cm-icon" style="background:rgba(191,90,242,0.1);">📸</div>
-            <div>
-              <div class="cm-label">Instagram</div>
-              <div class="cm-value">@Somasync_AI</div>
-            </div>
-          </a>
-          <a href="https://www.linkedin.com/in/somasyncsantos" target="_blank" rel="noopener" class="contact-method">
-            <div class="cm-icon" style="background:rgba(10,102,194,0.1);">💼</div>
-            <div>
-              <div class="cm-label">LinkedIn</div>
-              <div class="cm-value">linkedin.com/in/somasyncsantos</div>
-            </div>
-          </a>
-          <a href="mailto:streetwisesomatics@gmail.com?subject=SomaSync AI — Investor Inquiry" class="contact-method">
-            <div class="cm-icon" style="background:rgba(48,217,192,0.1);">💰</div>
-            <div>
-              <div class="cm-label">Investor Inquiries</div>
-              <div class="cm-value">streetwisesomatics@gmail.com</div>
-            </div>
-          </a>
+          <a href="mailto:streetwisesomatics@gmail.com" class="contact-method"><div class="cm-icon" style="background:rgba(234,67,53,0.1);">✉️</div><div><div class="cm-label">Email</div><div class="cm-value">streetwisesomatics@gmail.com</div></div></a>
+          <a href="tel:+12092849066" class="contact-method"><div class="cm-icon" style="background:rgba(52,199,89,0.1);">📞</div><div><div class="cm-label">Phone / Text</div><div class="cm-value">(209) 284-9066</div></div></a>
+          <a href="https://www.instagram.com/Somasync_AI" target="_blank" class="contact-method"><div class="cm-icon" style="background:rgba(191,90,242,0.1);">📸</div><div><div class="cm-label">Instagram</div><div class="cm-value">@Somasync_AI</div></div></a>
+          <a href="https://www.linkedin.com/in/somasyncsantos" target="_blank" class="contact-method"><div class="cm-icon" style="background:rgba(10,102,194,0.1);">💼</div><div><div class="cm-label">LinkedIn</div><div class="cm-value">linkedin.com/in/somasyncsantos</div></div></a>
+          <a href="mailto:streetwisesomatics@gmail.com?subject=SomaSync AI — Investor Inquiry" class="contact-method"><div class="cm-icon" style="background:rgba(48,217,192,0.1);">💰</div><div><div class="cm-label">Investor Inquiries</div><div class="cm-value">streetwisesomatics@gmail.com</div></div></a>
         </div>
       </div>
       <div class="contact-card">
@@ -1536,7 +1467,7 @@ const HTML = `<!-- BETA BANNER -->
         </div>
         <div class="fg"><label>Message</label><textarea class="fi-input" id="cMsg" rows="4" placeholder="What's on your mind?" style="resize:vertical;min-height:100px;"></textarea></div>
         <button class="btn-contact" id="contactBtn">Send Message →</button>
-        <div class="form-disclaimer" style="margin-top:14px;">Messages go directly to streetwisesomatics@gmail.com. We do not share your information with third parties.</div>
+        <div class="form-disclaimer" style="margin-top:14px;">Messages go directly to streetwisesomatics@gmail.com</div>
       </div>
     </div>
   </div>
@@ -1591,103 +1522,23 @@ const HTML = `<!-- BETA BANNER -->
   <div class="footer-left">
     <img src="/favicon.png" alt="SomaSync" class="footer-logo-img" onerror="this.style.display='none'">
     <img src="/aaliyah-logo.png" alt="AALIYAH.IO" class="footer-logo-img" onerror="this.style.display='none'">
-    <span class="footer-copy">© 2026 AALIYAH.IO · SomaSync AI. </span>
+    <span class="footer-copy">© 2026 AALIYAH.IO · SomaSync AI</span>
   </div>
   <div class="footer-links">
-    <a href="#investors">Investors</a>
-    <a href="#contact">Privacy Policy</a>
-    <a href="#contact">Terms of Use</a>
-    <a href="#contact">AI Disclaimer</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Use</a>
+    <a href="#">AI Disclaimer</a>
     <a href="#access">Request Access</a>
     <a href="#sphere">Sphere™</a>
-    <a href="https://www.instagram.com/Somasync_AI" target="_blank" rel="noopener">Instagram</a>
-    <a href="https://www.linkedin.com/in/somasyncsantos" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="tel:+12092849066">Call / Text</a>
-    <a href="mailto:streetwisesomatics@gmail.com">Contact</a>
+    <a href="https://www.instagram.com/Somasync_AI" target="_blank">Instagram</a>
+    <a href="https://www.linkedin.com/in/somasyncsantos" target="_blank">LinkedIn</a>
+    <a href="tel:+12092849066">Call/Text</a>
+    <a href="mailto:streetwisesomatics@gmail.com">Email</a>
   </div>
 </footer>
 
 <!-- ══════════ SCRIPTS ══════════ -->
-<script>
-/* WAVEFORM */
-const wbars = document.getElementById('wbars');
-[10,14,20,28,38,50,58,68,72,78,84,80,88,84,80,88,80,72,80,86,78,68,60,50,42,34,26,18,12,10].forEach((h,i)=>{
-  const b=document.createElement('div');b.className='wbar';
-  b.style.cssText=\`height:\${h}px;animation-delay:\${(i*0.055).toFixed(2)}s\`;
-  wbars.appendChild(b);
-});
 
-/* DEMO TABS */
-function switchTab(id){
-  document.querySelectorAll('.demo-tab').forEach((t,i)=>t.classList.toggle('active',['icd','soap','billing'][i]===id));
-  document.querySelectorAll('.demo-panel').forEach(p=>p.classList.toggle('active',p.id===\`panel-\${id}\`));
-}
-
-/* SCROLL REVEAL */
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const d=+(e.target.dataset.delay||0);
-      setTimeout(()=>e.target.classList.add('vis'),d);
-      io.unobserve(e.target);
-    }
-  });
-},{threshold:0.08});
-document.querySelectorAll('.flow-card,.chart-card,.big-chart,.bc,.sc-card,.hub-card,.metric-card').forEach(el=>{
-  if(!el.classList.contains('vis'))io.observe(el);
-});
-
-/* CHARTS */
-const tealGrad=(ctx,a,b)=>{const g=ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,a);g.addColorStop(1,b);return g;};
-
-// Speed
-const sc=document.getElementById('speedChart').getContext('2d');
-new Chart(sc,{type:'bar',data:{
-  labels:['Mon','Tue','Wed','Thu','Fri','Sat'],
-  datasets:[{data:[18,22,19,25,28,24],backgroundColor:'rgba(48,217,192,0.15)',borderColor:'#1fc4ac',borderWidth:2,borderRadius:8}]
-},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}},y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}}}}});
-
-// Accuracy
-const ac=document.getElementById('accChart').getContext('2d');
-const aGrad=ac.createLinearGradient(0,0,0,160);aGrad.addColorStop(0,'rgba(10,132,255,0.15)');aGrad.addColorStop(1,'rgba(10,132,255,0)');
-new Chart(ac,{type:'line',data:{
-  labels:['W1','W2','W3','W4','W5','W6','W7','W8'],
-  datasets:[{data:[74,78,80,82,83,85,87,88.5],borderColor:'#0a84ff',backgroundColor:aGrad,borderWidth:2.5,tension:0.4,fill:true,pointBackgroundColor:'#0a84ff',pointRadius:3}]
-},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}},y:{min:65,max:100,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}}}}});
-
-// Donut
-new Chart(document.getElementById('dxChart'),{type:'doughnut',data:{
-  labels:['Cervicalgia','Low Back','Myalgia','Sciatica','Other'],
-  datasets:[{data:[28,34,18,12,8],backgroundColor:['#30d9c0','#0a84ff','#ff9f0a','#bf5af2','#e8e8ed'],borderWidth:0,hoverOffset:6}]
-},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10,family:'Inter'},color:'#6e6e73',boxWidth:10,padding:8}}}}});
-
-// Big chart
-new Chart(document.getElementById('bigChart'),{type:'bar',data:{
-  labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-  datasets:[
-    {label:'Sessions',data:[42,58,64,72,80,88,94,102,110,98,115,124],backgroundColor:'rgba(48,217,192,0.15)',borderColor:'#1fc4ac',borderWidth:2,borderRadius:8,yAxisID:'y'},
-    {label:'Avg Doc Time (min)',data:[18,16,15,14,12,11,10,9,9,8,8,7],type:'line',borderColor:'#0a84ff',backgroundColor:'rgba(10,132,255,0.08)',borderWidth:2.5,tension:0.4,fill:true,pointBackgroundColor:'#0a84ff',pointRadius:3,yAxisID:'y1'}
-  ]
-},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{
-  x:{grid:{display:false},ticks:{font:{size:11,family:'Inter'},color:'#a1a1a6'}},
-  y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11,family:'Inter'},color:'#a1a1a6'},position:'left'},
-  y1:{grid:{display:false},ticks:{font:{size:11,family:'Inter'},color:'#6ab5ff'},position:'right'}
-}}});
-
-/* FORMS */
-document.getElementById('accessBtn').addEventListener('click',()=>{
-  const btn=document.getElementById('accessBtn');
-  const name=document.querySelector('.fi-input[type="text"]')?.value||'';
-  const email=document.querySelector('.fi-input[type="email"]')?.value||'';
-  const specialty=document.querySelectorAll('.fi-input[type="text"]')[1]?.value||'';
-  const state=document.querySelectorAll('.fi-input[type="text"]')[2]?.value||'';
-  if(!email.includes('@')){alert('Please enter a valid email address.');return;}
-  SA.track('access_request',{name,email,specialty,state,timestamp:new Date().toISOString()});
-  btn.textContent='✓ Request Submitted — We\\'ll review and respond within 48 hours';
-  btn.style.background='#34c759';btn.disabled=true;
-});
-
-</script>
 
 <!-- ════════════════════════════════════════════════
      SOMASYNC ANALYTICS ENGINE
@@ -1695,875 +1546,81 @@ document.getElementById('accessBtn').addEventListener('click',()=>{
      demo interactions, time on page, tab switches
      Stores to localStorage + optional webhook
 ════════════════════════════════════════════════ -->
-<script>
-(function(){
-'use strict';
-
-/* ── CONFIG ─────────────────────────────── */
-const CONFIG = {
-  appName: 'SomaSync AI',
-  version: '1.0.0',
-  webhookUrl: null, // Set to your endpoint: 'https://api.yoursite.com/analytics'
-  debug: false,     // Set true to see console logs during dev
-  storageKey: 'ss_analytics',
-  sessionKey: 'ss_session',
-};
-
-/* ── SESSION ─────────────────────────────── */
-const sessionId = 'ss_' + Math.random().toString(36).slice(2,11) + '_' + Date.now();
-const sessionStart = Date.now();
-let pageData = {
-  sessionId,
-  sessionStart: new Date().toISOString(),
-  referrer: document.referrer || 'direct',
-  userAgent: navigator.userAgent,
-  screen: \`\${screen.width}x\${screen.height}\`,
-  viewport: \`\${window.innerWidth}x\${window.innerHeight}\`,
-  language: navigator.language,
-  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-  geo: null,
-  events: [],
-  scrollDepth: 0,
-  demoTabsViewed: [],
-  sectionsViewed: [],
-  timeOnPage: 0,
-  formStarted: false,
-  accessRequested: false,
-  waitlistSignup: false,
-};
-
-/* ── STORAGE ─────────────────────────────── */
-function getStore(){
-  try{ return JSON.parse(localStorage.getItem(CONFIG.storageKey)||'{"sessions":[],"aggregate":{}}'); }
-  catch(e){ return {sessions:[],aggregate:{}}; }
-}
-function saveStore(data){ try{ localStorage.setItem(CONFIG.storageKey,JSON.stringify(data)); }catch(e){} }
-function getAggregate(){
-  const s=getStore();
-  return s.aggregate||{totalSessions:0,totalPageviews:0,accessRequests:0,waitlistSignups:0,avgTimeOnPage:0,topReferrers:{},topGeo:{},demoInteractions:0,topSections:{}};
-}
-
-/* ── GEO DETECTION ───────────────────────── */
-async function detectGeo(){
-  try{
-    const res = await fetch('https://ipapi.co/json/',{signal:AbortSignal.timeout(4000)});
-    if(!res.ok) throw new Error();
-    const d = await res.json();
-    pageData.geo = {
-      country: d.country_name,
-      countryCode: d.country_code,
-      region: d.region,
-      city: d.city,
-      timezone: d.timezone,
-      org: d.org,
-      lat: d.latitude,
-      lon: d.longitude,
-    };
-    log('Geo detected:', pageData.geo);
-    updateGeoUI(pageData.geo);
-  } catch(e){
-    // Try fallback
-    try{
-      const r2 = await fetch('https://api.country.is/',{signal:AbortSignal.timeout(3000)});
-      const d2 = await r2.json();
-      pageData.geo = { countryCode: d2.country, country: d2.country };
-    } catch(e2){ pageData.geo = { country:'Unknown' }; }
-  }
-}
-
-function updateGeoUI(geo){
-  // Swap nav language hint based on country
-  const langMap = {
-    'MX':'🇲🇽 Hola','ES':'🇪🇸 Hola','FR':'🇫🇷 Bonjour','DE':'🇩🇪 Hallo',
-    'JP':'🇯🇵 こんにちは','KR':'🇰🇷 안녕하세요','CN':'🇨🇳 你好','BR':'🇧🇷 Olá',
-    'SA':'🇸🇦 مرحبا','IN':'🇮🇳 नमस्ते'
-  };
-  const code = geo.countryCode;
-  if(langMap[code]){
-    const pill = document.querySelector('.hero-eyebrow');
-    if(pill){
-      const span = document.createElement('span');
-      span.style.cssText='font-size:11px;color:rgba(255,255,255,0.4);margin-left:6px;';
-      span.textContent = langMap[code];
-      pill.appendChild(span);
-    }
-  }
-  // Show location-aware stat (city if US, country otherwise)
-  if(geo.city && geo.country === 'United States'){
-    injectGeoBar(\`📍 Now viewing from \${geo.city}, \${geo.region}\`);
-  } else if(geo.country && geo.country !== 'Unknown'){
-    injectGeoBar(\`📍 Viewing from \${geo.country} — Global access available\`);
-  }
-}
-
-function injectGeoBar(msg){
-  const bar = document.createElement('div');
-  bar.style.cssText='background:rgba(48,217,192,0.06);border-bottom:1px solid rgba(48,217,192,0.12);text-align:center;padding:7px;font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.02em;';
-  bar.textContent = msg;
-  const beta = document.querySelector('.beta-banner');
-  if(beta) beta.insertAdjacentElement('afterend',bar);
-}
-
-/* ── SCROLL DEPTH ────────────────────────── */
-let maxScroll = 0;
-const scrollMilestones = [25,50,75,90,100];
-const hitMilestones = new Set();
-window.addEventListener('scroll',()=>{
-  const pct = Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100);
-  if(pct > maxScroll){ maxScroll = pct; pageData.scrollDepth = pct; }
-  scrollMilestones.forEach(m=>{
-    if(pct >= m && !hitMilestones.has(m)){
-      hitMilestones.add(m);
-      SA.track('scroll_depth',{percent:m});
-    }
-  });
-},{passive:true});
-
-/* ── SECTION VISIBILITY ──────────────────── */
-const sectionObserver = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const id = e.target.id || e.target.className.split(' ')[0];
-      if(!pageData.sectionsViewed.includes(id)){
-        pageData.sectionsViewed.push(id);
-        SA.track('section_view',{section:id});
-      }
-    }
-  });
-},{threshold:0.3});
-document.querySelectorAll('section[id], .wave-section, .ticker-section, .features-marquee, .sphere-section, .global-section').forEach(el=>sectionObserver.observe(el));
-
-/* ── DEMO TAB TRACKING ───────────────────── */
-const origSwitch = window.switchTab;
-window.switchTab = function(id){
-  origSwitch(id);
-  if(!pageData.demoTabsViewed.includes(id)) pageData.demoTabsViewed.push(id);
-  SA.track('demo_tab',{tab:id});
-};
-
-/* ── FORM INTERACTION ────────────────────── */
-document.querySelectorAll('.fi-input').forEach(input=>{
-  input.addEventListener('focus',()=>{
-    if(!pageData.formStarted){
-      pageData.formStarted=true;
-      SA.track('form_started',{form:'access_request'});
-    }
-  },{once:true});
-});
-document.querySelector('.ei')?.addEventListener('focus',()=>{
-  SA.track('form_started',{form:'cta_waitlist'});
-},{once:true});
-
-/* ── CLICK TRACKING ──────────────────────── */
-document.addEventListener('click',e=>{
-  const el=e.target.closest('button,a,.stag,.lang-pill,.demo-tab,.flow-card,.sc-card,.hub-card');
-  if(!el) return;
-  const label = el.textContent.trim().slice(0,60);
-  const type = el.tagName.toLowerCase();
-  SA.track('click',{element:type,label,href:el.href||null});
-});
-
-/* ── TIME ON PAGE ─────────────────────────── */
-setInterval(()=>{pageData.timeOnPage=Math.round((Date.now()-sessionStart)/1000);},5000);
-document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='hidden') flush();
-});
-window.addEventListener('beforeunload',flush);
-
-/* ── FLUSH ───────────────────────────────── */
-function flush(){
-  pageData.timeOnPage=Math.round((Date.now()-sessionStart)/1000);
-  pageData.scrollDepthFinal=maxScroll;
-  const store=getStore();
-  store.sessions.push({...pageData,flushedAt:new Date().toISOString()});
-  if(store.sessions.length>200) store.sessions=store.sessions.slice(-200);
-  // Update aggregate
-  const agg=getAggregate();
-  agg.totalSessions=(agg.totalSessions||0)+1;
-  agg.totalPageviews=(agg.totalPageviews||0)+1;
-  if(pageData.accessRequested) agg.accessRequests=(agg.accessRequests||0)+1;
-  if(pageData.waitlistSignup) agg.waitlistSignups=(agg.waitlistSignups||0)+1;
-  agg.demoInteractions=(agg.demoInteractions||0)+pageData.demoTabsViewed.length;
-  agg.avgTimeOnPage=Math.round(((agg.avgTimeOnPage||0)*(agg.totalSessions-1)+pageData.timeOnPage)/agg.totalSessions);
-  if(pageData.geo?.country){
-    agg.topGeo=agg.topGeo||{};
-    agg.topGeo[pageData.geo.country]=(agg.topGeo[pageData.geo.country]||0)+1;
-  }
-  const ref=pageData.referrer.split('/')[2]||'direct';
-  agg.topReferrers=agg.topReferrers||{};
-  agg.topReferrers[ref]=(agg.topReferrers[ref]||0)+1;
-  pageData.sectionsViewed.forEach(s=>{
-    agg.topSections=agg.topSections||{};
-    agg.topSections[s]=(agg.topSections[s]||0)+1;
-  });
-  store.aggregate=agg;
-  saveStore(store);
-  if(CONFIG.webhookUrl) sendWebhook(pageData);
-}
-
-/* ── WEBHOOK ─────────────────────────────── */
-async function sendWebhook(data){
-  try{
-    await fetch(CONFIG.webhookUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),keepalive:true});
-  }catch(e){}
-}
-
-/* ── LOGGER ──────────────────────────────── */
-function log(...args){ if(CONFIG.debug) console.log('[SomaSync Analytics]',...args); }
-
-/* ── PUBLIC API ──────────────────────────── */
-window.SA = {
-  track(event, props={}){
-    const entry={event,props,timestamp:new Date().toISOString(),sessionId};
-    pageData.events.push(entry);
-    if(event==='access_request') pageData.accessRequested=true;
-    if(event==='waitlist_signup') pageData.waitlistSignup=true;
-    log('Event:',event,props);
-  },
-  /* getReport() — call from console or your dashboard */
-  getReport(){
-    const store=getStore();
-    const agg=store.aggregate||{};
-    const sessions=store.sessions||[];
-    const avgScroll=sessions.length ? Math.round(sessions.reduce((a,s)=>a+(s.scrollDepthFinal||0),0)/sessions.length) : 0;
-    const topTabs={};
-    sessions.forEach(s=>(s.demoTabsViewed||[]).forEach(t=>{topTabs[t]=(topTabs[t]||0)+1;}));
-    const deviceTypes={mobile:0,tablet:0,desktop:0};
-    sessions.forEach(s=>{
-      const w=parseInt((s.viewport||'0').split('x')[0]);
-      if(w<768) deviceTypes.mobile++;
-      else if(w<1024) deviceTypes.tablet++;
-      else deviceTypes.desktop++;
-    });
-    return {
-      summary:{
-        totalSessions:agg.totalSessions||0,
-        accessRequests:agg.accessRequests||0,
-        waitlistSignups:agg.waitlistSignups||0,
-        avgTimeOnPage:\`\${agg.avgTimeOnPage||0}s\`,
-        avgScrollDepth:\`\${avgScroll}%\`,
-        demoInteractions:agg.demoInteractions||0,
-      },
-      topGeo:agg.topGeo||{},
-      topReferrers:agg.topReferrers||{},
-      topSections:agg.topSections||{},
-      topDemoTabs:topTabs,
-      deviceTypes,
-      recentSessions:sessions.slice(-10).map(s=>({
-        id:s.sessionId,
-        date:s.sessionStart,
-        geo:s.geo,
-        timeOnPage:s.timeOnPage+'s',
-        scrollDepth:s.scrollDepthFinal+'%',
-        demoTabsViewed:s.demoTabsViewed,
-        accessRequested:s.accessRequested,
-        waitlistSignup:s.waitlistSignup,
-        referrer:s.referrer,
-        events:s.events?.length||0,
-      })),
-    };
-  },
-  /* showDashboard() — renders a live overlay panel */
-  showDashboard(){
-    const existing=document.getElementById('sa-dash');
-    if(existing){ existing.remove(); return; }
-    const r=this.getReport();
-    const dash=document.createElement('div');
-    dash.id='sa-dash';
-    dash.style.cssText=\`
-      position:fixed;bottom:20px;right:20px;z-index:9999;
-      width:420px;max-height:80vh;overflow-y:auto;
-      background:#0f1318;border:1px solid rgba(255,255,255,0.1);
-      border-radius:20px;padding:24px;
-      font-family:'Inter',sans-serif;font-size:13px;color:#c8cfd8;
-      box-shadow:0 24px 80px rgba(0,0,0,0.6);
-    \`;
-    const fmt=(obj)=>Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>\`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="color:rgba(255,255,255,0.5)">\${k}</span><span style="font-weight:700;color:#30d9c0">\${v}</span></div>\`).join('');
-    dash.innerHTML=\`
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-        <span style="font-size:14px;font-weight:800;color:#fff;letter-spacing:-0.03em">📊 SomaSync Analytics</span>
-        <button onclick="document.getElementById('sa-dash').remove()" style="background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px">✕</button>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
-        \${[['Sessions',r.summary.totalSessions],['Access Requests',r.summary.accessRequests],['Waitlist Signups',r.summary.waitlistSignups],['Avg Time',r.summary.avgTimeOnPage],['Avg Scroll',r.summary.avgScrollDepth],['Demo Interactions',r.summary.demoInteractions]].map(([l,v])=>\`<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px"><div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">\${l}</div><div style="font-size:20px;font-weight:800;color:#fff">\${v}</div></div>\`).join('')}
-      </div>
-      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Top Countries</div>\${fmt(r.topGeo)||'<div style="color:rgba(255,255,255,0.2)">No data yet</div>'}</div>
-      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Top Referrers</div>\${fmt(r.topReferrers)}</div>
-      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Sections Viewed</div>\${fmt(r.topSections)}</div>
-      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Demo Tabs</div>\${fmt(r.topDemoTabs)}</div>
-      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Devices</div>
-        <div style="display:flex;gap:8px">\${Object.entries(r.deviceTypes).map(([k,v])=>\`<div style="flex:1;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,0.3)">\${k}</div><div style="font-weight:700;color:#30d9c0">\${v}</div></div>\`).join('')}</div>
-      </div>
-      <div style="font-size:10px;color:rgba(255,255,255,0.15);text-align:center;margin-top:12px">Type <code style="color:#30d9c0">SA.getReport()</code> in console for full JSON</div>
-    \`;
-    document.body.appendChild(dash);
-  },
-  clearData(){ localStorage.removeItem(CONFIG.storageKey); console.log('Analytics data cleared.'); },
-};
-
-/* ── INIT ─────────────────────────────────── */
-detectGeo();
-SA.track('pageview',{url:location.href,title:document.title});
-
-// Secret keystroke: press Alt+Shift+A to open analytics panel
-document.addEventListener('keydown',e=>{
-  if(e.altKey && e.shiftKey && e.key==='A') SA.showDashboard();
-});
-
-log('Analytics engine initialized. Session:',sessionId);
-
-
-// ── FORMSPREE SUBMIT HELPER ──────────────────────
-async function submitToFormspree(data, btn, successMsg) {
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
-  try {
-    const res = await fetch('https://formspree.io/f/maqjjzoy', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-      body: JSON.stringify(data)
-    });
-    const json = await res.json();
-    if (res.ok) {
-      btn.textContent = successMsg;
-      btn.style.background = '#34c759';
-      btn.style.color = '#fff';
-      return true;
-    } else {
-      btn.textContent = 'Error — try emailing us directly';
-      btn.disabled = false;
-      btn.style.background = '#ff453a';
-      return false;
-    }
-  } catch(e) {
-    btn.textContent = 'Error — try emailing us directly';
-    btn.disabled = false;
-    btn.style.background = '#ff453a';
-    return false;
-  }
-}
-
-// ── CONTACT FORM ──────────────────────────────────
-const contactBtn = document.getElementById('contactBtn');
-if(contactBtn) {
-  contactBtn.addEventListener('click', async () => {
-    const name = document.getElementById('cName')?.value || '';
-    const email = document.getElementById('cEmail')?.value || '';
-    const type = document.getElementById('cType')?.value || '';
-    const msg = document.getElementById('cMsg')?.value || '';
-    if(!email.includes('@')) { alert('Please enter a valid email.'); return; }
-    if(!msg.trim()) { alert('Please enter a message.'); return; }
-    const ok = await submitToFormspree({
-      _subject: 'SomaSync AI — ' + (type || 'Inquiry') + ' from ' + name,
-      name, email, type, message: msg, _source: 'contact_form'
-    }, contactBtn, '✓ Message sent — we\'ll respond within 24hrs');
-    if(ok) SA.track('contact_form_submit', {type, hasMessage: !!msg});
-  });
-}
-
-// ── ACCESS REQUEST FORM ───────────────────────────
-const accessBtn = document.getElementById('accessBtn');
-if(accessBtn) {
-  accessBtn.addEventListener('click', async () => {
-    const inputs = document.querySelectorAll('#access .fi-input');
-    const name = inputs[0]?.value || '';
-    const email = inputs[1]?.value || '';
-    const specialty = inputs[2]?.value || '';
-    const state = inputs[3]?.value || '';
-    const referral = inputs[4]?.value || '';
-    if(!email.includes('@')) { alert('Please enter a valid email address.'); return; }
-    const ok = await submitToFormspree({
-      _subject: 'SomaSync Beta Access Request — ' + name,
-      name, email, specialty, state, referral,
-      _source: 'access_request_form'
-    }, accessBtn, '✓ Request received — access granted within 48hrs');
-    if(ok) SA.track('access_request', {name, email, specialty, state});
-  });
-}
-
-// ── CTA WAITLIST ──────────────────────────────────
-function handleCTA() {
-  const el = document.getElementById('ctaEmail');
-  const btn = document.querySelector('.btn-teal');
-  if(!el || !btn) return;
-  if(!el.value.includes('@')) { alert('Please enter a valid email.'); return; }
-  submitToFormspree({
-    _subject: 'SomaSync AI — Waitlist Signup',
-    email: el.value,
-    _source: 'cta_waitlist'
-  }, btn, '✓ You\'re on the list!').then(ok => {
-    if(ok) {
-      el.value = '';
-      SA.track('waitlist_signup', {email: el.value, source: 'cta_bottom'});
-    }
-  });
-}
-
-log('Press Alt+Shift+A to open the analytics dashboard.');
-
-})();
-</script>`
+`
 
 const JS = `
 /* WAVEFORM */
 const wbars = document.getElementById('wbars');
-[10,14,20,28,38,50,58,68,72,78,84,80,88,84,80,88,80,72,80,86,78,68,60,50,42,34,26,18,12,10].forEach((h,i)=>{
-  const b=document.createElement('div');b.className='wbar';
-  b.style.cssText=\`height:\${h}px;animation-delay:\${(i*0.055).toFixed(2)}s\`;
-  wbars.appendChild(b);
-});
+if(wbars){[10,14,20,28,38,50,58,68,72,78,84,80,88,84,80,88,80,72,80,86,78,68,60,50,42,34,26,18,12,10].forEach((h,i)=>{const b=document.createElement('div');b.className='wbar';b.style.cssText='height:'+h+'px;animation-delay:'+(i*0.055).toFixed(2)+'s';wbars.appendChild(b);});}
 
 /* DEMO TABS */
-function switchTab(id){
-  document.querySelectorAll('.demo-tab').forEach((t,i)=>t.classList.toggle('active',['icd','soap','billing'][i]===id));
-  document.querySelectorAll('.demo-panel').forEach(p=>p.classList.toggle('active',p.id===\`panel-\${id}\`));
-}
+window.switchTab=function(id){document.querySelectorAll('.demo-tab').forEach((t,i)=>t.classList.toggle('active',['icd','soap','billing'][i]===id));document.querySelectorAll('.demo-panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+id));};
 
 /* SCROLL REVEAL */
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const d=+(e.target.dataset.delay||0);
-      setTimeout(()=>e.target.classList.add('vis'),d);
-      io.unobserve(e.target);
-    }
-  });
-},{threshold:0.08});
-document.querySelectorAll('.flow-card,.chart-card,.big-chart,.bc,.sc-card,.hub-card,.metric-card').forEach(el=>{
-  if(!el.classList.contains('vis'))io.observe(el);
-});
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const d=+(e.target.dataset.delay||0);setTimeout(()=>e.target.classList.add('vis'),d);io.unobserve(e.target);}});},{threshold:0.08});
+document.querySelectorAll('.flow-card,.chart-card,.big-chart,.bc,.sc-card,.hub-card,.metric-card').forEach(el=>{if(!el.classList.contains('vis'))io.observe(el);});
 
 /* CHARTS */
-const tealGrad=(ctx,a,b)=>{const g=ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,a);g.addColorStop(1,b);return g;};
+if(window.Chart){
+  new Chart(document.getElementById('speedChart'),{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat'],datasets:[{data:[18,22,19,25,28,24],backgroundColor:'rgba(48,217,192,0.15)',borderColor:'#1fc4ac',borderWidth:2,borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10},color:'#a1a1a6'}},y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10},color:'#a1a1a6'}}}}});
+  const ac=document.getElementById('accChart').getContext('2d');const ag=ac.createLinearGradient(0,0,0,160);ag.addColorStop(0,'rgba(10,132,255,0.15)');ag.addColorStop(1,'rgba(10,132,255,0)');
+  new Chart(ac,{type:'line',data:{labels:['W1','W2','W3','W4','W5','W6','W7','W8'],datasets:[{data:[74,78,80,82,83,85,87,88.5],borderColor:'#0a84ff',backgroundColor:ag,borderWidth:2.5,tension:0.4,fill:true,pointBackgroundColor:'#0a84ff',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10},color:'#a1a1a6'}},y:{min:65,max:100,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10},color:'#a1a1a6'}}}}});
+  new Chart(document.getElementById('dxChart'),{type:'doughnut',data:{labels:['Cervicalgia','Low Back','Myalgia','Sciatica','Other'],datasets:[{data:[28,34,18,12,8],backgroundColor:['#30d9c0','#0a84ff','#ff9f0a','#bf5af2','#e8e8ed'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},color:'#6e6e73',boxWidth:10,padding:8}}}}});
+  new Chart(document.getElementById('bigChart'),{type:'bar',data:{labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],datasets:[{label:'Sessions',data:[42,58,64,72,80,88,94,102,110,98,115,124],backgroundColor:'rgba(48,217,192,0.15)',borderColor:'#1fc4ac',borderWidth:2,borderRadius:8,yAxisID:'y'},{label:'Doc Time',data:[18,16,15,14,12,11,10,9,9,8,8,7],type:'line',borderColor:'#0a84ff',backgroundColor:'rgba(10,132,255,0.08)',borderWidth:2.5,tension:0.4,fill:true,pointBackgroundColor:'#0a84ff',pointRadius:3,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:11},color:'#a1a1a6'}},y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},color:'#a1a1a6'},position:'left'},y1:{grid:{display:false},ticks:{font:{size:11},color:'#6ab5ff'},position:'right'}}}});
+}
 
-// Speed
-const sc=document.getElementById('speedChart').getContext('2d');
-new Chart(sc,{type:'bar',data:{
-  labels:['Mon','Tue','Wed','Thu','Fri','Sat'],
-  datasets:[{data:[18,22,19,25,28,24],backgroundColor:'rgba(48,217,192,0.15)',borderColor:'#1fc4ac',borderWidth:2,borderRadius:8}]
-},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}},y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}}}}});
+/* FORMSPREE */
+async function submitForm(data,btn,msg){
+  btn.textContent='Sending...';btn.disabled=true;
+  try{
+    const r=await fetch('https://formspree.io/f/maqjjzoy',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
+    if(r.ok){btn.textContent=msg;btn.style.background='#34c759';}
+    else{btn.textContent='Error — email streetwisesomatics@gmail.com';btn.style.background='#ff453a';btn.disabled=false;}
+  }catch(e){btn.textContent='Error — email streetwisesomatics@gmail.com';btn.style.background='#ff453a';btn.disabled=false;}
+}
 
-// Accuracy
-const ac=document.getElementById('accChart').getContext('2d');
-const aGrad=ac.createLinearGradient(0,0,0,160);aGrad.addColorStop(0,'rgba(10,132,255,0.15)');aGrad.addColorStop(1,'rgba(10,132,255,0)');
-new Chart(ac,{type:'line',data:{
-  labels:['W1','W2','W3','W4','W5','W6','W7','W8'],
-  datasets:[{data:[74,78,80,82,83,85,87,88.5],borderColor:'#0a84ff',backgroundColor:aGrad,borderWidth:2.5,tension:0.4,fill:true,pointBackgroundColor:'#0a84ff',pointRadius:3}]
-},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}},y:{min:65,max:100,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}}}}});
+/* ACCESS FORM */
+const aBtn=document.getElementById('accessBtn');
+if(aBtn){aBtn.addEventListener('click',async()=>{
+  const inputs=document.querySelectorAll('#access .fi-input');
+  const name=inputs[0]?.value||'';const email=inputs[1]?.value||'';const specialty=inputs[2]?.value||'';const state=inputs[3]?.value||'';const referral=inputs[4]?.value||'';
+  if(!email.includes('@')){alert('Please enter a valid email.');return;}
+  await submitForm({_subject:'SomaSync Beta Access — '+name,name,email,specialty,state,referral,source:'access_form'},aBtn,'Request received — access granted within 48hrs');
+});}
 
-// Donut
-new Chart(document.getElementById('dxChart'),{type:'doughnut',data:{
-  labels:['Cervicalgia','Low Back','Myalgia','Sciatica','Other'],
-  datasets:[{data:[28,34,18,12,8],backgroundColor:['#30d9c0','#0a84ff','#ff9f0a','#bf5af2','#e8e8ed'],borderWidth:0,hoverOffset:6}]
-},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10,family:'Inter'},color:'#6e6e73',boxWidth:10,padding:8}}}}});
+/* WAITLIST */
+window.handleCTA=function(){
+  const el=document.getElementById('ctaEmail');const btn=document.querySelector('.btn-teal');
+  if(!el||!btn)return;
+  if(!el.value.includes('@')){alert('Please enter a valid email.');return;}
+  const email=el.value;
+  submitForm({_subject:'SomaSync Waitlist Signup',email,source:'cta_waitlist'},btn,'You are on the list!').then(()=>{el.value='';});
+};
 
-// Big chart
-new Chart(document.getElementById('bigChart'),{type:'bar',data:{
-  labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-  datasets:[
-    {label:'Sessions',data:[42,58,64,72,80,88,94,102,110,98,115,124],backgroundColor:'rgba(48,217,192,0.15)',borderColor:'#1fc4ac',borderWidth:2,borderRadius:8,yAxisID:'y'},
-    {label:'Avg Doc Time (min)',data:[18,16,15,14,12,11,10,9,9,8,8,7],type:'line',borderColor:'#0a84ff',backgroundColor:'rgba(10,132,255,0.08)',borderWidth:2.5,tension:0.4,fill:true,pointBackgroundColor:'#0a84ff',pointRadius:3,yAxisID:'y1'}
-  ]
-},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{
-  x:{grid:{display:false},ticks:{font:{size:11,family:'Inter'},color:'#a1a1a6'}},
-  y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11,family:'Inter'},color:'#a1a1a6'},position:'left'},
-  y1:{grid:{display:false},ticks:{font:{size:11,family:'Inter'},color:'#6ab5ff'},position:'right'}
-}}});
+/* CONTACT FORM */
+const cBtn=document.getElementById('contactBtn');
+if(cBtn){cBtn.addEventListener('click',async()=>{
+  const name=document.getElementById('cName')?.value||'';const email=document.getElementById('cEmail')?.value||'';const type=document.getElementById('cType')?.value||'';const msg=document.getElementById('cMsg')?.value||'';
+  if(!email.includes('@')){alert('Please enter a valid email.');return;}
+  if(!msg.trim()){alert('Please write a message.');return;}
+  await submitForm({_subject:'SomaSync Contact — '+(type||'Inquiry')+' from '+name,name,email,type,message:msg,source:'contact_form'},cBtn,'Message sent — we will respond within 24hrs');
+});}
 
-/* FORMS */
-// forms handled below
+/* GEO */
+fetch('https://ipapi.co/json/',{signal:AbortSignal.timeout(4000)}).then(r=>r.json()).then(d=>{
+  if(d.city&&d.country_name){const bar=document.createElement('div');bar.style.cssText='background:rgba(48,217,192,0.06);border-bottom:1px solid rgba(48,217,192,0.12);text-align:center;padding:7px;font-size:12px;color:rgba(255,255,255,0.4);';bar.textContent='Viewing from '+d.city+', '+(d.region||d.country_name);const beta=document.querySelector('.beta-banner');if(beta)beta.insertAdjacentElement('afterend',bar);}
+}).catch(()=>{});
 
-
-
+/* ANALYTICS */
 (function(){
-'use strict';
-
-/* ── CONFIG ─────────────────────────────── */
-const CONFIG = {
-  appName: 'SomaSync AI',
-  version: '1.0.0',
-  webhookUrl: null, // Set to your endpoint: 'https://api.yoursite.com/analytics'
-  debug: false,     // Set true to see console logs during dev
-  storageKey: 'ss_analytics',
-  sessionKey: 'ss_session',
-};
-
-/* ── SESSION ─────────────────────────────── */
-const sessionId = 'ss_' + Math.random().toString(36).slice(2,11) + '_' + Date.now();
-const sessionStart = Date.now();
-let pageData = {
-  sessionId,
-  sessionStart: new Date().toISOString(),
-  referrer: document.referrer || 'direct',
-  userAgent: navigator.userAgent,
-  screen: \`\${screen.width}x\${screen.height}\`,
-  viewport: \`\${window.innerWidth}x\${window.innerHeight}\`,
-  language: navigator.language,
-  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-  geo: null,
-  events: [],
-  scrollDepth: 0,
-  demoTabsViewed: [],
-  sectionsViewed: [],
-  timeOnPage: 0,
-  formStarted: false,
-  accessRequested: false,
-  waitlistSignup: false,
-};
-
-/* ── STORAGE ─────────────────────────────── */
-function getStore(){
-  try{ return JSON.parse(localStorage.getItem(CONFIG.storageKey)||'{"sessions":[],"aggregate":{}}'); }
-  catch(e){ return {sessions:[],aggregate:{}}; }
-}
-function saveStore(data){ try{ localStorage.setItem(CONFIG.storageKey,JSON.stringify(data)); }catch(e){} }
-function getAggregate(){
-  const s=getStore();
-  return s.aggregate||{totalSessions:0,totalPageviews:0,accessRequests:0,waitlistSignups:0,avgTimeOnPage:0,topReferrers:{},topGeo:{},demoInteractions:0,topSections:{}};
-}
-
-/* ── GEO DETECTION ───────────────────────── */
-async function detectGeo(){
-  try{
-    const res = await fetch('https://ipapi.co/json/',{signal:AbortSignal.timeout(4000)});
-    if(!res.ok) throw new Error();
-    const d = await res.json();
-    pageData.geo = {
-      country: d.country_name,
-      countryCode: d.country_code,
-      region: d.region,
-      city: d.city,
-      timezone: d.timezone,
-      org: d.org,
-      lat: d.latitude,
-      lon: d.longitude,
-    };
-    log('Geo detected:', pageData.geo);
-    updateGeoUI(pageData.geo);
-  } catch(e){
-    // Try fallback
-    try{
-      const r2 = await fetch('https://api.country.is/',{signal:AbortSignal.timeout(3000)});
-      const d2 = await r2.json();
-      pageData.geo = { countryCode: d2.country, country: d2.country };
-    } catch(e2){ pageData.geo = { country:'Unknown' }; }
-  }
-}
-
-function updateGeoUI(geo){
-  // Swap nav language hint based on country
-  const langMap = {
-    'MX':'🇲🇽 Hola','ES':'🇪🇸 Hola','FR':'🇫🇷 Bonjour','DE':'🇩🇪 Hallo',
-    'JP':'🇯🇵 こんにちは','KR':'🇰🇷 안녕하세요','CN':'🇨🇳 你好','BR':'🇧🇷 Olá',
-    'SA':'🇸🇦 مرحبا','IN':'🇮🇳 नमस्ते'
-  };
-  const code = geo.countryCode;
-  if(langMap[code]){
-    const pill = document.querySelector('.hero-eyebrow');
-    if(pill){
-      const span = document.createElement('span');
-      span.style.cssText='font-size:11px;color:rgba(255,255,255,0.4);margin-left:6px;';
-      span.textContent = langMap[code];
-      pill.appendChild(span);
-    }
-  }
-  // Show location-aware stat (city if US, country otherwise)
-  if(geo.city && geo.country === 'United States'){
-    injectGeoBar(\`📍 Now viewing from \${geo.city}, \${geo.region}\`);
-  } else if(geo.country && geo.country !== 'Unknown'){
-    injectGeoBar(\`📍 Viewing from \${geo.country} — Global access available\`);
-  }
-}
-
-function injectGeoBar(msg){
-  const bar = document.createElement('div');
-  bar.style.cssText='background:rgba(48,217,192,0.06);border-bottom:1px solid rgba(48,217,192,0.12);text-align:center;padding:7px;font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.02em;';
-  bar.textContent = msg;
-  const beta = document.querySelector('.beta-banner');
-  if(beta) beta.insertAdjacentElement('afterend',bar);
-}
-
-/* ── SCROLL DEPTH ────────────────────────── */
-let maxScroll = 0;
-const scrollMilestones = [25,50,75,90,100];
-const hitMilestones = new Set();
-window.addEventListener('scroll',()=>{
-  const pct = Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100);
-  if(pct > maxScroll){ maxScroll = pct; pageData.scrollDepth = pct; }
-  scrollMilestones.forEach(m=>{
-    if(pct >= m && !hitMilestones.has(m)){
-      hitMilestones.add(m);
-      SA.track('scroll_depth',{percent:m});
-    }
-  });
-},{passive:true});
-
-/* ── SECTION VISIBILITY ──────────────────── */
-const sectionObserver = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const id = e.target.id || e.target.className.split(' ')[0];
-      if(!pageData.sectionsViewed.includes(id)){
-        pageData.sectionsViewed.push(id);
-        SA.track('section_view',{section:id});
-      }
-    }
-  });
-},{threshold:0.3});
-document.querySelectorAll('section[id], .wave-section, .ticker-section, .features-marquee, .sphere-section, .global-section').forEach(el=>sectionObserver.observe(el));
-
-/* ── DEMO TAB TRACKING ───────────────────── */
-const origSwitch = window.switchTab;
-window.switchTab = function(id){
-  origSwitch(id);
-  if(!pageData.demoTabsViewed.includes(id)) pageData.demoTabsViewed.push(id);
-  SA.track('demo_tab',{tab:id});
-};
-
-/* ── FORM INTERACTION ────────────────────── */
-document.querySelectorAll('.fi-input').forEach(input=>{
-  input.addEventListener('focus',()=>{
-    if(!pageData.formStarted){
-      pageData.formStarted=true;
-      SA.track('form_started',{form:'access_request'});
-    }
-  },{once:true});
-});
-document.querySelector('.ei')?.addEventListener('focus',()=>{
-  SA.track('form_started',{form:'cta_waitlist'});
-},{once:true});
-
-/* ── CLICK TRACKING ──────────────────────── */
-document.addEventListener('click',e=>{
-  const el=e.target.closest('button,a,.stag,.lang-pill,.demo-tab,.flow-card,.sc-card,.hub-card');
-  if(!el) return;
-  const label = el.textContent.trim().slice(0,60);
-  const type = el.tagName.toLowerCase();
-  SA.track('click',{element:type,label,href:el.href||null});
-});
-
-/* ── TIME ON PAGE ─────────────────────────── */
-setInterval(()=>{pageData.timeOnPage=Math.round((Date.now()-sessionStart)/1000);},5000);
-document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='hidden') flush();
-});
-window.addEventListener('beforeunload',flush);
-
-/* ── FLUSH ───────────────────────────────── */
-function flush(){
-  pageData.timeOnPage=Math.round((Date.now()-sessionStart)/1000);
-  pageData.scrollDepthFinal=maxScroll;
-  const store=getStore();
-  store.sessions.push({...pageData,flushedAt:new Date().toISOString()});
-  if(store.sessions.length>200) store.sessions=store.sessions.slice(-200);
-  // Update aggregate
-  const agg=getAggregate();
-  agg.totalSessions=(agg.totalSessions||0)+1;
-  agg.totalPageviews=(agg.totalPageviews||0)+1;
-  if(pageData.accessRequested) agg.accessRequests=(agg.accessRequests||0)+1;
-  if(pageData.waitlistSignup) agg.waitlistSignups=(agg.waitlistSignups||0)+1;
-  agg.demoInteractions=(agg.demoInteractions||0)+pageData.demoTabsViewed.length;
-  agg.avgTimeOnPage=Math.round(((agg.avgTimeOnPage||0)*(agg.totalSessions-1)+pageData.timeOnPage)/agg.totalSessions);
-  if(pageData.geo?.country){
-    agg.topGeo=agg.topGeo||{};
-    agg.topGeo[pageData.geo.country]=(agg.topGeo[pageData.geo.country]||0)+1;
-  }
-  const ref=pageData.referrer.split('/')[2]||'direct';
-  agg.topReferrers=agg.topReferrers||{};
-  agg.topReferrers[ref]=(agg.topReferrers[ref]||0)+1;
-  pageData.sectionsViewed.forEach(s=>{
-    agg.topSections=agg.topSections||{};
-    agg.topSections[s]=(agg.topSections[s]||0)+1;
-  });
-  store.aggregate=agg;
-  saveStore(store);
-  if(CONFIG.webhookUrl) sendWebhook(pageData);
-}
-
-/* ── WEBHOOK ─────────────────────────────── */
-async function sendWebhook(data){
-  try{
-    await fetch(CONFIG.webhookUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),keepalive:true});
-  }catch(e){}
-}
-
-/* ── LOGGER ──────────────────────────────── */
-function log(...args){ if(CONFIG.debug) console.log('[SomaSync Analytics]',...args); }
-
-/* ── PUBLIC API ──────────────────────────── */
-window.SA = {
-  track(event, props={}){
-    const entry={event,props,timestamp:new Date().toISOString(),sessionId};
-    pageData.events.push(entry);
-    if(event==='access_request') pageData.accessRequested=true;
-    if(event==='waitlist_signup') pageData.waitlistSignup=true;
-    log('Event:',event,props);
-  },
-  /* getReport() — call from console or your dashboard */
-  getReport(){
-    const store=getStore();
-    const agg=store.aggregate||{};
-    const sessions=store.sessions||[];
-    const avgScroll=sessions.length ? Math.round(sessions.reduce((a,s)=>a+(s.scrollDepthFinal||0),0)/sessions.length) : 0;
-    const topTabs={};
-    sessions.forEach(s=>(s.demoTabsViewed||[]).forEach(t=>{topTabs[t]=(topTabs[t]||0)+1;}));
-    const deviceTypes={mobile:0,tablet:0,desktop:0};
-    sessions.forEach(s=>{
-      const w=parseInt((s.viewport||'0').split('x')[0]);
-      if(w<768) deviceTypes.mobile++;
-      else if(w<1024) deviceTypes.tablet++;
-      else deviceTypes.desktop++;
-    });
-    return {
-      summary:{
-        totalSessions:agg.totalSessions||0,
-        accessRequests:agg.accessRequests||0,
-        waitlistSignups:agg.waitlistSignups||0,
-        avgTimeOnPage:\`\${agg.avgTimeOnPage||0}s\`,
-        avgScrollDepth:\`\${avgScroll}%\`,
-        demoInteractions:agg.demoInteractions||0,
-      },
-      topGeo:agg.topGeo||{},
-      topReferrers:agg.topReferrers||{},
-      topSections:agg.topSections||{},
-      topDemoTabs:topTabs,
-      deviceTypes,
-      recentSessions:sessions.slice(-10).map(s=>({
-        id:s.sessionId,
-        date:s.sessionStart,
-        geo:s.geo,
-        timeOnPage:s.timeOnPage+'s',
-        scrollDepth:s.scrollDepthFinal+'%',
-        demoTabsViewed:s.demoTabsViewed,
-        accessRequested:s.accessRequested,
-        waitlistSignup:s.waitlistSignup,
-        referrer:s.referrer,
-        events:s.events?.length||0,
-      })),
-    };
-  },
-  /* showDashboard() — renders a live overlay panel */
-  showDashboard(){
-    const existing=document.getElementById('sa-dash');
-    if(existing){ existing.remove(); return; }
-    const r=this.getReport();
-    const dash=document.createElement('div');
-    dash.id='sa-dash';
-    dash.style.cssText=\`
-      position:fixed;bottom:20px;right:20px;z-index:9999;
-      width:420px;max-height:80vh;overflow-y:auto;
-      background:#0f1318;border:1px solid rgba(255,255,255,0.1);
-      border-radius:20px;padding:24px;
-      font-family:'Inter',sans-serif;font-size:13px;color:#c8cfd8;
-      box-shadow:0 24px 80px rgba(0,0,0,0.6);
-    \`;
-    const fmt=(obj)=>Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>\`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="color:rgba(255,255,255,0.5)">\${k}</span><span style="font-weight:700;color:#30d9c0">\${v}</span></div>\`).join('');
-    dash.innerHTML=\`
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-        <span style="font-size:14px;font-weight:800;color:#fff;letter-spacing:-0.03em">📊 SomaSync Analytics</span>
-        <button onclick="document.getElementById('sa-dash').remove()" style="background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px">✕</button>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
-        \${[['Sessions',r.summary.totalSessions],['Access Requests',r.summary.accessRequests],['Waitlist Signups',r.summary.waitlistSignups],['Avg Time',r.summary.avgTimeOnPage],['Avg Scroll',r.summary.avgScrollDepth],['Demo Interactions',r.summary.demoInteractions]].map(([l,v])=>\`<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px"><div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">\${l}</div><div style="font-size:20px;font-weight:800;color:#fff">\${v}</div></div>\`).join('')}
-      </div>
-      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Top Countries</div>\${fmt(r.topGeo)||'<div style="color:rgba(255,255,255,0.2)">No data yet</div>'}</div>
-      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Top Referrers</div>\${fmt(r.topReferrers)}</div>
-      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Sections Viewed</div>\${fmt(r.topSections)}</div>
-      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Demo Tabs</div>\${fmt(r.topDemoTabs)}</div>
-      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Devices</div>
-        <div style="display:flex;gap:8px">\${Object.entries(r.deviceTypes).map(([k,v])=>\`<div style="flex:1;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,0.3)">\${k}</div><div style="font-weight:700;color:#30d9c0">\${v}</div></div>\`).join('')}</div>
-      </div>
-      <div style="font-size:10px;color:rgba(255,255,255,0.15);text-align:center;margin-top:12px">Type <code style="color:#30d9c0">SA.getReport()</code> in console for full JSON</div>
-    \`;
-    document.body.appendChild(dash);
-  },
-  clearData(){ localStorage.removeItem(CONFIG.storageKey); console.log('Analytics data cleared.'); },
-};
-
-/* ── INIT ─────────────────────────────────── */
-detectGeo();
-SA.track('pageview',{url:location.href,title:document.title});
-
-// Secret keystroke: press Alt+Shift+A to open analytics panel
-document.addEventListener('keydown',e=>{
-  if(e.altKey && e.shiftKey && e.key==='A') SA.showDashboard();
-});
-
-log('Analytics engine initialized. Session:',sessionId);
-
-
-// ── FORMSPREE SUBMIT HELPER ──────────────────────
-async function submitToFormspree(data, btn, successMsg) {
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
-  try {
-    const res = await fetch('https://formspree.io/f/maqjjzoy', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-      body: JSON.stringify(data)
-    });
-    const json = await res.json();
-    if (res.ok) {
-      btn.textContent = successMsg;
-      btn.style.background = '#34c759';
-      btn.style.color = '#fff';
-      return true;
-    } else {
-      btn.textContent = 'Error — try emailing us directly';
-      btn.disabled = false;
-      btn.style.background = '#ff453a';
-      return false;
-    }
-  } catch(e) {
-    btn.textContent = 'Error — try emailing us directly';
-    btn.disabled = false;
-    btn.style.background = '#ff453a';
-    return false;
-  }
-}
-
-// ── CONTACT FORM ──────────────────────────────────
-const contactBtn = document.getElementById('contactBtn');
-if(contactBtn) {
-  contactBtn.addEventListener('click', async () => {
-    const name = document.getElementById('cName')?.value || '';
-    const email = document.getElementById('cEmail')?.value || '';
-    const type = document.getElementById('cType')?.value || '';
-    const msg = document.getElementById('cMsg')?.value || '';
-    if(!email.includes('@')) { alert('Please enter a valid email.'); return; }
-    if(!msg.trim()) { alert('Please enter a message.'); return; }
-    const ok = await submitToFormspree({
-      _subject: 'SomaSync AI — ' + (type || 'Inquiry') + ' from ' + name,
-      name, email, type, message: msg, _source: 'contact_form'
-    }, contactBtn, '✓ Message sent — we\'ll respond within 24hrs');
-    if(ok) SA.track('contact_form_submit', {type, hasMessage: !!msg});
-  });
-}
-
-// ── ACCESS REQUEST FORM ───────────────────────────
-const accessBtn = document.getElementById('accessBtn');
-if(accessBtn) {
-  accessBtn.addEventListener('click', async () => {
-    const inputs = document.querySelectorAll('#access .fi-input');
-    const name = inputs[0]?.value || '';
-    const email = inputs[1]?.value || '';
-    const specialty = inputs[2]?.value || '';
-    const state = inputs[3]?.value || '';
-    const referral = inputs[4]?.value || '';
-    if(!email.includes('@')) { alert('Please enter a valid email address.'); return; }
-    const ok = await submitToFormspree({
-      _subject: 'SomaSync Beta Access Request — ' + name,
-      name, email, specialty, state, referral,
-      _source: 'access_request_form'
-    }, accessBtn, '✓ Request received — access granted within 48hrs');
-    if(ok) SA.track('access_request', {name, email, specialty, state});
-  });
-}
-
-// ── CTA WAITLIST ──────────────────────────────────
-
-
-log('Press Alt+Shift+A to open the analytics dashboard.');
-
+  const sid='ss_'+Math.random().toString(36).slice(2,9)+'_'+Date.now();
+  const t0=Date.now();
+  let pd={sessionId:sid,start:new Date().toISOString(),referrer:document.referrer||'direct',events:[],scroll:0};
+  window.SA={track(e,p){pd.events.push({e,p,t:Date.now()-t0});}};
+  let ms=0;window.addEventListener('scroll',()=>{const p=Math.round(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100);if(p>ms){ms=p;pd.scroll=p;}},{passive:true});
+  function flush(){pd.time=Math.round((Date.now()-t0)/1000);try{const s=JSON.parse(localStorage.getItem('ss_a')||'{"sessions":[],"agg":{}}');s.sessions.push(pd);if(s.sessions.length>100)s.sessions=s.sessions.slice(-100);s.agg.total=(s.agg.total||0)+1;localStorage.setItem('ss_a',JSON.stringify(s));}catch(e){}}
+  window.addEventListener('beforeunload',flush);
+  document.addEventListener('keydown',e=>{if(e.altKey&&e.shiftKey&&e.key==='A'){const r=JSON.parse(localStorage.getItem('ss_a')||'{}');console.table(r.agg);console.log('Sessions:',r.sessions?.length);}});
+  SA.track('pageview',{url:location.href});
 })();
 `

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 export default function App() {
   useEffect(() => {
+    // ── STYLES ──
     const style = document.createElement('style')
     style.textContent = CSS
     document.head.appendChild(style)
@@ -11,6 +12,138 @@ export default function App() {
     link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap'
     document.head.appendChild(link)
 
+    // ── SEO META TAGS ──
+    const meta = (name, content, prop) => {
+      const el = document.createElement('meta')
+      if (prop) el.setAttribute('property', name)
+      else el.setAttribute('name', name)
+      el.setAttribute('content', content)
+      document.head.appendChild(el)
+    }
+    const link2 = (rel, href) => {
+      const el = document.createElement('link')
+      el.rel = rel; el.href = href
+      document.head.appendChild(el)
+    }
+
+    document.title = 'SomaSync AI — Clinical Documentation AI for Manual Therapists | ΛΛLIYΛH.IO'
+    meta('description', 'SomaSync AI by ΛΛLIYΛH.IO — Real-time SOAP note generation, ICD-10 auto-coding, and clinical documentation AI for manual therapists in California. Serving Central Valley, San Francisco Bay Area, and Los Angeles.')
+    meta('keywords', 'SomaSync AI, ΛΛLIYΛH.IO, SOAP notes California, ICD-10 coding manual therapy, clinical documentation AI, NMT documentation software, massage therapy AI California, Modesto therapist software, Stockton massage therapy, Sacramento NMT, San Francisco manual therapy AI, Los Angeles clinical documentation, Central Valley therapist tools, medical massage documentation, workers comp documentation AI')
+    meta('robots', 'index, follow')
+    meta('theme-color', '#0a0c10')
+    meta('author', 'ΛΛLIYΛH.IO · SomaSync AI')
+
+    // Geo tags
+    meta('geo.region', 'US-CA')
+    meta('geo.placename', 'Modesto, California')
+    meta('geo.position', '37.6391;-120.9969')
+    meta('ICBM', '37.6391, -120.9969')
+    meta('language', 'en')
+    meta('coverage', 'California, United States')
+    meta('distribution', 'global')
+
+    // Open Graph
+    meta('og:type', 'website', true)
+    meta('og:url', 'https://somasyncai.com/', true)
+    meta('og:title', 'SomaSync AI — Intelligence That Listens | ΛΛLIYΛH.IO', true)
+    meta('og:description', 'From rough clinical observations to ICD-10-aligned SOAP notes — automatically, in real time. Built for manual therapists across California and beyond.', true)
+    meta('og:image', '/Aaliyah-logo.png', true)
+    meta('og:site_name', 'SomaSync AI · ΛΛLIYΛH.IO', true)
+    meta('og:locale', 'en_US', true)
+
+    // Twitter
+    meta('twitter:card', 'summary_large_image')
+    meta('twitter:title', 'SomaSync AI — Clinical Documentation AI | ΛΛLIYΛH.IO')
+    meta('twitter:description', 'Real-time SOAP notes, ICD-10 auto-coding, and clinical documentation AI for manual therapists in California.')
+    meta('twitter:image', '/Aaliyah-logo.png')
+
+    // Canonical
+    link2('canonical', 'https://somasyncai.com/')
+
+    // ── STRUCTURED DATA ──
+    const ld = (obj) => {
+      const s = document.createElement('script')
+      s.type = 'application/ld+json'
+      s.textContent = JSON.stringify(obj)
+      document.head.appendChild(s)
+    }
+
+    ld({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "SomaSync AI",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Web",
+      "description": "AI-powered clinical documentation platform for manual therapists. Real-time SOAP note generation, ICD-10 auto-coding, biopsychosocial analysis, and practice analytics. Serving California's Central Valley, San Francisco Bay Area, and Los Angeles.",
+      "url": "https://somasyncai.com",
+      "creator": { "@type": "Organization", "name": "ΛΛLIYΛH.IO", "url": "https://somasyncai.com" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free beta access" },
+      "areaServed": [
+        { "@type": "City", "name": "Modesto", "addressRegion": "CA" },
+        { "@type": "City", "name": "Stockton", "addressRegion": "CA" },
+        { "@type": "City", "name": "Fresno", "addressRegion": "CA" },
+        { "@type": "City", "name": "Sacramento", "addressRegion": "CA" },
+        { "@type": "City", "name": "San Francisco", "addressRegion": "CA" },
+        { "@type": "City", "name": "Oakland", "addressRegion": "CA" },
+        { "@type": "City", "name": "San Jose", "addressRegion": "CA" },
+        { "@type": "City", "name": "Los Angeles", "addressRegion": "CA" },
+        { "@type": "City", "name": "Long Beach", "addressRegion": "CA" },
+        { "@type": "City", "name": "Pasadena", "addressRegion": "CA" }
+      ],
+      "featureList": [
+        "Real-time SOAP note generation",
+        "ICD-10 auto-coding",
+        "Clinical documentation AI",
+        "Practice analytics dashboard",
+        "Biopsychosocial analysis",
+        "Billing code suggestions",
+        "Workers compensation documentation",
+        "Eastern and Western medicine bridge"
+      ]
+    })
+
+    ld({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ΛΛLIYΛH.IO",
+      "alternateName": "SomaSync AI",
+      "url": "https://somasyncai.com",
+      "logo": "https://somasyncai.com/Aaliyah-logo.png",
+      "description": "Clinical AI infrastructure for manual therapy practitioners — bridging Eastern and Western medicine through intelligent documentation.",
+      "telephone": "+12092849066",
+      "email": "streetwisesomatics@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Modesto",
+        "addressRegion": "CA",
+        "addressCountry": "US"
+      },
+      "areaServed": "California",
+      "sameAs": [
+        "https://www.instagram.com/Somasync_AI",
+        "https://www.linkedin.com/in/somasyncsantos"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+12092849066",
+        "contactType": "customer support",
+        "email": "streetwisesomatics@gmail.com",
+        "availableLanguage": ["English", "Spanish"]
+      }
+    })
+
+    ld({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is SomaSync AI?", "acceptedAnswer": { "@type": "Answer", "text": "SomaSync AI is a clinical documentation platform powered by ΛΛLIYΛH.IO that generates ICD-10-aligned SOAP notes in real time for manual therapists, NMTs, and LMTs." } },
+        { "@type": "Question", "name": "Where does SomaSync AI serve practitioners?", "acceptedAnswer": { "@type": "Answer", "text": "SomaSync AI is available nationally with a strong focus on California — including the Central Valley (Modesto, Stockton, Fresno, Sacramento), San Francisco Bay Area, and Los Angeles." } },
+        { "@type": "Question", "name": "Is SomaSync AI free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — SomaSync AI is currently in free beta. Request access at somasyncai.com." } },
+        { "@type": "Question", "name": "Does SomaSync AI support workers compensation documentation?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. SomaSync AI supports workers compensation and personal injury documentation with ICD-10 and CPT billing code suggestions." } }
+      ]
+    })
+
+    // ── CHART.JS ──
     const chart = document.createElement('script')
     chart.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js'
     chart.onload = () => {
@@ -864,6 +997,217 @@ footer{padding:28px 40px;border-top:1px solid var(--border);display:flex;justify
 .btn-contact{width:100%;background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));color:#061412;border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;transition:all 0.25s;margin-top:4px;}
 .btn-contact:hover{transform:translateY(-2px);}
 @media(max-width:900px){.inv-grid,.contact-grid{grid-template-columns:1fr;}.inv-metrics{grid-template-columns:1fr 1fr;}}
+/* ══ ΛΛLIYΛH CHAT BUBBLE ══ */
+.aaliyah-bubble{
+  position:fixed;bottom:28px;right:28px;z-index:1000;
+  display:flex;flex-direction:column;align-items:flex-end;gap:12px;
+}
+.aaliyah-bubble-btn{
+  width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(135deg,var(--teal-deep),var(--blue));
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 32px rgba(48,217,192,0.35);
+  transition:all 0.3s;position:relative;
+  animation:bubblePulse 3s ease-in-out infinite;
+}
+.aaliyah-bubble-btn:hover{transform:scale(1.08);box-shadow:0 12px 40px rgba(48,217,192,0.5);}
+.aaliyah-bubble-btn img{width:36px;height:36px;border-radius:50%;object-fit:contain;}
+.aaliyah-bubble-btn .bubble-initials{font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.04em;}
+.bubble-badge{
+  position:absolute;top:-3px;right:-3px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--green);border:2px solid var(--dark);
+  animation:pulseGlow 2s ease-in-out infinite;
+}
+.bubble-tooltip{
+  background:var(--dark2);border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px;padding:12px 16px;
+  font-size:13px;color:rgba(255,255,255,0.8);
+  white-space:nowrap;backdrop-filter:blur(20px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+  animation:fadeUp 0.4s ease both;
+  max-width:220px;white-space:normal;line-height:1.5;
+}
+.bubble-tooltip strong{color:var(--teal);display:block;margin-bottom:3px;font-size:12px;letter-spacing:0.04em;text-transform:uppercase;}
+@keyframes bubblePulse{0%,100%{box-shadow:0 8px 32px rgba(48,217,192,0.35);}50%{box-shadow:0 8px 48px rgba(48,217,192,0.55);}}
+
+/* ══ ΛΛLIYΛH CHAT PANEL ══ */
+.aaliyah-panel{
+  position:fixed;bottom:104px;right:28px;z-index:1000;
+  width:380px;max-height:580px;
+  background:var(--dark2);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:24px;
+  display:flex;flex-direction:column;
+  box-shadow:0 32px 80px rgba(0,0,0,0.6);
+  overflow:hidden;
+  animation:panelIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+  backdrop-filter:blur(40px);
+}
+.aaliyah-panel.hidden{display:none;}
+@keyframes panelIn{from{opacity:0;transform:scale(0.9) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.chat-header{
+  padding:18px 20px;
+  background:linear-gradient(135deg,rgba(48,217,192,0.1),rgba(10,132,255,0.08));
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  display:flex;align-items:center;gap:12px;
+  position:relative;
+}
+.chat-header::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.04),transparent);pointer-events:none;}
+.chat-avatar{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--teal-deep),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:900;color:#fff;letter-spacing:-0.04em;
+  overflow:hidden;
+  box-shadow:0 4px 16px rgba(48,217,192,0.3);
+}
+.chat-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.chat-info{flex:1;}
+.chat-name{font-size:15px;font-weight:800;color:#fff;letter-spacing:-0.03em;}
+.chat-name span{background:linear-gradient(125deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.chat-status{font-size:11px;color:rgba(255,255,255,0.35);display:flex;align-items:center;gap:5px;margin-top:2px;}
+.chat-status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulseGlow 2s ease-in-out infinite;}
+.chat-close{background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.5);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;}
+.chat-close:hover{background:rgba(255,255,255,0.15);color:#fff;}
+.chat-messages{
+  flex:1;overflow-y:auto;padding:16px;
+  display:flex;flex-direction:column;gap:12px;
+  max-height:360px;
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.1) transparent;
+}
+.chat-messages::-webkit-scrollbar{width:4px;}
+.chat-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
+.chat-msg{display:flex;gap:8px;align-items:flex-start;animation:fadeUp 0.3s ease both;}
+.chat-msg.user{flex-direction:row-reverse;}
+.msg-avatar{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;overflow:hidden;}
+.msg-avatar.ai{background:linear-gradient(135deg,var(--teal-deep),var(--blue));color:#fff;}
+.msg-avatar.ai img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.msg-avatar.user-av{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);}
+.msg-bubble{
+  max-width:80%;padding:10px 14px;border-radius:16px;
+  font-size:13px;line-height:1.6;
+}
+.chat-msg.ai .msg-bubble{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.85);border-radius:4px 16px 16px 16px;border:1px solid rgba(255,255,255,0.06);}
+.chat-msg.user .msg-bubble{background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));color:#061412;font-weight:500;border-radius:16px 4px 16px 16px;}
+.msg-typing{display:flex;gap:4px;align-items:center;padding:12px 14px;}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:typingBounce 1.2s ease-in-out infinite;}
+.typing-dot:nth-child(2){animation-delay:0.2s;}
+.typing-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-8px);}}
+.chat-input-row{
+  padding:12px 16px;border-top:1px solid rgba(255,255,255,0.07);
+  display:flex;gap:10px;align-items:center;
+  background:rgba(255,255,255,0.02);
+}
+.chat-input{
+  flex:1;background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:980px;padding:10px 16px;
+  font-size:13px;color:#fff;font-family:inherit;outline:none;
+  transition:all 0.2s;
+}
+.chat-input::placeholder{color:rgba(255,255,255,0.2);}
+.chat-input:focus{border-color:var(--teal-mid);background:rgba(255,255,255,0.09);}
+.chat-send{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));
+  border:none;cursor:pointer;color:#061412;font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.chat-send:hover{transform:scale(1.08);}
+.chat-send:disabled{opacity:0.4;cursor:not-allowed;}
+.chat-disclaimer{padding:8px 16px;font-size:10px;color:rgba(255,255,255,0.15);text-align:center;border-top:1px solid rgba(255,255,255,0.04);}
+
+/* ══ MEET ΛΛLIYΛH SECTION ══ */
+.meet-section{
+  background:var(--dark2);padding:100px 32px;
+  position:relative;overflow:hidden;
+}
+.meet-section::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 80% at 100% 50%,rgba(48,217,192,0.07),transparent 60%),
+    radial-gradient(ellipse 50% 60% at 0% 50%,rgba(10,132,255,0.05),transparent 60%),
+    linear-gradient(135deg,rgba(255,255,255,0.02) 0%,transparent 100%);
+}
+.meet-inner{max-width:1060px;margin:0 auto;position:relative;z-index:1;}
+.meet-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.meet-logo-wrap{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:24px;
+}
+.meet-logo-ring{
+  position:relative;width:220px;height:220px;
+  display:flex;align-items:center;justify-content:center;
+}
+.meet-logo-orb{
+  width:180px;height:180px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(48,217,192,0.15),rgba(10,132,255,0.1));
+  border:1px solid rgba(48,217,192,0.2);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 60px rgba(48,217,192,0.12),inset 0 0 40px rgba(255,255,255,0.03);
+  animation:orbPulse 4s ease-in-out infinite;
+  overflow:hidden;
+}
+.meet-logo-orb img{width:120px;height:120px;object-fit:contain;filter:brightness(1.1);}
+.meet-logo-orb .aaliyah-initials{font-size:42px;font-weight:900;letter-spacing:-0.05em;background:linear-gradient(135deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.meet-ring-1,.meet-ring-2,.meet-ring-3{position:absolute;border-radius:50%;border:1px solid rgba(48,217,192,0.12);animation:ringExpand 4s ease-in-out infinite;}
+.meet-ring-1{width:200px;height:200px;}
+.meet-ring-2{width:240px;height:240px;animation-delay:0.8s;}
+.meet-ring-3{width:280px;height:280px;animation-delay:1.6s;border-color:rgba(10,132,255,0.08);}
+.meet-name{font-size:28px;font-weight:900;letter-spacing:-0.04em;color:#fff;text-align:center;}
+.meet-name span{background:linear-gradient(125deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.meet-tagline{font-size:13px;color:rgba(255,255,255,0.3);text-align:center;letter-spacing:0.04em;text-transform:uppercase;}
+.meet-text h2{font-size:clamp(32px,4vw,48px);font-weight:800;letter-spacing:-0.05em;color:#fff;line-height:1.05;margin-bottom:20px;}
+.meet-text h2 em{font-style:italic;font-family:'Playfair Display',serif;background:linear-gradient(125deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.meet-text p{font-size:16px;color:rgba(255,255,255,0.4);line-height:1.75;font-weight:300;margin-bottom:16px;}
+.meet-caps{display:flex;flex-direction:column;gap:10px;margin:28px 0;}
+.meet-cap{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:14px;transition:all 0.2s;}
+.meet-cap:hover{background:rgba(255,255,255,0.07);border-color:rgba(48,217,192,0.15);}
+.meet-cap-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.meet-cap-text h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px;letter-spacing:-0.02em;}
+.meet-cap-text p{font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6;margin:0;}
+.btn-meet{
+  background:linear-gradient(135deg,var(--teal-deep),var(--teal-mid));
+  color:#061412;border:none;cursor:pointer;
+  padding:15px 32px;border-radius:980px;
+  font-size:15px;font-weight:800;font-family:inherit;
+  display:inline-flex;align-items:center;gap:10px;
+  transition:all 0.25s;letter-spacing:-0.02em;
+  box-shadow:0 6px 24px rgba(30,196,172,0.3);
+}
+.btn-meet:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(30,196,172,0.45);}
+
+/* Hero ΛΛLIYΛH intro card */
+.aaliyah-hero-card{
+  position:absolute;bottom:10%;right:5%;z-index:3;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(20px);
+  border-radius:20px;padding:16px 20px;
+  display:flex;align-items:center;gap:14px;
+  animation:floatB 7s ease-in-out infinite;
+  max-width:260px;
+  box-shadow:0 16px 48px rgba(0,0,0,0.3);
+}
+.ahc-avatar{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--teal-deep),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  box-shadow:0 4px 16px rgba(48,217,192,0.3);
+}
+.ahc-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.ahc-avatar .ahc-initials{font-size:14px;font-weight:900;color:#fff;letter-spacing:-0.04em;}
+.ahc-text{}
+.ahc-name{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:3px;}
+.ahc-msg{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;}
+@media(max-width:900px){.meet-grid{grid-template-columns:1fr;}.aaliyah-hero-card{display:none;}}
+@media(max-width:480px){.aaliyah-panel{width:calc(100vw - 32px);right:16px;bottom:92px;}}
+
 `
 
 const HTML = `<!-- BETA BANNER -->
@@ -948,6 +1292,17 @@ const HTML = `<!-- BETA BANNER -->
       </div>
     </div>
   </div>
+
+<!-- ΛΛLIYΛH HERO CARD -->
+<div class="aaliyah-hero-card">
+  <div class="ahc-avatar">
+    <img src="/Aaliyah-logo.png" alt="ΛΛLIYΛH" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=ahc-initials>ΛΛ</span>'">
+  </div>
+  <div class="ahc-text">
+    <div class="ahc-name">ΛΛLIYΛH.IO</div>
+    <div class="ahc-msg">Hi — I'm your clinical AI assistant. Ask me anything.</div>
+  </div>
+</div>
 </section>
 
 <!-- ══════════ WAVEFORM / LIVE TRANSCRIPTION ══════════ -->
@@ -1338,6 +1693,45 @@ const HTML = `<!-- BETA BANNER -->
   </div>
 </section>
 
+
+<!-- ══════════ ΛΛLIYΛH CHAT WIDGET ══════════ -->
+<div class="aaliyah-bubble" id="aaliyahPanel">
+  <div class="bubble-tooltip" id="bubbleTooltip">
+    <strong>ΛΛLIYΛH.IO</strong>
+    Hi — I'm your clinical AI. Ask me about SomaSync, ICD-10 coding, or request a demo.
+  </div>
+  <button class="aaliyah-bubble-btn" id="bubbleBtn" onclick="toggleChat()" aria-label="Chat with ΛΛLIYΛH">
+    <img src="/Aaliyah-logo.png" alt="ΛΛLIYΛH" onerror="this.style.display='none';this.parentElement.innerHTML+='<span class=bubble-initials>ΛΛ</span>'">
+    <div class="bubble-badge"></div>
+  </button>
+</div>
+
+<div class="aaliyah-panel hidden" id="aaliyahChatPanel">
+  <div class="chat-header">
+    <div class="chat-avatar">
+      <img src="/Aaliyah-logo.png" alt="ΛΛLIYΛH" onerror="this.style.display='none';this.parentElement.innerHTML='ΛΛ'">
+    </div>
+    <div class="chat-info">
+      <div class="chat-name"><span>ΛΛLIYΛH</span>.IO</div>
+      <div class="chat-status"><div class="chat-status-dot"></div>Online · Clinical AI Assistant</div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg ai">
+      <div class="msg-avatar ai">
+        <img src="/Aaliyah-logo.png" alt="ΛΛ" onerror="this.style.display='none';this.parentElement.textContent='ΛΛ'">
+      </div>
+      <div class="msg-bubble">Hi — I'm ΛΛLIYΛH, the clinical AI behind SomaSync. I can answer questions about the platform, walk you through a live documentation demo, or help you figure out if SomaSync is right for your practice. What would you like to know?</div>
+    </div>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" type="text" placeholder="Ask ΛΛLIYΛH anything..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" id="chatSend" onclick="sendChat()">↑</button>
+  </div>
+  <div class="chat-disclaimer">ΛΛLIYΛH.IO · SomaSync AI · Beta. Responses are AI-generated and for demonstration purposes only.</div>
+</div>
+
 <!-- ══════════ ACCESS GATE ══════════ -->
 <section class="access-section" id="access">
   <div class="access-inner">
@@ -1381,6 +1775,65 @@ const HTML = `<!-- BETA BANNER -->
 </section>
 
 <!-- ══════════ CTA ══════════ -->
+
+
+<!-- ══════════ MEET ΛΛLIYΛH ══════════ -->
+<section class="meet-section" id="meet">
+  <div class="meet-inner">
+    <div class="meet-grid">
+      <div class="meet-logo-wrap">
+        <div class="meet-logo-ring">
+          <div class="meet-ring-1"></div>
+          <div class="meet-ring-2"></div>
+          <div class="meet-ring-3"></div>
+          <div class="meet-logo-orb">
+            <img src="/Aaliyah-logo.png" alt="ΛΛLIYΛH" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=aaliyah-initials>ΛΛ</div>'">
+          </div>
+        </div>
+        <div class="meet-name"><span>ΛΛLIYΛH</span>.IO</div>
+        <div class="meet-tagline">Clinical AI · Always Listening</div>
+      </div>
+      <div class="meet-text">
+        <h2>Meet <em>ΛΛLIYΛH</em> —<br>Your Clinical Intelligence.</h2>
+        <p>She listens to every session in real time, interprets clinical observations, flags contraindications, and generates ICD-10-aligned SOAP notes before your client even leaves the table.</p>
+        <p>Built on peer-reviewed research from Stanford, NIH, Harvard, WHO and the global manual therapy community — she never stops learning.</p>
+        <div class="meet-caps">
+          <div class="meet-cap">
+            <div class="meet-cap-icon">🎧</div>
+            <div class="meet-cap-text">
+              <h4>Listens In Real Time</h4>
+              <p>Captures clinical observations via earpiece or microphone during live sessions without interrupting flow.</p>
+            </div>
+          </div>
+          <div class="meet-cap">
+            <div class="meet-cap-icon">🧠</div>
+            <div class="meet-cap-text">
+              <h4>Thinks Clinically</h4>
+              <p>Trained on biopsychosocial models, ICD-10 frameworks, Eastern and Western medicine — not generic AI.</p>
+            </div>
+          </div>
+          <div class="meet-cap">
+            <div class="meet-cap-icon">📋</div>
+            <div class="meet-cap-text">
+              <h4>Documents Everything</h4>
+              <p>SOAP notes, ICD-10 codes, CPT billing suggestions — structured and ready before the session ends.</p>
+            </div>
+          </div>
+          <div class="meet-cap">
+            <div class="meet-cap-icon">🌍</div>
+            <div class="meet-cap-text">
+              <h4>Speaks Your Language</h4>
+              <p>Multilingual support across 10+ languages. East-to-West knowledge bridge built in from day one.</p>
+            </div>
+          </div>
+        </div>
+        <button class="btn-meet" onclick="document.getElementById('aaliyahChatPanel').classList.remove('hidden');document.getElementById('aaliyahPanel').classList.remove('hidden');">
+          Talk to ΛΛLIYΛH →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- INVESTORS -->
 <section class="inv-section" id="investors">
@@ -1517,6 +1970,19 @@ const HTML = `<!-- BETA BANNER -->
   </div>
 </section>
 
+<!-- LOCAL SEO STRIP -->
+<div style="background:var(--dark);border-top:1px solid rgba(255,255,255,0.04);padding:28px 32px;text-align:center;">
+  <div style="max-width:1060px;margin:0 auto;">
+    <p style="font-size:11px;color:rgba(255,255,255,0.15);letter-spacing:0.04em;line-height:2;margin:0;">
+      Serving manual therapists across California —
+      <span style="color:rgba(255,255,255,0.25);">Central Valley:</span> Modesto · Stockton · Fresno · Turlock · Merced · Visalia · Bakersfield · Sacramento ·
+      <span style="color:rgba(255,255,255,0.25);">Bay Area:</span> San Francisco · Oakland · San Jose · Berkeley · Palo Alto · Santa Cruz ·
+      <span style="color:rgba(255,255,255,0.25);">Southern CA:</span> Los Angeles · Pasadena · Long Beach · Orange County · San Diego · Santa Barbara
+      · and beyond.
+    </p>
+  </div>
+</div>
+
 <!-- ══════════ FOOTER ══════════ -->
 <footer>
   <div class="footer-left">
@@ -1621,7 +2087,19 @@ if(cBtn){cBtn.addEventListener('click',async()=>{
 
 /* GEO */
 fetch('https://ipapi.co/json/',{signal:AbortSignal.timeout(4000)}).then(r=>r.json()).then(d=>{
-  if(d.city&&d.country_name){const bar=document.createElement('div');bar.style.cssText='background:rgba(48,217,192,0.06);border-bottom:1px solid rgba(48,217,192,0.12);text-align:center;padding:7px;font-size:12px;color:rgba(255,255,255,0.4);';bar.textContent='Viewing from '+d.city+', '+(d.region||d.country_name);const beta=document.querySelector('.beta-banner');if(beta)beta.insertAdjacentElement('afterend',bar);}
+  if(!d.city) return;
+  const caCities = ['Modesto','Stockton','Fresno','Sacramento','San Francisco','Oakland','San Jose','Los Angeles','Long Beach','Pasadena','Turlock','Merced','Visalia','Bakersfield','Berkeley','Santa Cruz','San Diego','Santa Barbara','Orange','Riverside','Palo Alto'];
+  const isCA = d.region_code === 'CA';
+  const isLocal = caCities.some(c => d.city.includes(c));
+  let msg = '';
+  if(isLocal) msg = 'SomaSync AI is serving practitioners in ' + d.city + ' — request access today.';
+  else if(isCA) msg = 'ΛΛLIYΛH.IO is expanding across California — now serving ' + d.city + '.';
+  else msg = 'Viewing from ' + d.city + ', ' + (d.country_name||'') + ' — global access available.';
+  const bar = document.createElement('div');
+  bar.style.cssText = 'background:rgba(48,217,192,0.06);border-bottom:1px solid rgba(48,217,192,0.12);text-align:center;padding:8px;font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:0.01em;';
+  bar.innerHTML = '<span style="color:var(--teal);margin-right:6px;">📍</span>' + msg;
+  const beta = document.querySelector('.beta-banner');
+  if(beta) beta.insertAdjacentElement('afterend',bar);
 }).catch(()=>{});
 
 /* ANALYTICS */
@@ -1636,4 +2114,91 @@ fetch('https://ipapi.co/json/',{signal:AbortSignal.timeout(4000)}).then(r=>r.jso
   document.addEventListener('keydown',e=>{if(e.altKey&&e.shiftKey&&e.key==='A'){const r=JSON.parse(localStorage.getItem('ss_a')||'{}');console.table(r.agg);console.log('Sessions:',r.sessions?.length);}});
   SA.track('pageview',{url:location.href});
 })();
+
+/* ══ ΛΛLIYΛH CHAT ══ */
+let chatOpen = false;
+let chatThreadId = null;
+let chatTyping = false;
+// ΛΛLIYΛH uses your configured OpenAI Assistant — no system prompt needed here.
+
+window.toggleChat = function() {
+  chatOpen = !chatOpen;
+  const panel = document.getElementById('aaliyahChatPanel');
+  const tooltip = document.getElementById('bubbleTooltip');
+  if(chatOpen) {
+    panel.classList.remove('hidden');
+    if(tooltip) tooltip.style.display = 'none';
+    setTimeout(()=>{ const input = document.getElementById('chatInput'); if(input) input.focus(); }, 300);
+  } else {
+    panel.classList.add('hidden');
+    if(tooltip) tooltip.style.display = 'block';
+  }
+};
+
+// Auto-hide tooltip after 5s
+setTimeout(()=>{
+  const t = document.getElementById('bubbleTooltip');
+  if(t && !chatOpen) { t.style.opacity='0'; t.style.transition='opacity 0.5s'; setTimeout(()=>{if(t)t.style.display='none';},500); }
+}, 5000);
+
+window.sendChat = async function() {
+  if(chatTyping) return;
+  const input = document.getElementById('chatInput');
+  const messages = document.getElementById('chatMessages');
+  const sendBtn = document.getElementById('chatSend');
+  const text = input.value.trim();
+  if(!text) return;
+
+  input.value = '';
+  appendMessage('user', text);
+  chatTyping = true;
+  sendBtn.disabled = true;
+
+  // Typing indicator
+  const typingEl = document.createElement('div');
+  typingEl.className = 'chat-msg ai';
+  typingEl.innerHTML = '<div class="msg-avatar ai"><img src="/Aaliyah-logo.png" onerror="this.style.display=\'none\';this.parentElement.textContent=\'ΛΛ\'"><\/div><div class="msg-bubble"><div class="msg-typing"><div class="typing-dot"><\/div><div class="typing-dot"><\/div><div class="typing-dot"><\/div><\/div><\/div>';
+  messages.appendChild(typingEl);
+  messages.scrollTop = messages.scrollHeight;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ message: text, threadId: chatThreadId })
+    });
+    const data = await res.json();
+    if(data.threadId) chatThreadId = data.threadId;
+    const reply = data.reply || 'Sorry, I had trouble connecting. Please email streetwisesomatics@gmail.com.';
+    typingEl.remove();
+    appendMessage('ai', reply);
+  } catch(e) {
+    typingEl.remove();
+    appendMessage('ai', 'Connection issue — reach us at streetwisesomatics@gmail.com or (209) 284-9066.');
+  }
+
+  chatTyping = false;
+  sendBtn.disabled = false;
+  input.focus();
+};
+
+function appendMessage(role, text) {
+  const messages = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + role;
+  const avatarHtml = role === 'ai'
+    ? '<div class="msg-avatar ai"><img src="/Aaliyah-logo.png" onerror="this.style.display=\'none\';this.parentElement.textContent=\'ΛΛ\'"><\/div>'
+    : '<div class="msg-avatar user-av">You<\/div>';
+  div.innerHTML = avatarHtml + '<div class="msg-bubble">' + text.replace(/\n/g,'<br>') + '<\/div>';
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+// Add Meet ΛΛLIYΛH to nav
+const navCenter = document.querySelector('.nav-center');
+if(navCenter) {
+  const li = document.createElement('li');
+  li.innerHTML = '<a href="#meet">Meet ΛΛLIYΛH</a>';
+  navCenter.insertBefore(li, navCenter.firstChild);
+}
 `

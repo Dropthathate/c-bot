@@ -61,7 +61,7 @@ const TherapistDashboard = () => {
             </CardHeader>
             <CardContent>
               <Button asChild className="w-full">
-                <Link to="/therapist/chat">
+                <Link to="/dashboard/chat">
                   Open Chat
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -86,7 +86,7 @@ const TherapistDashboard = () => {
             <CardContent>
               {hasPro ? (
                 <Button asChild variant="secondary" className="w-full">
-                  <Link to="/therapist/soap">
+                  <Link to="/dashboard/soap">
                     Generate Notes
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
@@ -117,7 +117,7 @@ const TherapistDashboard = () => {
             <CardContent>
               {hasPro ? (
                 <Button asChild variant="secondary" className="w-full">
-                  <Link to="/therapist/legal">
+                  <Link to="/dashboard/legal">
                     Find Forms
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>

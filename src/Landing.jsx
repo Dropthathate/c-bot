@@ -2166,12 +2166,12 @@ window.sendChat = async function() {
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
     const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-    const res = await fetch(`${supabaseUrl}/functions/v1/chat`, {
+ const res = await fetch(supabaseUrl + '/functions/v1/chat', {
       method: 'POST',
-      headers: {
+      'Authorization': 'Bearer ' + supabaseAnonKey,
         'Content-Type': 'application/json',
         'apikey': supabaseAnonKey,
-        'Authorization': `Bearer ${supabaseAnonKey}`,
+       'Authorization': 'Bearer ' + supabaseAnonKey,
       },
       body: JSON.stringify({
         messages: [

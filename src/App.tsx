@@ -10,7 +10,7 @@ const Onboarding = lazy(() => import("./pages/Onboarding"));
 const VideoLibrary = lazy(() => import("./pages/VideoLibrary"));
 const TherapistDashboard = lazy(() => import("./pages/therapist/TherapistDashboard"));
 const TherapistChat = lazy(() => import("./pages/therapist/TherapistChat"));
-const SoapNotes = lazy(() => import("./pages/therapist/SoapNotes"));
+const SoapNotes = lazy(() => import("./components/VoiceSoap"));
 const LegalForms = lazy(() => import("./pages/therapist/LegalForms"));
 const Intake = lazy(() => import("./pages/therapist/intake"));
 const NotFound = lazy(() => import("./pages/NotFound"));

@@ -145,7 +145,7 @@ const TherapistDashboard = () => {
             </CardHeader>
             <CardContent>
               <Button asChild variant="secondary" className="w-full">
-                <Link to="/therapist/videos">
+                <Link to="/dashboard/videos">
                   Browse Library
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>

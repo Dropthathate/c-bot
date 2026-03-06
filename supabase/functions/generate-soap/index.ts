@@ -1,5 +1,5 @@
 // File: supabase/functions/generate-soap/index.ts
-
+/// <reference lib="deno.ns" />
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
@@ -18,7 +18,7 @@ serve(async (req) => {
     const { rawNotes, conversationHistory } = await req.json()
 
     const openaiApiKey = Deno.env.get('OPENAI_API_KEY')
-    const assistantId = Deno.env.get('OPENAI_ASSISTANT_ID') // Your C-Bot assistant ID
+    const assistantId = Deno.eaznv.get('OPENAI_ASSISTANT_ID') // Your C-Bot assistant ID
     
     if (!openaiApiKey) {
       throw new Error('OPENAI_API_KEY not configured')

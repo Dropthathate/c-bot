@@ -10,7 +10,7 @@ import {
 
 const TherapistDashboard = () => {
   const { profile, subscriptionTier } = useAuth();
-  const hasPro = true; // All features active for beta;
+  const hasPro = subscriptionTier === "pro";
 
   return (
     <DashboardLayout requiredRole="therapist">
@@ -21,7 +21,7 @@ const TherapistDashboard = () => {
             Therapist Command Center
           </h1>
           <p className="text-muted-foreground">
-            Welcome back, {profile?.fullName?.split(" ")[0] || "Doctor"}. Manage your practice with ΛΛLIYΛH.IO compliance protection.
+            Welcome back, {profile?.fullName?.split(" ")[0] || "Doctor"}. Manage your practice with C-Bot compliance protection.
           </p>
         </div>
 
@@ -36,7 +36,7 @@ const TherapistDashboard = () => {
                 <div>
                   <h3 className="font-semibold text-foreground">Unlock Pro Features</h3>
                   <p className="text-sm text-muted-foreground">
-                    Get SOAP note generation, legal templates, and unlimited ΛΛLIYΛH.IO audits
+                    Get SOAP note generation, legal templates, and unlimited C-Bot audits
                   </p>
                 </div>
               </div>
@@ -133,12 +133,12 @@ const TherapistDashboard = () => {
           </Card>
 
           {/* Video Library */}
-          <Card className="hover:shadow-lg transition-shadow border-2 opacity-50 pointer-events-none">
-  <CardHeader>
-    <div className="w-12 h-12 rounded-xl bg-soma-teal-light flex items-center justify-center mb-3">
-      <Video className="h-6 w-6 text-primary" />
-    </div>
-    <CardTitle className="flex items-center gap-2">Technique Library <Crown className="h-4 w-4 text-soma-orange" /></CardTitle>
+          <Card className="hover:shadow-lg transition-shadow border-2 hover:border-primary/50">
+            <CardHeader>
+              <div className="w-12 h-12 rounded-xl bg-soma-teal-light flex items-center justify-center mb-3">
+                <Video className="h-6 w-6 text-primary" />
+              </div>
+              <CardTitle>Technique Library</CardTitle>
               <CardDescription>
                 276 mobilization techniques with Oxford references
               </CardDescription>
@@ -196,7 +196,7 @@ const TherapistDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                ΛΛLIYΛH.IO monitors your documentation for techniques that may fall outside your license type. 
+                C-Bot monitors your documentation for techniques that may fall outside your license type. 
                 Examples of flagged activities:
               </p>
               <div className="space-y-2 text-sm">

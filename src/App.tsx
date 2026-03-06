@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SomaSync AI — Intelligence That Listens | AALIYAH.IO</title>
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
+import { useEffect } from 'react'
+
+const css = `
 /* ═══════════════════════════════════════════════════
    RESET & TOKENS
 ═══════════════════════════════════════════════════ */
@@ -808,11 +800,108 @@ footer{padding:28px 40px;border-top:1px solid var(--border);display:flex;justify
   .email-row{flex-direction:column;}
   footer{flex-direction:column;text-align:center;padding:24px 16px;}
 }
-</style>
-</head>
-<body>
+`
 
-<!-- BETA BANNER -->
+const ldjson1 = `
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SomaSync AI",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "description": "AI-powered clinical documentation platform for manual therapists. Real-time SOAP note generation, ICD-10 auto-coding, and practice analytics.",
+  "url": "https://somasyncai.com",
+  "creator": {
+    "@type": "Organization",
+    "name": "AALIYAH.IO",
+    "url": "https://aaliyah.io"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free beta access"
+  },
+  "featureList": [
+    "Real-time SOAP note generation",
+    "ICD-10 auto-coding",
+    "Clinical documentation AI",
+    "Practice analytics dashboard",
+    "Biopsychosocial analysis",
+    "Billing code suggestions"
+  ]
+}
+`
+const ldjson2 = `
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "AALIYAH.IO",
+  "url": "https://aaliyah.io",
+  "logo": "/aaliyah-logo.png",
+  "description": "Clinical AI infrastructure for manual therapy practitioners — bridging Eastern and Western medicine through intelligent documentation.",
+  "sameAs": [],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "availableLanguage": ["English", "Spanish", "French", "Chinese", "Japanese", "Portuguese", "German", "Korean", "Arabic", "Hindi"]
+  }
+}
+`
+
+export default function App() {
+  useEffect(() => {
+    // Inject CSS
+    const style = document.createElement('style')
+    style.textContent = css
+    document.head.appendChild(style)
+
+    // Inject Google Fonts
+    const font = document.createElement('link')
+    font.rel = 'preload'
+    font.as = 'style'
+    font.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap'
+    font.onload = function(){ (this as HTMLLinkElement).rel = 'stylesheet' }
+    document.head.appendChild(font)
+
+    // Inject Chart.js
+    const chartScript = document.createElement('script')
+    chartScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js'
+    chartScript.onload = () => {
+      // Inject main JS after Chart.js loads
+      const script = document.createElement('script')
+      script.textContent = mainJS
+      document.body.appendChild(script)
+    }
+    document.head.appendChild(chartScript)
+
+    // Inject structured data
+    if (ldjson1) {
+      const s1 = document.createElement('script')
+      s1.type = 'application/ld+json'
+      s1.textContent = ldjson1
+      document.head.appendChild(s1)
+    }
+    if (ldjson2) {
+      const s2 = document.createElement('script')
+      s2.type = 'application/ld+json'
+      s2.textContent = ldjson2
+      document.head.appendChild(s2)
+    }
+
+    return () => {}
+  }, [])
+
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: html
+      }}
+    />
+  )
+}
+
+const html = `<!-- BETA BANNER -->
 <div class="beta-banner">
   ⚠️ BETA / TESTING PHASE — <span>SomaSync AI is in pre-release. All AI outputs are for demonstration only and do not constitute medical advice or clinical documentation.</span>
 </div>
@@ -1418,14 +1507,14 @@ footer{padding:28px 40px;border-top:1px solid var(--border);display:flex;justify
 const wbars = document.getElementById('wbars');
 [10,14,20,28,38,50,58,68,72,78,84,80,88,84,80,88,80,72,80,86,78,68,60,50,42,34,26,18,12,10].forEach((h,i)=>{
   const b=document.createElement('div');b.className='wbar';
-  b.style.cssText=`height:${h}px;animation-delay:${(i*0.055).toFixed(2)}s`;
+  b.style.cssText=\`height:\${h}px;animation-delay:\${(i*0.055).toFixed(2)}s\`;
   wbars.appendChild(b);
 });
 
 /* DEMO TABS */
 function switchTab(id){
   document.querySelectorAll('.demo-tab').forEach((t,i)=>t.classList.toggle('active',['icd','soap','billing'][i]===id));
-  document.querySelectorAll('.demo-panel').forEach(p=>p.classList.toggle('active',p.id===`panel-${id}`));
+  document.querySelectorAll('.demo-panel').forEach(p=>p.classList.toggle('active',p.id===\`panel-\${id}\`));
 }
 
 /* SCROLL REVEAL */
@@ -1482,17 +1571,758 @@ new Chart(document.getElementById('bigChart'),{type:'bar',data:{
 /* FORMS */
 document.getElementById('accessBtn').addEventListener('click',()=>{
   const btn=document.getElementById('accessBtn');
-  btn.textContent='✓ Request Submitted — We\'ll review and respond within 48 hours';
+  const name=document.querySelector('.fi-input[type="text"]')?.value||'';
+  const email=document.querySelector('.fi-input[type="email"]')?.value||'';
+  const specialty=document.querySelectorAll('.fi-input[type="text"]')[1]?.value||'';
+  const state=document.querySelectorAll('.fi-input[type="text"]')[2]?.value||'';
+  if(!email.includes('@')){alert('Please enter a valid email address.');return;}
+  SA.track('access_request',{name,email,specialty,state,timestamp:new Date().toISOString()});
+  btn.textContent='✓ Request Submitted — We\\'ll review and respond within 48 hours';
   btn.style.background='#34c759';btn.disabled=true;
 });
 function handleCTA(){
   const el=document.getElementById('ctaEmail');
   if(el.value.includes('@')){
-    el.value='';el.placeholder='✓ You\'re on the list!';
+    SA.track('waitlist_signup',{email:el.value,source:'cta_bottom',timestamp:new Date().toISOString()});
+    el.value='';el.placeholder='✓ You\\'re on the list!';
     document.querySelector('.btn-teal').textContent='Done ✓';
     document.querySelector('.btn-teal').style.background='#34c759';
   }
 }
 </script>
-</body>
-</html>
+
+<!-- ════════════════════════════════════════════════
+     SOMASYNC ANALYTICS ENGINE
+     Tracks: sessions, scroll depth, geo, clicks,
+     demo interactions, time on page, tab switches
+     Stores to localStorage + optional webhook
+════════════════════════════════════════════════ -->
+<script>
+(function(){
+'use strict';
+
+/* ── CONFIG ─────────────────────────────── */
+const CONFIG = {
+  appName: 'SomaSync AI',
+  version: '1.0.0',
+  webhookUrl: null, // Set to your endpoint: 'https://api.yoursite.com/analytics'
+  debug: false,     // Set true to see console logs during dev
+  storageKey: 'ss_analytics',
+  sessionKey: 'ss_session',
+};
+
+/* ── SESSION ─────────────────────────────── */
+const sessionId = 'ss_' + Math.random().toString(36).slice(2,11) + '_' + Date.now();
+const sessionStart = Date.now();
+let pageData = {
+  sessionId,
+  sessionStart: new Date().toISOString(),
+  referrer: document.referrer || 'direct',
+  userAgent: navigator.userAgent,
+  screen: \`\${screen.width}x\${screen.height}\`,
+  viewport: \`\${window.innerWidth}x\${window.innerHeight}\`,
+  language: navigator.language,
+  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  geo: null,
+  events: [],
+  scrollDepth: 0,
+  demoTabsViewed: [],
+  sectionsViewed: [],
+  timeOnPage: 0,
+  formStarted: false,
+  accessRequested: false,
+  waitlistSignup: false,
+};
+
+/* ── STORAGE ─────────────────────────────── */
+function getStore(){
+  try{ return JSON.parse(localStorage.getItem(CONFIG.storageKey)||'{"sessions":[],"aggregate":{}}'); }
+  catch(e){ return {sessions:[],aggregate:{}}; }
+}
+function saveStore(data){ try{ localStorage.setItem(CONFIG.storageKey,JSON.stringify(data)); }catch(e){} }
+function getAggregate(){
+  const s=getStore();
+  return s.aggregate||{totalSessions:0,totalPageviews:0,accessRequests:0,waitlistSignups:0,avgTimeOnPage:0,topReferrers:{},topGeo:{},demoInteractions:0,topSections:{}};
+}
+
+/* ── GEO DETECTION ───────────────────────── */
+async function detectGeo(){
+  try{
+    const res = await fetch('https://ipapi.co/json/',{signal:AbortSignal.timeout(4000)});
+    if(!res.ok) throw new Error();
+    const d = await res.json();
+    pageData.geo = {
+      country: d.country_name,
+      countryCode: d.country_code,
+      region: d.region,
+      city: d.city,
+      timezone: d.timezone,
+      org: d.org,
+      lat: d.latitude,
+      lon: d.longitude,
+    };
+    log('Geo detected:', pageData.geo);
+    updateGeoUI(pageData.geo);
+  } catch(e){
+    // Try fallback
+    try{
+      const r2 = await fetch('https://api.country.is/',{signal:AbortSignal.timeout(3000)});
+      const d2 = await r2.json();
+      pageData.geo = { countryCode: d2.country, country: d2.country };
+    } catch(e2){ pageData.geo = { country:'Unknown' }; }
+  }
+}
+
+function updateGeoUI(geo){
+  // Swap nav language hint based on country
+  const langMap = {
+    'MX':'🇲🇽 Hola','ES':'🇪🇸 Hola','FR':'🇫🇷 Bonjour','DE':'🇩🇪 Hallo',
+    'JP':'🇯🇵 こんにちは','KR':'🇰🇷 안녕하세요','CN':'🇨🇳 你好','BR':'🇧🇷 Olá',
+    'SA':'🇸🇦 مرحبا','IN':'🇮🇳 नमस्ते'
+  };
+  const code = geo.countryCode;
+  if(langMap[code]){
+    const pill = document.querySelector('.hero-eyebrow');
+    if(pill){
+      const span = document.createElement('span');
+      span.style.cssText='font-size:11px;color:rgba(255,255,255,0.4);margin-left:6px;';
+      span.textContent = langMap[code];
+      pill.appendChild(span);
+    }
+  }
+  // Show location-aware stat (city if US, country otherwise)
+  if(geo.city && geo.country === 'United States'){
+    injectGeoBar(\`📍 Now viewing from \${geo.city}, \${geo.region}\`);
+  } else if(geo.country && geo.country !== 'Unknown'){
+    injectGeoBar(\`📍 Viewing from \${geo.country} — Global access available\`);
+  }
+}
+
+function injectGeoBar(msg){
+  const bar = document.createElement('div');
+  bar.style.cssText='background:rgba(48,217,192,0.06);border-bottom:1px solid rgba(48,217,192,0.12);text-align:center;padding:7px;font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.02em;';
+  bar.textContent = msg;
+  const beta = document.querySelector('.beta-banner');
+  if(beta) beta.insertAdjacentElement('afterend',bar);
+}
+
+/* ── SCROLL DEPTH ────────────────────────── */
+let maxScroll = 0;
+const scrollMilestones = [25,50,75,90,100];
+const hitMilestones = new Set();
+window.addEventListener('scroll',()=>{
+  const pct = Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100);
+  if(pct > maxScroll){ maxScroll = pct; pageData.scrollDepth = pct; }
+  scrollMilestones.forEach(m=>{
+    if(pct >= m && !hitMilestones.has(m)){
+      hitMilestones.add(m);
+      SA.track('scroll_depth',{percent:m});
+    }
+  });
+},{passive:true});
+
+/* ── SECTION VISIBILITY ──────────────────── */
+const sectionObserver = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id = e.target.id || e.target.className.split(' ')[0];
+      if(!pageData.sectionsViewed.includes(id)){
+        pageData.sectionsViewed.push(id);
+        SA.track('section_view',{section:id});
+      }
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('section[id], .wave-section, .ticker-section, .features-marquee, .sphere-section, .global-section').forEach(el=>sectionObserver.observe(el));
+
+/* ── DEMO TAB TRACKING ───────────────────── */
+const origSwitch = window.switchTab;
+window.switchTab = function(id){
+  origSwitch(id);
+  if(!pageData.demoTabsViewed.includes(id)) pageData.demoTabsViewed.push(id);
+  SA.track('demo_tab',{tab:id});
+};
+
+/* ── FORM INTERACTION ────────────────────── */
+document.querySelectorAll('.fi-input').forEach(input=>{
+  input.addEventListener('focus',()=>{
+    if(!pageData.formStarted){
+      pageData.formStarted=true;
+      SA.track('form_started',{form:'access_request'});
+    }
+  },{once:true});
+});
+document.querySelector('.ei')?.addEventListener('focus',()=>{
+  SA.track('form_started',{form:'cta_waitlist'});
+},{once:true});
+
+/* ── CLICK TRACKING ──────────────────────── */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('button,a,.stag,.lang-pill,.demo-tab,.flow-card,.sc-card,.hub-card');
+  if(!el) return;
+  const label = el.textContent.trim().slice(0,60);
+  const type = el.tagName.toLowerCase();
+  SA.track('click',{element:type,label,href:el.href||null});
+});
+
+/* ── TIME ON PAGE ─────────────────────────── */
+setInterval(()=>{pageData.timeOnPage=Math.round((Date.now()-sessionStart)/1000);},5000);
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden') flush();
+});
+window.addEventListener('beforeunload',flush);
+
+/* ── FLUSH ───────────────────────────────── */
+function flush(){
+  pageData.timeOnPage=Math.round((Date.now()-sessionStart)/1000);
+  pageData.scrollDepthFinal=maxScroll;
+  const store=getStore();
+  store.sessions.push({...pageData,flushedAt:new Date().toISOString()});
+  if(store.sessions.length>200) store.sessions=store.sessions.slice(-200);
+  // Update aggregate
+  const agg=getAggregate();
+  agg.totalSessions=(agg.totalSessions||0)+1;
+  agg.totalPageviews=(agg.totalPageviews||0)+1;
+  if(pageData.accessRequested) agg.accessRequests=(agg.accessRequests||0)+1;
+  if(pageData.waitlistSignup) agg.waitlistSignups=(agg.waitlistSignups||0)+1;
+  agg.demoInteractions=(agg.demoInteractions||0)+pageData.demoTabsViewed.length;
+  agg.avgTimeOnPage=Math.round(((agg.avgTimeOnPage||0)*(agg.totalSessions-1)+pageData.timeOnPage)/agg.totalSessions);
+  if(pageData.geo?.country){
+    agg.topGeo=agg.topGeo||{};
+    agg.topGeo[pageData.geo.country]=(agg.topGeo[pageData.geo.country]||0)+1;
+  }
+  const ref=pageData.referrer.split('/')[2]||'direct';
+  agg.topReferrers=agg.topReferrers||{};
+  agg.topReferrers[ref]=(agg.topReferrers[ref]||0)+1;
+  pageData.sectionsViewed.forEach(s=>{
+    agg.topSections=agg.topSections||{};
+    agg.topSections[s]=(agg.topSections[s]||0)+1;
+  });
+  store.aggregate=agg;
+  saveStore(store);
+  if(CONFIG.webhookUrl) sendWebhook(pageData);
+}
+
+/* ── WEBHOOK ─────────────────────────────── */
+async function sendWebhook(data){
+  try{
+    await fetch(CONFIG.webhookUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),keepalive:true});
+  }catch(e){}
+}
+
+/* ── LOGGER ──────────────────────────────── */
+function log(...args){ if(CONFIG.debug) console.log('[SomaSync Analytics]',...args); }
+
+/* ── PUBLIC API ──────────────────────────── */
+window.SA = {
+  track(event, props={}){
+    const entry={event,props,timestamp:new Date().toISOString(),sessionId};
+    pageData.events.push(entry);
+    if(event==='access_request') pageData.accessRequested=true;
+    if(event==='waitlist_signup') pageData.waitlistSignup=true;
+    log('Event:',event,props);
+  },
+  /* getReport() — call from console or your dashboard */
+  getReport(){
+    const store=getStore();
+    const agg=store.aggregate||{};
+    const sessions=store.sessions||[];
+    const avgScroll=sessions.length ? Math.round(sessions.reduce((a,s)=>a+(s.scrollDepthFinal||0),0)/sessions.length) : 0;
+    const topTabs={};
+    sessions.forEach(s=>(s.demoTabsViewed||[]).forEach(t=>{topTabs[t]=(topTabs[t]||0)+1;}));
+    const deviceTypes={mobile:0,tablet:0,desktop:0};
+    sessions.forEach(s=>{
+      const w=parseInt((s.viewport||'0').split('x')[0]);
+      if(w<768) deviceTypes.mobile++;
+      else if(w<1024) deviceTypes.tablet++;
+      else deviceTypes.desktop++;
+    });
+    return {
+      summary:{
+        totalSessions:agg.totalSessions||0,
+        accessRequests:agg.accessRequests||0,
+        waitlistSignups:agg.waitlistSignups||0,
+        avgTimeOnPage:\`\${agg.avgTimeOnPage||0}s\`,
+        avgScrollDepth:\`\${avgScroll}%\`,
+        demoInteractions:agg.demoInteractions||0,
+      },
+      topGeo:agg.topGeo||{},
+      topReferrers:agg.topReferrers||{},
+      topSections:agg.topSections||{},
+      topDemoTabs:topTabs,
+      deviceTypes,
+      recentSessions:sessions.slice(-10).map(s=>({
+        id:s.sessionId,
+        date:s.sessionStart,
+        geo:s.geo,
+        timeOnPage:s.timeOnPage+'s',
+        scrollDepth:s.scrollDepthFinal+'%',
+        demoTabsViewed:s.demoTabsViewed,
+        accessRequested:s.accessRequested,
+        waitlistSignup:s.waitlistSignup,
+        referrer:s.referrer,
+        events:s.events?.length||0,
+      })),
+    };
+  },
+  /* showDashboard() — renders a live overlay panel */
+  showDashboard(){
+    const existing=document.getElementById('sa-dash');
+    if(existing){ existing.remove(); return; }
+    const r=this.getReport();
+    const dash=document.createElement('div');
+    dash.id='sa-dash';
+    dash.style.cssText=\`
+      position:fixed;bottom:20px;right:20px;z-index:9999;
+      width:420px;max-height:80vh;overflow-y:auto;
+      background:#0f1318;border:1px solid rgba(255,255,255,0.1);
+      border-radius:20px;padding:24px;
+      font-family:'Inter',sans-serif;font-size:13px;color:#c8cfd8;
+      box-shadow:0 24px 80px rgba(0,0,0,0.6);
+    \`;
+    const fmt=(obj)=>Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>\`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="color:rgba(255,255,255,0.5)">\${k}</span><span style="font-weight:700;color:#30d9c0">\${v}</span></div>\`).join('');
+    dash.innerHTML=\`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <span style="font-size:14px;font-weight:800;color:#fff;letter-spacing:-0.03em">📊 SomaSync Analytics</span>
+        <button onclick="document.getElementById('sa-dash').remove()" style="background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px">✕</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+        \${[['Sessions',r.summary.totalSessions],['Access Requests',r.summary.accessRequests],['Waitlist Signups',r.summary.waitlistSignups],['Avg Time',r.summary.avgTimeOnPage],['Avg Scroll',r.summary.avgScrollDepth],['Demo Interactions',r.summary.demoInteractions]].map(([l,v])=>\`<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px"><div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">\${l}</div><div style="font-size:20px;font-weight:800;color:#fff">\${v}</div></div>\`).join('')}
+      </div>
+      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Top Countries</div>\${fmt(r.topGeo)||'<div style="color:rgba(255,255,255,0.2)">No data yet</div>'}</div>
+      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Top Referrers</div>\${fmt(r.topReferrers)}</div>
+      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Sections Viewed</div>\${fmt(r.topSections)}</div>
+      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Demo Tabs</div>\${fmt(r.topDemoTabs)}</div>
+      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Devices</div>
+        <div style="display:flex;gap:8px">\${Object.entries(r.deviceTypes).map(([k,v])=>\`<div style="flex:1;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,0.3)">\${k}</div><div style="font-weight:700;color:#30d9c0">\${v}</div></div>\`).join('')}</div>
+      </div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.15);text-align:center;margin-top:12px">Type <code style="color:#30d9c0">SA.getReport()</code> in console for full JSON</div>
+    \`;
+    document.body.appendChild(dash);
+  },
+  clearData(){ localStorage.removeItem(CONFIG.storageKey); console.log('Analytics data cleared.'); },
+};
+
+/* ── INIT ─────────────────────────────────── */
+detectGeo();
+SA.track('pageview',{url:location.href,title:document.title});
+
+// Secret keystroke: press Alt+Shift+A to open analytics panel
+document.addEventListener('keydown',e=>{
+  if(e.altKey && e.shiftKey && e.key==='A') SA.showDashboard();
+});
+
+log('Analytics engine initialized. Session:',sessionId);
+log('Press Alt+Shift+A to open the analytics dashboard.');
+
+})();
+</script>`
+
+const mainJS = `
+/* WAVEFORM */
+const wbars = document.getElementById('wbars');
+[10,14,20,28,38,50,58,68,72,78,84,80,88,84,80,88,80,72,80,86,78,68,60,50,42,34,26,18,12,10].forEach((h,i)=>{
+  const b=document.createElement('div');b.className='wbar';
+  b.style.cssText=\`height:\${h}px;animation-delay:\${(i*0.055).toFixed(2)}s\`;
+  wbars.appendChild(b);
+});
+
+/* DEMO TABS */
+function switchTab(id){
+  document.querySelectorAll('.demo-tab').forEach((t,i)=>t.classList.toggle('active',['icd','soap','billing'][i]===id));
+  document.querySelectorAll('.demo-panel').forEach(p=>p.classList.toggle('active',p.id===\`panel-\${id}\`));
+}
+
+/* SCROLL REVEAL */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const d=+(e.target.dataset.delay||0);
+      setTimeout(()=>e.target.classList.add('vis'),d);
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:0.08});
+document.querySelectorAll('.flow-card,.chart-card,.big-chart,.bc,.sc-card,.hub-card,.metric-card').forEach(el=>{
+  if(!el.classList.contains('vis'))io.observe(el);
+});
+
+/* CHARTS */
+const tealGrad=(ctx,a,b)=>{const g=ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,a);g.addColorStop(1,b);return g;};
+
+// Speed
+const sc=document.getElementById('speedChart').getContext('2d');
+new Chart(sc,{type:'bar',data:{
+  labels:['Mon','Tue','Wed','Thu','Fri','Sat'],
+  datasets:[{data:[18,22,19,25,28,24],backgroundColor:'rgba(48,217,192,0.15)',borderColor:'#1fc4ac',borderWidth:2,borderRadius:8}]
+},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}},y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}}}}});
+
+// Accuracy
+const ac=document.getElementById('accChart').getContext('2d');
+const aGrad=ac.createLinearGradient(0,0,0,160);aGrad.addColorStop(0,'rgba(10,132,255,0.15)');aGrad.addColorStop(1,'rgba(10,132,255,0)');
+new Chart(ac,{type:'line',data:{
+  labels:['W1','W2','W3','W4','W5','W6','W7','W8'],
+  datasets:[{data:[74,78,80,82,83,85,87,88.5],borderColor:'#0a84ff',backgroundColor:aGrad,borderWidth:2.5,tension:0.4,fill:true,pointBackgroundColor:'#0a84ff',pointRadius:3}]
+},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}},y:{min:65,max:100,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10,family:'Inter'},color:'#a1a1a6'}}}}});
+
+// Donut
+new Chart(document.getElementById('dxChart'),{type:'doughnut',data:{
+  labels:['Cervicalgia','Low Back','Myalgia','Sciatica','Other'],
+  datasets:[{data:[28,34,18,12,8],backgroundColor:['#30d9c0','#0a84ff','#ff9f0a','#bf5af2','#e8e8ed'],borderWidth:0,hoverOffset:6}]
+},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10,family:'Inter'},color:'#6e6e73',boxWidth:10,padding:8}}}}});
+
+// Big chart
+new Chart(document.getElementById('bigChart'),{type:'bar',data:{
+  labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  datasets:[
+    {label:'Sessions',data:[42,58,64,72,80,88,94,102,110,98,115,124],backgroundColor:'rgba(48,217,192,0.15)',borderColor:'#1fc4ac',borderWidth:2,borderRadius:8,yAxisID:'y'},
+    {label:'Avg Doc Time (min)',data:[18,16,15,14,12,11,10,9,9,8,8,7],type:'line',borderColor:'#0a84ff',backgroundColor:'rgba(10,132,255,0.08)',borderWidth:2.5,tension:0.4,fill:true,pointBackgroundColor:'#0a84ff',pointRadius:3,yAxisID:'y1'}
+  ]
+},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{
+  x:{grid:{display:false},ticks:{font:{size:11,family:'Inter'},color:'#a1a1a6'}},
+  y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11,family:'Inter'},color:'#a1a1a6'},position:'left'},
+  y1:{grid:{display:false},ticks:{font:{size:11,family:'Inter'},color:'#6ab5ff'},position:'right'}
+}}});
+
+/* FORMS */
+document.getElementById('accessBtn').addEventListener('click',()=>{
+  const btn=document.getElementById('accessBtn');
+  const name=document.querySelector('.fi-input[type="text"]')?.value||'';
+  const email=document.querySelector('.fi-input[type="email"]')?.value||'';
+  const specialty=document.querySelectorAll('.fi-input[type="text"]')[1]?.value||'';
+  const state=document.querySelectorAll('.fi-input[type="text"]')[2]?.value||'';
+  if(!email.includes('@')){alert('Please enter a valid email address.');return;}
+  SA.track('access_request',{name,email,specialty,state,timestamp:new Date().toISOString()});
+  btn.textContent='✓ Request Submitted — We\\'ll review and respond within 48 hours';
+  btn.style.background='#34c759';btn.disabled=true;
+});
+function handleCTA(){
+  const el=document.getElementById('ctaEmail');
+  if(el.value.includes('@')){
+    SA.track('waitlist_signup',{email:el.value,source:'cta_bottom',timestamp:new Date().toISOString()});
+    el.value='';el.placeholder='✓ You\\'re on the list!';
+    document.querySelector('.btn-teal').textContent='Done ✓';
+    document.querySelector('.btn-teal').style.background='#34c759';
+  }
+}
+
+
+(function(){
+'use strict';
+
+/* ── CONFIG ─────────────────────────────── */
+const CONFIG = {
+  appName: 'SomaSync AI',
+  version: '1.0.0',
+  webhookUrl: null, // Set to your endpoint: 'https://api.yoursite.com/analytics'
+  debug: false,     // Set true to see console logs during dev
+  storageKey: 'ss_analytics',
+  sessionKey: 'ss_session',
+};
+
+/* ── SESSION ─────────────────────────────── */
+const sessionId = 'ss_' + Math.random().toString(36).slice(2,11) + '_' + Date.now();
+const sessionStart = Date.now();
+let pageData = {
+  sessionId,
+  sessionStart: new Date().toISOString(),
+  referrer: document.referrer || 'direct',
+  userAgent: navigator.userAgent,
+  screen: \`\${screen.width}x\${screen.height}\`,
+  viewport: \`\${window.innerWidth}x\${window.innerHeight}\`,
+  language: navigator.language,
+  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  geo: null,
+  events: [],
+  scrollDepth: 0,
+  demoTabsViewed: [],
+  sectionsViewed: [],
+  timeOnPage: 0,
+  formStarted: false,
+  accessRequested: false,
+  waitlistSignup: false,
+};
+
+/* ── STORAGE ─────────────────────────────── */
+function getStore(){
+  try{ return JSON.parse(localStorage.getItem(CONFIG.storageKey)||'{"sessions":[],"aggregate":{}}'); }
+  catch(e){ return {sessions:[],aggregate:{}}; }
+}
+function saveStore(data){ try{ localStorage.setItem(CONFIG.storageKey,JSON.stringify(data)); }catch(e){} }
+function getAggregate(){
+  const s=getStore();
+  return s.aggregate||{totalSessions:0,totalPageviews:0,accessRequests:0,waitlistSignups:0,avgTimeOnPage:0,topReferrers:{},topGeo:{},demoInteractions:0,topSections:{}};
+}
+
+/* ── GEO DETECTION ───────────────────────── */
+async function detectGeo(){
+  try{
+    const res = await fetch('https://ipapi.co/json/',{signal:AbortSignal.timeout(4000)});
+    if(!res.ok) throw new Error();
+    const d = await res.json();
+    pageData.geo = {
+      country: d.country_name,
+      countryCode: d.country_code,
+      region: d.region,
+      city: d.city,
+      timezone: d.timezone,
+      org: d.org,
+      lat: d.latitude,
+      lon: d.longitude,
+    };
+    log('Geo detected:', pageData.geo);
+    updateGeoUI(pageData.geo);
+  } catch(e){
+    // Try fallback
+    try{
+      const r2 = await fetch('https://api.country.is/',{signal:AbortSignal.timeout(3000)});
+      const d2 = await r2.json();
+      pageData.geo = { countryCode: d2.country, country: d2.country };
+    } catch(e2){ pageData.geo = { country:'Unknown' }; }
+  }
+}
+
+function updateGeoUI(geo){
+  // Swap nav language hint based on country
+  const langMap = {
+    'MX':'🇲🇽 Hola','ES':'🇪🇸 Hola','FR':'🇫🇷 Bonjour','DE':'🇩🇪 Hallo',
+    'JP':'🇯🇵 こんにちは','KR':'🇰🇷 안녕하세요','CN':'🇨🇳 你好','BR':'🇧🇷 Olá',
+    'SA':'🇸🇦 مرحبا','IN':'🇮🇳 नमस्ते'
+  };
+  const code = geo.countryCode;
+  if(langMap[code]){
+    const pill = document.querySelector('.hero-eyebrow');
+    if(pill){
+      const span = document.createElement('span');
+      span.style.cssText='font-size:11px;color:rgba(255,255,255,0.4);margin-left:6px;';
+      span.textContent = langMap[code];
+      pill.appendChild(span);
+    }
+  }
+  // Show location-aware stat (city if US, country otherwise)
+  if(geo.city && geo.country === 'United States'){
+    injectGeoBar(\`📍 Now viewing from \${geo.city}, \${geo.region}\`);
+  } else if(geo.country && geo.country !== 'Unknown'){
+    injectGeoBar(\`📍 Viewing from \${geo.country} — Global access available\`);
+  }
+}
+
+function injectGeoBar(msg){
+  const bar = document.createElement('div');
+  bar.style.cssText='background:rgba(48,217,192,0.06);border-bottom:1px solid rgba(48,217,192,0.12);text-align:center;padding:7px;font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.02em;';
+  bar.textContent = msg;
+  const beta = document.querySelector('.beta-banner');
+  if(beta) beta.insertAdjacentElement('afterend',bar);
+}
+
+/* ── SCROLL DEPTH ────────────────────────── */
+let maxScroll = 0;
+const scrollMilestones = [25,50,75,90,100];
+const hitMilestones = new Set();
+window.addEventListener('scroll',()=>{
+  const pct = Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100);
+  if(pct > maxScroll){ maxScroll = pct; pageData.scrollDepth = pct; }
+  scrollMilestones.forEach(m=>{
+    if(pct >= m && !hitMilestones.has(m)){
+      hitMilestones.add(m);
+      SA.track('scroll_depth',{percent:m});
+    }
+  });
+},{passive:true});
+
+/* ── SECTION VISIBILITY ──────────────────── */
+const sectionObserver = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id = e.target.id || e.target.className.split(' ')[0];
+      if(!pageData.sectionsViewed.includes(id)){
+        pageData.sectionsViewed.push(id);
+        SA.track('section_view',{section:id});
+      }
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('section[id], .wave-section, .ticker-section, .features-marquee, .sphere-section, .global-section').forEach(el=>sectionObserver.observe(el));
+
+/* ── DEMO TAB TRACKING ───────────────────── */
+const origSwitch = window.switchTab;
+window.switchTab = function(id){
+  origSwitch(id);
+  if(!pageData.demoTabsViewed.includes(id)) pageData.demoTabsViewed.push(id);
+  SA.track('demo_tab',{tab:id});
+};
+
+/* ── FORM INTERACTION ────────────────────── */
+document.querySelectorAll('.fi-input').forEach(input=>{
+  input.addEventListener('focus',()=>{
+    if(!pageData.formStarted){
+      pageData.formStarted=true;
+      SA.track('form_started',{form:'access_request'});
+    }
+  },{once:true});
+});
+document.querySelector('.ei')?.addEventListener('focus',()=>{
+  SA.track('form_started',{form:'cta_waitlist'});
+},{once:true});
+
+/* ── CLICK TRACKING ──────────────────────── */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('button,a,.stag,.lang-pill,.demo-tab,.flow-card,.sc-card,.hub-card');
+  if(!el) return;
+  const label = el.textContent.trim().slice(0,60);
+  const type = el.tagName.toLowerCase();
+  SA.track('click',{element:type,label,href:el.href||null});
+});
+
+/* ── TIME ON PAGE ─────────────────────────── */
+setInterval(()=>{pageData.timeOnPage=Math.round((Date.now()-sessionStart)/1000);},5000);
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden') flush();
+});
+window.addEventListener('beforeunload',flush);
+
+/* ── FLUSH ───────────────────────────────── */
+function flush(){
+  pageData.timeOnPage=Math.round((Date.now()-sessionStart)/1000);
+  pageData.scrollDepthFinal=maxScroll;
+  const store=getStore();
+  store.sessions.push({...pageData,flushedAt:new Date().toISOString()});
+  if(store.sessions.length>200) store.sessions=store.sessions.slice(-200);
+  // Update aggregate
+  const agg=getAggregate();
+  agg.totalSessions=(agg.totalSessions||0)+1;
+  agg.totalPageviews=(agg.totalPageviews||0)+1;
+  if(pageData.accessRequested) agg.accessRequests=(agg.accessRequests||0)+1;
+  if(pageData.waitlistSignup) agg.waitlistSignups=(agg.waitlistSignups||0)+1;
+  agg.demoInteractions=(agg.demoInteractions||0)+pageData.demoTabsViewed.length;
+  agg.avgTimeOnPage=Math.round(((agg.avgTimeOnPage||0)*(agg.totalSessions-1)+pageData.timeOnPage)/agg.totalSessions);
+  if(pageData.geo?.country){
+    agg.topGeo=agg.topGeo||{};
+    agg.topGeo[pageData.geo.country]=(agg.topGeo[pageData.geo.country]||0)+1;
+  }
+  const ref=pageData.referrer.split('/')[2]||'direct';
+  agg.topReferrers=agg.topReferrers||{};
+  agg.topReferrers[ref]=(agg.topReferrers[ref]||0)+1;
+  pageData.sectionsViewed.forEach(s=>{
+    agg.topSections=agg.topSections||{};
+    agg.topSections[s]=(agg.topSections[s]||0)+1;
+  });
+  store.aggregate=agg;
+  saveStore(store);
+  if(CONFIG.webhookUrl) sendWebhook(pageData);
+}
+
+/* ── WEBHOOK ─────────────────────────────── */
+async function sendWebhook(data){
+  try{
+    await fetch(CONFIG.webhookUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),keepalive:true});
+  }catch(e){}
+}
+
+/* ── LOGGER ──────────────────────────────── */
+function log(...args){ if(CONFIG.debug) console.log('[SomaSync Analytics]',...args); }
+
+/* ── PUBLIC API ──────────────────────────── */
+window.SA = {
+  track(event, props={}){
+    const entry={event,props,timestamp:new Date().toISOString(),sessionId};
+    pageData.events.push(entry);
+    if(event==='access_request') pageData.accessRequested=true;
+    if(event==='waitlist_signup') pageData.waitlistSignup=true;
+    log('Event:',event,props);
+  },
+  /* getReport() — call from console or your dashboard */
+  getReport(){
+    const store=getStore();
+    const agg=store.aggregate||{};
+    const sessions=store.sessions||[];
+    const avgScroll=sessions.length ? Math.round(sessions.reduce((a,s)=>a+(s.scrollDepthFinal||0),0)/sessions.length) : 0;
+    const topTabs={};
+    sessions.forEach(s=>(s.demoTabsViewed||[]).forEach(t=>{topTabs[t]=(topTabs[t]||0)+1;}));
+    const deviceTypes={mobile:0,tablet:0,desktop:0};
+    sessions.forEach(s=>{
+      const w=parseInt((s.viewport||'0').split('x')[0]);
+      if(w<768) deviceTypes.mobile++;
+      else if(w<1024) deviceTypes.tablet++;
+      else deviceTypes.desktop++;
+    });
+    return {
+      summary:{
+        totalSessions:agg.totalSessions||0,
+        accessRequests:agg.accessRequests||0,
+        waitlistSignups:agg.waitlistSignups||0,
+        avgTimeOnPage:\`\${agg.avgTimeOnPage||0}s\`,
+        avgScrollDepth:\`\${avgScroll}%\`,
+        demoInteractions:agg.demoInteractions||0,
+      },
+      topGeo:agg.topGeo||{},
+      topReferrers:agg.topReferrers||{},
+      topSections:agg.topSections||{},
+      topDemoTabs:topTabs,
+      deviceTypes,
+      recentSessions:sessions.slice(-10).map(s=>({
+        id:s.sessionId,
+        date:s.sessionStart,
+        geo:s.geo,
+        timeOnPage:s.timeOnPage+'s',
+        scrollDepth:s.scrollDepthFinal+'%',
+        demoTabsViewed:s.demoTabsViewed,
+        accessRequested:s.accessRequested,
+        waitlistSignup:s.waitlistSignup,
+        referrer:s.referrer,
+        events:s.events?.length||0,
+      })),
+    };
+  },
+  /* showDashboard() — renders a live overlay panel */
+  showDashboard(){
+    const existing=document.getElementById('sa-dash');
+    if(existing){ existing.remove(); return; }
+    const r=this.getReport();
+    const dash=document.createElement('div');
+    dash.id='sa-dash';
+    dash.style.cssText=\`
+      position:fixed;bottom:20px;right:20px;z-index:9999;
+      width:420px;max-height:80vh;overflow-y:auto;
+      background:#0f1318;border:1px solid rgba(255,255,255,0.1);
+      border-radius:20px;padding:24px;
+      font-family:'Inter',sans-serif;font-size:13px;color:#c8cfd8;
+      box-shadow:0 24px 80px rgba(0,0,0,0.6);
+    \`;
+    const fmt=(obj)=>Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>\`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="color:rgba(255,255,255,0.5)">\${k}</span><span style="font-weight:700;color:#30d9c0">\${v}</span></div>\`).join('');
+    dash.innerHTML=\`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <span style="font-size:14px;font-weight:800;color:#fff;letter-spacing:-0.03em">📊 SomaSync Analytics</span>
+        <button onclick="document.getElementById('sa-dash').remove()" style="background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px">✕</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+        \${[['Sessions',r.summary.totalSessions],['Access Requests',r.summary.accessRequests],['Waitlist Signups',r.summary.waitlistSignups],['Avg Time',r.summary.avgTimeOnPage],['Avg Scroll',r.summary.avgScrollDepth],['Demo Interactions',r.summary.demoInteractions]].map(([l,v])=>\`<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px"><div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">\${l}</div><div style="font-size:20px;font-weight:800;color:#fff">\${v}</div></div>\`).join('')}
+      </div>
+      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Top Countries</div>\${fmt(r.topGeo)||'<div style="color:rgba(255,255,255,0.2)">No data yet</div>'}</div>
+      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Top Referrers</div>\${fmt(r.topReferrers)}</div>
+      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Sections Viewed</div>\${fmt(r.topSections)}</div>
+      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Demo Tabs</div>\${fmt(r.topDemoTabs)}</div>
+      <div style="margin-bottom:16px"><div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Devices</div>
+        <div style="display:flex;gap:8px">\${Object.entries(r.deviceTypes).map(([k,v])=>\`<div style="flex:1;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:rgba(255,255,255,0.3)">\${k}</div><div style="font-weight:700;color:#30d9c0">\${v}</div></div>\`).join('')}</div>
+      </div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.15);text-align:center;margin-top:12px">Type <code style="color:#30d9c0">SA.getReport()</code> in console for full JSON</div>
+    \`;
+    document.body.appendChild(dash);
+  },
+  clearData(){ localStorage.removeItem(CONFIG.storageKey); console.log('Analytics data cleared.'); },
+};
+
+/* ── INIT ─────────────────────────────────── */
+detectGeo();
+SA.track('pageview',{url:location.href,title:document.title});
+
+// Secret keystroke: press Alt+Shift+A to open analytics panel
+document.addEventListener('keydown',e=>{
+  if(e.altKey && e.shiftKey && e.key==='A') SA.showDashboard();
+});
+
+log('Analytics engine initialized. Session:',sessionId);
+log('Press Alt+Shift+A to open the analytics dashboard.');
+
+})();
+`

@@ -1,87 +1,102 @@
-import React, { useState, useEffect } from 'react';
-import { analyzeSessionLive, ClinicalInsight } from '../Logic/AaliyahEngine';
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Mic, Brain, FileText, Sparkles } from "lucide-react";
+import heroBg from "@/assets/hero-bg.jpg";
 
-const HeroSection: React.FC = () => {
-    const [isListening, setIsListening] = useState(false);
-    const [insights, setInsights] = useState<ClinicalInsight[]>([]);
+const HeroSection = () => {
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+      {/* Animated background orbs */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-soma-purple/20 rounded-full blur-3xl animate-float delay-200" />
+      <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-soma-blue/15 rounded-full blur-3xl animate-float delay-400" />
+      
+      {/* Background Image with Overlay */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${heroBg})` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/85 to-background/75" />
+      </div>
 
-    const whisperToTherapist = (message: string) => {
-        const speech = new SpeechSynthesisUtterance(message);
-        speech.volume = 0.7;
-        speech.rate = 0.9;
-        window.speechSynthesis.speak(speech);
-    };
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 animate-fade-in animate-bounce-subtle">
+            <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+            <span className="text-sm font-medium text-foreground">Where West Meets East</span>
+          </div>
 
-    const handleNewTranscript = (text: string) => {
-        const result = analyzeSessionLive(text);
-        if (result) {
-            whisperToTherapist(`${result.message}. ${result.action}`);
-            setInsights(prev => [result, ...prev]);
-        }
-    };
+          {/* Main Heading */}
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 animate-slide-up leading-tight">
+            <span className="gradient-text">SomaSync AI</span>
+            <br />
+            <span className="text-foreground text-3xl md:text-4xl lg:text-5xl">
+              Relieve Pain. Live Better.
+            </span>
+          </h1>
 
-    const saveSession = () => {
-        const sessionData = { date: new Date().toLocaleDateString(), insights };
-        const blob = new Blob([JSON.stringify(sessionData, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `SomaSync_SOAP_Record.json`;
-        link.click();
-    };
+          {/* Subheading */}
+          <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-slide-up delay-100">
+            The first in-ear AI clinical assistant powered by{" "}
+            <span className="text-primary font-semibold">Eastern wisdom</span> and{" "}
+            <span className="text-soma-purple font-semibold">Western science</span>.
+            Oxford Orthopaedics meets traditional pain relief practices—protected by .
+          </p>
 
-    useEffect(() => {
-        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-        if (!SpeechRecognition) return;
-        const recognition = new SpeechRecognition();
-        recognition.continuous = true;
-        recognition.onresult = (event: any) => {
-            const transcript = event.results[event.results.length - 1][0].transcript;
-            handleNewTranscript(transcript);
-        };
-        if (isListening) recognition.start();
-        return () => recognition.stop();
-    }, [isListening]);
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up delay-200">
+            <Button variant="hero" size="xl" asChild className="group shadow-glow animate-pulse-glow">
+              <Link to="/auth">
+                Start Free
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+            <Button variant="hero-outline" size="xl" asChild>
+              <a href="#pricing">
+                View Pricing
+              </a>
+            </Button>
+          </div>
 
-    return (
-        <section className="hero-section">
-            <header className="dashboard-header">
-                <div className="logo-container">
-                    <img src="/images/ss.png" alt="SomaSync" style={{height: '50px'}} />
-                    <div className="divider" style={{width:'1px', height:'40px', background:'#555', margin:'0 20px'}}></div>
-                    <img src="/images/Aaliyah-logo.png" alt="Aaliyah" style={{height: '50px', borderRadius:'50%'}} />
-                    <h2 style={{marginLeft:'10px'}}>ΛΛLIYΛH.IO</h2>
-                </div>
-            </header>
-
-            <div className="container" style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', padding: '20px'}}>
-                {/* COL 1 */}
-                <div className="column">
-                    <h3>In-Ear Feed</h3>
-                    <button className="mic-btn" onClick={() => setIsListening(!isListening)}>
-                        {isListening ? 'STOP SESSION' : 'START SESSION'}
-                    </button>
-                </div>
-                {/* COL 2 */}
-                <div className="column">
-                    <h3>ΛΛLIYΛH.IO Insights</h3>
-                    {insights.map((item, i) => (
-                        <div key={i} className={`insight-card ${item.type.toLowerCase()}`} style={{borderLeft: '4px solid red', margin:'10px 0', padding:'10px', background:'rgba(255,255,255,0.05)'}}>
-                            <strong>{item.type}</strong>: {item.message}
-                        </div>
-                    ))}
-                </div>
-                {/* COL 3 */}
-                <div className="column">
-                    <h3>Clinical Archive</h3>
-                    <p>ICD-10 Mapping: M79.12</p>
-                    <button onClick={saveSession} style={{width:'100%', padding:'10px', background:'#00f2fe', color:'#000', fontWeight:'bold'}}>
-                        FINALIZE SOAP NOTE
-                    </button>
-                </div>
+          {/* Feature Pills - Animated */}
+          <div className="flex flex-wrap items-center justify-center gap-4 animate-fade-in delay-300">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full glass-card hover-lift cursor-default">
+              <Mic className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium">Voice Commands</span>
             </div>
-        </section>
-    );
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full glass-card hover-lift cursor-default">
+              <Brain className="w-4 h-4 text-soma-purple" />
+              <span className="text-sm font-medium">Dual-Core AI</span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full glass-card hover-lift cursor-default">
+              <FileText className="w-4 h-4 text-soma-green" />
+              <span className="text-sm font-medium">HIPAA Compliant</span>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="mt-16 grid grid-cols-3 gap-8 max-w-xl mx-auto animate-fade-in delay-400">
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold gradient-text">276</div>
+              <div className="text-sm text-muted-foreground">Video Techniques</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold gradient-text">40+</div>
+              <div className="text-sm text-muted-foreground">Clinical Terms</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold gradient-text">24/7</div>
+              <div className="text-sm text-muted-foreground">AI Support</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Decorative gradient bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background via-background/50 to-transparent" />
+    </section>
+  );
 };
 
 export default HeroSection;

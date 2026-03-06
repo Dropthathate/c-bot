@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useAuth } from "@/hooks/useAuth";
 
 // Lazy-load pages for better performance
-const Landing = lazy(() => import("./pages/Index"));
+const Landing = lazy(() => import("./Landing"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Onboarding = lazy(() => import("./pages/Onboarding"));
 const VideoLibrary = lazy(() => import("./pages/VideoLibrary"));

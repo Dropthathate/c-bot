@@ -166,7 +166,7 @@ const SoapNotes = () => {
   };
 
   return (
-    <DashboardLayout requiredRole="therapist" requiredTier="pro">
+   <DashboardLayout>
       <div className="h-screen flex">
         {/* Sidebar - Note List */}
         <div className="w-80 border-r border-border bg-card flex flex-col">

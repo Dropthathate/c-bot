@@ -10,8 +10,7 @@ import {
 
 const TherapistDashboard = () => {
   const { profile, subscriptionTier } = useAuth();
-  const hasPro = subscriptionTier === "pro";
-
+ const hasPro = true;
   return (
     <DashboardLayout requiredRole="therapist">
       <div className="p-8 max-w-6xl mx-auto">

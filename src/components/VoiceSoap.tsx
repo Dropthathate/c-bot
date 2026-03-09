@@ -139,7 +139,7 @@ export default function VoiceSoap() {
       }
 
       const data = await response.json();
-      setSoapNote(data.soap);
+      setSoapNote({ ...data.soap, icd10: data.icd10, cpt: data.cpt, medical_necessity: data.medical_necessity });
       addToTranscript('Documentation generated', 'system');
       setState('idle');
     } catch (err) {

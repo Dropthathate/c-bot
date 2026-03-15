@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SomaSyncAI — The Gold Standard OS for Manual Therapists | Live AI Clinical Documentation</title>
+<meta name="description" content="SomaSyncAI is the gold standard AI operating system for manual therapists, physical therapists, chiropractors, and massage therapists. Live in-ear AI guidance, automatic SOAP notes, voice charting — hands-free clinical documentation that thinks with you."/>
+<meta name="keywords" content="AI clinical documentation, SOAP notes automation, manual therapy software, physical therapy AI, chiropractic documentation, massage therapy software, voice charting, clinical AI assistant, SomaSyncAI, hands-free documentation, California therapist software, Los Angeles physical therapy software, San Francisco chiropractic AI"/>
+<meta property="og:title" content="SomaSyncAI — Gold Standard AI for Manual Therapists"/>
+<meta property="og:description" content="Live in-ear AI guidance. Automatic SOAP notes. Voice charting. The clinical OS built for hands-on practitioners."/>
+<meta property="og:url" content="https://somasyncai.com"/>
+<meta property="og:type" content="website"/>
+<link rel="canonical" href="https://somasyncai.com"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --gold-dark: #8a6520;
+  --ink: #080810;
+  --ink2: #111118;
+  --white: #f5f3ee;
+  --soft: #a8a499;
+  --rule: rgba(201,168,76,0.15);
+  --glow: rgba(201,168,76,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  position: fixed; width: 8px; height: 8px;
+  background: var(--gold); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(201,168,76,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s;
+}
+body:has(a:hover) .cursor-ring,
+body:has(button:hover) .cursor-ring { width: 56px; height: 56px; border-color: var(--gold); }
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.4;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  height: 72px;
+  background: rgba(8,8,16,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--rule);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; align-items: center; gap: 2.5rem; }
+.nav-links a {
+  font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--soft); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  background: var(--gold); color: var(--ink) !important;
+  font-weight: 500; padding: 8px 20px; border-radius: 4px;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(--gold-light) !important; color: var(--ink) !important; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 72px clamp(1.5rem, 8vw, 8rem) 0;
+  position: relative; overflow: hidden;
+}
+
+/* Animated grid background */
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridDrift 20s linear infinite;
+}
+@keyframes gridDrift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(60px); }
+}
+
+/* Radial glow */
+.hero-glow {
+  position: absolute; top: 20%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  animation: glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%,-50%) scale(1.1); }
+}
+
+/* Orbiting rings */
+.hero-rings {
+  position: absolute; right: -5%; top: 50%;
+  transform: translateY(-50%);
+  width: 700px; height: 700px;
+  pointer-events: none;
+}
+.ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.15);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  animation: ringRotate linear infinite;
+}
+.ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 8s; border-color: rgba(201,168,76,0.3); }
+.ring:nth-child(2) { width: 340px; height: 340px; animation-duration: 14s; animation-direction: reverse; }
+.ring:nth-child(3) { width: 480px; height: 480px; animation-duration: 22s; }
+.ring:nth-child(4) { width: 620px; height: 620px; animation-duration: 32s; animation-direction: reverse; border-color: rgba(201,168,76,0.06); }
+.ring-dot {
+  position: absolute; width: 6px; height: 6px;
+  background: var(--gold); border-radius: 50%;
+  top: 0; left: 50%; transform: translateX(-50%) translateY(-50%);
+  box-shadow: 0 0 12px var(--gold);
+}
+@keyframes ringRotate {
+  from { transform: translate(-50%,-50%) rotate(0deg); }
+  to { transform: translate(-50%,-50%) rotate(360deg); }
+}
+
+.hero-content { position: relative; z-index: 2; max-width: 700px; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--rule);
+  background: rgba(201,168,76,0.06);
+  padding: 6px 16px; border-radius: 100px;
+  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 2rem;
+  animation: fadeUp 0.8s ease both;
+}
+.badge-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: blink 2s ease infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+.hero h1 .gold { color: var(--gold); }
+.hero h1 .outline {
+  -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+  color: transparent;
+}
+
+.hero-sub {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--soft);
+  font-style: italic;
+  margin-bottom: 2.5rem;
+  max-width: 540px;
+  animation: fadeUp 0.8s 0.2s ease both;
+  line-height: 1.8;
+}
+
+.hero-actions {
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--gold); color: var(--ink);
+  font-weight: 500; font-size: 0.9rem; letter-spacing: 0.06em;
+  padding: 14px 32px; border-radius: 4px;
+  text-decoration: none; border: none; cursor: none;
+  transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.btn-primary::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%); transition: transform 0.4s;
+}
+.btn-primary:hover::before { transform: translateX(100%); }
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 8px 30px rgba(201,168,76,0.3); }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--soft); font-size: 0.85rem; letter-spacing: 0.08em;
+  text-decoration: none; transition: color 0.2s;
+  cursor: none;
+}
+.btn-secondary:hover { color: var(--white); }
+.btn-secondary svg { transition: transform 0.2s; }
+.btn-secondary:hover svg { transform: translateX(4px); }
+
+.hero-stats {
+  display: flex; gap: 3rem; margin-top: 4rem;
+  padding-top: 2rem; border-top: 1px solid var(--rule);
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem; color: var(--gold); letter-spacing: 0.04em;
+  line-height: 1;
+}
+.stat-label { font-size: 0.78rem; color: var(--soft); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── MARQUEE ── */
+.marquee-wrap {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 1rem 0;
+  overflow: hidden;
+  background: rgba(201,168,76,0.03);
+}
+.marquee-track {
+  display: flex; gap: 4rem;
+  animation: marquee 30s linear infinite;
+  white-space: nowrap;
+}
+.marquee-item {
+  display: flex; align-items: center; gap: 1rem;
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--soft);
+}
+.marquee-item span { color: var(--gold); }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ── SECTIONS ── */
+section { padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 8vw, 8rem); position: relative; }
+
+.section-label {
+  font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+
+h2.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 0.95; letter-spacing: 0.02em;
+  margin-bottom: 1.5rem;
+}
+h2.section-title .gold { color: var(--gold); }
+
+.section-body {
+  font-family: 'Libre Baskerville', serif;
+  font-style: italic; color: var(--soft);
+  font-size: 1.05rem; max-width: 560px; line-height: 1.85;
+}
+
+/* ── PROBLEM SECTION ── */
+.problem { background: var(--ink2); }
+.problem-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: center; margin-top: 4rem;
+}
+.problem-numbers { display: flex; flex-direction: column; gap: 2rem; }
+.prob-stat {
+  display: flex; align-items: baseline; gap: 1rem;
+  padding-bottom: 2rem; border-bottom: 1px solid var(--rule);
+}
+.prob-stat:last-child { border-bottom: none; }
+.prob-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4rem; color: var(--gold); letter-spacing: 0.02em;
+  line-height: 1; min-width: 5rem;
+}
+.prob-text { font-size: 0.9rem; color: var(--soft); line-height: 1.6; }
+.prob-text strong { color: var(--white); display: block; font-size: 1rem; margin-bottom: 0.25rem; }
+
+/* ── FEATURES ── */
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px; margin-top: 4rem;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.feature-card {
+  background: var(--ink);
+  padding: 2.5rem;
+  position: relative; overflow: hidden;
+  transition: background 0.3s;
+}
+.feature-card::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0); transition: transform 0.4s;
+}
+.feature-card:hover { background: rgba(201,168,76,0.04); }
+.feature-card:hover::before { transform: scaleX(1); }
+.feature-icon {
+  width: 48px; height: 48px; border: 1px solid var(--rule);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.5rem; font-size: 1.4rem;
+  background: rgba(201,168,76,0.06);
+  transition: border-color 0.3s, background 0.3s;
+}
+.feature-card:hover .feature-icon { border-color: var(--gold); background: rgba(201,168,76,0.12); }
+.feature-card h3 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.05rem; color: var(--white);
+  margin-bottom: 0.75rem; font-weight: 700;
+}
+.feature-card p { font-size: 0.88rem; color: var(--soft); line-height: 1.7; }
+.feature-tag {
+  display: inline-block; margin-top: 1rem;
+  font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); padding: 3px 10px;
+  border: 1px solid rgba(201,168,76,0.3); border-radius: 100px;
+}
+
+/* ── HOW IT WORKS ── */
+.how { background: var(--ink2); }
+.steps {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; margin-top: 4rem;
+  position: relative;
+}
+.steps::before {
+  content: ''; position: absolute;
+  top: 32px; left: 12.5%; right: 12.5%;
+  height: 1px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold), transparent);
+  opacity: 0.3;
+}
+.step { padding: 0 2rem; text-align: center; }
+.step-num {
+  width: 64px; height: 64px; border-radius: 50%;
+  border: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem;
+  color: var(--gold); background: var(--ink);
+  position: relative; z-index: 1;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.step:hover .step-num { border-color: var(--gold); box-shadow: 0 0 24px rgba(201,168,76,0.2); }
+.step h3 { font-size: 0.95rem; font-weight: 500; color: var(--white); margin-bottom: 0.5rem; }
+.step p { font-size: 0.83rem; color: var(--soft); line-height: 1.65; }
+
+/* ── WHO IT'S FOR ── */
+.audience-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1rem; margin-top: 3rem;
+}
+.audience-card {
+  border: 1px solid var(--rule); border-radius: 8px;
+  padding: 2rem; background: var(--ink2);
+  display: flex; gap: 1.5rem; align-items: flex-start;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.audience-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
+.audience-emoji { font-size: 2rem; }
+.audience-card h3 { font-size: 0.95rem; font-weight: 500; color: var(--white); margin-bottom: 0.4rem; }
+.audience-card p { font-size: 0.83rem; color: var(--soft); line-height: 1.65; }
+
+/* ── GEO SEO ── */
+.geo { background: var(--ink2); }
+.geo-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1rem; margin-top: 3rem;
+}
+.geo-card {
+  border: 1px solid var(--rule); border-radius: 6px;
+  padding: 1.25rem 1.5rem; background: var(--ink);
+  transition: border-color 0.3s;
+}
+.geo-card:hover { border-color: rgba(201,168,76,0.3); }
+.geo-card h4 { font-size: 0.85rem; font-weight: 500; color: var(--white); margin-bottom: 0.25rem; }
+.geo-card p { font-size: 0.78rem; color: var(--soft); }
+
+/* ── TESTIMONIAL ── */
+.testimonial-section {
+  text-align: center;
+  background: linear-gradient(180deg, var(--ink) 0%, rgba(201,168,76,0.04) 50%, var(--ink) 100%);
+}
+.testimonial-quote {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-style: italic; color: var(--white);
+  max-width: 800px; margin: 2rem auto;
+  line-height: 1.65;
+}
+.testimonial-quote::before, .testimonial-quote::after {
+  content: '"'; color: var(--gold); font-size: 1.5em; vertical-align: -0.2em;
+}
+.testimonial-attr { font-size: 0.8rem; color: var(--soft); letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ── PRICING / CTA ── */
+.cta-section {
+  text-align: center;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%);
+  border-top: 1px solid var(--rule);
+}
+.cta-section h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  letter-spacing: 0.02em; line-height: 0.95;
+  margin-bottom: 1.5rem;
+}
+.cta-section h2 .gold { color: var(--gold); }
+.cta-section p { font-family: 'Libre Baskerville', serif; font-style: italic; color: var(--soft); font-size: 1.1rem; margin-bottom: 2.5rem; }
+
+.beta-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(201,168,76,0.4); padding: 6px 16px;
+  border-radius: 100px; font-size: 0.72rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 2rem;
+  background: rgba(201,168,76,0.06);
+}
+
+.form-wrap {
+  display: flex; gap: 0; max-width: 480px; margin: 0 auto;
+  border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
+  background: rgba(255,255,255,0.03);
+}
+.form-wrap input {
+  flex: 1; background: transparent; border: none; outline: none;
+  padding: 14px 20px; color: var(--white); font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+}
+.form-wrap input::placeholder { color: var(--soft); }
+.form-wrap button {
+  background: var(--gold); color: var(--ink); border: none;
+  padding: 14px 24px; font-weight: 500; font-size: 0.85rem;
+  letter-spacing: 0.08em; cursor: none; transition: background 0.2s;
+  white-space: nowrap;
+}
+.form-wrap button:hover { background: var(--gold-light); }
+.form-note { font-size: 0.75rem; color: var(--soft); margin-top: 0.75rem; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 3rem clamp(1.5rem, 8vw, 8rem);
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+}
+.footer-brand .logo {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem;
+  letter-spacing: 0.08em; color: var(--white); margin-bottom: 0.75rem;
+}
+.footer-brand .logo span { color: var(--gold); }
+.footer-brand p { font-size: 0.83rem; color: var(--soft); line-height: 1.7; max-width: 260px; }
+.footer-col h4 { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; }
+.footer-col a { display: block; font-size: 0.83rem; color: var(--soft); text-decoration: none; margin-bottom: 0.6rem; transition: color 0.2s; }
+.footer-col a:hover { color: var(--white); }
+.footer-bottom {
+  border-top: 1px solid var(--rule);
+  padding: 1.5rem clamp(1.5rem, 8vw, 8rem);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-bottom p { font-size: 0.75rem; color: var(--soft); }
+.footer-bottom .dns { color: rgba(201,168,76,0.6); text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
+.footer-bottom .dns:hover { color: var(--gold); }
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .steps::before { display: none; }
+  .geo-grid { grid-template-columns: 1fr 1fr; }
+  footer { grid-template-columns: 1fr 1fr; }
+  .hero-rings { display: none; }
+  .problem-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .features-grid, .steps, .audience-grid, .geo-grid, footer { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+  .hero-stats { flex-direction: column; gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">Soma<span>Sync</span>AI</a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">How It Works</a>
+    <a href="#who">Who It's For</a>
+    <a href="#beta" class="nav-cta">Join Beta</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-rings">
+    <div class="ring"><div class="ring-dot"></div></div>
+    <div class="ring"><div class="ring-dot"></div></div>
+    <div class="ring"><div class="ring-dot"></div></div>
+    <div class="ring"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      Now in Beta — Limited Access
+    </div>
+    <h1>
+      THE<br>
+      <span class="gold">GOLD</span><br>
+      <span class="outline">STANDARD</span><br>
+      CLINICAL OS
+    </h1>
+    <p class="hero-sub">Live in-ear AI guidance. Automatic SOAP notes. Voice charting. The intelligent operating system built for the world's best manual therapists.</p>
+    <div class="hero-actions">
+      <a href="#beta" class="btn-primary">
+        Request Beta Access
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#features" class="btn-secondary">
+        See how it works
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">87%</div>
+        <div class="stat-label">Less time charting</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Hands-free</div>
+      </div>
+      <div>
+        <div class="stat-num">Live</div>
+        <div class="stat-label">Real-time AI guidance</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Live In-Ear AI <span>✦</span></div>
+    <div class="marquee-item">Automatic SOAP Notes <span>✦</span></div>
+    <div class="marquee-item">Voice Charting <span>✦</span></div>
+    <div class="marquee-item">Treatment Memory <span>✦</span></div>
+    <div class="marquee-item">Gold Standard Documentation <span>✦</span></div>
+    <div class="marquee-item">Physical Therapy <span>✦</span></div>
+    <div class="marquee-item">Chiropractic <span>✦</span></div>
+    <div class="marquee-item">Massage Therapy <span>✦</span></div>
+    <div class="marquee-item">Sports Medicine <span>✦</span></div>
+    <div class="marquee-item">Live In-Ear AI <span>✦</span></div>
+    <div class="marquee-item">Automatic SOAP Notes <span>✦</span></div>
+    <div class="marquee-item">Voice Charting <span>✦</span></div>
+    <div class="marquee-item">Treatment Memory <span>✦</span></div>
+    <div class="marquee-item">Gold Standard Documentation <span>✦</span></div>
+    <div class="marquee-item">Physical Therapy <span>✦</span></div>
+    <div class="marquee-item">Chiropractic <span>✦</span></div>
+    <div class="marquee-item">Massage Therapy <span>✦</span></div>
+    <div class="marquee-item">Sports Medicine <span>✦</span></div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem reveal">
+  <div class="section-label">The Problem</div>
+  <h2 class="section-title">YOU DIDN'T TRAIN<br>TO <span class="gold">CHART.</span></h2>
+  <p class="section-body">Manual therapists spend nearly as much time documenting as treating. That ends now.</p>
+  <div class="problem-grid">
+    <div class="problem-numbers">
+      <div class="prob-stat">
+        <div class="prob-num">3H</div>
+        <div class="prob-text"><strong>Daily documentation burden</strong>Average clinical practitioner spends 3+ hours per day on notes, charting, and administrative tasks.</div>
+      </div>
+      <div class="prob-stat">
+        <div class="prob-num">40%</div>
+        <div class="prob-text"><strong>Of clinical time lost</strong>Nearly half your working day goes to paperwork instead of patient care — the work you actually trained for.</div>
+      </div>
+      <div class="prob-stat">
+        <div class="prob-num">#1</div>
+        <div class="prob-text"><strong>Cause of practitioner burnout</strong>Documentation overload is the leading driver of burnout across every manual therapy discipline.</div>
+      </div>
+    </div>
+    <div style="padding: 2rem;">
+      <div style="border: 1px solid var(--rule); border-radius: 12px; padding: 2rem; background: rgba(201,168,76,0.03);">
+        <div style="font-family:'Bebas Neue',sans-serif; font-size: 1.2rem; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 1.5rem;">SOMASYNCAI SOLVES THIS</div>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div style="display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--ink);">
+            <span style="color:var(--gold);font-size:1.2rem;">🎧</span>
+            <div>
+              <div style="font-size:0.88rem;color:var(--white);font-weight:500;">Live In-Ear Guidance</div>
+              <div style="font-size:0.78rem;color:var(--soft);">AI thinks alongside you during treatment</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--ink);">
+            <span style="color:var(--gold);font-size:1.2rem;">🎤</span>
+            <div>
+              <div style="font-size:0.88rem;color:var(--white);font-weight:500;">Voice → SOAP Note</div>
+              <div style="font-size:0.78rem;color:var(--soft);">Speak naturally. Notes appear instantly.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--ink);">
+            <span style="color:var(--gold);font-size:1.2rem;">🧠</span>
+            <div>
+              <div style="font-size:0.88rem;color:var(--white);font-weight:500;">Treatment Memory</div>
+              <div style="font-size:0.78rem;color:var(--soft);">Every session builds deeper client intelligence</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-label">Core Features</div>
+  <h2 class="section-title reveal">BUILT FOR THE<br><span class="gold">TREATMENT TABLE</span></h2>
+  <p class="section-body reveal">Seven breakthrough capabilities engineered specifically for hands-on clinical practice.</p>
+  <div class="features-grid reveal">
+    <div class="feature-card">
+      <div class="feature-icon">🎧</div>
+      <h3>Live In-Ear AI Guidance</h3>
+      <p>Real-time suggestions whispered through your earpiece during assessments. Like having a brilliant clinical colleague beside you on every case.</p>
+      <span class="feature-tag">Real-Time</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <h3>Automatic SOAP Notes</h3>
+      <p>Speak your observations naturally. SomaSyncAI structures them instantly into compliant Subjective, Objective, Assessment, and Plan documentation.</p>
+      <span class="feature-tag">Instant</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎤</div>
+      <h3>Voice Charting</h3>
+      <p>Hands on the patient. Voice on the record. Document trigger points, range of motion, and treatment progress without breaking contact.</p>
+      <span class="feature-tag">Hands-Free</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🧠</div>
+      <h3>Treatment Memory</h3>
+      <p>Every session deepens the AI's understanding of your patient. Pattern recognition across visits reveals what static charts never could.</p>
+      <span class="feature-tag">Longitudinal</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔍</div>
+      <h3>Assessment Intelligence</h3>
+      <p>AI detects relationships between posture, tension patterns, and movement restrictions — surfacing insights that accelerate your clinical reasoning.</p>
+      <span class="feature-tag">AI-Powered</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Instant Documentation</h3>
+      <p>Walk out of treatment with complete, accurate notes already generated. No after-hours charting. No documentation debt. Ever again.</p>
+      <span class="feature-tag">Zero Lag</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-label">The Workflow</div>
+  <h2 class="section-title reveal">HOW IT <span class="gold">WORKS</span></h2>
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Put In Your Earpiece</h3>
+      <p>Connect SomaSyncAI before your session. The AI is ready and listening before your patient walks in.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Treat Normally</h3>
+      <p>Speak your observations aloud as you work. The AI processes your clinical language in real time.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Receive Live Guidance</h3>
+      <p>AI whispers relevant clinical insights, suggested assessment areas, and documentation prompts as you treat.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3>Notes Are Done</h3>
+      <p>Walk out with a complete, structured SOAP note already generated. Review, sign, and move on.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section id="who">
+  <div class="section-label">Disciplines</div>
+  <h2 class="section-title reveal">BUILT FOR<br><span class="gold">EVERY HANDS-ON</span><br>PRACTITIONER</h2>
+  <div class="audience-grid reveal">
+    <div class="audience-card">
+      <div class="audience-emoji">💆</div>
+      <div>
+        <h3>Massage Therapists</h3>
+        <p>Document trigger points, muscle tension, and treatment responses without lifting your hands from the patient. Build longitudinal client records that elevate your practice.</p>
+      </div>
+    </div>
+    <div class="audience-card">
+      <div class="audience-emoji">🏃</div>
+      <div>
+        <h3>Physical Therapists</h3>
+        <p>Real-time AI guidance during functional assessments. Automatic documentation of ROM measurements, functional tests, and treatment progressions.</p>
+      </div>
+    </div>
+    <div class="audience-card">
+      <div class="audience-emoji">🦴</div>
+      <div>
+        <h3>Chiropractors</h3>
+        <p>Voice-charted spinal assessments, adjustment records, and patient progress notes. Complete clinical documentation that keeps pace with your adjusting table.</p>
+      </div>
+    </div>
+    <div class="audience-card">
+      <div class="audience-emoji">⚽</div>
+      <div>
+        <h3>Sports Medicine & Athletic Trainers</h3>
+        <p>Sideline-ready documentation. Rapid injury assessment recording, return-to-play tracking, and performance pattern recognition across athletes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial-section reveal">
+  <div class="section-label" style="justify-content:center;">Early Access Feedback</div>
+  <p class="testimonial-quote">I finished my last patient and my notes were already done. For the first time in 12 years of practice, I left on time.</p>
+  <p class="testimonial-attr">Beta Practitioner — Physical Therapist, California</p>
+</section>
+
+<!-- GEO SEO -->
+<section class="geo reveal">
+  <div class="section-label">Serving Practitioners Nationwide</div>
+  <h2 class="section-title">AVAILABLE ACROSS <span class="gold">AMERICA</span></h2>
+  <p class="section-body">SomaSyncAI is built for clinical practitioners coast to coast. Currently serving beta users in:</p>
+  <div class="geo-grid">
+    <div class="geo-card"><h4>Los Angeles, CA</h4><p>Manual therapy & sports medicine</p></div>
+    <div class="geo-card"><h4>San Francisco, CA</h4><p>Physical therapy & chiropractic</p></div>
+    <div class="geo-card"><h4>San Diego, CA</h4><p>Athletic training & massage</p></div>
+    <div class="geo-card"><h4>Sacramento, CA</h4><p>Rehabilitation clinics</p></div>
+    <div class="geo-card"><h4>New York, NY</h4><p>Multi-discipline practices</p></div>
+    <div class="geo-card"><h4>Chicago, IL</h4><p>Sports & orthopedic therapy</p></div>
+    <div class="geo-card"><h4>Houston, TX</h4><p>Chiropractic & wellness</p></div>
+    <div class="geo-card"><h4>Miami, FL</h4><p>Sports medicine & PT</p></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="beta">
+  <div class="beta-badge">
+    <div class="badge-dot"></div>
+    Beta Access — Limited Spots
+  </div>
+  <h2>JOIN THE<br><span class="gold">GOLD STANDARD</span></h2>
+  <p>Be among the first practitioners to experience the future of clinical documentation.</p>
+  <div class="form-wrap">
+    <input type="email" placeholder="your@practice.com" />
+    <button type="button">Request Access</button>
+  </div>
+  <p class="form-note">No credit card required. California practitioners prioritised in first cohort.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <div class="logo">Soma<span>Sync</span>AI</div>
+    <p>The gold standard AI operating system for manual therapists and clinical practitioners. Live in-ear guidance. Automatic SOAP notes. Zero documentation debt.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Product</h4>
+    <a href="#features">Features</a>
+    <a href="#how">How It Works</a>
+    <a href="#beta">Beta Access</a>
+  </div>
+  <div class="footer-col">
+    <h4>Disciplines</h4>
+    <a href="#who">Massage Therapy</a>
+    <a href="#who">Physical Therapy</a>
+    <a href="#who">Chiropractic</a>
+    <a href="#who">Sports Medicine</a>
+  </div>
+  <div class="footer-col">
+    <h4>Legal</h4>
+    <a href="/privacy-policy.html">Privacy Policy</a>
+    <a href="/terms-and-conditions.html">Terms &amp; Conditions</a>
+    <a href="/ai-disclaimer.html">AI Disclaimer</a>
+    <a href="mailto:hello@somasyncai.com">Contact</a>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2026 SomaSyncAI. All rights reserved. Built for the gold standard practitioner.</p>
+  <a href="mailto:privacy@somasyncai.com?subject=Do Not Sell My Information" class="dns">Do Not Sell My Information</a>
+</div>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+animRing();
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Beta form
+document.querySelector('.form-wrap button').addEventListener('click', function() {
+  const input = document.querySelector('.form-wrap input');
+  if (input.value && input.value.includes('@')) {
+    this.textContent = '✓ You\'re on the list';
+    this.style.background = '#2d7a50';
+    input.disabled = true; this.disabled = true;
+  } else {
+    input.style.borderLeft = '2px solid #e53e3e';
+    input.focus();
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SomaSyncAI — Investor Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a84c; --gold-light: #e8c97a; --gold-dark: #8a6520;
+  --ink: #080810; --ink2: #0f0f1a; --white: #f5f3ee; --soft: #8a8880; --rule: rgba(201,168,76,0.15);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--ink); color: var(--white); font-size: 15px; line-height: 1.7; font-weight: 300; }
+
+/* PAGE */
+.page { max-width: 1000px; margin: 0 auto; padding: 4rem 3rem; }
+
+/* HEADER */
+.pitch-header {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: start; gap: 2rem;
+  padding-bottom: 3rem; border-bottom: 1px solid var(--rule); margin-bottom: 3rem;
+}
+.logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 0.08em; }
+.logo span { color: var(--gold); }
+.tagline { font-family: 'Libre Baskerville', serif; font-style: italic; color: var(--soft); font-size: 0.95rem; margin-top: 0.25rem; }
+.pitch-badge {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;
+}
+.badge { display: inline-block; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; }
+.badge-gold { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+.badge-white { background: rgba(255,255,255,0.06); color: var(--white); border: 1px solid rgba(255,255,255,0.1); }
+
+/* ONE-LINER */
+.one-liner {
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%);
+  border: 1px solid var(--rule); border-radius: 12px; padding: 2.5rem;
+  text-align: center; margin-bottom: 3rem;
+}
+.one-liner h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: 0.03em;
+  line-height: 1.05; margin-bottom: 1rem;
+}
+.one-liner h1 span { color: var(--gold); }
+.one-liner p { font-family: 'Libre Baskerville', serif; font-style: italic; color: var(--soft); font-size: 1rem; max-width: 600px; margin: 0 auto; }
+
+/* GRID SECTIONS */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+.four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+
+.card { border: 1px solid var(--rule); border-radius: 8px; padding: 1.75rem; background: var(--ink2); }
+.card-label { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+.card h3 { font-size: 1rem; font-weight: 500; color: var(--white); margin-bottom: 0.5rem; }
+.card p { font-size: 0.83rem; color: var(--soft); line-height: 1.65; }
+
+.stat-card { border: 1px solid var(--rule); border-radius: 8px; padding: 1.5rem; background: var(--ink2); text-align: center; }
+.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; color: var(--gold); letter-spacing: 0.04em; line-height: 1; }
+.stat-label { font-size: 0.75rem; color: var(--soft); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.35rem; }
+
+/* SECTION HEADERS */
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; margin-top: 2.5rem; }
+.section-header::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+.section-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.06em; color: var(--white); }
+.section-header h2 span { color: var(--gold); }
+
+/* PROBLEM / SOLUTION */
+.ps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+.ps-col { padding: 2rem; }
+.ps-col:first-child { border-right: 1px solid var(--rule); background: rgba(229,62,62,0.04); }
+.ps-col:last-child { background: rgba(201,168,76,0.04); }
+.ps-col-label { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 1rem; font-weight: 500; }
+.ps-col:first-child .ps-col-label { color: #e88080; }
+.ps-col:last-child .ps-col-label { color: var(--gold); }
+.ps-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.ps-col li { font-size: 0.87rem; color: var(--soft); display: flex; gap: 0.75rem; align-items: flex-start; }
+.ps-col:first-child li::before { content: '✗'; color: #e88080; }
+.ps-col:last-child li::before { content: '✓'; color: var(--gold); }
+
+/* TAM */
+.tam-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+.tam-cell { background: var(--ink2); padding: 1.5rem; text-align: center; }
+.tam-label { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--soft); margin-bottom: 0.5rem; }
+.tam-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--gold); letter-spacing: 0.04em; }
+.tam-desc { font-size: 0.78rem; color: var(--soft); margin-top: 0.35rem; }
+
+/* BUSINESS MODEL */
+.biz-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.85rem; }
+.biz-table th { background: rgba(201,168,76,0.1); color: var(--gold); font-weight: 500; padding: 0.65rem 1rem; text-align: left; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid var(--rule); }
+.biz-table td { padding: 0.65rem 1rem; color: var(--soft); border-bottom: 1px solid rgba(201,168,76,0.06); }
+.biz-table td:first-child { color: var(--white); font-weight: 500; }
+
+/* TRACTION */
+.traction-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+
+/* ROADMAP */
+.roadmap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+.roadmap-phase { padding: 1.5rem; border-right: 1px solid var(--rule); }
+.roadmap-phase:last-child { border-right: none; }
+.roadmap-q { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+.roadmap-phase h4 { font-size: 0.82rem; font-weight: 500; color: var(--white); margin-bottom: 0.5rem; }
+.roadmap-phase ul { list-style: none; }
+.roadmap-phase li { font-size: 0.75rem; color: var(--soft); padding: 0.2rem 0; border-bottom: 1px solid rgba(201,168,76,0.06); }
+.roadmap-phase li:last-child { border-bottom: none; }
+.roadmap-phase.active { background: rgba(201,168,76,0.05); }
+
+/* TEAM */
+.team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+.team-card { border: 1px solid var(--rule); border-radius: 8px; padding: 1.5rem; background: var(--ink2); }
+.team-avatar { width: 44px; height: 44px; border-radius: 50%; background: rgba(201,168,76,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 0.75rem; }
+.team-card h4 { font-size: 0.9rem; font-weight: 500; color: var(--white); margin-bottom: 0.2rem; }
+.team-card .team-title { font-size: 0.72rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.team-card p { font-size: 0.8rem; color: var(--soft); line-height: 1.6; }
+
+/* ASK */
+.ask-box {
+  background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.04));
+  border: 1px solid rgba(201,168,76,0.4);
+  border-radius: 12px; padding: 2.5rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;
+  margin-bottom: 2rem;
+}
+.ask-amount { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--gold); letter-spacing: 0.04em; line-height: 1; }
+.ask-label { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--soft); margin-top: 0.25rem; }
+.ask-use ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.ask-use li { font-size: 0.85rem; color: var(--soft); display: flex; gap: 0.75rem; }
+.ask-use li::before { content: '→'; color: var(--gold); }
+
+/* FOOTER */
+.pitch-footer { border-top: 1px solid var(--rule); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.pitch-footer p { font-size: 0.75rem; color: var(--soft); }
+.pitch-footer a { font-size: 0.75rem; color: var(--gold); text-decoration: none; }
+
+@media (max-width: 700px) {
+  .two-col, .three-col, .four-col, .ps-grid, .tam-row, .traction-grid, .roadmap, .team-grid, .ask-box { grid-template-columns: 1fr; }
+  .page { padding: 2rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="pitch-header">
+    <div>
+      <div class="logo">Soma<span>Sync</span>AI</div>
+      <div class="tagline">The Gold Standard AI Operating System for Manual Therapists</div>
+    </div>
+    <div class="pitch-badge">
+      <span class="badge badge-gold">Beta Stage</span>
+      <span class="badge badge-white">Confidential — 2026</span>
+    </div>
+  </div>
+
+  <!-- ONE-LINER -->
+  <div class="one-liner">
+    <h1>THE <span>AI CLINICAL OS</span> THAT THINKS WITH YOU<br>WHILE YOUR HANDS DO THE WORK</h1>
+    <p>Live in-ear AI guidance, automatic SOAP notes, and voice charting — eliminating documentation burden for every hands-on clinical practitioner.</p>
+  </div>
+
+  <!-- MARKET STATS -->
+  <div class="section-header"><h2>THE <span>OPPORTUNITY</span></h2></div>
+  <div class="tam-row">
+    <div class="tam-cell">
+      <div class="tam-label">TAM</div>
+      <div class="tam-num">$28B</div>
+      <div class="tam-desc">Global clinical documentation software market</div>
+    </div>
+    <div class="tam-cell">
+      <div class="tam-label">SAM</div>
+      <div class="tam-num">$4.2B</div>
+      <div class="tam-desc">Manual therapy & outpatient rehab documentation (US)</div>
+    </div>
+    <div class="tam-cell">
+      <div class="tam-label">SOM</div>
+      <div class="tam-num">$420M</div>
+      <div class="tam-desc">Reachable within 36 months with direct practitioner GTM</div>
+    </div>
+  </div>
+
+  <!-- TRACTION STATS -->
+  <div class="traction-grid">
+    <div class="stat-card">
+      <div class="stat-num">87%</div>
+      <div class="stat-label">Reduction in charting time (beta)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">1.2M</div>
+      <div class="stat-label">Licensed manual therapists in the US</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">3H</div>
+      <div class="stat-label">Daily documentation burden (average)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">4.2×</div>
+      <div class="stat-label">ROI for practices in productivity gains</div>
+    </div>
+  </div>
+
+  <!-- PROBLEM / SOLUTION -->
+  <div class="section-header"><h2>PROBLEM <span>→</span> SOLUTION</h2></div>
+  <div class="ps-grid">
+    <div class="ps-col">
+      <div class="ps-col-label">The Problem Today</div>
+      <ul>
+        <li>Manual therapists spend 2–4 hours/day on documentation</li>
+        <li>Notes are written after sessions when details fade</li>
+        <li>Documentation is the #1 driver of practitioner burnout</li>
+        <li>Typing during treatment breaks patient contact</li>
+        <li>Static charts miss longitudinal patterns</li>
+        <li>After-hours charting steals practitioner wellbeing</li>
+      </ul>
+    </div>
+    <div class="ps-col">
+      <div class="ps-col-label">The SomaSyncAI Solution</div>
+      <ul>
+        <li>Live in-ear AI guidance during every assessment</li>
+        <li>Documentation generated in real time during treatment</li>
+        <li>Walk out of every session with complete, accurate notes</li>
+        <li>100% hands-free — voice charting only</li>
+        <li>Treatment memory builds longitudinal client intelligence</li>
+        <li>Zero documentation debt, ever</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PRODUCT -->
+  <div class="section-header"><h2>CORE <span>PRODUCT</span></h2></div>
+  <div class="three-col">
+    <div class="card">
+      <div class="card-label">Feature 01</div>
+      <h3>🎧 Live In-Ear AI</h3>
+      <p>Real-time clinical suggestions delivered via earpiece during assessments and treatment. Pattern recognition as it happens.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Feature 02</div>
+      <h3>📋 Auto SOAP Notes</h3>
+      <p>Voice input automatically structured into compliant Subjective, Objective, Assessment, and Plan documentation instantly.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Feature 03</div>
+      <h3>🎤 Voice Charting</h3>
+      <p>Hands-free treatment updates, trigger point recording, and progress notes captured in real time without interruption.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Feature 04</div>
+      <h3>🧠 Treatment Memory</h3>
+      <p>Session-to-session longitudinal intelligence. Every visit deepens the AI's clinical understanding of each patient.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Feature 05</div>
+      <h3>🔍 Assessment Intel</h3>
+      <p>Clinical pattern recognition across posture, tension, and movement data. Surfaces insights that accelerate reasoning.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Feature 06</div>
+      <h3>⚡ Zero Lag Docs</h3>
+      <p>Notes complete before the patient leaves the room. Eliminate after-hours charting permanently.</p>
+    </div>
+  </div>
+
+  <!-- BUSINESS MODEL -->
+  <div class="section-header"><h2>BUSINESS <span>MODEL</span></h2></div>
+  <table class="biz-table">
+    <tr><th>Tier</th><th>Price</th><th>Users</th><th>Key Features</th></tr>
+    <tr><td>Solo Practitioner</td><td>$79/mo</td><td>Individual clinicians</td><td>Full AI features, 1 user, unlimited sessions</td></tr>
+    <tr><td>Practice (5 seats)</td><td>$299/mo</td><td>Small clinics</td><td>Team dashboard, shared patient records, analytics</td></tr>
+    <tr><td>Enterprise</td><td>Custom</td><td>Multi-location groups</td><td>Custom integrations, dedicated support, BAA</td></tr>
+  </table>
+
+  <!-- ROADMAP -->
+  <div class="section-header"><h2>PRODUCT <span>ROADMAP</span></h2></div>
+  <div class="roadmap">
+    <div class="roadmap-phase active">
+      <div class="roadmap-q">NOW — Q1 2026</div>
+      <h4>Beta Launch</h4>
+      <ul>
+        <li>Live in-ear AI</li>
+        <li>Automatic SOAP notes</li>
+        <li>Voice charting</li>
+        <li>Treatment memory</li>
+      </ul>
+    </div>
+    <div class="roadmap-phase">
+      <div class="roadmap-q">Q2 2026</div>
+      <h4>Platform Expansion</h4>
+      <ul>
+        <li>EHR integrations</li>
+        <li>Mobile app (iOS)</li>
+        <li>Practice dashboard</li>
+        <li>Billing code assist</li>
+      </ul>
+    </div>
+    <div class="roadmap-phase">
+      <div class="roadmap-q">Q3 2026</div>
+      <h4>Intelligence Layer</h4>
+      <ul>
+        <li>Population analytics</li>
+        <li>Outcome prediction</li>
+        <li>Referral insights</li>
+        <li>Pattern reporting</li>
+      </ul>
+    </div>
+    <div class="roadmap-phase">
+      <div class="roadmap-q">Q4 2026</div>
+      <h4>Enterprise Scale</h4>
+      <ul>
+        <li>Multi-location groups</li>
+        <li>API for EHR vendors</li>
+        <li>White-label option</li>
+        <li>International expansion</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- COMPETITIVE ADVANTAGE -->
+  <div class="section-header"><h2>WHY WE <span>WIN</span></h2></div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-label">Moat 01</div>
+      <h3>Real-Time vs. Post-Session</h3>
+      <p>Every competitor transcribes after the session. SomaSyncAI operates live during treatment — a fundamentally different and superior product architecture that creates the in-ear guidance capability no competitor can replicate without rebuilding from scratch.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Moat 02</div>
+      <h3>Discipline-Specific Intelligence</h3>
+      <p>SomaSyncAI is built for manual therapy from the ground up. Our AI understands the clinical language, SOAP structure, and assessment frameworks specific to physical therapy, chiropractic, massage, and sports medicine — not generic medical transcription.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Moat 03</div>
+      <h3>Longitudinal Treatment Memory</h3>
+      <p>Session-to-session patient intelligence compounds over time. The longer a practitioner uses SomaSyncAI, the more valuable the data becomes. This creates deep switching costs and a data advantage that grows with usage.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Moat 04</div>
+      <h3>Network Effects at Practice Level</h3>
+      <p>Multi-practitioner practices benefit from shared patient intelligence. As team usage grows, the AI learns the practice's clinical patterns, creating compounding value that locks in enterprise accounts.</p>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <div class="section-header"><h2>THE <span>TEAM</span></h2></div>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar">👤</div>
+      <h4>Founder & CEO</h4>
+      <div class="team-title">Clinical + Product</div>
+      <p>Deep background in manual therapy practice and healthcare technology. Founded SomaSyncAI to solve a problem felt personally every day in clinical practice.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">👤</div>
+      <h4>CTO</h4>
+      <div class="team-title">AI & Engineering</div>
+      <p>Background in real-time audio AI systems and clinical NLP. Architected the live in-ear processing pipeline that powers SomaSyncAI's core differentiator.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">👤</div>
+      <h4>Head of Clinical</h4>
+      <div class="team-title">Healthcare & Compliance</div>
+      <p>Licensed physical therapist with healthcare compliance expertise. Ensures every AI output meets clinical accuracy and regulatory standards.</p>
+    </div>
+  </div>
+
+  <!-- THE ASK -->
+  <div class="section-header"><h2>THE <span>ASK</span></h2></div>
+  <div class="ask-box">
+    <div>
+      <div class="ask-amount">$2.5M</div>
+      <div class="ask-label">Seed Round — Currently Raising</div>
+    </div>
+    <div class="ask-use">
+      <ul>
+        <li>40% — Engineering & AI model development</li>
+        <li>25% — Sales & practitioner acquisition</li>
+        <li>20% — Regulatory & compliance infrastructure</li>
+        <li>10% — Clinical partnerships & beta expansion</li>
+        <li>5% — Operations & team growth</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="pitch-footer">
+    <p>© 2026 SomaSyncAI — Confidential Investor Overview. Not for distribution.</p>
+    <a href="mailto:hello@somasyncai.com">hello@somasyncai.com</a>
+  </div>
+
+</div>
+</body>
+</html>

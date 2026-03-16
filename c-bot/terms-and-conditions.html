@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terms &amp; Conditions — SomaSyncAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d12;
+    --soft: #3a3a4a;
+    --muted: #8888a0;
+    --rule: #e4e4ef;
+    --bg: #f9f9fc;
+    --white: #ffffff;
+    --accent: #2d6b8f;
+    --accent-light: #e8f3f9;
+    --warn: #7a3f00;
+    --warn-bg: #fff4e6;
+    --warn-border: #f0a040;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(249,249,252,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    height: 64px;
+  }
+  .nav-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .nav-badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  .hero {
+    border-bottom: 1px solid var(--rule);
+    padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem);
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 2rem;
+  }
+  .hero-tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-meta {
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .hero-meta strong { display: block; font-size: 0.85rem; color: var(--soft); font-weight: 500; }
+
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: clamp(2rem, 6vw, 5rem) clamp(1.5rem, 5vw, 2rem);
+  }
+
+  .toc {
+    background: var(--white);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 3.5rem;
+  }
+  .toc-title {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .toc ol {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem 2rem;
+    counter-reset: toc;
+  }
+  .toc li { counter-increment: toc; }
+  .toc a {
+    color: var(--soft);
+    text-decoration: none;
+    font-size: 0.88rem;
+    display: flex; align-items: baseline; gap: 0.5rem;
+    transition: color 0.15s;
+  }
+  .toc a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    min-width: 1.6rem;
+  }
+  .toc a:hover { color: var(--accent); }
+
+  section { margin-bottom: 3rem; scroll-margin-top: 80px; }
+  .section-num {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;
+  }
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  p { color: var(--soft); margin-bottom: 1rem; }
+  p:last-child { margin-bottom: 0; }
+  ul, ol { color: var(--soft); padding-left: 0; list-style: none; margin-bottom: 1rem; }
+  li {
+    padding: 0.45rem 0 0.45rem 1.5rem;
+    position: relative;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.95rem;
+  }
+  li:last-child { border-bottom: none; }
+  li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.8rem; }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    font-size: 0.92rem;
+    color: var(--soft);
+  }
+
+  .warning-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    border-radius: 0 8px 8px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    font-size: 0.92rem;
+    color: var(--warn);
+  }
+  .warning-box strong { display: block; margin-bottom: 0.3rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .contact-card {
+    background: var(--ink);
+    color: var(--white);
+    border-radius: 14px;
+    padding: 2.5rem;
+    margin-top: 3rem;
+  }
+  .contact-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+  .contact-card p { color: rgba(255,255,255,0.65); margin-bottom: 1.25rem; }
+  .contact-card a {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--white); font-weight: 500; text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 2px;
+    transition: border-color 0.15s;
+  }
+  .contact-card a:hover { border-color: var(--white); }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 2rem clamp(1.5rem, 5vw, 4rem);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+    background: var(--white);
+  }
+  footer p { font-size: 0.8rem; color: var(--muted); margin: 0; }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.15s; }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-links a.active { color: var(--accent); font-weight: 500; }
+
+  @media (max-width: 600px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-meta { text-align: left; }
+    .toc ol { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-brand">SomaSyncAI</a>
+  <span class="nav-badge">Terms &amp; Conditions</span>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="hero-tag">Legal</div>
+    <h1>Terms &amp; <em>Conditions</em></h1>
+  </div>
+  <div class="hero-meta">
+    <strong>Last Updated</strong>
+    March 15, 2026
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#t1">Acceptance of Terms</a></li>
+      <li><a href="#t2">Description of Services</a></li>
+      <li><a href="#t3">Eligibility</a></li>
+      <li><a href="#t4">Account Responsibilities</a></li>
+      <li><a href="#t5">Permitted Use</a></li>
+      <li><a href="#t6">Prohibited Conduct</a></li>
+      <li><a href="#t7">Subscriptions &amp; Payments</a></li>
+      <li><a href="#t8">Intellectual Property</a></li>
+      <li><a href="#t9">Limitation of Liability</a></li>
+      <li><a href="#t10">Termination</a></li>
+      <li><a href="#t11">Governing Law</a></li>
+      <li><a href="#t12">Contact</a></li>
+    </ol>
+  </nav>
+
+  <div class="highlight-box">
+    Please read these Terms and Conditions carefully before using SomaSyncAI. By accessing or using our platform at <strong>somasyncai.com</strong>, you agree to be bound by these terms. If you do not agree, please discontinue use immediately.
+  </div>
+
+  <section id="t1">
+    <div class="section-num">01</div>
+    <h2>Acceptance of Terms</h2>
+    <p>These Terms and Conditions ("Terms") constitute a legally binding agreement between you ("User," "you") and SomaSyncAI ("Company," "we," "us," "our"). By creating an account, accessing, or using any part of our platform, you confirm that you have read, understood, and agree to these Terms and our Privacy Policy.</p>
+    <p>We reserve the right to modify these Terms at any time. Material changes will be communicated with reasonable notice. Continued use after changes take effect constitutes acceptance of the revised Terms.</p>
+  </section>
+
+  <section id="t2">
+    <div class="section-num">02</div>
+    <h2>Description of Services</h2>
+    <p>SomaSyncAI provides an AI-powered wellness platform offering personalised insights, guidance, and tools related to physical and mental wellbeing. Our services include, but are not limited to:</p>
+    <ul>
+      <li>AI-generated wellness recommendations and coaching insights</li>
+      <li>Progress tracking and goal-setting tools</li>
+      <li>Educational wellness content and resources</li>
+      <li>Integration with third-party health devices and applications (where available)</li>
+    </ul>
+    <div class="warning-box">
+      <strong>Important Notice</strong>
+      SomaSyncAI is a wellness support tool, not a medical service. Our AI-generated content does not constitute medical advice, diagnosis, or treatment. Always consult a qualified healthcare professional for medical concerns.
+    </div>
+  </section>
+
+  <section id="t3">
+    <div class="section-num">03</div>
+    <h2>Eligibility</h2>
+    <p>To use SomaSyncAI, you must:</p>
+    <ul>
+      <li>Be at least 16 years of age (or the age of majority in your jurisdiction)</li>
+      <li>Have the legal capacity to enter into binding agreements</li>
+      <li>Not be previously banned or suspended from our platform</li>
+      <li>Reside in a jurisdiction where our services are permitted by law</li>
+    </ul>
+    <p>By registering, you represent and warrant that you meet all eligibility requirements.</p>
+  </section>
+
+  <section id="t4">
+    <div class="section-num">04</div>
+    <h2>Account Responsibilities</h2>
+    <p>You are responsible for maintaining the confidentiality of your account credentials. You agree to:</p>
+    <ul>
+      <li>Provide accurate, current, and complete information during registration</li>
+      <li>Keep your password secure and not share it with others</li>
+      <li>Notify us immediately at <a href="mailto:support@somasyncai.com">support@somasyncai.com</a> if you suspect unauthorised access</li>
+      <li>Accept responsibility for all activities that occur under your account</li>
+    </ul>
+    <p>We are not liable for any loss or damage arising from your failure to comply with these obligations.</p>
+  </section>
+
+  <section id="t5">
+    <div class="section-num">05</div>
+    <h2>Permitted Use</h2>
+    <p>SomaSyncAI grants you a limited, non-exclusive, non-transferable, revocable licence to access and use our platform for personal, non-commercial wellness purposes, subject to these Terms.</p>
+    <p>You may use our services to:</p>
+    <ul>
+      <li>Track your personal health and wellness goals</li>
+      <li>Receive AI-generated insights for personal use</li>
+      <li>Access educational resources available on the platform</li>
+      <li>Connect compatible devices and applications where supported</li>
+    </ul>
+  </section>
+
+  <section id="t6">
+    <div class="section-num">06</div>
+    <h2>Prohibited Conduct</h2>
+    <p>You agree not to use SomaSyncAI for any purpose that is unlawful or prohibited by these Terms. Prohibited activities include:</p>
+    <ul>
+      <li>Reverse engineering, decompiling, or attempting to extract source code</li>
+      <li>Using automated scripts, bots, or scrapers to access the platform</li>
+      <li>Uploading malicious code, viruses, or disruptive content</li>
+      <li>Impersonating any person or entity, or misrepresenting your affiliation</li>
+      <li>Attempting to gain unauthorised access to any part of our systems</li>
+      <li>Using AI outputs for commercial resale or redistribution without consent</li>
+      <li>Sharing, publishing, or distributing another user's data without permission</li>
+      <li>Engaging in any activity that could harm minors</li>
+    </ul>
+    <p>Violation of these provisions may result in immediate account termination and, where applicable, legal action.</p>
+  </section>
+
+  <section id="t7">
+    <div class="section-num">07</div>
+    <h2>Subscriptions &amp; Payments</h2>
+    <p>Certain features of SomaSyncAI are available via paid subscription plans.</p>
+    <ul>
+      <li><strong>Billing:</strong> Subscriptions are billed on a recurring basis (monthly or annually) unless cancelled</li>
+      <li><strong>Cancellation:</strong> You may cancel at any time; cancellation takes effect at the end of the current billing period</li>
+      <li><strong>Refunds:</strong> Fees are generally non-refundable except where required by applicable law</li>
+      <li><strong>Price Changes:</strong> We will provide at least 30 days' notice before changing subscription pricing</li>
+      <li><strong>Free Trials:</strong> Where offered, free trials convert to paid plans automatically unless cancelled before the trial ends</li>
+    </ul>
+    <p>All payments are processed by third-party payment providers. By subscribing, you also agree to their applicable terms.</p>
+  </section>
+
+  <section id="t8">
+    <div class="section-num">08</div>
+    <h2>Intellectual Property</h2>
+    <p>All content, features, technology, and intellectual property on the SomaSyncAI platform — including but not limited to software, text, graphics, logos, and AI models — are owned by or licensed to SomaSyncAI and are protected by applicable intellectual property laws.</p>
+    <p><strong>Your Content:</strong> You retain ownership of any personal data or content you submit. By submitting content, you grant us a limited licence to use it to provide and improve our services.</p>
+    <p><strong>AI Outputs:</strong> AI-generated insights provided to you are for your personal use only. Commercial exploitation of AI outputs without our written consent is prohibited.</p>
+  </section>
+
+  <section id="t9">
+    <div class="section-num">09</div>
+    <h2>Limitation of Liability</h2>
+    <div class="warning-box">
+      <strong>Read Carefully</strong>
+      To the fullest extent permitted by law, SomaSyncAI shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of, or inability to use, the platform.
+    </div>
+    <p>Our aggregate liability for any claims arising under these Terms shall not exceed the amount you paid to us in the 12 months preceding the claim.</p>
+    <p>We make no warranties — express or implied — regarding the accuracy, completeness, or fitness for a particular purpose of AI-generated content. Wellness insights are for informational purposes only.</p>
+    <p>Some jurisdictions do not allow limitations on implied warranties or exclusion of consequential damages; in such cases, our liability will be limited to the maximum extent permitted by law.</p>
+  </section>
+
+  <section id="t10">
+    <div class="section-num">10</div>
+    <h2>Termination</h2>
+    <p>Either party may terminate the agreement at any time:</p>
+    <ul>
+      <li><strong>By You:</strong> Delete your account via account settings or contact support</li>
+      <li><strong>By Us:</strong> We may suspend or terminate your access immediately if you violate these Terms, engage in fraudulent activity, or if required by law</li>
+    </ul>
+    <p>Upon termination, your right to use the platform ceases immediately. Provisions that by their nature should survive termination — including intellectual property, limitation of liability, and dispute resolution — will continue in effect.</p>
+  </section>
+
+  <section id="t11">
+    <div class="section-num">11</div>
+    <h2>Governing Law</h2>
+    <p>These Terms are governed by and construed in accordance with applicable law. Any disputes arising from these Terms or your use of SomaSyncAI shall be resolved through binding arbitration or in the courts of competent jurisdiction, as applicable in your region.</p>
+    <p>If any provision of these Terms is found invalid or unenforceable, the remaining provisions will continue in full force and effect.</p>
+  </section>
+
+  <section id="t12">
+    <div class="section-num">12</div>
+    <h2>Contact</h2>
+    <p>If you have questions about these Terms or wish to report a violation, please contact our legal team.</p>
+  </section>
+
+  <div class="contact-card">
+    <h3>Legal enquiries</h3>
+    <p>Our team is available to address questions about these Terms.</p>
+    <a href="mailto:legal@somasyncai.com">legal@somasyncai.com</a>
+    <p style="margin-top:1.25rem; font-size:0.85rem;">SomaSyncAI · somasyncai.com</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 SomaSyncAI. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="terms-and-conditions.html" class="active">Terms &amp; Conditions</a>
+    <a href="ai-disclaimer.html">AI Disclaimer</a>
+  </div>
+</footer>
+
+</body>
+</html>

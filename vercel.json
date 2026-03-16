@@ -1,1 +1,11 @@
 {"rewrites":[{"source":"/(.*)","destination":"/index.html"}]}
+{
+  "rewrites": [
+    {"source": "/privacy-policy", "destination": "/privacy-policy.html"},
+    {"source": "/terms-and-conditions", "destination": "/terms-and-conditions.html"},
+    {"source": "/ai-disclaimer", "destination": "/ai-disclaimer.html"},
+    {"source": "/seo-article", "destination": "/seo-article.html"},
+    {"source": "/investor-pitch", "destination": "/investor-pitch.html"},
+    {"source": "/(.*)", "destination": "/index.html"}
+  ]
+}

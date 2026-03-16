@@ -8,223 +8,94 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0d0d12;
-    --soft: #3a3a4a;
-    --muted: #8888a0;
-    --rule: #e4e4ef;
-    --bg: #f9f9fc;
-    --white: #ffffff;
-    --accent: #2d6b8f;
-    --accent-light: #e8f3f9;
-    --warn: #7a3f00;
-    --warn-bg: #fff4e6;
-    --warn-border: #f0a040;
-    --critical-bg: #fff1f2;
-    --critical-border: #e53e3e;
-    --critical-text: #7b1e1e;
+    --ink: #0d0d12; --soft: #3a3a4a; --muted: #8888a0; --rule: #e4e4ef;
+    --bg: #f9f9fc; --white: #ffffff; --accent: #2d6b8f; --accent-light: #e8f3f9;
+    --warn: #7a3f00; --warn-bg: #fff4e6; --warn-border: #f0a040;
+    --ca-bg: #f0f7ff; --ca-border: #1a56a0; --ca-text: #1a3a5c;
+    --critical-bg: #fff1f2; --critical-border: #e53e3e; --critical-text: #7b1e1e;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.75; font-weight: 300; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--ink);
-    font-size: 16px;
-    line-height: 1.75;
-    font-weight: 300;
-  }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(249,249,252,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(1.5rem, 5vw, 4rem); height: 64px; }
+  .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+  .nav-badge { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 4px 10px; border-radius: 20px; }
 
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(249,249,252,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--rule);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 clamp(1.5rem, 5vw, 4rem);
-    height: 64px;
-  }
-  .nav-brand {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.25rem;
-    color: var(--ink);
-    text-decoration: none;
-    letter-spacing: -0.01em;
-  }
-  .nav-badge {
-    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--accent); background: var(--accent-light); padding: 4px 10px; border-radius: 20px;
-  }
-
-  .hero {
-    border-bottom: 1px solid var(--rule);
-    padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem);
-    background: var(--white);
-    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2rem;
-  }
-  .hero-tag {
-    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;
-  }
-  .hero-tag::before {
-    content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent);
-  }
-  .hero h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2.4rem, 5vw, 3.6rem);
-    line-height: 1.1; letter-spacing: -0.02em; color: var(--ink);
-  }
+  .hero { border-bottom: 1px solid var(--rule); padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem); background: var(--white); display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2rem; }
+  .hero-tag { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+  .hero-tag::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent); }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); }
   .hero h1 em { font-style: italic; color: var(--accent); }
   .hero-meta { text-align: right; font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
   .hero-meta strong { display: block; font-size: 0.85rem; color: var(--soft); font-weight: 500; }
 
-  .page-wrap {
-    max-width: 860px; margin: 0 auto;
-    padding: clamp(2rem, 6vw, 5rem) clamp(1.5rem, 5vw, 2rem);
-  }
+  .page-wrap { max-width: 860px; margin: 0 auto; padding: clamp(2rem, 6vw, 5rem) clamp(1.5rem, 5vw, 2rem); }
 
-  /* Critical alert at top */
-  .critical-alert {
-    background: var(--critical-bg);
-    border: 1.5px solid var(--critical-border);
-    border-radius: 10px;
-    padding: 1.75rem 2rem;
-    margin-bottom: 3rem;
-  }
-  .critical-alert-label {
-    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--critical-border); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 6px;
-  }
-  .critical-alert-label::before {
-    content: '⚠';
-  }
+  .critical-alert { background: var(--critical-bg); border: 1.5px solid var(--critical-border); border-radius: 10px; padding: 1.75rem 2rem; margin-bottom: 1.5rem; }
+  .critical-alert-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--critical-border); margin-bottom: 0.6rem; }
   .critical-alert p { color: var(--critical-text); font-size: 0.95rem; margin-bottom: 0.75rem; }
   .critical-alert p:last-child { margin-bottom: 0; }
-  .critical-alert strong { font-weight: 500; }
 
-  .toc {
-    background: var(--white);
-    border: 1px solid var(--rule);
-    border-radius: 12px;
-    padding: 1.75rem 2rem;
-    margin-bottom: 3.5rem;
-  }
-  .toc-title {
-    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 1rem;
-  }
-  .toc ol {
-    list-style: none; display: grid; grid-template-columns: 1fr 1fr;
-    gap: 0.35rem 2rem; counter-reset: toc;
-  }
+  .ca-notice { background: var(--ca-bg); border: 1.5px solid var(--ca-border); border-radius: 10px; padding: 1.5rem 2rem; margin-bottom: 2rem; }
+  .ca-notice-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ca-border); margin-bottom: 0.5rem; }
+  .ca-notice p { color: var(--ca-text); font-size: 0.92rem; margin-bottom: 0; }
+
+  .toc { background: var(--white); border: 1px solid var(--rule); border-radius: 12px; padding: 1.75rem 2rem; margin-bottom: 3.5rem; }
+  .toc-title { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .toc ol { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 2rem; counter-reset: toc; }
   .toc li { counter-increment: toc; }
-  .toc a {
-    color: var(--soft); text-decoration: none; font-size: 0.88rem;
-    display: flex; align-items: baseline; gap: 0.5rem; transition: color 0.15s;
-  }
-  .toc a::before {
-    content: counter(toc, decimal-leading-zero); font-size: 0.72rem;
-    color: var(--muted); font-variant-numeric: tabular-nums; min-width: 1.6rem;
-  }
+  .toc a { color: var(--soft); text-decoration: none; font-size: 0.88rem; display: flex; align-items: baseline; gap: 0.5rem; transition: color 0.15s; }
+  .toc a::before { content: counter(toc, decimal-leading-zero); font-size: 0.72rem; color: var(--muted); min-width: 1.6rem; }
   .toc a:hover { color: var(--accent); }
 
   section { margin-bottom: 3rem; scroll-margin-top: 80px; }
-  .section-num {
-    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;
-  }
-  h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(1.35rem, 2.5vw, 1.65rem);
-    letter-spacing: -0.015em; color: var(--ink);
-    margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--rule);
-  }
+  .section-num { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .ca-tag { display: inline-block; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ca-border); background: var(--ca-bg); border: 1px solid var(--ca-border); padding: 2px 8px; border-radius: 20px; margin-left: 8px; vertical-align: middle; }
+
+  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.35rem, 2.5vw, 1.65rem); letter-spacing: -0.015em; color: var(--ink); margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--rule); }
   p { color: var(--soft); margin-bottom: 1rem; }
   p:last-child { margin-bottom: 0; }
   ul { color: var(--soft); padding-left: 0; list-style: none; margin-bottom: 1rem; }
-  li {
-    padding: 0.45rem 0 0.45rem 1.5rem; position: relative;
-    border-bottom: 1px solid var(--rule); font-size: 0.95rem;
-  }
+  li { padding: 0.45rem 0 0.45rem 1.5rem; position: relative; border-bottom: 1px solid var(--rule); font-size: 0.95rem; }
   li:last-child { border-bottom: none; }
   li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.8rem; }
 
-  .highlight-box {
-    background: var(--accent-light);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0;
-    padding: 1.25rem 1.5rem; margin: 1.5rem 0;
-    font-size: 0.92rem; color: var(--soft);
-  }
-
-  .warning-box {
-    background: var(--warn-bg);
-    border-left: 3px solid var(--warn-border);
-    border-radius: 0 8px 8px 0;
-    padding: 1.25rem 1.5rem; margin: 1.5rem 0;
-    font-size: 0.92rem; color: var(--warn);
-  }
+  .highlight-box { background: var(--accent-light); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: 0.92rem; color: var(--soft); }
+  .warning-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: 0.92rem; color: var(--warn); }
   .warning-box strong { display: block; margin-bottom: 0.3rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; }
 
-  /* AI capability cards */
-  .card-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;
-  }
-  .cap-card {
-    border: 1px solid var(--rule);
-    border-radius: 10px;
-    padding: 1.25rem 1.5rem;
-    background: var(--white);
-  }
-  .cap-card-label {
-    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .cap-card { border: 1px solid var(--rule); border-radius: 10px; padding: 1.25rem 1.5rem; background: var(--white); }
+  .cap-card-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5rem; }
   .cap-card.can .cap-card-label { color: #2d7a50; }
   .cap-card.cannot .cap-card-label { color: var(--critical-border); }
-  .cap-card p { font-size: 0.88rem; margin: 0; }
   .cap-card ul { margin: 0; }
   .cap-card li { font-size: 0.88rem; padding: 0.3rem 0 0.3rem 1.2rem; }
-  .cap-card li::before { color: inherit; }
   .cap-card.can li::before { content: '✓'; color: #2d7a50; }
   .cap-card.cannot li::before { content: '✗'; color: var(--critical-border); }
 
-  .contact-card {
-    background: var(--ink); color: var(--white); border-radius: 14px;
-    padding: 2.5rem; margin-top: 3rem;
-  }
+  .contact-card { background: var(--ink); color: var(--white); border-radius: 14px; padding: 2.5rem; margin-top: 3rem; }
   .contact-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
-  .contact-card p { color: rgba(255,255,255,0.65); margin-bottom: 1.25rem; }
-  .contact-card a {
-    display: inline-flex; align-items: center; gap: 6px; color: var(--white); font-weight: 500;
-    text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 2px; transition: border-color 0.15s;
-  }
-  .contact-card a:hover { border-color: var(--white); }
+  .contact-card p { color: rgba(255,255,255,0.65); margin-bottom: 0.75rem; }
+  .contact-card a { color: var(--white); font-weight: 500; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 2px; display: inline-block; margin-bottom: 0.5rem; }
 
-  footer {
-    border-top: 1px solid var(--rule);
-    padding: 2rem clamp(1.5rem, 5vw, 4rem);
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 1rem; background: var(--white);
-  }
+  footer { border-top: 1px solid var(--rule); padding: 2rem clamp(1.5rem, 5vw, 4rem); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: var(--white); }
   footer p { font-size: 0.8rem; color: var(--muted); margin: 0; }
-  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
   .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.15s; }
-  .footer-links a:hover { color: var(--accent); }
-  .footer-links a.active { color: var(--accent); font-weight: 500; }
+  .footer-links a:hover, .footer-links a.active { color: var(--accent); font-weight: 500; }
+  .footer-links a.dns { color: var(--ca-border); font-weight: 500; }
 
   @media (max-width: 600px) {
-    .hero { grid-template-columns: 1fr; }
-    .hero-meta { text-align: left; }
-    .toc ol { grid-template-columns: 1fr; }
-    .card-grid { grid-template-columns: 1fr; }
+    .hero { grid-template-columns: 1fr; } .hero-meta { text-align: left; }
+    .toc ol, .card-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#" class="nav-brand">SomaSyncAI</a>
+  <a href="index.html" class="nav-brand">SomaSyncAI</a>
   <span class="nav-badge">AI Disclaimer</span>
 </nav>
 
@@ -242,49 +113,58 @@
 <div class="page-wrap">
 
   <div class="critical-alert">
-    <div class="critical-alert-label">Important — Please Read</div>
-    <p><strong>SomaSyncAI is not a medical service.</strong> The artificial intelligence features on this platform are designed to support personal wellness exploration only. They do not constitute, and must not be treated as, medical advice, clinical diagnosis, therapeutic intervention, or any form of licensed healthcare service.</p>
-    <p>If you are experiencing a medical emergency, call your local emergency services immediately. If you have concerns about your physical or mental health, please consult a qualified and registered healthcare professional.</p>
+    <div class="critical-alert-label">⚠ Important — Read Before Use</div>
+    <p><strong>SomaSyncAI is not a medical service, medical device, or healthcare provider.</strong> The artificial intelligence features on this platform are designed exclusively to assist licensed practitioners with clinical documentation. They do not constitute medical advice, clinical diagnosis, therapeutic intervention, or any form of licensed healthcare service.</p>
+    <p>All AI-generated content must be reviewed and verified by a qualified licensed professional before use in any official patient record, billing submission, or clinical decision.</p>
+  </div>
+
+  <div class="ca-notice">
+    <div class="ca-notice-label">🏛 California AI Transparency Notice</div>
+    <p>In compliance with California's evolving AI transparency requirements, SomaSyncAI discloses that this platform uses artificial intelligence to generate clinical documentation. AI outputs are automated and may contain errors. Human review is required before use. We disclose our use of third-party AI infrastructure and the limitations of our AI systems in full below.</p>
   </div>
 
   <nav class="toc">
     <div class="toc-title">Contents</div>
     <ol>
       <li><a href="#a1">What Our AI Does</a></li>
-      <li><a href="#a2">What Our AI Does Not Do</a></li>
-      <li><a href="#a3">Not Medical Advice</a></li>
-      <li><a href="#a4">AI Limitations</a></li>
-      <li><a href="#a5">Mental Health</a></li>
-      <li><a href="#a6">Data & AI Processing</a></li>
+      <li><a href="#a2">No Medical Advice</a></li>
+      <li><a href="#a3">AI Limitations & Accuracy</a></li>
+      <li><a href="#a4">Documentation Verification</a></li>
+      <li><a href="#a5">Voice & Audio AI</a></li>
+      <li><a href="#a6">Mental Health Boundaries</a></li>
       <li><a href="#a7">Third-Party AI Models</a></li>
-      <li><a href="#a8">Your Responsibility</a></li>
+      <li><a href="#a8">HIPAA & Compliance</a></li>
+      <li><a href="#a9">Practitioner Responsibility</a></li>
+      <li><a href="#a10">Reporting AI Errors</a></li>
     </ol>
   </nav>
 
   <section id="a1">
     <div class="section-num">01</div>
     <h2>What Our AI Does</h2>
-    <p>SomaSyncAI's artificial intelligence features are designed to enhance your personal wellness journey by providing contextual information, pattern recognition, and motivational support based on the information you share with us.</p>
+    <p>SomaSyncAI uses artificial intelligence to assist licensed practitioners with real-time clinical documentation. Our AI is a documentation support tool — nothing more.</p>
 
     <div class="card-grid">
       <div class="cap-card can">
-        <div class="cap-card-label">The AI can</div>
+        <div class="cap-card-label">The AI Can</div>
         <ul>
-          <li>Offer general wellness information and educational content</li>
-          <li>Identify patterns in the data you provide</li>
-          <li>Suggest general lifestyle habits aligned with your stated goals</li>
-          <li>Provide motivational prompts and accountability reminders</li>
-          <li>Help you track trends in your self-reported wellbeing</li>
+          <li>Convert spoken clinical observations into structured documentation</li>
+          <li>Generate SOAP note drafts from voice input</li>
+          <li>Identify patterns in session data you provide</li>
+          <li>Suggest documentation items based on observed clinical language</li>
+          <li>Build a historical record of sessions within your account</li>
+          <li>Provide general wellness and documentation guidance</li>
         </ul>
       </div>
       <div class="cap-card cannot">
-        <div class="cap-card-label">The AI cannot</div>
+        <div class="cap-card-label">The AI Cannot</div>
         <ul>
           <li>Diagnose medical or psychological conditions</li>
-          <li>Prescribe or recommend medications or clinical treatments</li>
-          <li>Replace a licensed physician, therapist, or dietitian</li>
-          <li>Guarantee outcomes or health improvements</li>
-          <li>Access real-time medical records or clinical data</li>
+          <li>Prescribe or recommend medications or treatments</li>
+          <li>Replace a licensed physician, therapist, or clinician</li>
+          <li>Guarantee clinical accuracy of generated documentation</li>
+          <li>Access real-time medical literature or clinical databases</li>
+          <li>Make autonomous clinical decisions of any kind</li>
         </ul>
       </div>
     </div>
@@ -292,119 +172,126 @@
 
   <section id="a2">
     <div class="section-num">02</div>
-    <h2>What Our AI Does Not Do</h2>
-    <p>To be unambiguous about the boundaries of our AI features, the following are explicitly outside the scope of SomaSyncAI:</p>
-    <ul>
-      <li>Clinical assessment or psychological evaluation of any kind</li>
-      <li>Interpretation of medical test results, scans, or lab reports</li>
-      <li>Provision of emergency health guidance or crisis intervention</li>
-      <li>Nutritional prescriptions for medical conditions (e.g. diabetes management)</li>
-      <li>Fitness programming for individuals with diagnosed injuries or chronic conditions without professional supervision</li>
-      <li>Predictions or guarantees regarding health outcomes</li>
-    </ul>
+    <h2>No Medical Advice <span class="ca-tag">California Required</span></h2>
+    <div class="warning-box">
+      <strong>Critical Disclaimer</strong>
+      All content generated by SomaSyncAI — including SOAP notes, treatment summaries, session observations, and clinical suggestions — is for documentation assistance purposes only. It does not constitute medical advice, clinical diagnosis, or therapeutic recommendations of any kind.
+    </div>
+    <p>SomaSyncAI does not establish a patient-provider relationship. No professional duty of care arises from the use of this platform. All medical and clinical decisions remain the sole responsibility of the licensed practitioner.</p>
+    <p>Before acting on any AI-generated content, practitioners should apply their own independent professional judgment and, where appropriate, consult current clinical literature and guidelines.</p>
   </section>
 
   <section id="a3">
     <div class="section-num">03</div>
-    <h2>Not Medical Advice</h2>
-    <div class="warning-box">
-      <strong>Critical Disclaimer</strong>
-      All content generated by SomaSyncAI — including text, recommendations, summaries, and wellness plans — is for general informational and motivational purposes only. It does not constitute medical advice and should not be relied upon as such.
+    <h2>AI Limitations &amp; Accuracy <span class="ca-tag">AI Transparency</span></h2>
+    <p>SomaSyncAI discloses the following known limitations of our AI systems in the interest of transparency:</p>
+    <ul>
+      <li><strong>Hallucination:</strong> AI models can generate plausible-sounding but factually incorrect information. This is an inherent limitation of current large language model technology. All AI outputs must be critically reviewed.</li>
+      <li><strong>Incomplete Context:</strong> Our AI only processes the information you provide. It has no access to a patient's complete medical history, diagnostic records, or external clinical data.</li>
+      <li><strong>Training Data Limitations:</strong> AI outputs reflect patterns in training data, which may not represent the most current clinical guidelines or emerging research.</li>
+      <li><strong>Bias:</strong> AI systems may reflect biases present in their training data. We actively work to identify and reduce these, but cannot guarantee bias-free outputs.</li>
+      <li><strong>Speciality Limitations:</strong> Our AI is designed for general clinical documentation support. It may be less accurate in highly specialised clinical contexts.</li>
+      <li><strong>Language &amp; Dialect:</strong> AI voice processing accuracy may vary based on accent, speech patterns, background noise, or clinical terminology usage.</li>
+    </ul>
+    <div class="highlight-box">
+      We are committed to ongoing improvement of our AI systems. If you encounter an inaccurate, inappropriate, or potentially harmful AI output, please report it immediately to <a href="/cdn-cgi/l/email-protection#492f2c2c2d2b282a22093a2624283a30272a2820672a2624"><span class="__cf_email__" data-cfemail="5a3c3f3f3e383b39311a2935373b292334393b3374393537">[email&#160;protected]</span></a>.
     </div>
-    <p>Before making any changes to your diet, exercise routine, medication, or health regimen, you should always consult with a qualified healthcare provider who can evaluate your individual circumstances.</p>
-    <p>The information provided by our AI does not establish a patient-provider relationship, and no professional duty of care arises from your use of SomaSyncAI.</p>
   </section>
 
   <section id="a4">
     <div class="section-num">04</div>
-    <h2>AI Limitations</h2>
-    <p>All AI systems — including ours — have inherent limitations that users should be aware of:</p>
-    <ul>
-      <li><strong>Accuracy:</strong> AI-generated content may be incomplete, outdated, or contextually incorrect. It reflects patterns in training data, not verified clinical expertise.</li>
-      <li><strong>Hallucination:</strong> AI models can occasionally generate plausible-sounding but factually incorrect information. Always cross-reference health claims with reliable sources.</li>
-      <li><strong>Personalisation limits:</strong> Insights are based on information you provide. Incomplete or inaccurate input will affect the quality of output.</li>
-      <li><strong>Bias:</strong> AI systems may reflect biases present in training data. We continuously work to identify and mitigate these, but no AI is entirely free of bias.</li>
-      <li><strong>No real-time awareness:</strong> Our AI does not have access to live medical literature, real-time clinical guidelines, or your medical history outside what you share.</li>
-    </ul>
-    <div class="highlight-box">
-      We are committed to continuous improvement. If you notice an AI output that appears inaccurate or harmful, please report it to <a href="mailto:feedback@somasyncai.com">feedback@somasyncai.com</a>.
+    <h2>Documentation Verification Requirement <span class="ca-tag">Practitioner Obligation</span></h2>
+    <p>This is one of the most important obligations for SomaSyncAI users:</p>
+    <div class="warning-box">
+      <strong>Mandatory Review Requirement</strong>
+      Every piece of AI-generated documentation — including SOAP notes, treatment summaries, and session records — must be reviewed and verified by the licensed practitioner before it is used in any official patient record, insurance submission, billing document, or clinical report.
     </div>
+    <p>Submitting unreviewed AI-generated documentation to patient records or billing systems may violate professional licensing requirements, HIPAA, and applicable California healthcare regulations. The practitioner bears sole responsibility for the accuracy and appropriateness of all documentation submitted under their name or license.</p>
   </section>
 
   <section id="a5">
     <div class="section-num">05</div>
-    <h2>Mental Health</h2>
-    <p>SomaSyncAI may offer general mindfulness, stress-management, and emotional wellbeing features. These are supportive tools only and are not a substitute for professional mental health care.</p>
-    <div class="warning-box">
-      <strong>If You Are in Crisis</strong>
-      If you are experiencing a mental health crisis, suicidal thoughts, or are in immediate danger, please contact emergency services or a crisis helpline in your country immediately. SomaSyncAI is not equipped to provide crisis intervention.
-    </div>
-    <p>Our AI is designed to disengage from and redirect conversations that involve expressions of self-harm, suicidal ideation, or acute psychological distress, and to prompt users toward appropriate professional resources.</p>
+    <h2>Voice &amp; Audio AI <span class="ca-tag">California Disclosure</span></h2>
+    <p>SomaSyncAI's primary AI feature involves real-time voice input processing. We disclose the following about how this works:</p>
     <ul>
-      <li>Using AI chat features as a replacement for therapy or psychiatric care</li>
-      <li>Sharing personal trauma or crisis situations expecting clinical support</li>
-      <li>Relying on AI emotional support as a primary mental health resource</li>
+      <li>Voice input is processed in real-time by AI systems to generate structured documentation</li>
+      <li>Audio is converted to text; raw audio recordings are not retained beyond what is required for real-time processing</li>
+      <li>AI transcription accuracy depends on audio quality, speech clarity, and clinical terminology used</li>
+      <li>Voice-derived text data may be used in de-identified form to improve transcription accuracy</li>
     </ul>
+    <div class="highlight-box">
+      <strong>Patient Consent Reminder:</strong> California law and professional ethics require practitioners to obtain informed consent from patients before recording, documenting, or otherwise processing patient information during clinical sessions. The use of SomaSyncAI during a patient session is the practitioner's responsibility to disclose to the patient as appropriate.
+    </div>
   </section>
 
   <section id="a6">
     <div class="section-num">06</div>
-    <h2>Data &amp; AI Processing</h2>
-    <p>When you interact with SomaSyncAI's AI features, the information you provide is processed to generate personalised responses. Key details:</p>
+    <h2>Mental Health Boundaries</h2>
+    <p>SomaSyncAI may be used by mental health practitioners for documentation support. Important boundaries apply:</p>
     <ul>
-      <li>Your inputs are used to generate AI responses in real-time and may be used to improve our models in de-identified form</li>
-      <li>We do not share identifiable health data with third-party AI providers</li>
-      <li>Sensitive health disclosures are handled in accordance with our Privacy Policy</li>
-      <li>You may opt out of model training contributions via your account settings</li>
+      <li>Our AI does not perform psychological assessments, screening, or clinical evaluations</li>
+      <li>AI-generated session notes do not constitute a clinical formulation or treatment plan</li>
+      <li>The platform is not designed for crisis intervention and should not be used as a crisis resource</li>
     </ul>
-    <p>Please review our <a href="privacy-policy.html">Privacy Policy</a> for full details on how your data is collected, stored, and used.</p>
+    <div class="warning-box">
+      <strong>Crisis Situations</strong>
+      If a patient is experiencing a mental health crisis, suicidal ideation, or is in immediate danger, follow your professional emergency protocols and contact emergency services. SomaSyncAI is not equipped to provide crisis support.
+    </div>
+    <p>Mental health practitioners using SomaSyncAI remain fully responsible for clinical judgment, risk assessment, safety planning, and all therapeutic decisions.</p>
   </section>
 
   <section id="a7">
     <div class="section-num">07</div>
-    <h2>Third-Party AI Models</h2>
-    <p>SomaSyncAI's features may be powered in part by large language models or AI infrastructure provided by third-party technology partners. We have carefully evaluated our partners for safety, privacy compliance, and reliability.</p>
+    <h2>Third-Party AI Models <span class="ca-tag">AI Transparency</span></h2>
+    <p>SomaSyncAI's features are powered in part by third-party AI infrastructure and large language model providers. We disclose this in accordance with California AI transparency principles.</p>
     <ul>
-      <li>Third-party AI providers are contractually bound to our data handling standards</li>
-      <li>We conduct ongoing due diligence on partner AI systems and updates</li>
-      <li>Changes to underlying AI infrastructure will be reflected in updated platform documentation</li>
+      <li>Third-party AI providers process voice and text inputs to generate documentation outputs</li>
+      <li>We do not share identifiable patient data with third-party AI providers</li>
+      <li>All third-party AI partners are contractually bound to our data handling and confidentiality standards</li>
+      <li>We conduct ongoing review of third-party AI systems for safety, accuracy, and compliance</li>
     </ul>
-    <p>We do not endorse the independent outputs of any third-party AI system, and our use of third-party models does not expand the warranty or accuracy guarantees described in this disclaimer.</p>
+    <p>We do not endorse the independent outputs of any third-party AI system, and our use of third-party AI does not expand the accuracy or warranty guarantees described in this disclaimer.</p>
   </section>
 
   <section id="a8">
     <div class="section-num">08</div>
-    <h2>Your Responsibility</h2>
-    <p>By using SomaSyncAI, you acknowledge and accept the following:</p>
+    <h2>HIPAA &amp; Regulatory Compliance <span class="ca-tag">Healthcare Law</span></h2>
+    <p>SomaSyncAI is a software tool designed to assist licensed professionals with documentation. We maintain reasonable security and privacy practices.</p>
     <ul>
-      <li>You use all AI-generated content at your own discretion and risk</li>
-      <li>You will not substitute AI-generated wellness insights for professional medical, psychological, nutritional, or fitness advice</li>
-      <li>You understand that AI outputs may be imperfect, and you will apply your own judgement</li>
-      <li>You will seek professional consultation before implementing any health-related changes</li>
-      <li>You are responsible for the accuracy of information you provide to the platform</li>
+      <li>SomaSyncAI is not a HIPAA-covered entity and does not represent its platform as HIPAA-compliant by default</li>
+      <li>Practitioners who are covered entities or business associates under HIPAA are responsible for assessing their own compliance obligations when using third-party documentation tools</li>
+      <li>Business Associate Agreement (BAA) enquiries may be directed to <a href="/cdn-cgi/l/email-protection#75191012141935061a1814060c1b16141c5b161a18"><span class="__cf_email__" data-cfemail="09656c6e6865497a6664687a70676a6860276a6664">[email&#160;protected]</span></a></li>
+      <li>California practitioners must also consider the Confidentiality of Medical Information Act (CMIA) and relevant Board regulations</li>
+    </ul>
+    <p>We recommend consulting a healthcare compliance attorney to determine your regulatory obligations before using any third-party AI documentation tool in clinical practice.</p>
+  </section>
+
+  <section id="a9">
+    <div class="section-num">09</div>
+    <h2>Practitioner Responsibility</h2>
+    <p>By using SomaSyncAI, you acknowledge and accept the following responsibilities:</p>
+    <ul>
+      <li>You use all AI-generated content at your own professional discretion and bear sole responsibility for its accuracy</li>
+      <li>You will not submit AI-generated documentation to patient records or billing systems without first reviewing and verifying its accuracy and clinical appropriateness</li>
+      <li>You will obtain appropriate patient consent before using SomaSyncAI during clinical sessions</li>
+      <li>You will comply with all applicable professional licensing, HIPAA, and California regulatory requirements</li>
+      <li>You understand AI outputs may be imperfect and will apply your own professional judgment to all clinical decisions</li>
+      <li>You will not use the platform as a substitute for professional clinical training, supervision, or judgment</li>
     </ul>
     <div class="highlight-box">
-      SomaSyncAI is a wellness companion — designed to complement, never replace, the irreplaceable care of qualified human professionals.
+      SomaSyncAI is a documentation companion — designed to reduce administrative burden so practitioners can focus more fully on their patients. It is a tool in your hands, guided by your expertise.
     </div>
   </section>
 
+  <section id="a10">
+    <div class="section-num">10</div>
+    <h2>Reporting AI Errors</h2>
+    <p>We take AI accuracy seriously. If you encounter an output that is inaccurate, clinically inappropriate, misleading, or potentially harmful, please report it to our team. Your feedback directly improves our systems and helps protect other practitioners and their patients.</p>
+    <p>Reports can be sent to <a href="/cdn-cgi/l/email-protection#73151616171112101833001c1e12000a1d10121a5d101c1e"><span class="__cf_email__" data-cfemail="ec8a8989888e8d8f87ac9f83818d9f95828f8d85c28f8381">[email&#160;protected]</span></a> with a description of the issue and the AI output involved. We investigate all reports and respond within 5 business days.</p>
+  </section>
+
   <div class="contact-card">
-    <h3>Questions about our AI?</h3>
-    <p>If you have concerns about an AI output or want to learn more about how our AI works, we'd love to hear from you.</p>
-    <a href="mailto:feedback@somasyncai.com">feedback@somasyncai.com</a>
-    <p style="margin-top:1.25rem; font-size:0.85rem;">SomaSyncAI · somasyncai.com</p>
-  </div>
-
-</div>
-
-<footer>
-  <p>© 2026 SomaSyncAI. All rights reserved.</p>
-  <div class="footer-links">
-    <a href="privacy-policy.html">Privacy Policy</a>
-    <a href="terms-and-conditions.html">Terms &amp; Conditions</a>
-    <a href="ai-disclaimer.html" class="active">AI Disclaimer</a>
-  </div>
-</footer>
-
-</body>
-</html>
+    <h3>AI Feedback &amp; Questions</h3>
+    <p>Report AI errors, ask about our AI systems, or enquire about compliance.</p>
+    <a href="/cdn-cgi/l/email-protection#74121111101615171f34071b1915070d1a17151d5a171b19"><span class="__cf_email__" data-cfemail="ff999a9a9b9d9e9c94bf8c90929e8c86919c9e96d19c9092">[email&#160;protected]</span></a><br>
+    <a href="/cdn-cgi/l/email-protection#7d11181a1c113d0e12101c0

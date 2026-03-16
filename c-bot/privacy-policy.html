@@ -8,254 +8,105 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0d0d12;
-    --soft: #3a3a4a;
-    --muted: #8888a0;
-    --rule: #e4e4ef;
-    --bg: #f9f9fc;
-    --white: #ffffff;
-    --accent: #2d6b8f;
-    --accent-light: #e8f3f9;
+    --ink: #0d0d12; --soft: #3a3a4a; --muted: #8888a0; --rule: #e4e4ef;
+    --bg: #f9f9fc; --white: #ffffff; --accent: #2d6b8f; --accent-light: #e8f3f9;
+    --warn: #7a3f00; --warn-bg: #fff4e6; --warn-border: #f0a040;
+    --ca-bg: #f0f7ff; --ca-border: #1a56a0; --ca-text: #1a3a5c;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.75; font-weight: 300; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--ink);
-    font-size: 16px;
-    line-height: 1.75;
-    font-weight: 300;
-  }
-
-  /* ── NAV ── */
   nav {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(249,249,252,0.92);
-    backdrop-filter: blur(12px);
+    background: rgba(249,249,252,0.92); backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--rule);
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 clamp(1.5rem, 5vw, 4rem);
-    height: 64px;
+    padding: 0 clamp(1.5rem, 5vw, 4rem); height: 64px;
   }
-  .nav-brand {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.25rem;
-    color: var(--ink);
-    text-decoration: none;
-    letter-spacing: -0.01em;
-  }
-  .nav-badge {
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: var(--accent-light);
-    padding: 4px 10px;
-    border-radius: 20px;
-  }
+  .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+  .nav-badge { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 4px 10px; border-radius: 20px; }
 
-  /* ── HERO ── */
   .hero {
     border-bottom: 1px solid var(--rule);
     padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem);
-    background: var(--white);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: end;
-    gap: 2rem;
+    background: var(--white); display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2rem;
   }
-  .hero-tag {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1rem;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .hero-tag::before {
-    content: '';
-    display: inline-block;
-    width: 24px; height: 1px;
-    background: var(--accent);
-  }
-  .hero h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2.4rem, 5vw, 3.6rem);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
+  .hero-tag { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+  .hero-tag::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent); }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); }
   .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero-meta {
-    text-align: right;
-    font-size: 0.8rem;
-    color: var(--muted);
-    white-space: nowrap;
-  }
+  .hero-meta { text-align: right; font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
   .hero-meta strong { display: block; font-size: 0.85rem; color: var(--soft); font-weight: 500; }
 
-  /* ── LAYOUT ── */
-  .page-wrap {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: clamp(2rem, 6vw, 5rem) clamp(1.5rem, 5vw, 2rem);
-  }
+  .page-wrap { max-width: 860px; margin: 0 auto; padding: clamp(2rem, 6vw, 5rem) clamp(1.5rem, 5vw, 2rem); }
 
-  /* ── TOC ── */
-  .toc {
-    background: var(--white);
-    border: 1px solid var(--rule);
-    border-radius: 12px;
-    padding: 1.75rem 2rem;
-    margin-bottom: 3.5rem;
+  /* California badge */
+  .ca-notice {
+    background: var(--ca-bg); border: 1.5px solid var(--ca-border); border-radius: 10px;
+    padding: 1.5rem 2rem; margin-bottom: 2rem;
   }
-  .toc-title {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 1rem;
-  }
-  .toc ol {
-    list-style: none;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.35rem 2rem;
-    counter-reset: toc;
-  }
+  .ca-notice-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ca-border); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 6px; }
+  .ca-notice p { color: var(--ca-text); font-size: 0.92rem; margin-bottom: 0; }
+
+  .toc { background: var(--white); border: 1px solid var(--rule); border-radius: 12px; padding: 1.75rem 2rem; margin-bottom: 3.5rem; }
+  .toc-title { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .toc ol { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 2rem; counter-reset: toc; }
   .toc li { counter-increment: toc; }
-  .toc a {
-    color: var(--soft);
-    text-decoration: none;
-    font-size: 0.88rem;
-    display: flex; align-items: baseline; gap: 0.5rem;
-    transition: color 0.15s;
-  }
-  .toc a::before {
-    content: counter(toc, decimal-leading-zero);
-    font-size: 0.72rem;
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-    min-width: 1.6rem;
-  }
+  .toc a { color: var(--soft); text-decoration: none; font-size: 0.88rem; display: flex; align-items: baseline; gap: 0.5rem; transition: color 0.15s; }
+  .toc a::before { content: counter(toc, decimal-leading-zero); font-size: 0.72rem; color: var(--muted); min-width: 1.6rem; }
   .toc a:hover { color: var(--accent); }
 
-  /* ── SECTIONS ── */
   section { margin-bottom: 3rem; scroll-margin-top: 80px; }
+  .section-num { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .ca-tag { display: inline-block; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ca-border); background: var(--ca-bg); border: 1px solid var(--ca-border); padding: 2px 8px; border-radius: 20px; margin-left: 8px; vertical-align: middle; }
 
-  .section-num {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
-  }
-
-  h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(1.35rem, 2.5vw, 1.65rem);
-    letter-spacing: -0.015em;
-    color: var(--ink);
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--rule);
-  }
-
+  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.35rem, 2.5vw, 1.65rem); letter-spacing: -0.015em; color: var(--ink); margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--rule); }
   p { color: var(--soft); margin-bottom: 1rem; }
   p:last-child { margin-bottom: 0; }
-
-  ul, ol {
-    color: var(--soft);
-    padding-left: 0;
-    list-style: none;
-    margin-bottom: 1rem;
-  }
-  li {
-    padding: 0.45rem 0 0.45rem 1.5rem;
-    position: relative;
-    border-bottom: 1px solid var(--rule);
-    font-size: 0.95rem;
-  }
+  ul, ol { color: var(--soft); padding-left: 0; list-style: none; margin-bottom: 1rem; }
+  li { padding: 0.45rem 0 0.45rem 1.5rem; position: relative; border-bottom: 1px solid var(--rule); font-size: 0.95rem; }
   li:last-child { border-bottom: none; }
-  li::before {
-    content: '→';
-    position: absolute; left: 0;
-    color: var(--accent);
-    font-size: 0.8rem;
-  }
+  li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.8rem; }
 
-  .highlight-box {
-    background: var(--accent-light);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0;
-    padding: 1.25rem 1.5rem;
-    margin: 1.5rem 0;
-    font-size: 0.92rem;
-    color: var(--soft);
-  }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.88rem; }
+  th { background: var(--ink); color: var(--white); font-weight: 500; padding: 0.75rem 1rem; text-align: left; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  td { padding: 0.7rem 1rem; color: var(--soft); border-bottom: 1px solid var(--rule); }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--bg); }
 
-  /* ── CONTACT ── */
-  .contact-card {
-    background: var(--ink);
-    color: var(--white);
-    border-radius: 14px;
-    padding: 2.5rem;
-    margin-top: 3rem;
-  }
-  .contact-card h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.01em;
-  }
-  .contact-card p { color: rgba(255,255,255,0.65); margin-bottom: 1.25rem; }
-  .contact-card a {
-    display: inline-flex; align-items: center; gap: 6px;
-    color: var(--white);
-    font-weight: 500;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255,255,255,0.3);
-    padding-bottom: 2px;
-    transition: border-color 0.15s;
-  }
+  .highlight-box { background: var(--accent-light); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: 0.92rem; color: var(--soft); }
+  .warning-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: 0.92rem; color: var(--warn); }
+  .warning-box strong { display: block; margin-bottom: 0.3rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .rights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .right-card { border: 1px solid var(--rule); border-radius: 10px; padding: 1.25rem; background: var(--white); }
+  .right-card-icon { font-size: 1.25rem; margin-bottom: 0.5rem; }
+  .right-card-title { font-weight: 500; font-size: 0.9rem; color: var(--ink); margin-bottom: 0.35rem; }
+  .right-card p { font-size: 0.83rem; margin: 0; }
+
+  .contact-card { background: var(--ink); color: var(--white); border-radius: 14px; padding: 2.5rem; margin-top: 3rem; }
+  .contact-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+  .contact-card p { color: rgba(255,255,255,0.65); margin-bottom: 0.75rem; }
+  .contact-card a { color: var(--white); font-weight: 500; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 2px; transition: border-color 0.15s; display: inline-block; margin-bottom: 0.5rem; }
   .contact-card a:hover { border-color: var(--white); }
 
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--rule);
-    padding: 2rem clamp(1.5rem, 5vw, 4rem);
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 1rem;
-    background: var(--white);
-  }
+  footer { border-top: 1px solid var(--rule); padding: 2rem clamp(1.5rem, 5vw, 4rem); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: var(--white); }
   footer p { font-size: 0.8rem; color: var(--muted); margin: 0; }
-  .footer-links { display: flex; gap: 1.5rem; }
-  .footer-links a {
-    font-size: 0.8rem;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-  .footer-links a:hover { color: var(--accent); }
-  .footer-links a.active { color: var(--accent); font-weight: 500; }
+  .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.15s; }
+  .footer-links a:hover, .footer-links a.active { color: var(--accent); font-weight: 500; }
+  .footer-links a.dns { color: var(--ca-border); font-weight: 500; }
 
   @media (max-width: 600px) {
-    .hero { grid-template-columns: 1fr; }
-    .hero-meta { text-align: left; }
-    .toc ol { grid-template-columns: 1fr; }
+    .hero { grid-template-columns: 1fr; } .hero-meta { text-align: left; }
+    .toc ol, .rights-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#" class="nav-brand">SomaSyncAI</a>
+  <a href="index.html" class="nav-brand">SomaSyncAI</a>
   <span class="nav-badge">Privacy Policy</span>
 </nav>
 
@@ -272,177 +123,238 @@
 
 <div class="page-wrap">
 
+  <div class="ca-notice">
+    <div class="ca-notice-label">🏛 California Compliance Notice</div>
+    <p>This Privacy Policy is designed to comply with the <strong>California Consumer Privacy Act (CCPA)</strong>, the <strong>California Privacy Rights Act (CPRA)</strong>, and <strong>CalOPPA</strong>. California residents have specific rights described throughout this document. SomaSyncAI does not sell personal information.</p>
+  </div>
+
   <nav class="toc">
     <div class="toc-title">Contents</div>
     <ol>
-      <li><a href="#s1">Information We Collect</a></li>
-      <li><a href="#s2">How We Use Your Information</a></li>
-      <li><a href="#s3">Sharing & Disclosure</a></li>
-      <li><a href="#s4">Data Retention</a></li>
-      <li><a href="#s5">Security</a></li>
-      <li><a href="#s6">Your Rights</a></li>
-      <li><a href="#s7">Cookies & Tracking</a></li>
-      <li><a href="#s8">Children's Privacy</a></li>
-      <li><a href="#s9">Changes to This Policy</a></li>
-      <li><a href="#s10">Contact Us</a></li>
+      <li><a href="#s1">Notice at Collection</a></li>
+      <li><a href="#s2">Information We Collect</a></li>
+      <li><a href="#s3">Voice & Audio Processing</a></li>
+      <li><a href="#s4">How We Use Your Information</a></li>
+      <li><a href="#s5">Sharing & Disclosure</a></li>
+      <li><a href="#s6">Sensitive Personal Information</a></li>
+      <li><a href="#s7">California Privacy Rights</a></li>
+      <li><a href="#s8">Data Retention</a></li>
+      <li><a href="#s9">Security</a></li>
+      <li><a href="#s10">Cookies & Tracking</a></li>
+      <li><a href="#s11">Children's Privacy</a></li>
+      <li><a href="#s12">Changes to This Policy</a></li>
+      <li><a href="#s13">Contact & Privacy Requests</a></li>
     </ol>
   </nav>
 
-  <div class="highlight-box">
-    SomaSyncAI ("we," "our," or "us") is committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard data when you use our AI-powered wellness platform at <strong>somasyncai.com</strong>.
-  </div>
-
   <section id="s1">
     <div class="section-num">01</div>
-    <h2>Information We Collect</h2>
-    <p>We collect information you provide directly, data generated through your use of our platform, and information from third-party sources where applicable.</p>
-    <p><strong>Information you provide:</strong></p>
-    <ul>
-      <li>Account registration details (name, email address, password)</li>
-      <li>Profile and health-related information you voluntarily enter</li>
-      <li>Content you submit through the AI interaction features</li>
-      <li>Communications with our support team</li>
-      <li>Payment and billing information (processed securely via third-party processors)</li>
-    </ul>
-    <p><strong>Information collected automatically:</strong></p>
-    <ul>
-      <li>Device identifiers, browser type, operating system, and IP address</li>
-      <li>Usage data including pages visited, features used, and session duration</li>
-      <li>Log data and error reports generated by our services</li>
-      <li>Location data (only if you grant explicit permission)</li>
-    </ul>
-    <p><strong>Health and wellness data:</strong></p>
-    <ul>
-      <li>Any wellness metrics, goals, or progress data you choose to share</li>
-      <li>AI-generated insights based on your inputs — treated with the highest level of care</li>
-    </ul>
+    <h2>Notice at Collection <span class="ca-tag">CCPA Required</span></h2>
+    <p>Under California law, we are required to provide notice of the categories of personal information collected at or before the point of collection. SomaSyncAI collects the following categories of personal information:</p>
+    <table>
+      <tr><th>Category</th><th>Examples</th><th>Purpose</th></tr>
+      <tr><td>Identifiers</td><td>Name, email address, account login</td><td>Account management, authentication</td></tr>
+      <tr><td>Professional Information</td><td>Practice type, clinician role, license details</td><td>Service personalisation</td></tr>
+      <tr><td>Audio / Voice Data</td><td>Voice input during clinical sessions</td><td>AI documentation generation</td></tr>
+      <tr><td>Health-Related Notes</td><td>Session observations, SOAP note content</td><td>Clinical documentation assistance</td></tr>
+      <tr><td>Usage Data</td><td>Platform interactions, session duration, features used</td><td>Product improvement, analytics</td></tr>
+      <tr><td>Device & Technical Data</td><td>IP address, browser type, operating system</td><td>Security, troubleshooting</td></tr>
+      <tr><td>Payment Information</td><td>Billing details (processed by third-party providers)</td><td>Subscription management</td></tr>
+    </table>
+    <p>We collect this information to provide AI-powered clinical documentation services, maintain secure user accounts, and improve platform functionality. We do <strong>not</strong> sell personal information.</p>
   </section>
 
   <section id="s2">
     <div class="section-num">02</div>
-    <h2>How We Use Your Information</h2>
-    <p>We use your data only for legitimate purposes tied to delivering and improving our services.</p>
+    <h2>Information We Collect</h2>
+    <p><strong>Information you provide directly:</strong></p>
     <ul>
-      <li>Provide, personalise, and improve the SomaSyncAI platform</li>
-      <li>Deliver AI-driven wellness insights and recommendations</li>
-      <li>Process transactions and send related confirmations</li>
-      <li>Respond to enquiries and provide customer support</li>
-      <li>Send service updates, security alerts, and administrative messages</li>
-      <li>Conduct research and analytics to enhance product features</li>
-      <li>Comply with applicable legal obligations</li>
-      <li>Detect, prevent, and address fraud or security incidents</li>
+      <li>Account registration details (name, email, password, professional role)</li>
+      <li>Clinical session observations entered via voice or text</li>
+      <li>Patient-related documentation content (entered by the licensed practitioner)</li>
+      <li>Communications with our support team</li>
+      <li>Payment and billing details (handled by our secure payment processor)</li>
     </ul>
-    <p>We do <strong>not</strong> sell your personal or health data to third parties, and we do not use your health information for targeted advertising.</p>
+    <p><strong>Information collected automatically:</strong></p>
+    <ul>
+      <li>Device identifiers, browser type, operating system, and IP address</li>
+      <li>Usage logs including pages visited, features used, and session duration</li>
+      <li>Error reports and diagnostic data</li>
+      <li>Location data only if you grant explicit permission</li>
+    </ul>
+    <div class="warning-box">
+      <strong>Health Information Notice</strong>
+      Clinical notes and session documentation entered into SomaSyncAI may contain health-related information about patients. Practitioners are solely responsible for obtaining appropriate patient consent before entering any patient data into the platform.
+    </div>
   </section>
 
   <section id="s3">
     <div class="section-num">03</div>
-    <h2>Sharing &amp; Disclosure</h2>
-    <p>We may share your information in the following limited circumstances:</p>
+    <h2>Voice &amp; Audio Processing <span class="ca-tag">California Disclosure</span></h2>
+    <p>SomaSyncAI's core functionality includes real-time voice input processing. This section provides full disclosure of how audio data is handled.</p>
+    <p><strong>How voice data is used:</strong></p>
     <ul>
-      <li><strong>Service Providers:</strong> Trusted vendors who assist with hosting, analytics, payments, and customer support — bound by confidentiality agreements</li>
-      <li><strong>AI Model Providers:</strong> Anonymised or aggregated inputs may be processed by underlying AI infrastructure partners; we do not share identifiable health data with these providers</li>
-      <li><strong>Legal Requirements:</strong> When required by law, court order, or governmental authority</li>
-      <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets — you will be notified of any such change</li>
-      <li><strong>With Your Consent:</strong> Any other sharing requires your explicit permission</li>
+      <li>Voice input is processed in real-time to convert spoken clinical observations into structured documentation</li>
+      <li>Audio may be temporarily processed by AI systems to generate SOAP notes and treatment summaries</li>
+      <li>Voice data is used to improve transcription accuracy and AI model performance, in de-identified form only</li>
     </ul>
+    <p><strong>Audio retention:</strong></p>
+    <ul>
+      <li>SomaSyncAI does not intentionally store raw audio recordings beyond what is necessary for real-time processing</li>
+      <li>Processed text output (generated notes) is retained as part of your account records</li>
+      <li>You may request deletion of your voice-derived data at any time</li>
+    </ul>
+    <div class="highlight-box">
+      <strong>Practitioner Responsibility:</strong> Clinicians using SomaSyncAI are responsible for ensuring they have obtained appropriate informed consent from patients before capturing or documenting patient information during sessions. SomaSyncAI is a tool for the practitioner's documentation — not a patient-facing application.
+    </div>
   </section>
 
   <section id="s4">
     <div class="section-num">04</div>
-    <h2>Data Retention</h2>
-    <p>We retain your personal data for as long as necessary to provide our services and comply with legal obligations. Specifically:</p>
+    <h2>How We Use Your Information</h2>
     <ul>
-      <li>Account data is retained for the lifetime of your account plus 30 days after deletion</li>
-      <li>Health and wellness data is deleted within 90 days of account closure upon request</li>
-      <li>Anonymised, aggregated data may be retained indefinitely for research purposes</li>
-      <li>Backup copies may persist for up to 12 months in secure, encrypted storage</li>
+      <li>Provide, personalise, and improve the SomaSyncAI platform and AI features</li>
+      <li>Generate structured clinical documentation (SOAP notes, treatment summaries) from voice and text input</li>
+      <li>Build long-term treatment memory and session history within your account</li>
+      <li>Process subscription payments and send billing confirmations</li>
+      <li>Respond to support enquiries and provide customer assistance</li>
+      <li>Send service updates, security alerts, and important notices</li>
+      <li>Conduct research and analytics to improve AI accuracy and platform performance</li>
+      <li>Comply with applicable legal and regulatory obligations</li>
+      <li>Detect, prevent, and address fraud, security incidents, and misuse</li>
     </ul>
+    <p>We do <strong>not</strong> sell your personal or health-related data to third parties. We do <strong>not</strong> use clinical documentation content for targeted advertising.</p>
   </section>
 
   <section id="s5">
     <div class="section-num">05</div>
-    <h2>Security</h2>
-    <p>We implement industry-standard technical and organisational safeguards to protect your data, including:</p>
+    <h2>Sharing &amp; Disclosure</h2>
     <ul>
-      <li>AES-256 encryption for data at rest and TLS 1.3 for data in transit</li>
-      <li>Role-based access controls limiting internal data access to authorised personnel</li>
-      <li>Regular security audits and penetration testing</li>
-      <li>Secure development practices and vulnerability management programs</li>
+      <li><strong>Service Providers:</strong> Trusted vendors assisting with hosting, analytics, payments, and customer support — bound by strict confidentiality and data processing agreements</li>
+      <li><strong>AI Infrastructure Partners:</strong> Underlying AI model providers may process de-identified or anonymised inputs. We do not share identifiable patient or practitioner health data with AI model providers</li>
+      <li><strong>Legal Compliance:</strong> When required by applicable law, court order, subpoena, or governmental authority</li>
+      <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets — you will be notified before your data is transferred and becomes subject to a different privacy policy</li>
+      <li><strong>With Your Consent:</strong> Any other sharing requires your explicit prior consent</li>
     </ul>
-    <p>Despite our efforts, no system is perfectly secure. We encourage you to use a strong, unique password and enable two-factor authentication where available.</p>
+    <p>SomaSyncAI does <strong>not</strong> sell, rent, or trade personal information to third parties for monetary or other valuable consideration.</p>
   </section>
 
   <section id="s6">
     <div class="section-num">06</div>
-    <h2>Your Rights</h2>
-    <p>Depending on your jurisdiction, you may have the following rights regarding your personal data:</p>
+    <h2>Sensitive Personal Information <span class="ca-tag">CPRA</span></h2>
+    <p>Under the California Privacy Rights Act (CPRA), certain categories of information are classified as "sensitive personal information" and are subject to heightened protections. The following data processed by SomaSyncAI may qualify:</p>
     <ul>
-      <li><strong>Access:</strong> Request a copy of the personal data we hold about you</li>
-      <li><strong>Correction:</strong> Request correction of inaccurate or incomplete data</li>
-      <li><strong>Deletion:</strong> Request erasure of your personal data ("right to be forgotten")</li>
-      <li><strong>Portability:</strong> Receive your data in a structured, machine-readable format</li>
-      <li><strong>Restriction:</strong> Request that we limit processing of your data</li>
-      <li><strong>Objection:</strong> Object to processing based on legitimate interests</li>
-      <li><strong>Withdraw Consent:</strong> Where processing is consent-based, withdraw at any time</li>
+      <li>Health observations and clinical notes entered by practitioners</li>
+      <li>Treatment documentation referencing patient conditions</li>
+      <li>Voice inputs during clinical sessions</li>
+      <li>Account login credentials</li>
     </ul>
-    <p>To exercise any of these rights, please contact us at <a href="mailto:privacy@somasyncai.com">privacy@somasyncai.com</a>. We will respond within 30 days.</p>
+    <p>This sensitive information is used <strong>solely</strong> to provide our documentation assistance services and improve system performance. California residents have the right to limit our use of sensitive personal information to what is necessary to perform the services requested.</p>
+    <p>To exercise this right, contact: <a href="/cdn-cgi/l/email-protection#1d6d6f746b7c7e645d6e72707c6e64737e7c74337e7270"><span class="__cf_email__" data-cfemail="b7c7c5dec1d6d4cef7c4d8dad6c4ced9d4d6de99d4d8da">[email&#160;protected]</span></a></p>
   </section>
 
   <section id="s7">
     <div class="section-num">07</div>
-    <h2>Cookies &amp; Tracking</h2>
-    <p>We use cookies and similar technologies to operate and improve our platform. Categories include:</p>
-    <ul>
-      <li><strong>Essential Cookies:</strong> Required for the platform to function; cannot be disabled</li>
-      <li><strong>Analytics Cookies:</strong> Help us understand how users interact with our services</li>
-      <li><strong>Preference Cookies:</strong> Remember your settings and personalisation choices</li>
-    </ul>
-    <p>You may manage non-essential cookies through your browser settings or our in-app cookie preferences panel. Disabling certain cookies may affect platform functionality.</p>
+    <h2>California Privacy Rights <span class="ca-tag">CCPA / CPRA</span></h2>
+    <p>California residents have the following rights under the CCPA and CPRA. These rights are available to you at no charge and may be exercised up to twice per 12-month period:</p>
+
+    <div class="rights-grid">
+      <div class="right-card">
+        <div class="right-card-icon">📋</div>
+        <div class="right-card-title">Right to Know</div>
+        <p>Request disclosure of the categories and specific pieces of personal information we have collected about you, and how it has been used or shared.</p>
+      </div>
+      <div class="right-card">
+        <div class="right-card-icon">🗑</div>
+        <div class="right-card-title">Right to Delete</div>
+        <p>Request deletion of personal information we have collected, subject to certain legal exceptions.</p>
+      </div>
+      <div class="right-card">
+        <div class="right-card-icon">✏️</div>
+        <div class="right-card-title">Right to Correct</div>
+        <p>Request correction of inaccurate personal information we maintain about you.</p>
+      </div>
+      <div class="right-card">
+        <div class="right-card-icon">📦</div>
+        <div class="right-card-title">Right to Portability</div>
+        <p>Receive a copy of your personal information in a portable, machine-readable format.</p>
+      </div>
+      <div class="right-card">
+        <div class="right-card-icon">🚫</div>
+        <div class="right-card-title">Right to Opt-Out</div>
+        <p>Opt out of the sale or sharing of personal information. We do not sell data, but you may opt out of sharing for cross-context advertising purposes.</p>
+      </div>
+      <div class="right-card">
+        <div class="right-card-icon">🔒</div>
+        <div class="right-card-title">Right to Limit</div>
+        <p>Limit the use of sensitive personal information to purposes strictly necessary to provide the requested services.</p>
+      </div>
+    </div>
+
+    <p><strong>Non-Discrimination:</strong> We will not discriminate against you for exercising any of these rights. You will not receive a different level of service or pricing as a result of making a privacy request.</p>
+    <p>To submit a request, email <a href="/cdn-cgi/l/email-protection#80f0f2e9f6e1e3f9c0f3efede1f3f9eee3e1e9aee3efed"><span class="__cf_email__" data-cfemail="3545475c4354564c75465a5854464c5b56545c1b565a58">[email&#160;protected]</span></a> with the subject line "California Privacy Request." We will verify your identity and respond within <strong>45 days</strong> (extendable by an additional 45 days with notice).</p>
   </section>
 
   <section id="s8">
     <div class="section-num">08</div>
-    <h2>Children's Privacy</h2>
-    <p>SomaSyncAI is not directed at individuals under the age of 16. We do not knowingly collect personal data from children. If we become aware that a child has provided us with personal information, we will delete it promptly.</p>
-    <p>If you are a parent or guardian and believe your child has submitted information to us, please contact us immediately at <a href="mailto:privacy@somasyncai.com">privacy@somasyncai.com</a>.</p>
+    <h2>Data Retention <span class="ca-tag">California Disclosure</span></h2>
+    <p>We retain personal information only for as long as necessary to fulfil the purposes described in this policy, unless a longer retention period is required by law.</p>
+    <table>
+      <tr><th>Data Type</th><th>Retention Period</th></tr>
+      <tr><td>Account data</td><td>Duration of account + 30 days after deletion request</td></tr>
+      <tr><td>Clinical session notes</td><td>Duration of account; deleted within 90 days of account closure upon request</td></tr>
+      <tr><td>Voice-derived data</td><td>Retained as text output only; raw audio not stored beyond real-time processing</td></tr>
+      <tr><td>Usage and analytics data</td><td>Up to 24 months in identifiable form; anonymised thereafter</td></tr>
+      <tr><td>Payment records</td><td>As required by applicable financial and tax law (typically 7 years)</td></tr>
+      <tr><td>Backup copies</td><td>Up to 12 months in secure, encrypted storage</td></tr>
+    </table>
   </section>
 
   <section id="s9">
     <div class="section-num">09</div>
-    <h2>Changes to This Policy</h2>
-    <p>We may update this Privacy Policy from time to time. Material changes will be communicated via:</p>
+    <h2>Security</h2>
     <ul>
-      <li>Email notification to your registered address</li>
-      <li>A prominent notice on our platform upon login</li>
-      <li>An updated "Last Updated" date at the top of this page</li>
+      <li>AES-256 encryption for data at rest; TLS 1.3 for data in transit</li>
+      <li>Role-based access controls limiting internal data access to authorised personnel</li>
+      <li>Regular security audits and penetration testing</li>
+      <li>Secure software development lifecycle practices</li>
+      <li>Incident response procedures with user notification protocols</li>
     </ul>
-    <p>Continued use of SomaSyncAI after changes become effective constitutes your acceptance of the updated policy.</p>
+    <p>No security system is impenetrable. In the event of a data breach affecting your information, we will notify you as required by California law and applicable regulations.</p>
   </section>
 
   <section id="s10">
     <div class="section-num">10</div>
-    <h2>Contact Us</h2>
-    <p>For privacy-related questions, requests, or concerns, please reach out to our dedicated Privacy Team.</p>
+    <h2>Cookies &amp; Tracking <span class="ca-tag">CalOPPA</span></h2>
+    <p>Under CalOPPA, we disclose how we respond to Do Not Track signals and our cookie practices.</p>
+    <ul>
+      <li><strong>Essential Cookies:</strong> Required for the platform to function; cannot be disabled</li>
+      <li><strong>Analytics Cookies:</strong> Help us understand usage patterns (opt-out available)</li>
+      <li><strong>Preference Cookies:</strong> Remember your settings and personalisation choices</li>
+    </ul>
+    <p><strong>Do Not Track:</strong> SomaSyncAI currently does not respond to browser-level Do Not Track (DNT) signals, as there is no uniform industry standard for DNT compliance. You may manage tracking preferences via your account settings or browser controls.</p>
+  </section>
+
+  <section id="s11">
+    <div class="section-num">11</div>
+    <h2>Children's Privacy</h2>
+    <p>SomaSyncAI is a professional platform intended exclusively for licensed healthcare practitioners. It is not directed at individuals under the age of 16. We do not knowingly collect personal data from minors. If you believe a minor has submitted information to us, contact us immediately at <a href="/cdn-cgi/l/email-protection#304042594651534970435f5d5143495e5351591e535f5d"><span class="__cf_email__" data-cfemail="98e8eaf1eef9fbe1d8ebf7f5f9ebe1f6fbf9f1b6fbf7f5">[email&#160;protected]</span></a>.</p>
+  </section>
+
+  <section id="s12">
+    <div class="section-num">12</div>
+    <h2>Changes to This Policy</h2>
+    <p>Material changes to this Privacy Policy will be communicated via email to your registered address and a prominent notice upon login. The "Last Updated" date at the top of this page will always reflect the most recent revision. Continued use of SomaSyncAI after changes take effect constitutes acceptance.</p>
+  </section>
+
+  <section id="s13">
+    <div class="section-num">13</div>
+    <h2>Contact &amp; Privacy Requests</h2>
+    <p>For all privacy-related requests, questions, or concerns — including California rights requests — contact our Privacy Office.</p>
   </section>
 
   <div class="contact-card">
-    <h3>Get in touch</h3>
-    <p>Our Privacy Team is here to help with any data-related enquiries.</p>
-    <a href="mailto:privacy@somasyncai.com">privacy@somasyncai.com</a>
-    <p style="margin-top:1.25rem; font-size:0.85rem;">SomaSyncAI · somasyncai.com</p>
-  </div>
-
-</div>
-
-<footer>
-  <p>© 2026 SomaSyncAI. All rights reserved.</p>
-  <div class="footer-links">
-    <a href="privacy-policy.html" class="active">Privacy Policy</a>
-    <a href="terms-and-conditions.html">Terms &amp; Conditions</a>
-    <a href="ai-disclaimer.html">AI Disclaimer</a>
-  </div>
-</footer>
-
-</body>
-</html>
+    <h3>Privacy Office</h3>
+    <p>Submit California rights requests, data deletion requests, or general privacy enquiries.</p>
+    <a href="/cdn-cgi/l/email-protection#c5b5b7acb3a4a6bc85b6aaa8a4b6bcaba6a4aceba6aaa8"><span class="__cf_email__" data-cfemail="4d3d3f243b2c2e340d3e22202c3e34232e2c24632e2220">[email&#160;protected]</span></a><br>
+    <p style="margin-top:1rem; font-size:0.85rem; color:r

@@ -1,7 +1,6 @@
 {
-  "buildCommand": "vite build",
-  "outputDirectory": "dist",
   "routes": [
+    {"src": "/", "dest": "/somasync-landing.html"},
     {"src": "/privacy-policy", "dest": "/privacy-policy.html"},
     {"src": "/terms-and-conditions", "dest": "/terms-and-conditions.html"},
     {"src": "/ai-disclaimer", "dest": "/ai-disclaimer.html"},

@@ -1,6 +1,6 @@
-{"rewrites":[{"source":"/(.*)","destination":"/index.html"}]}
 {
   "rewrites": [
+    {"source": "/", "destination": "/landing.html"},
     {"source": "/privacy-policy", "destination": "/privacy-policy.html"},
     {"source": "/terms-and-conditions", "destination": "/terms-and-conditions.html"},
     {"source": "/ai-disclaimer", "destination": "/ai-disclaimer.html"},

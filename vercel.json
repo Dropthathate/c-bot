@@ -6,7 +6,7 @@
     {"src": "/ai-disclaimer", "dest": "/ai-disclaimer.html"},
     {"src": "/seo-article", "dest": "/seo-article.html"},
     {"src": "/investor-pitch", "dest": "/investor-pitch.html"},
-    {"src": "/(.*\\.(js|css|png|jpg|svg|ico|txt))", "dest": "/$1"},
+    {"src": "/(.*\\.(js|css|png|jpg|svg|ico|txt|mp3))", "dest": "/$1"},
     {"src": "/(.*)", "dest": "/index.html"}
   ]
 }

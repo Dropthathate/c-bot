@@ -4,8 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>SomaSyncAI — The Gold Standard OS for Manual Therapists | Live AI Clinical Documentation</title>
-<meta name="description" content="SomaSyncAI is the gold standard AI operating system for manual therapists, physical therapists, chiropractors, and massage therapists. Live in-ear AI guidance, automatic SOAP notes, voice charting — hands-free clinical documentation that thinks with you."/>
-<meta name="keywords" content="AI clinical documentation, SOAP notes automation, manual therapy software, physical therapy AI, chiropractic documentation, massage therapy software, voice charting, clinical AI assistant, SomaSyncAI, hands-free documentation, California therapist software, Los Angeles physical therapy software, San Francisco chiropractic AI"/>
+<meta name="description" content="SomaSyncAI is the gold standard AI operating system for manual therapists, physical therapists, chiropractors, and massage therapists. Live in-ear AI guidance, automatic SOAP notes, voice charting — hands-free clinical documentation. Serving Fresno, Bakersfield, Los Angeles, San Francisco, Sacramento and all of California."/>
+<meta name="keywords" content="AI clinical documentation, SOAP notes automation, manual therapy software, physical therapy AI, chiropractic documentation, massage therapy software, voice charting, clinical AI assistant, SomaSyncAI, hands-free documentation, California therapist software, Fresno physical therapy software, Bakersfield chiropractic AI, Stockton massage therapy, Modesto physical therapy, Visalia chiropractor, Los Angeles manual therapy, San Francisco physical therapy, Sacramento chiropractic, San Jose massage therapy, Oakland physical therapy, Palo Alto chiropractic"/>
 <meta property="og:title" content="SomaSyncAI — Gold Standard AI for Manual Therapists"/>
 <meta property="og:description" content="Live in-ear AI guidance. Automatic SOAP notes. Voice charting. The clinical OS built for hands-on practitioners."/>
 <meta property="og:url" content="https://somasyncai.com"/>
@@ -13,6 +13,34 @@
 <link rel="canonical" href="https://somasyncai.com"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- Schema.org with California regions -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SomaSyncAI",
+  "description": "AI-powered clinical documentation OS for manual therapists. Live in-ear guidance, automatic SOAP notes, voice charting.",
+  "url": "https://somasyncai.com",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free lifetime access for beta testers who provide feedback" },
+  "areaServed": [
+    { "@type": "City", "name": "Fresno", "containedInPlace": { "@type": "State", "name": "California" } },
+    { "@type": "City", "name": "Bakersfield", "containedInPlace": { "@type": "State", "name": "California" } },
+    { "@type": "City", "name": "Stockton", "containedInPlace": { "@type": "State", "name": "California" } },
+    { "@type": "City", "name": "Modesto", "containedInPlace": { "@type": "State", "name": "California" } },
+    { "@type": "City", "name": "Visalia", "containedInPlace": { "@type": "State", "name": "California" } },
+    { "@type": "City", "name": "Los Angeles", "containedInPlace": { "@type": "State", "name": "California" } },
+    { "@type": "City", "name": "San Francisco", "containedInPlace": { "@type": "State", "name": "California" } },
+    { "@type": "City", "name": "San Jose", "containedInPlace": { "@type": "State", "name": "California" } },
+    { "@type": "City", "name": "Oakland", "containedInPlace": { "@type": "State", "name": "California" } },
+    { "@type": "City", "name": "Palo Alto", "containedInPlace": { "@type": "State", "name": "California" } },
+    { "@type": "City", "name": "Sacramento", "containedInPlace": { "@type": "State", "name": "California" } }
+  ],
+  "publisher": { "@type": "Organization", "name": "SomaSyncAI", "url": "https://somasyncai.com" }
+}
+</script>
 
 <style>
 :root {
@@ -28,9 +56,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
-
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--ink);
@@ -42,32 +68,13 @@ body {
   cursor: none;
 }
 
-/* ── CUSTOM CURSOR ── */
-.cursor {
-  position: fixed; width: 8px; height: 8px;
-  background: var(--gold); border-radius: 50%;
-  pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%);
-  transition: transform 0.1s, width 0.2s, height 0.2s;
-  mix-blend-mode: screen;
-}
-.cursor-ring {
-  position: fixed; width: 36px; height: 36px;
-  border: 1px solid rgba(201,168,76,0.4); border-radius: 50%;
-  pointer-events: none; z-index: 9998;
-  transform: translate(-50%,-50%);
-  transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s;
-}
-body:has(a:hover) .cursor-ring,
-body:has(button:hover) .cursor-ring { width: 56px; height: 56px; border-color: var(--gold); }
+/* ── CURSOR ── */
+.cursor { position: fixed; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: screen; }
+.cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(201,168,76,0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width 0.3s, height 0.3s, border-color 0.3s; }
+body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { width: 56px; height: 56px; border-color: var(--gold); }
 
-/* ── NOISE OVERLAY ── */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 1; opacity: 0.4;
-}
+/* ── NOISE ── */
+body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1; opacity: 0.4; }
 
 /* ── NAV ── */
 nav {
@@ -75,433 +82,250 @@ nav {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 clamp(1.5rem, 5vw, 4rem);
   height: 72px;
-  background: rgba(8,8,16,0.85);
+  background: rgba(8,8,16,0.9);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--rule);
 }
-.nav-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.6rem;
-  letter-spacing: 0.08em;
-  color: var(--white);
-  text-decoration: none;
-}
+.nav-left { display: flex; align-items: center; gap: 1.5rem; }
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.08em; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 10px; }
 .nav-logo span { color: var(--gold); }
-.nav-links { display: flex; align-items: center; gap: 2.5rem; }
-.nav-links a {
-  font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--soft); text-decoration: none; transition: color 0.2s;
-}
+.nav-logo img { height: 28px; width: auto; }
+.nav-powered { display: flex; align-items: center; gap: 6px; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(201,168,76,0.5); border-left: 1px solid var(--rule); padding-left: 1.25rem; }
+.nav-powered img { height: 18px; width: auto; opacity: 0.7; }
+.nav-links { display: flex; align-items: center; gap: 2rem; }
+.nav-links a { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft); text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: var(--gold); }
-.nav-cta {
-  background: var(--gold); color: var(--ink) !important;
-  font-weight: 500; padding: 8px 20px; border-radius: 4px;
-  transition: background 0.2s !important;
-}
-.nav-cta:hover { background: var(--gold-light) !important; color: var(--ink) !important; }
+.nav-investor { color: rgba(201,168,76,0.7) !important; border: 1px solid rgba(201,168,76,0.25); padding: 5px 12px; border-radius: 4px; transition: border-color 0.2s, color 0.2s !important; }
+.nav-investor:hover { border-color: var(--gold) !important; color: var(--gold) !important; }
+.nav-cta { background: var(--gold); color: var(--ink) !important; font-weight: 500; padding: 8px 20px; border-radius: 4px; transition: background 0.2s !important; }
+.nav-cta:hover { background: var(--gold-light) !important; }
 
 /* ── HERO ── */
-.hero {
-  min-height: 100vh;
-  display: flex; align-items: center;
-  padding: 72px clamp(1.5rem, 8vw, 8rem) 0;
-  position: relative; overflow: hidden;
-}
-
-/* Animated grid background */
-.hero-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-  animation: gridDrift 20s linear infinite;
-}
-@keyframes gridDrift {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(60px); }
-}
-
-/* Radial glow */
-.hero-glow {
-  position: absolute; top: 20%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 800px; height: 600px;
-  background: radial-gradient(ellipse at center, rgba(201,168,76,0.12) 0%, transparent 70%);
-  pointer-events: none;
-  animation: glowPulse 4s ease-in-out infinite;
-}
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
-  50% { opacity: 1; transform: translate(-50%,-50%) scale(1.1); }
-}
-
-/* Orbiting rings */
-.hero-rings {
-  position: absolute; right: -5%; top: 50%;
-  transform: translateY(-50%);
-  width: 700px; height: 700px;
-  pointer-events: none;
-}
-.ring {
-  position: absolute; border-radius: 50%;
-  border: 1px solid rgba(201,168,76,0.15);
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  animation: ringRotate linear infinite;
-}
+.hero { min-height: 100vh; display: flex; align-items: center; padding: 72px clamp(1.5rem, 8vw, 8rem) 0; position: relative; overflow: hidden; }
+.hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px); background-size: 60px 60px; animation: gridDrift 20s linear infinite; }
+@keyframes gridDrift { 0% { transform: translateY(0); } 100% { transform: translateY(60px); } }
+.hero-glow { position: absolute; top: 20%; left: 50%; transform: translate(-50%,-50%); width: 800px; height: 600px; background: radial-gradient(ellipse at center, rgba(201,168,76,0.12) 0%, transparent 70%); pointer-events: none; animation: glowPulse 4s ease-in-out infinite; }
+@keyframes glowPulse { 0%,100%{opacity:0.6;transform:translate(-50%,-50%) scale(1)} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.1)} }
+.hero-rings { position: absolute; right: -5%; top: 50%; transform: translateY(-50%); width: 700px; height: 700px; pointer-events: none; }
+.ring { position: absolute; border-radius: 50%; border: 1px solid rgba(201,168,76,0.15); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: ringRotate linear infinite; }
 .ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 8s; border-color: rgba(201,168,76,0.3); }
 .ring:nth-child(2) { width: 340px; height: 340px; animation-duration: 14s; animation-direction: reverse; }
 .ring:nth-child(3) { width: 480px; height: 480px; animation-duration: 22s; }
 .ring:nth-child(4) { width: 620px; height: 620px; animation-duration: 32s; animation-direction: reverse; border-color: rgba(201,168,76,0.06); }
-.ring-dot {
-  position: absolute; width: 6px; height: 6px;
-  background: var(--gold); border-radius: 50%;
-  top: 0; left: 50%; transform: translateX(-50%) translateY(-50%);
-  box-shadow: 0 0 12px var(--gold);
-}
-@keyframes ringRotate {
-  from { transform: translate(-50%,-50%) rotate(0deg); }
-  to { transform: translate(-50%,-50%) rotate(360deg); }
-}
+.ring-dot { position: absolute; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; top: 0; left: 50%; transform: translateX(-50%) translateY(-50%); box-shadow: 0 0 12px var(--gold); }
+@keyframes ringRotate { from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg)} }
 
 .hero-content { position: relative; z-index: 2; max-width: 700px; }
-
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  border: 1px solid var(--rule);
-  background: rgba(201,168,76,0.06);
-  padding: 6px 16px; border-radius: 100px;
-  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 2rem;
-  animation: fadeUp 0.8s ease both;
-}
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--rule); background: rgba(201,168,76,0.06); padding: 6px 16px; border-radius: 100px; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; animation: fadeUp 0.8s ease both; }
 .badge-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: blink 2s ease infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-.hero h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(3.5rem, 9vw, 8rem);
-  line-height: 0.9;
-  letter-spacing: 0.02em;
-  margin-bottom: 1.5rem;
-  animation: fadeUp 0.8s 0.1s ease both;
-}
+.hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 9vw, 8rem); line-height: 0.9; letter-spacing: 0.02em; margin-bottom: 1.5rem; animation: fadeUp 0.8s 0.1s ease both; }
 .hero h1 .gold { color: var(--gold); }
-.hero h1 .outline {
-  -webkit-text-stroke: 1px rgba(255,255,255,0.3);
-  color: transparent;
-}
+.hero h1 .outline { -webkit-text-stroke: 1px rgba(255,255,255,0.3); color: transparent; }
+.hero-sub { font-family: 'Libre Baskerville', serif; font-size: clamp(1rem, 2vw, 1.2rem); color: var(--soft); font-style: italic; margin-bottom: 1.5rem; max-width: 540px; animation: fadeUp 0.8s 0.2s ease both; line-height: 1.8; }
 
-.hero-sub {
-  font-family: 'Libre Baskerville', serif;
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: var(--soft);
-  font-style: italic;
-  margin-bottom: 2.5rem;
-  max-width: 540px;
-  animation: fadeUp 0.8s 0.2s ease both;
-  line-height: 1.8;
-}
+/* MVP Banner */
+.mvp-banner { display: inline-flex; align-items: center; gap: 10px; background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.3); border-radius: 8px; padding: 10px 18px; margin-bottom: 2rem; animation: fadeUp 0.8s 0.25s ease both; }
+.mvp-banner-text { font-size: 0.82rem; color: var(--white); line-height: 1.4; }
+.mvp-banner-text strong { color: var(--gold); display: block; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
 
-.hero-actions {
-  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
-  animation: fadeUp 0.8s 0.3s ease both;
-}
-.btn-primary {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: var(--gold); color: var(--ink);
-  font-weight: 500; font-size: 0.9rem; letter-spacing: 0.06em;
-  padding: 14px 32px; border-radius: 4px;
-  text-decoration: none; border: none; cursor: none;
-  transition: all 0.2s;
-  position: relative; overflow: hidden;
-}
-.btn-primary::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transform: translateX(-100%); transition: transform 0.4s;
-}
+.hero-actions { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; animation: fadeUp 0.8s 0.3s ease both; margin-bottom: 1rem; }
+.btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--gold); color: var(--ink); font-weight: 500; font-size: 0.9rem; letter-spacing: 0.06em; padding: 14px 32px; border-radius: 4px; text-decoration: none; border: none; cursor: none; transition: all 0.2s; position: relative; overflow: hidden; }
+.btn-primary::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transform: translateX(-100%); transition: transform 0.4s; }
 .btn-primary:hover::before { transform: translateX(100%); }
 .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 8px 30px rgba(201,168,76,0.3); }
-
-.btn-secondary {
-  display: inline-flex; align-items: center; gap: 8px;
-  color: var(--soft); font-size: 0.85rem; letter-spacing: 0.08em;
-  text-decoration: none; transition: color 0.2s;
-  cursor: none;
-}
+.btn-secondary { display: inline-flex; align-items: center; gap: 8px; color: var(--soft); font-size: 0.85rem; letter-spacing: 0.08em; text-decoration: none; transition: color 0.2s; cursor: none; }
 .btn-secondary:hover { color: var(--white); }
-.btn-secondary svg { transition: transform 0.2s; }
-.btn-secondary:hover svg { transform: translateX(4px); }
+.btn-outline { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font-size: 0.85rem; letter-spacing: 0.08em; text-decoration: none; border: 1px solid rgba(201,168,76,0.4); padding: 13px 28px; border-radius: 4px; transition: all 0.2s; cursor: none; }
+.btn-outline:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
 
-.hero-stats {
-  display: flex; gap: 3rem; margin-top: 4rem;
-  padding-top: 2rem; border-top: 1px solid var(--rule);
-  animation: fadeUp 0.8s 0.4s ease both;
-}
-.stat-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.5rem; color: var(--gold); letter-spacing: 0.04em;
-  line-height: 1;
-}
+.lifetime-note { font-size: 0.75rem; color: var(--gold); opacity: 0.8; animation: fadeUp 0.8s 0.35s ease both; margin-bottom: 2rem; display: flex; align-items: center; gap: 6px; }
+.lifetime-note::before { content: '★'; }
+
+.hero-stats { display: flex; gap: 3rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--rule); animation: fadeUp 0.8s 0.4s ease both; }
+.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--gold); letter-spacing: 0.04em; line-height: 1; }
 .stat-label { font-size: 0.78rem; color: var(--soft); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── WAVEFORM ── */
+.waveform-wrap { position: absolute; bottom: 3rem; right: clamp(1.5rem, 8vw, 8rem); z-index: 2; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; animation: fadeUp 1s 0.6s ease both; }
+.waveform-label { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(201,168,76,0.5); }
+.waveform { display: flex; align-items: center; gap: 3px; height: 48px; }
+.waveform-bar { width: 3px; background: var(--gold); border-radius: 2px; animation: wave var(--dur) ease-in-out infinite; opacity: 0.7; }
+@keyframes wave { 0%,100%{transform:scaleY(0.15)} 50%{transform:scaleY(1)} }
 
 /* ── MARQUEE ── */
-.marquee-wrap {
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-  padding: 1rem 0;
-  overflow: hidden;
-  background: rgba(201,168,76,0.03);
-}
-.marquee-track {
-  display: flex; gap: 4rem;
-  animation: marquee 30s linear infinite;
-  white-space: nowrap;
-}
-.marquee-item {
-  display: flex; align-items: center; gap: 1rem;
-  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--soft);
-}
+.marquee-wrap { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 1rem 0; overflow: hidden; background: rgba(201,168,76,0.03); }
+.marquee-track { display: flex; gap: 4rem; animation: marquee 30s linear infinite; white-space: nowrap; }
+.marquee-item { display: flex; align-items: center; gap: 1rem; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--soft); }
 .marquee-item span { color: var(--gold); }
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
 /* ── SECTIONS ── */
 section { padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 8vw, 8rem); position: relative; }
-
-.section-label {
-  font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 1rem;
-  display: flex; align-items: center; gap: 12px;
-}
+.section-label { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 12px; }
 .section-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
-
-h2.section-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  line-height: 0.95; letter-spacing: 0.02em;
-  margin-bottom: 1.5rem;
-}
+h2.section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95; letter-spacing: 0.02em; margin-bottom: 1.5rem; }
 h2.section-title .gold { color: var(--gold); }
+.section-body { font-family: 'Libre Baskerville', serif; font-style: italic; color: var(--soft); font-size: 1.05rem; max-width: 560px; line-height: 1.85; }
 
-.section-body {
-  font-family: 'Libre Baskerville', serif;
-  font-style: italic; color: var(--soft);
-  font-size: 1.05rem; max-width: 560px; line-height: 1.85;
-}
+/* ── MVP SECTION ── */
+.mvp-section { background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.mvp-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.mvp-tag { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+.mvp-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 0.95; letter-spacing: 0.02em; margin-bottom: 1.5rem; }
+.mvp-headline .gold { color: var(--gold); }
+.mvp-body { font-family: 'Libre Baskerville', serif; font-style: italic; color: var(--soft); font-size: 1rem; line-height: 1.85; margin-bottom: 2rem; }
+.mvp-quote { border-left: 3px solid var(--gold); padding: 1.25rem 1.5rem; background: rgba(201,168,76,0.05); border-radius: 0 8px 8px 0; font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.04em; color: var(--white); line-height: 1.1; margin-bottom: 2rem; }
+.mvp-quote span { color: var(--gold); }
+.mvp-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+.mvp-list li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.88rem; color: var(--soft); }
+.mvp-list li::before { content: '✓'; color: var(--gold); font-size: 0.8rem; margin-top: 2px; flex-shrink: 0; }
+.mvp-list li strong { color: var(--white); }
+.mvp-visual { position: relative; }
+.mvp-card { border: 1px solid var(--rule); border-radius: 12px; padding: 2rem; background: var(--ink2); }
+.mvp-card-label { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+.phase-list { display: flex; flex-direction: column; gap: 0; }
+.phase-item { display: flex; gap: 1.25rem; align-items: flex-start; padding: 1.25rem 0; border-bottom: 1px solid var(--rule); position: relative; }
+.phase-item:last-child { border-bottom: none; }
+.phase-num { font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; color: var(--gold); min-width: 2.5rem; letter-spacing: 0.08em; margin-top: 2px; }
+.phase-content h4 { font-size: 0.88rem; font-weight: 500; color: var(--white); margin-bottom: 0.2rem; }
+.phase-content p { font-size: 0.78rem; color: var(--soft); }
+.phase-badge { display: inline-block; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; margin-top: 0.4rem; }
+.phase-badge.now { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+.phase-badge.coming { background: rgba(255,255,255,0.05); color: var(--soft); border: 1px solid rgba(255,255,255,0.1); }
 
-/* ── PROBLEM SECTION ── */
+/* ── PROBLEM ── */
 .problem { background: var(--ink2); }
-.problem-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 4rem; align-items: center; margin-top: 4rem;
-}
+.problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 4rem; }
 .problem-numbers { display: flex; flex-direction: column; gap: 2rem; }
-.prob-stat {
-  display: flex; align-items: baseline; gap: 1rem;
-  padding-bottom: 2rem; border-bottom: 1px solid var(--rule);
-}
+.prob-stat { display: flex; align-items: baseline; gap: 1rem; padding-bottom: 2rem; border-bottom: 1px solid var(--rule); }
 .prob-stat:last-child { border-bottom: none; }
-.prob-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 4rem; color: var(--gold); letter-spacing: 0.02em;
-  line-height: 1; min-width: 5rem;
-}
+.prob-num { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--gold); letter-spacing: 0.02em; line-height: 1; min-width: 5rem; }
 .prob-text { font-size: 0.9rem; color: var(--soft); line-height: 1.6; }
 .prob-text strong { color: var(--white); display: block; font-size: 1rem; margin-bottom: 0.25rem; }
 
 /* ── FEATURES ── */
-.features-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1.5px; margin-top: 4rem;
-  background: var(--rule);
-  border: 1px solid var(--rule);
-}
-.feature-card {
-  background: var(--ink);
-  padding: 2.5rem;
-  position: relative; overflow: hidden;
-  transition: background 0.3s;
-}
-.feature-card::before {
-  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-  height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  transform: scaleX(0); transition: transform 0.4s;
-}
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; margin-top: 4rem; background: var(--rule); border: 1px solid var(--rule); }
+.feature-card { background: var(--ink); padding: 2.5rem; position: relative; overflow: hidden; transition: background 0.3s; }
+.feature-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); transform: scaleX(0); transition: transform 0.4s; }
 .feature-card:hover { background: rgba(201,168,76,0.04); }
 .feature-card:hover::before { transform: scaleX(1); }
-.feature-icon {
-  width: 48px; height: 48px; border: 1px solid var(--rule);
-  border-radius: 8px; display: flex; align-items: center; justify-content: center;
-  margin-bottom: 1.5rem; font-size: 1.4rem;
-  background: rgba(201,168,76,0.06);
-  transition: border-color 0.3s, background 0.3s;
-}
+.feature-icon { width: 48px; height: 48px; border: 1px solid var(--rule); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 1.4rem; background: rgba(201,168,76,0.06); transition: border-color 0.3s, background 0.3s; }
 .feature-card:hover .feature-icon { border-color: var(--gold); background: rgba(201,168,76,0.12); }
-.feature-card h3 {
-  font-family: 'Libre Baskerville', serif;
-  font-size: 1.05rem; color: var(--white);
-  margin-bottom: 0.75rem; font-weight: 700;
-}
+.feature-card h3 { font-family: 'Libre Baskerville', serif; font-size: 1.05rem; color: var(--white); margin-bottom: 0.75rem; font-weight: 700; }
 .feature-card p { font-size: 0.88rem; color: var(--soft); line-height: 1.7; }
-.feature-tag {
-  display: inline-block; margin-top: 1rem;
-  font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--gold); padding: 3px 10px;
-  border: 1px solid rgba(201,168,76,0.3); border-radius: 100px;
-}
+.feature-tag { display: inline-block; margin-top: 1rem; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); padding: 3px 10px; border: 1px solid rgba(201,168,76,0.3); border-radius: 100px; }
+.feature-tag.coming { color: var(--soft); border-color: rgba(255,255,255,0.1); }
+
+/* ── COMING SOON ── */
+.coming-section { background: var(--ink2); }
+.coming-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+.coming-card { border: 1px solid var(--rule); border-radius: 12px; padding: 2rem; background: var(--ink); position: relative; overflow: hidden; transition: border-color 0.3s; }
+.coming-card::after { content: 'COMING SOON'; position: absolute; top: 1rem; right: 1rem; font-size: 0.6rem; letter-spacing: 0.14em; color: var(--soft); border: 1px solid rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 100px; }
+.coming-card:hover { border-color: rgba(201,168,76,0.3); }
+.coming-icon { font-size: 2rem; margin-bottom: 1rem; }
+.coming-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.04em; color: var(--white); margin-bottom: 0.5rem; }
+.coming-card h3 span { color: var(--gold); }
+.coming-card p { font-size: 0.85rem; color: var(--soft); line-height: 1.7; }
 
 /* ── HOW IT WORKS ── */
-.how { background: var(--ink2); }
-.steps {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 0; margin-top: 4rem;
-  position: relative;
-}
-.steps::before {
-  content: ''; position: absolute;
-  top: 32px; left: 12.5%; right: 12.5%;
-  height: 1px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold), transparent);
-  opacity: 0.3;
-}
+.how { background: var(--ink); }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 4rem; position: relative; }
+.steps::before { content: ''; position: absolute; top: 32px; left: 12.5%; right: 12.5%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold), transparent); opacity: 0.3; }
 .step { padding: 0 2rem; text-align: center; }
-.step-num {
-  width: 64px; height: 64px; border-radius: 50%;
-  border: 1px solid var(--rule);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 1.5rem;
-  font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem;
-  color: var(--gold); background: var(--ink);
-  position: relative; z-index: 1;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
+.step-num { width: 64px; height: 64px; border-radius: 50%; border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--gold); background: var(--ink); position: relative; z-index: 1; transition: border-color 0.3s, box-shadow 0.3s; }
 .step:hover .step-num { border-color: var(--gold); box-shadow: 0 0 24px rgba(201,168,76,0.2); }
 .step h3 { font-size: 0.95rem; font-weight: 500; color: var(--white); margin-bottom: 0.5rem; }
 .step p { font-size: 0.83rem; color: var(--soft); line-height: 1.65; }
 
-/* ── WHO IT'S FOR ── */
-.audience-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 1rem; margin-top: 3rem;
-}
-.audience-card {
-  border: 1px solid var(--rule); border-radius: 8px;
-  padding: 2rem; background: var(--ink2);
-  display: flex; gap: 1.5rem; align-items: flex-start;
-  transition: border-color 0.3s, transform 0.3s;
-}
+/* ── AUDIENCE ── */
+.audience-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 3rem; }
+.audience-card { border: 1px solid var(--rule); border-radius: 8px; padding: 2rem; background: var(--ink2); display: flex; gap: 1.5rem; align-items: flex-start; transition: border-color 0.3s, transform 0.3s; }
 .audience-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
 .audience-emoji { font-size: 2rem; }
 .audience-card h3 { font-size: 0.95rem; font-weight: 500; color: var(--white); margin-bottom: 0.4rem; }
 .audience-card p { font-size: 0.83rem; color: var(--soft); line-height: 1.65; }
 
-/* ── GEO SEO ── */
-.geo { background: var(--ink2); }
-.geo-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 1rem; margin-top: 3rem;
-}
-.geo-card {
-  border: 1px solid var(--rule); border-radius: 6px;
-  padding: 1.25rem 1.5rem; background: var(--ink);
-  transition: border-color 0.3s;
-}
+/* ── ROADMAP ── */
+.roadmap-section { background: var(--ink2); }
+.roadmap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; margin-top: 3rem; }
+.roadmap-phase { padding: 2rem; border-right: 1px solid var(--rule); position: relative; }
+.roadmap-phase:last-child { border-right: none; }
+.roadmap-phase.active { background: rgba(201,168,76,0.05); }
+.roadmap-q { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.roadmap-phase h4 { font-size: 0.9rem; font-weight: 500; color: var(--white); margin-bottom: 1rem; }
+.roadmap-phase ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.roadmap-phase li { font-size: 0.78rem; color: var(--soft); padding: 0.3rem 0 0.3rem 1rem; border-bottom: 1px solid rgba(201,168,76,0.06); position: relative; }
+.roadmap-phase li:last-child { border-bottom: none; }
+.roadmap-phase li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-size: 0.7rem; }
+.roadmap-phase.active li::before { color: var(--gold); }
+.roadmap-now-badge { position: absolute; top: 1rem; right: 1rem; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 2px 8px; border-radius: 100px; }
+
+/* ── TESTIMONIAL ── */
+.testimonial-section { text-align: center; background: linear-gradient(180deg, var(--ink) 0%, rgba(201,168,76,0.04) 50%, var(--ink) 100%); }
+.testimonial-quote { font-family: 'Libre Baskerville', serif; font-size: clamp(1.2rem, 3vw, 1.8rem); font-style: italic; color: var(--white); max-width: 800px; margin: 2rem auto; line-height: 1.65; }
+.testimonial-quote::before, .testimonial-quote::after { content: '"'; color: var(--gold); font-size: 1.5em; vertical-align: -0.2em; }
+.testimonial-attr { font-size: 0.8rem; color: var(--soft); letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ── GEO ── */
+.geo { background: var(--ink); }
+.geo-region { margin-top: 3rem; }
+.geo-region-label { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+.geo-region-label::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+.geo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+.geo-card { border: 1px solid var(--rule); border-radius: 6px; padding: 1.25rem 1.5rem; background: var(--ink2); transition: border-color 0.3s; }
 .geo-card:hover { border-color: rgba(201,168,76,0.3); }
 .geo-card h4 { font-size: 0.85rem; font-weight: 500; color: var(--white); margin-bottom: 0.25rem; }
 .geo-card p { font-size: 0.78rem; color: var(--soft); }
 
-/* ── TESTIMONIAL ── */
-.testimonial-section {
-  text-align: center;
-  background: linear-gradient(180deg, var(--ink) 0%, rgba(201,168,76,0.04) 50%, var(--ink) 100%);
-}
-.testimonial-quote {
-  font-family: 'Libre Baskerville', serif;
-  font-size: clamp(1.2rem, 3vw, 1.8rem);
-  font-style: italic; color: var(--white);
-  max-width: 800px; margin: 2rem auto;
-  line-height: 1.65;
-}
-.testimonial-quote::before, .testimonial-quote::after {
-  content: '"'; color: var(--gold); font-size: 1.5em; vertical-align: -0.2em;
-}
-.testimonial-attr { font-size: 0.8rem; color: var(--soft); letter-spacing: 0.1em; text-transform: uppercase; }
+/* ── INVESTOR ── */
+.investor-section { background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, var(--ink2) 60%); border-top: 1px solid var(--rule); }
+.investor-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.investor-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+.inv-stat { border: 1px solid var(--rule); border-radius: 8px; padding: 1.5rem; background: var(--ink); text-align: center; }
+.inv-stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--gold); letter-spacing: 0.04em; line-height: 1; }
+.inv-stat-label { font-size: 0.72rem; color: var(--soft); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.35rem; }
+.investor-cta { display: inline-flex; align-items: center; gap: 10px; background: rgba(201,168,76,0.1); color: var(--gold); font-weight: 500; font-size: 0.88rem; letter-spacing: 0.06em; padding: 14px 28px; border-radius: 4px; text-decoration: none; border: 1px solid rgba(201,168,76,0.4); transition: all 0.2s; margin-top: 2rem; display: inline-flex; }
+.investor-cta:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); }
 
-/* ── PRICING / CTA ── */
-.cta-section {
-  text-align: center;
-  background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%);
-  border-top: 1px solid var(--rule);
-}
-.cta-section h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(3rem, 7vw, 6rem);
-  letter-spacing: 0.02em; line-height: 0.95;
-  margin-bottom: 1.5rem;
-}
+/* ── CTA ── */
+.cta-section { text-align: center; background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%); border-top: 1px solid var(--rule); }
+.cta-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 7vw, 6rem); letter-spacing: 0.02em; line-height: 0.95; margin-bottom: 1rem; }
 .cta-section h2 .gold { color: var(--gold); }
-.cta-section p { font-family: 'Libre Baskerville', serif; font-style: italic; color: var(--soft); font-size: 1.1rem; margin-bottom: 2.5rem; }
-
-.beta-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  border: 1px solid rgba(201,168,76,0.4); padding: 6px 16px;
-  border-radius: 100px; font-size: 0.72rem; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--gold); margin-bottom: 2rem;
-  background: rgba(201,168,76,0.06);
-}
-
-.form-wrap {
-  display: flex; gap: 0; max-width: 480px; margin: 0 auto;
-  border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
-  background: rgba(255,255,255,0.03);
-}
-.form-wrap input {
-  flex: 1; background: transparent; border: none; outline: none;
-  padding: 14px 20px; color: var(--white); font-family: 'DM Sans', sans-serif;
-  font-size: 0.9rem;
-}
+.cta-section > p { font-family: 'Libre Baskerville', serif; font-style: italic; color: var(--soft); font-size: 1.1rem; margin-bottom: 0.75rem; }
+.lifetime-cta { font-size: 0.85rem; color: var(--gold); margin-bottom: 2.5rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.lifetime-cta::before { content: '★'; }
+.beta-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(201,168,76,0.4); padding: 6px 16px; border-radius: 100px; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; background: rgba(201,168,76,0.06); }
+.cta-actions { display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.form-wrap { display: flex; gap: 0; max-width: 480px; margin: 0 auto; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: rgba(255,255,255,0.03); }
+.form-wrap input { flex: 1; background: transparent; border: none; outline: none; padding: 14px 20px; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; }
 .form-wrap input::placeholder { color: var(--soft); }
-.form-wrap button {
-  background: var(--gold); color: var(--ink); border: none;
-  padding: 14px 24px; font-weight: 500; font-size: 0.85rem;
-  letter-spacing: 0.08em; cursor: none; transition: background 0.2s;
-  white-space: nowrap;
-}
+.form-wrap button { background: var(--gold); color: var(--ink); border: none; padding: 14px 24px; font-weight: 500; font-size: 0.85rem; letter-spacing: 0.08em; cursor: none; transition: background 0.2s; white-space: nowrap; }
 .form-wrap button:hover { background: var(--gold-light); }
 .form-note { font-size: 0.75rem; color: var(--soft); margin-top: 0.75rem; }
 
+/* ── POWERED BY ── */
+.powered-section { border-top: 1px solid var(--rule); padding: 2rem clamp(1.5rem, 8vw, 8rem); display: flex; align-items: center; justify-content: center; gap: 1rem; background: rgba(201,168,76,0.02); }
+.powered-label { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--soft); }
+.powered-logo { display: flex; align-items: center; gap: 8px; }
+.powered-logo img { height: 22px; width: auto; opacity: 0.6; transition: opacity 0.2s; }
+.powered-logo:hover img { opacity: 1; }
+.powered-logo span { font-size: 0.82rem; font-weight: 500; color: rgba(201,168,76,0.6); letter-spacing: 0.06em; }
+
 /* ── FOOTER ── */
-footer {
-  border-top: 1px solid var(--rule);
-  padding: 3rem clamp(1.5rem, 8vw, 8rem);
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 3rem;
-}
-.footer-brand .logo {
-  font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem;
-  letter-spacing: 0.08em; color: var(--white); margin-bottom: 0.75rem;
-}
+footer { border-top: 1px solid var(--rule); padding: 3rem clamp(1.5rem, 8vw, 8rem); display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; }
+.footer-brand .logo { display: flex; align-items: center; gap: 10px; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.08em; color: var(--white); margin-bottom: 0.75rem; }
 .footer-brand .logo span { color: var(--gold); }
-.footer-brand p { font-size: 0.83rem; color: var(--soft); line-height: 1.7; max-width: 260px; }
+.footer-brand .logo img { height: 26px; width: auto; }
+.footer-brand p { font-size: 0.83rem; color: var(--soft); line-height: 1.7; max-width: 260px; margin-bottom: 1rem; }
+.footer-powered { display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: rgba(201,168,76,0.5); letter-spacing: 0.1em; text-transform: uppercase; }
+.footer-powered img { height: 16px; width: auto; opacity: 0.5; }
 .footer-col h4 { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; }
 .footer-col a { display: block; font-size: 0.83rem; color: var(--soft); text-decoration: none; margin-bottom: 0.6rem; transition: color 0.2s; }
 .footer-col a:hover { color: var(--white); }
-.footer-bottom {
-  border-top: 1px solid var(--rule);
-  padding: 1.5rem clamp(1.5rem, 8vw, 8rem);
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 1rem;
-}
+.footer-bottom { border-top: 1px solid var(--rule); padding: 1.5rem clamp(1.5rem, 8vw, 8rem); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
 .footer-bottom p { font-size: 0.75rem; color: var(--soft); }
 .footer-bottom .dns { color: rgba(201,168,76,0.6); text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
 .footer-bottom .dns:hover { color: var(--gold); }
@@ -511,21 +335,32 @@ footer {
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
 /* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .mvp-inner, .investor-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .roadmap-grid { grid-template-columns: 1fr 1fr; }
+}
 @media (max-width: 900px) {
   .features-grid { grid-template-columns: 1fr 1fr; }
   .steps { grid-template-columns: 1fr 1fr; }
   .steps::before { display: none; }
   .geo-grid { grid-template-columns: 1fr 1fr; }
+  .coming-grid { grid-template-columns: 1fr; }
   footer { grid-template-columns: 1fr 1fr; }
   .hero-rings { display: none; }
   .problem-grid { grid-template-columns: 1fr; }
+  .nav-powered { display: none; }
 }
-@media (max-width: 600px) {
-  .features-grid, .steps, .audience-grid, .geo-grid, footer { grid-template-columns: 1fr; }
+@media (max-width: 768px) {
+  #workflow .step-row { grid-template-columns: 1fr !important; }
+  #workflow .step-row > div:last-child { min-height: 200px !important; }
+}
+  .features-grid, .steps, .audience-grid, .geo-grid, footer, .investor-stats, .roadmap-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   body { cursor: auto; }
   .cursor, .cursor-ring { display: none; }
   .hero-stats { flex-direction: column; gap: 1.5rem; }
+  .waveform-wrap { display: none; }
+  .cta-actions { flex-direction: column; align-items: center; }
 }
 </style>
 </head>
@@ -536,12 +371,24 @@ footer {
 
 <!-- NAV -->
 <nav>
-  <a href="/" class="nav-logo">Soma<span>Sync</span>AI</a>
+  <div class="nav-left">
+    <a href="/" class="nav-logo">
+      <img src="/images/ss.png" alt="SomaSyncAI" onerror="this.src='/ss.png';this.onerror=null;">
+      Soma<span>Sync</span>AI
+    </a>
+    <div class="nav-powered">
+      <img src="/images/Aaliyah-logo.png" alt="AALIYAH.IO" onerror="this.src='/Aaliyah-logo.png';this.onerror=null;">
+      Powered by AALIYAH.IO
+    </div>
+  </div>
   <div class="nav-links">
     <a href="#features">Features</a>
-    <a href="#how">How It Works</a>
+    <a href="#roadmap">Roadmap</a>
     <a href="#who">Who It's For</a>
-    <a href="#beta" class="nav-cta">Join Beta</a>
+    <a href="#team">Join Team</a>
+    <a href="#investors" class="nav-investor">Investors</a>
+    <a href="/investor-pitch">Pitch Deck</a>
+    <a href="#beta" class="nav-cta">Join Beta — Free</a>
   </div>
 </nav>
 
@@ -567,30 +414,38 @@ footer {
       CLINICAL OS
     </h1>
     <p class="hero-sub">Live in-ear AI guidance. Automatic SOAP notes. Voice charting. The intelligent operating system built for the world's best manual therapists.</p>
+
+    <div class="mvp-banner">
+      <span style="font-size:1.2rem;">🚀</span>
+      <div class="mvp-banner-text">
+        <strong>MVP Release — The Foundation</strong>
+        This is the foundation, not the ceiling. The full clinical OS vision is just beginning.
+      </div>
+    </div>
+
     <div class="hero-actions">
-      <a href="#beta" class="btn-primary">
-        Request Beta Access
+      <a href="/auth" class="btn-primary">
+        Start Free — Join Beta
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="#features" class="btn-secondary">
-        See how it works
+      <a href="/dashboard/chat" class="btn-outline">
+        Open Dashboard
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
+    <div class="lifetime-note">Lifetime free access — provide feedback + refer one therapist who does the same</div>
+
     <div class="hero-stats">
-      <div>
-        <div class="stat-num">87%</div>
-        <div class="stat-label">Less time charting</div>
-      </div>
-      <div>
-        <div class="stat-num">100%</div>
-        <div class="stat-label">Hands-free</div>
-      </div>
-      <div>
-        <div class="stat-num">Live</div>
-        <div class="stat-label">Real-time AI guidance</div>
-      </div>
+      <div><div class="stat-num">87%</div><div class="stat-label">Less time charting</div></div>
+      <div><div class="stat-num">100%</div><div class="stat-label">Hands-free</div></div>
+      <div><div class="stat-num">Live</div><div class="stat-label">Real-time AI guidance</div></div>
     </div>
+  </div>
+
+  <!-- WAVEFORM VISUALIZER -->
+  <div class="waveform-wrap">
+    <div class="waveform-label">AI Listening</div>
+    <div class="waveform" id="waveform"></div>
   </div>
 </section>
 
@@ -601,22 +456,82 @@ footer {
     <div class="marquee-item">Automatic SOAP Notes <span>✦</span></div>
     <div class="marquee-item">Voice Charting <span>✦</span></div>
     <div class="marquee-item">Treatment Memory <span>✦</span></div>
+    <div class="marquee-item">SomaSphere — Coming <span>✦</span></div>
+    <div class="marquee-item">SyncLearn — Coming <span>✦</span></div>
+    <div class="marquee-item">Wearable Integration — Coming <span>✦</span></div>
+    <div class="marquee-item">Predictive Care — Coming <span>✦</span></div>
     <div class="marquee-item">Gold Standard Documentation <span>✦</span></div>
     <div class="marquee-item">Physical Therapy <span>✦</span></div>
     <div class="marquee-item">Chiropractic <span>✦</span></div>
     <div class="marquee-item">Massage Therapy <span>✦</span></div>
-    <div class="marquee-item">Sports Medicine <span>✦</span></div>
     <div class="marquee-item">Live In-Ear AI <span>✦</span></div>
     <div class="marquee-item">Automatic SOAP Notes <span>✦</span></div>
     <div class="marquee-item">Voice Charting <span>✦</span></div>
     <div class="marquee-item">Treatment Memory <span>✦</span></div>
+    <div class="marquee-item">SomaSphere — Coming <span>✦</span></div>
+    <div class="marquee-item">SyncLearn — Coming <span>✦</span></div>
+    <div class="marquee-item">Wearable Integration — Coming <span>✦</span></div>
+    <div class="marquee-item">Predictive Care — Coming <span>✦</span></div>
     <div class="marquee-item">Gold Standard Documentation <span>✦</span></div>
-    <div class="marquee-item">Physical Therapy <span>✦</span></div>
-    <div class="marquee-item">Chiropractic <span>✦</span></div>
-    <div class="marquee-item">Massage Therapy <span>✦</span></div>
-    <div class="marquee-item">Sports Medicine <span>✦</span></div>
   </div>
 </div>
+
+<!-- MVP SECTION -->
+<section class="mvp-section reveal">
+  <div class="mvp-inner">
+    <div>
+      <div class="mvp-tag">MVP — Foundation Release</div>
+      <h2 class="mvp-headline">THIS IS THE<br><span class="gold">FOUNDATION,</span><br>NOT THE CEILING.</h2>
+      <p class="mvp-body">What you're using today is the beginning of something much larger. SomaSyncAI's MVP delivers a fully functional AI clinical documentation system — and lays the groundwork for the most comprehensive clinical operating system ever built for manual therapy.</p>
+      <div class="mvp-quote">The best practitioners<br>deserve the <span>best tools.</span></div>
+      <ul class="mvp-list">
+        <li><strong>Lifetime free access — here's how it works:</strong> Use SomaSyncAI, provide honest feedback on your experience, and refer one other therapist to beta test. That's it.</li>
+        <li><strong>Your referral does the same.</strong> They use it, they give feedback, they refer someone. And so on. The community builds itself — and everyone who participates gets lifetime access.</li>
+        <li><strong>Your feedback shapes the product.</strong> Every session, every note, every suggestion you send makes SomaSyncAI better for every practitioner who comes after you.</li>
+        <li><strong>Early adopters get grandfathered in</strong> at beta pricing when paid tiers launch. You will never pay full price.</li>
+      </ul>
+    </div>
+    <div class="mvp-visual">
+      <div class="mvp-card">
+        <div class="mvp-card-label">Product Evolution — 4 Phases</div>
+        <div class="phase-list">
+          <div class="phase-item">
+            <div class="phase-num">01</div>
+            <div class="phase-content">
+              <h4>Clinical Documentation OS</h4>
+              <p>Live in-ear AI, SOAP notes, voice charting, treatment memory, ICD-10 assist.</p>
+              <span class="phase-badge now">Live Now</span>
+            </div>
+          </div>
+          <div class="phase-item">
+            <div class="phase-num">02</div>
+            <div class="phase-content">
+              <h4>SomaSphere + SyncLearn</h4>
+              <p>3D population pattern visualizer. Contextual learning modules in your ear during treatment.</p>
+              <span class="phase-badge coming">Coming Q3 2026</span>
+            </div>
+          </div>
+          <div class="phase-item">
+            <div class="phase-num">03</div>
+            <div class="phase-content">
+              <h4>Wearable Integration</h4>
+              <p>Real-time biometric data from wearables feeding into clinical AI. HRV, movement, muscle activation.</p>
+              <span class="phase-badge coming">Coming Q4 2026</span>
+            </div>
+          </div>
+          <div class="phase-item">
+            <div class="phase-num">04</div>
+            <div class="phase-content">
+              <h4>Predictive Care Intelligence</h4>
+              <p>AI predicts patient outcomes, flags re-injury risk, and personalises treatment paths across populations.</p>
+              <span class="phase-badge coming">Coming 2027</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- PROBLEM -->
 <section class="problem reveal">
@@ -627,11 +542,11 @@ footer {
     <div class="problem-numbers">
       <div class="prob-stat">
         <div class="prob-num">3H</div>
-        <div class="prob-text"><strong>Daily documentation burden</strong>Average clinical practitioner spends 3+ hours per day on notes, charting, and administrative tasks.</div>
+        <div class="prob-text"><strong>Daily documentation burden</strong>Average practitioner spends 3+ hours per day on notes, charting, and administrative tasks.</div>
       </div>
       <div class="prob-stat">
         <div class="prob-num">40%</div>
-        <div class="prob-text"><strong>Of clinical time lost</strong>Nearly half your working day goes to paperwork instead of patient care — the work you actually trained for.</div>
+        <div class="prob-text"><strong>Of clinical time lost</strong>Nearly half your working day goes to paperwork instead of the patient care you trained for.</div>
       </div>
       <div class="prob-stat">
         <div class="prob-num">#1</div>
@@ -644,24 +559,15 @@ footer {
         <div style="display:flex;flex-direction:column;gap:1rem;">
           <div style="display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--ink);">
             <span style="color:var(--gold);font-size:1.2rem;">🎧</span>
-            <div>
-              <div style="font-size:0.88rem;color:var(--white);font-weight:500;">Live In-Ear Guidance</div>
-              <div style="font-size:0.78rem;color:var(--soft);">AI thinks alongside you during treatment</div>
-            </div>
+            <div><div style="font-size:0.88rem;color:var(--white);font-weight:500;">Live In-Ear Guidance</div><div style="font-size:0.78rem;color:var(--soft);">AI thinks alongside you during treatment</div></div>
           </div>
           <div style="display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--ink);">
             <span style="color:var(--gold);font-size:1.2rem;">🎤</span>
-            <div>
-              <div style="font-size:0.88rem;color:var(--white);font-weight:500;">Voice → SOAP Note</div>
-              <div style="font-size:0.78rem;color:var(--soft);">Speak naturally. Notes appear instantly.</div>
-            </div>
+            <div><div style="font-size:0.88rem;color:var(--white);font-weight:500;">Voice → SOAP Note</div><div style="font-size:0.78rem;color:var(--soft);">Speak naturally. Notes appear instantly.</div></div>
           </div>
           <div style="display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--ink);">
             <span style="color:var(--gold);font-size:1.2rem;">🧠</span>
-            <div>
-              <div style="font-size:0.88rem;color:var(--white);font-weight:500;">Treatment Memory</div>
-              <div style="font-size:0.78rem;color:var(--soft);">Every session builds deeper client intelligence</div>
-            </div>
+            <div><div style="font-size:0.88rem;color:var(--white);font-weight:500;">Treatment Memory</div><div style="font-size:0.78rem;color:var(--soft);">Every session builds deeper client intelligence</div></div>
           </div>
         </div>
       </div>
@@ -671,45 +577,84 @@ footer {
 
 <!-- FEATURES -->
 <section id="features">
-  <div class="section-label">Core Features</div>
+  <div class="section-label">Core Features — Live Now</div>
   <h2 class="section-title reveal">BUILT FOR THE<br><span class="gold">TREATMENT TABLE</span></h2>
-  <p class="section-body reveal">Seven breakthrough capabilities engineered specifically for hands-on clinical practice.</p>
+  <p class="section-body reveal">Everything in the MVP is live and ready. The full OS vision is what comes next.</p>
   <div class="features-grid reveal">
     <div class="feature-card">
       <div class="feature-icon">🎧</div>
       <h3>Live In-Ear AI Guidance</h3>
-      <p>Real-time suggestions whispered through your earpiece during assessments. Like having a brilliant clinical colleague beside you on every case.</p>
-      <span class="feature-tag">Real-Time</span>
+      <p>Real-time suggestions whispered through your earpiece during assessments. Like having a brilliant clinical colleague on every case.</p>
+      <span class="feature-tag">Live Now</span>
     </div>
     <div class="feature-card">
       <div class="feature-icon">📋</div>
       <h3>Automatic SOAP Notes</h3>
       <p>Speak your observations naturally. SomaSyncAI structures them instantly into compliant Subjective, Objective, Assessment, and Plan documentation.</p>
-      <span class="feature-tag">Instant</span>
+      <span class="feature-tag">Live Now</span>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🎤</div>
       <h3>Voice Charting</h3>
       <p>Hands on the patient. Voice on the record. Document trigger points, range of motion, and treatment progress without breaking contact.</p>
-      <span class="feature-tag">Hands-Free</span>
+      <span class="feature-tag">Live Now</span>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🧠</div>
       <h3>Treatment Memory</h3>
       <p>Every session deepens the AI's understanding of your patient. Pattern recognition across visits reveals what static charts never could.</p>
-      <span class="feature-tag">Longitudinal</span>
+      <span class="feature-tag">Live Now</span>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">🔍</div>
-      <h3>Assessment Intelligence</h3>
-      <p>AI detects relationships between posture, tension patterns, and movement restrictions — surfacing insights that accelerate your clinical reasoning.</p>
-      <span class="feature-tag">AI-Powered</span>
+      <div class="feature-icon">🔬</div>
+      <h3>ICD-10 Code Assist</h3>
+      <p>AI suggests relevant diagnostic codes from your clinical documentation. Reduce billing errors and speed up the claims process.</p>
+      <span class="feature-tag">Live Now</span>
     </div>
     <div class="feature-card">
       <div class="feature-icon">⚡</div>
       <h3>Instant Documentation</h3>
       <p>Walk out of treatment with complete, accurate notes already generated. No after-hours charting. No documentation debt. Ever again.</p>
-      <span class="feature-tag">Zero Lag</span>
+      <span class="feature-tag">Live Now</span>
+    </div>
+  </div>
+</section>
+
+<!-- COMING SOON -->
+<section class="coming-section reveal">
+  <div class="section-label">The Full Vision — The Practitioner Hub</div>
+  <h2 class="section-title">WHAT'S <span class="gold">COMING</span></h2>
+  <p class="section-body">SomaSyncAI is evolving into a full Practitioner Hub — a dynamic ecosystem that combines collaborative intelligence, continuous learning, and global reach into one platform.</p>
+  <div class="coming-grid">
+    <div class="coming-card">
+      <div class="coming-icon">🌐</div>
+      <h3>Soma<span>Sphere</span></h3>
+      <p>A live interactive 3D anatomical model overlaid with population-level heat maps. When you identify an anterior pelvic tilt, tap SomaSphere to see the statistical prevalence of that deviation across anonymized demographics — office workers, athletes, age groups. Move from treating one patient to understanding community-level musculoskeletal health trends.</p>
+    </div>
+    <div class="coming-card">
+      <div class="coming-icon">📚</div>
+      <h3>Sync<span>Learn</span></h3>
+      <p>Just-in-time clinical education delivered in your ear during treatment. When AALIYAH detects Upper Crossed Syndrome, a Learn icon appears. Tap it for a 30–90 second video or interactive diagram — palpation techniques for pectoralis minor, involved muscle groups, or the associated TCM pattern. Every session becomes a learning opportunity.</p>
+    </div>
+    <div class="coming-card">
+      <div class="coming-icon">⌚</div>
+      <h3><span>Wearable</span> Integration</h3>
+      <p>Real-time biometric data from patient wearables feeding directly into the clinical AI. HRV, movement quality, muscle activation patterns, and recovery metrics woven into every session record and treatment recommendation.</p>
+    </div>
+    <div class="coming-card">
+      <div class="coming-icon">🔮</div>
+      <h3><span>Predictive</span> Care</h3>
+      <p>AI that predicts patient outcomes before they happen. Re-injury risk flags, treatment response forecasting, and personalised care pathway generation based on population-level pattern intelligence and individual longitudinal data.</p>
+    </div>
+    <div class="coming-card">
+      <div class="coming-icon">🌍</div>
+      <h3><span>Global</span> Expansion</h3>
+      <p>SomaSyncAI is being translated into dozens of languages to serve practitioners worldwide. The gold standard clinical OS is not just a California product — it's a global one. International beta cohorts launching after the US foundation is set.</p>
+    </div>
+    <div class="coming-card">
+      <div class="coming-icon">🏛</div>
+      <h3>The <span>Hub</span></h3>
+      <p>The full Practitioner Hub brings everything together — SomaSphere collaborative insights, SyncLearn education, session review, SOAP documentation, and community-powered wisdom. One ecosystem. Every tool a modern bodywork professional needs, in one place.</p>
     </div>
   </div>
 </section>
@@ -743,37 +688,173 @@ footer {
 </section>
 
 <!-- WHO IT'S FOR -->
-<section id="who">
+<section id="who" style="background:var(--ink2);">
+
+<!-- AALIYAH WORKFLOW -->
+<section style="background:var(--ink);padding:clamp(4rem,10vw,8rem) clamp(1.5rem,8vw,8rem);border-top:1px solid var(--rule);" id="workflow">
+  <div class="section-label">The Full Session Workflow</div>
+  <h2 class="section-title reveal">A SESSION WITH <span class="gold">AALIYAH</span></h2>
+  <p class="section-body reveal">AALIYAH.IO is the AI intelligence powering SomaSyncAI. Here's exactly how a session flows from intake to documentation — step by step.</p>
+
+  <div style="display:flex;flex-direction:column;gap:2px;margin-top:3.5rem;">
+
+    <!-- Step 1 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:320px;border:1px solid var(--rule);border-radius:12px 12px 0 0;overflow:hidden;">
+      <div style="padding:2.5rem;background:var(--ink2);display:flex;flex-direction:column;justify-content:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:rgba(201,168,76,0.15);line-height:1;margin-bottom:0.5rem;">01</div>
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Client Arrives</div>
+        <h3 style="font-family:'Libre Baskerville',serif;font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:0.75rem;">Intake Form & Health History</h3>
+        <p style="font-size:0.88rem;color:var(--soft);line-height:1.7;">Client fills out the intake form while the therapist prepares. No rushing, no skipping — a complete health history is the foundation of everything that follows.</p>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(8,8,16,0.7),rgba(8,8,16,0.3)),url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80') center/cover no-repeat;min-height:280px;display:flex;align-items:flex-end;padding:1.5rem;">
+        <span style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(201,168,76,0.6);">Intake & Preparation</span>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:320px;border:1px solid var(--rule);border-left:1px solid var(--rule);border-right:1px solid var(--rule);overflow:hidden;">
+      <div style="background:linear-gradient(135deg,rgba(8,8,16,0.7),rgba(8,8,16,0.3)),url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800&q=80') center/cover no-repeat;min-height:280px;display:flex;align-items:flex-end;padding:1.5rem;">
+        <span style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(201,168,76,0.6);">Calibration & Consent</span>
+      </div>
+      <div style="padding:2.5rem;background:var(--ink2);display:flex;flex-direction:column;justify-content:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:rgba(201,168,76,0.15);line-height:1;margin-bottom:0.5rem;">02</div>
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Power On & Calibrate</div>
+        <h3 style="font-family:'Libre Baskerville',serif;font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:0.75rem;">AALIYAH Wakes Up</h3>
+        <p style="font-size:0.88rem;color:var(--soft);line-height:1.7;">Therapist powers on the earpiece and opens the SOAP note dashboard. AALIYAH displays consent first — always. Then she runs a brief voice calibration sequence so she can recognize your voice precisely in any environment.</p>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:320px;border:1px solid var(--rule);border-left:1px solid var(--rule);border-right:1px solid var(--rule);overflow:hidden;">
+      <div style="padding:2.5rem;background:var(--ink2);display:flex;flex-direction:column;justify-content:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:rgba(201,168,76,0.15);line-height:1;margin-bottom:0.5rem;">03</div>
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Health History Review</div>
+        <h3 style="font-family:'Libre Baskerville',serif;font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:0.75rem;">AALIYAH Analyzes for Contraindications</h3>
+        <p style="font-size:0.88rem;color:var(--soft);line-height:1.7;">Therapist verbally reflects the client's intake form and health history out loud. As you speak, AALIYAH begins clinical analysis — checking for contraindications first, so no time is wasted. She may flag conditions requiring rescheduling, suggest orthopedic tests, or highlight specific symptoms to investigate. The more you reflect and listen with your client, the better the eventual treatment plan.</p>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(8,8,16,0.6),rgba(8,8,16,0.2)),url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80') center/cover no-repeat;min-height:280px;display:flex;align-items:flex-end;padding:1.5rem;">
+        <span style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(201,168,76,0.6);">Clinical Analysis</span>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:320px;border:1px solid var(--rule);border-left:1px solid var(--rule);border-right:1px solid var(--rule);overflow:hidden;">
+      <div style="background:linear-gradient(135deg,rgba(8,8,16,0.6),rgba(8,8,16,0.2)),url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80') center/cover no-repeat;min-height:280px;display:flex;align-items:flex-end;padding:1.5rem;">
+        <span style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(201,168,76,0.6);">Visual & Postural Assessment</span>
+      </div>
+      <div style="padding:2.5rem;background:var(--ink2);display:flex;flex-direction:column;justify-content:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:rgba(201,168,76,0.15);line-height:1;margin-bottom:0.5rem;">04</div>
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Visual Assessment</div>
+        <h3 style="font-family:'Libre Baskerville',serif;font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:0.75rem;">Circle the Client. Call Out What You See.</h3>
+        <p style="font-size:0.88rem;color:var(--soft);line-height:1.7;">Begin visual assessment — analyze gait, posture, and alignment while circling the client. Palpate problem areas. Call out what you see and feel out loud. AALIYAH captures every observation, merging Western anatomical analysis with TCM principles to build a complete clinical picture in real time.</p>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:320px;border:1px solid var(--rule);border-left:1px solid var(--rule);border-right:1px solid var(--rule);overflow:hidden;">
+      <div style="padding:2.5rem;background:rgba(201,168,76,0.05);display:flex;flex-direction:column;justify-content:center;border-left:3px solid var(--gold);">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:rgba(201,168,76,0.15);line-height:1;margin-bottom:0.5rem;">05</div>
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Before Bodywork Begins</div>
+        <h3 style="font-family:'Libre Baskerville',serif;font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:0.75rem;">Generate Documentation — Review & Verify</h3>
+        <p style="font-size:0.88rem;color:var(--soft);line-height:1.7;margin-bottom:1rem;">Before beginning the bodywork session, hit <strong style="color:var(--white);">Generate Documentation</strong>. AALIYAH produces a recommended treatment plan and full SOAP note draft from everything captured so far. The therapist double-checks, verifies, and approves before hands go on the client. This is where AI assists and the clinician decides.</p>
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:10px 16px;font-size:0.78rem;color:var(--gold);width:fit-content;">⚡ Generate Documentation</div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(8,8,16,0.5),rgba(8,8,16,0.1)),url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&q=80') center/cover no-repeat;min-height:280px;display:flex;align-items:flex-end;padding:1.5rem;">
+        <span style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(201,168,76,0.6);">Verify Before Treatment</span>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:320px;border:1px solid var(--rule);border-radius:0 0 12px 12px;overflow:hidden;">
+      <div style="background:linear-gradient(135deg,rgba(8,8,16,0.6),rgba(8,8,16,0.2)),url('https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=800&q=80') center/cover no-repeat;min-height:280px;display:flex;align-items:flex-end;padding:1.5rem;">
+        <span style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(201,168,76,0.6);">Live Treatment Session</span>
+      </div>
+      <div style="padding:2.5rem;background:var(--ink2);display:flex;flex-direction:column;justify-content:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:rgba(201,168,76,0.15);line-height:1;margin-bottom:0.5rem;">06</div>
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Bodywork Session</div>
+        <h3 style="font-family:'Libre Baskerville',serif;font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:0.75rem;">Document Live While You Work</h3>
+        <p style="font-size:0.88rem;color:var(--soft);line-height:1.7;">Session begins. Start new voice documentation while performing massage or treatment. Client performance, tissue response, adjustments made, and outcomes observed — all continuously logged by AALIYAH in real time. Walk out with complete notes. Every session. No exceptions.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
   <div class="section-label">Disciplines</div>
   <h2 class="section-title reveal">BUILT FOR<br><span class="gold">EVERY HANDS-ON</span><br>PRACTITIONER</h2>
   <div class="audience-grid reveal">
     <div class="audience-card">
       <div class="audience-emoji">💆</div>
-      <div>
-        <h3>Massage Therapists</h3>
-        <p>Document trigger points, muscle tension, and treatment responses without lifting your hands from the patient. Build longitudinal client records that elevate your practice.</p>
-      </div>
+      <div><h3>Massage Therapists</h3><p>Document trigger points, muscle tension, and treatment responses without lifting your hands. Build longitudinal client records that elevate your practice.</p></div>
     </div>
     <div class="audience-card">
       <div class="audience-emoji">🏃</div>
-      <div>
-        <h3>Physical Therapists</h3>
-        <p>Real-time AI guidance during functional assessments. Automatic documentation of ROM measurements, functional tests, and treatment progressions.</p>
-      </div>
+      <div><h3>Physical Therapists</h3><p>Real-time AI guidance during functional assessments. Automatic documentation of ROM measurements, functional tests, and treatment progressions.</p></div>
     </div>
     <div class="audience-card">
       <div class="audience-emoji">🦴</div>
-      <div>
-        <h3>Chiropractors</h3>
-        <p>Voice-charted spinal assessments, adjustment records, and patient progress notes. Complete clinical documentation that keeps pace with your adjusting table.</p>
-      </div>
+      <div><h3>Chiropractors</h3><p>Voice-charted spinal assessments, adjustment records, and patient progress notes. Documentation that keeps pace with your adjusting table.</p></div>
     </div>
     <div class="audience-card">
       <div class="audience-emoji">⚽</div>
-      <div>
-        <h3>Sports Medicine & Athletic Trainers</h3>
-        <p>Sideline-ready documentation. Rapid injury assessment recording, return-to-play tracking, and performance pattern recognition across athletes.</p>
-      </div>
+      <div><h3>Sports Medicine & Athletic Trainers</h3><p>Sideline-ready documentation. Rapid injury assessment recording, return-to-play tracking, and performance pattern recognition.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="roadmap-section reveal" id="roadmap">
+  <div class="section-label">Product Roadmap</div>
+  <h2 class="section-title">THE ROAD TO THE<br><span class="gold">FULL OS</span></h2>
+  <p class="section-body">Four phases. One vision. The most complete clinical operating system ever built for manual therapy.</p>
+  <div class="roadmap-grid">
+    <div class="roadmap-phase active">
+      <div class="roadmap-now-badge">Now Live</div>
+      <div class="roadmap-q">Phase 01 — Q1 2026</div>
+      <h4>Clinical Documentation MVP</h4>
+      <ul>
+        <li>Live in-ear AI guidance</li>
+        <li>Automatic SOAP notes</li>
+        <li>Voice charting</li>
+        <li>Treatment memory</li>
+        <li>ICD-10 code assist</li>
+        <li>Dashboard & chat interface</li>
+      </ul>
+    </div>
+    <div class="roadmap-phase">
+      <div class="roadmap-q">Phase 02 — Q3 2026</div>
+      <h4>Intelligence Expansion</h4>
+      <ul>
+        <li>SomaSphere 3D visualizer</li>
+        <li>SyncLearn in-ear education</li>
+        <li>EHR integrations</li>
+        <li>Mobile app (iOS)</li>
+        <li>Practice dashboard</li>
+        <li>Billing code assist</li>
+      </ul>
+    </div>
+    <div class="roadmap-phase">
+      <div class="roadmap-q">Phase 03 — Q4 2026</div>
+      <h4>Wearable + Population Layer</h4>
+      <ul>
+        <li>Wearable device integration</li>
+        <li>Real-time biometrics</li>
+        <li>Population analytics</li>
+        <li>Outcome tracking</li>
+        <li>Referral insights</li>
+        <li>Pattern reporting</li>
+      </ul>
+    </div>
+    <div class="roadmap-phase">
+      <div class="roadmap-q">Phase 04 — 2027</div>
+      <h4>Predictive Care OS</h4>
+      <ul>
+        <li>Predictive care AI</li>
+        <li>Re-injury risk flags</li>
+        <li>Personalised care paths</li>
+        <li>Multi-location enterprise</li>
+        <li>API for EHR vendors</li>
+        <li>International expansion</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -787,47 +868,215 @@ footer {
 
 <!-- GEO SEO -->
 <section class="geo reveal">
-  <div class="section-label">Serving Practitioners Nationwide</div>
-  <h2 class="section-title">AVAILABLE ACROSS <span class="gold">AMERICA</span></h2>
-  <p class="section-body">SomaSyncAI is built for clinical practitioners coast to coast. Currently serving beta users in:</p>
-  <div class="geo-grid">
-    <div class="geo-card"><h4>Los Angeles, CA</h4><p>Manual therapy & sports medicine</p></div>
-    <div class="geo-card"><h4>San Francisco, CA</h4><p>Physical therapy & chiropractic</p></div>
-    <div class="geo-card"><h4>San Diego, CA</h4><p>Athletic training & massage</p></div>
-    <div class="geo-card"><h4>Sacramento, CA</h4><p>Rehabilitation clinics</p></div>
-    <div class="geo-card"><h4>New York, NY</h4><p>Multi-discipline practices</p></div>
-    <div class="geo-card"><h4>Chicago, IL</h4><p>Sports & orthopedic therapy</p></div>
-    <div class="geo-card"><h4>Houston, TX</h4><p>Chiropractic & wellness</p></div>
-    <div class="geo-card"><h4>Miami, FL</h4><p>Sports medicine & PT</p></div>
+  <div class="section-label">Serving California & Beyond</div>
+  <h2 class="section-title">BUILT FOR<br><span class="gold">CALIFORNIA</span><br>PRACTITIONERS</h2>
+  <p class="section-body">Currently prioritising California practitioners in our first beta cohort — with national expansion underway.</p>
+
+  <div class="geo-region">
+    <div class="geo-region-label">Central Valley</div>
+    <div class="geo-grid">
+      <div class="geo-card"><h4>Fresno, CA</h4><p>Physical therapy & chiropractic</p></div>
+      <div class="geo-card"><h4>Bakersfield, CA</h4><p>Manual therapy & sports medicine</p></div>
+      <div class="geo-card"><h4>Stockton, CA</h4><p>Massage therapy & rehabilitation</p></div>
+      <div class="geo-card"><h4>Modesto, CA</h4><p>Chiropractic & wellness</p></div>
+      <div class="geo-card"><h4>Visalia, CA</h4><p>Physical therapy & athletic training</p></div>
+    </div>
+  </div>
+
+  <div class="geo-region">
+    <div class="geo-region-label">Los Angeles Region</div>
+    <div class="geo-grid">
+      <div class="geo-card"><h4>Los Angeles, CA</h4><p>Manual therapy & sports medicine</p></div>
+      <div class="geo-card"><h4>Long Beach, CA</h4><p>Physical therapy & chiropractic</p></div>
+      <div class="geo-card"><h4>Pasadena, CA</h4><p>Sports medicine & PT</p></div>
+      <div class="geo-card"><h4>Glendale, CA</h4><p>Massage therapy & wellness</p></div>
+    </div>
+  </div>
+
+  <div class="geo-region">
+    <div class="geo-region-label">Bay Area</div>
+    <div class="geo-grid">
+      <div class="geo-card"><h4>San Francisco, CA</h4><p>Physical therapy & chiropractic</p></div>
+      <div class="geo-card"><h4>San Jose, CA</h4><p>Sports medicine & PT</p></div>
+      <div class="geo-card"><h4>Oakland, CA</h4><p>Massage therapy & rehab</p></div>
+      <div class="geo-card"><h4>Palo Alto, CA</h4><p>Clinical AI & sports medicine</p></div>
+    </div>
+  </div>
+
+  <div class="geo-region">
+    <div class="geo-region-label">Sacramento & Beyond</div>
+    <div class="geo-grid">
+      <div class="geo-card"><h4>Sacramento, CA</h4><p>Rehabilitation & chiropractic</p></div>
+      <div class="geo-card"><h4>San Diego, CA</h4><p>Athletic training & massage</p></div>
+      <div class="geo-card"><h4>New York, NY</h4><p>Multi-discipline practices</p></div>
+      <div class="geo-card"><h4>Chicago, IL</h4><p>Sports & orthopedic therapy</p></div>
+    </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section" id="beta">
-  <div class="beta-badge">
-    <div class="badge-dot"></div>
-    Beta Access — Limited Spots
+<!-- INVESTORS -->
+<section class="investor-section reveal" id="investors">
+  <div class="investor-inner">
+    <div>
+      <div class="section-label">For Investors</div>
+      <h2 class="section-title">THE <span class="gold">OPPORTUNITY</span></h2>
+      <p class="section-body">SomaSyncAI is building the AI operating system for a $28B clinical documentation market that has never had a purpose-built, real-time solution.</p>
+      <div class="investor-stats">
+        <div class="inv-stat"><div class="inv-stat-num">$28B</div><div class="inv-stat-label">Global TAM</div></div>
+        <div class="inv-stat"><div class="inv-stat-num">1.2M</div><div class="inv-stat-label">US Practitioners</div></div>
+        <div class="inv-stat"><div class="inv-stat-num">87%</div><div class="inv-stat-label">Charting reduction</div></div>
+        <div class="inv-stat"><div class="inv-stat-num">$2.5M</div><div class="inv-stat-label">Seed Round</div></div>
+      </div>
+      <a href="/investor-pitch" class="investor-cta">
+        View Full Pitch Deck
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div>
+      <div style="border: 1px solid var(--rule); border-radius: 12px; padding: 2.5rem; background: var(--ink2);">
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.1em; color:var(--gold); margin-bottom:1.5rem;">WHY WE WIN</div>
+        <div style="display:flex;flex-direction:column;gap:1.25rem;">
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <span style="color:var(--gold);font-size:1rem;margin-top:2px;">01</span>
+            <div><div style="font-size:0.88rem;font-weight:500;color:var(--white);margin-bottom:0.25rem;">Real-Time vs Post-Session</div><div style="font-size:0.8rem;color:var(--soft);">Every competitor transcribes after the session. We operate live during treatment.</div></div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <span style="color:var(--gold);font-size:1rem;margin-top:2px;">02</span>
+            <div><div style="font-size:0.88rem;font-weight:500;color:var(--white);margin-bottom:0.25rem;">Discipline-Specific Intelligence</div><div style="font-size:0.8rem;color:var(--soft);">Built for manual therapy from the ground up — not generic medical transcription.</div></div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <span style="color:var(--gold);font-size:1rem;margin-top:2px;">03</span>
+            <div><div style="font-size:0.88rem;font-weight:500;color:var(--white);margin-bottom:0.25rem;">Longitudinal Treatment Memory</div><div style="font-size:0.8rem;color:var(--soft);">Session-to-session intelligence that compounds. Deep switching costs that grow with usage.</div></div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <span style="color:var(--gold);font-size:1rem;margin-top:2px;">04</span>
+            <div><div style="font-size:0.88rem;font-weight:500;color:var(--white);margin-bottom:0.25rem;">The Full OS Vision</div><div style="font-size:0.8rem;color:var(--soft);">SomaSphere, SyncLearn, Wearables, Predictive Care — a moat competitors can't replicate.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
+
+<!-- CTA / BETA -->
+<section class="cta-section" id="beta">
+  <div class="beta-badge"><div class="badge-dot"></div>Beta Access — Limited Spots</div>
   <h2>JOIN THE<br><span class="gold">GOLD STANDARD</span></h2>
   <p>Be among the first practitioners to experience the future of clinical documentation.</p>
-  <div class="form-wrap">
-    <input type="email" placeholder="your@practice.com" />
-    <button type="button">Request Access</button>
+  <div class="lifetime-cta">Lifetime free access — use it, give feedback, refer one therapist who does the same</div>
+  <div class="cta-actions">
+    <a href="/auth" class="btn-primary">
+      Create Free Account
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="/dashboard/chat" class="btn-outline">
+      Open Dashboard
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
   </div>
-  <p class="form-note">No credit card required. California practitioners prioritised in first cohort.</p>
+  <p class="form-note">No credit card. No commitment. California practitioners prioritised in first cohort.</p>
+
+  <div style="max-width:700px;margin:3rem auto 0;text-align:left;">
+    <div style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;gap:12px;"><span style="display:inline-block;width:32px;height:1px;background:var(--gold);"></span>How Lifetime Access Works<span style="display:inline-block;width:32px;height:1px;background:var(--gold);"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:12px;overflow:hidden;">
+      <div style="background:var(--ink2);padding:1.75rem;text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);margin-bottom:0.5rem;">01</div>
+        <div style="font-size:0.88rem;font-weight:500;color:var(--white);margin-bottom:0.4rem;">Use SomaSyncAI</div>
+        <div style="font-size:0.78rem;color:var(--soft);line-height:1.6;">Join beta. Use it in your practice. Experience the difference hands-free documentation makes.</div>
+      </div>
+      <div style="background:var(--ink2);padding:1.75rem;text-align:center;border-left:1px solid var(--rule);border-right:1px solid var(--rule);">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);margin-bottom:0.5rem;">02</div>
+        <div style="font-size:0.88rem;font-weight:500;color:var(--white);margin-bottom:0.4rem;">Give Feedback</div>
+        <div style="font-size:0.78rem;color:var(--soft);line-height:1.6;">Share honest feedback on what works, what doesn't, and what you wish it could do. Your input builds the product.</div>
+      </div>
+      <div style="background:var(--ink2);padding:1.75rem;text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);margin-bottom:0.5rem;">03</div>
+        <div style="font-size:0.88rem;font-weight:500;color:var(--white);margin-bottom:0.4rem;">Refer One Therapist</div>
+        <div style="font-size:0.78rem;color:var(--soft);line-height:1.6;">Refer one colleague who beta tests, gives feedback, and refers someone too. The chain grows — everyone who completes all 3 steps keeps lifetime access.</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:1.25rem;font-size:0.78rem;color:var(--soft);">Every practitioner in the chain who completes all three steps gets <span style="color:var(--gold);font-weight:500;">lifetime free access</span> — no exceptions, no expiry.</div>
+  </div>
 </section>
+
+<!-- POWERED BY -->
+<!-- JOIN THE TEAM -->
+<section style="background:var(--ink2);padding:clamp(4rem,10vw,8rem) clamp(1.5rem,8vw,8rem);border-top:1px solid var(--rule);" id="team">
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="section-label" style="justify-content:center;margin-bottom:1rem;">We're Building Something Rare</div>
+    <h2 class="section-title" style="text-align:center;margin-bottom:1rem;">JOIN THE <span class="gold">FOUNDING TEAM</span></h2>
+    <p style="font-family:'Libre Baskerville',serif;font-style:italic;color:var(--soft);font-size:1.05rem;line-height:1.85;text-align:center;max-width:620px;margin:0 auto 3.5rem;">SomaSyncAI is at the beginning. We're looking for rare people who see the full vision and want to help build it from the ground up.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;">
+
+      <div style="border:1px solid var(--rule);border-radius:12px;padding:2.25rem;background:var(--ink);transition:border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:1.75rem;margin-bottom:1rem;">🤝</div>
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">Co-Founder</div>
+        <h3 style="font-family:'Libre Baskerville',serif;font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:0.75rem;">Build This With Me</h3>
+        <p style="font-size:0.85rem;color:var(--soft);line-height:1.7;margin-bottom:1.25rem;">Looking for a co-founder who is obsessed with healthcare technology, understands the manual therapy space, and wants to own a significant piece of something that could change how 1.2 million practitioners work every day.</p>
+        <a href="mailto:hello@somasyncai.com?subject=Co-Founder Inquiry" style="display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-size:0.8rem;letter-spacing:0.08em;text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:8px 16px;border-radius:4px;transition:all 0.2s;" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background='transparent'">Get In Touch →</a>
+      </div>
+
+      <div style="border:1px solid var(--rule);border-radius:12px;padding:2.25rem;background:var(--ink);transition:border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:1.75rem;margin-bottom:1rem;">💰</div>
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">Investor</div>
+        <h3 style="font-family:'Libre Baskerville',serif;font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:0.75rem;">Seed Round Open</h3>
+        <p style="font-size:0.85rem;color:var(--soft);line-height:1.7;margin-bottom:1.25rem;">We are raising a $2.5M seed round. Live MVP. Real beta users. A $28B addressable market with no purpose-built real-time solution. If you invest in healthcare AI at the seed stage, let's talk.</p>
+        <a href="/investor-pitch" style="display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-size:0.8rem;letter-spacing:0.08em;text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:8px 16px;border-radius:4px;transition:all 0.2s;" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background='transparent'">View Pitch Deck →</a>
+      </div>
+
+      <div style="border:1px solid var(--rule);border-radius:12px;padding:2.25rem;background:var(--ink);transition:border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:1.75rem;margin-bottom:1rem;">⚙️</div>
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">Engineer / Developer</div>
+        <h3 style="font-family:'Libre Baskerville',serif;font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:0.75rem;">Build the Infrastructure</h3>
+        <p style="font-size:0.85rem;color:var(--soft);line-height:1.7;margin-bottom:1.25rem;">We need engineers who are excited about real-time AI, voice processing, and healthcare infrastructure. React, Node, Supabase, voice AI. If you want to build something that genuinely matters in people's working lives, reach out.</p>
+        <a href="mailto:hello@somasyncai.com?subject=Engineer Inquiry" style="display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-size:0.8rem;letter-spacing:0.08em;text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:8px 16px;border-radius:4px;transition:all 0.2s;" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background='transparent'">Get In Touch →</a>
+      </div>
+
+      <div style="border:1px solid var(--rule);border-radius:12px;padding:2.25rem;background:var(--ink);transition:border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:1.75rem;margin-bottom:1rem;">🔬</div>
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">Data Researcher</div>
+        <h3 style="font-family:'Libre Baskerville',serif;font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:0.75rem;">Shape the Intelligence Layer</h3>
+        <p style="font-size:0.85rem;color:var(--soft);line-height:1.7;margin-bottom:1.25rem;">SomaSphere and Predictive Care are built on population-level clinical data. We need researchers with backgrounds in clinical NLP, musculoskeletal data, or healthcare AI who want to help define what that intelligence layer looks like.</p>
+        <a href="mailto:hello@somasyncai.com?subject=Data Researcher Inquiry" style="display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-size:0.8rem;letter-spacing:0.08em;text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:8px 16px;border-radius:4px;transition:all 0.2s;" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background='transparent'">Get In Touch →</a>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:2.5rem;padding:1.5rem;border:1px solid var(--rule);border-radius:8px;background:rgba(201,168,76,0.04);">
+      <p style="font-size:0.85rem;color:var(--soft);">Don't fit neatly into a box but feel the pull? <a href="mailto:hello@somasyncai.com?subject=General Inquiry" style="color:var(--gold);text-decoration:none;">Reach out anyway →</a></p>
+    </div>
+  </div>
+</section>
+
+<div class="powered-section">
+  <span class="powered-label">Powered by</span>
+  <div class="powered-logo">
+    <img src="/images/Aaliyah-logo.png" alt="AALIYAH.IO" onerror="this.src='/Aaliyah-logo.png';this.onerror=null;">
+    <span>AALIYAH.IO</span>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">
-    <div class="logo">Soma<span>Sync</span>AI</div>
+    <div class="logo">
+      <img src="/images/ss.png" alt="SomaSyncAI" onerror="this.src='/ss.png';this.onerror=null;">
+      Soma<span>Sync</span>AI
+    </div>
     <p>The gold standard AI operating system for manual therapists and clinical practitioners. Live in-ear guidance. Automatic SOAP notes. Zero documentation debt.</p>
+    <div class="footer-powered">
+      <img src="/images/Aaliyah-logo.png" alt="AALIYAH.IO" onerror="this.src='/Aaliyah-logo.png';this.onerror=null;">
+      Powered by AALIYAH.IO
+    </div>
   </div>
   <div class="footer-col">
     <h4>Product</h4>
     <a href="#features">Features</a>
+    <a href="#roadmap">Roadmap</a>
     <a href="#how">How It Works</a>
     <a href="#beta">Beta Access</a>
+    <a href="/dashboard/chat">Dashboard</a>
   </div>
   <div class="footer-col">
     <h4>Disciplines</h4>
@@ -837,45 +1086,59 @@ footer {
     <a href="#who">Sports Medicine</a>
   </div>
   <div class="footer-col">
-    <h4>Legal</h4>
-    <a href="/privacy-policy.html">Privacy Policy</a>
-    <a href="/terms-and-conditions.html">Terms &amp; Conditions</a>
-    <a href="/ai-disclaimer.html">AI Disclaimer</a>
+    <h4>Company</h4>
+    <a href="#team">Join the Team</a>
+    <a href="/investor-pitch">Investor Pitch</a>
+    <a href="/privacy-policy">Privacy Policy</a>
+    <a href="/terms-and-conditions">Terms &amp; Conditions</a>
+    <a href="/ai-disclaimer">AI Disclaimer</a>
+    <a href="/seo-article">Clinical AI Guide</a>
     <a href="mailto:hello@somasyncai.com">Contact</a>
   </div>
 </footer>
 <div class="footer-bottom">
-  <p>© 2026 SomaSyncAI. All rights reserved. Built for the gold standard practitioner.</p>
+  <p>© 2026 SomaSyncAI. Built for the gold standard practitioner.</p>
   <a href="mailto:privacy@somasyncai.com?subject=Do Not Sell My Information" class="dns">Do Not Sell My Information</a>
 </div>
 
 <script>
-// Custom cursor
+// ── CURSOR ──
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
 let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
-function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+});
+function animRing() {
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+}
 animRing();
 
-// Scroll reveal
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// ── WAVEFORM ──
+const waveform = document.getElementById('waveform');
+const barCount = 28;
+const heights = [0.15,0.3,0.5,0.7,0.9,1,0.9,0.75,0.6,0.8,1,0.85,0.6,0.4,0.3,0.5,0.8,1,0.9,0.7,0.5,0.35,0.6,0.85,0.95,0.7,0.4,0.2];
+for (let i = 0; i < barCount; i++) {
+  const bar = document.createElement('div');
+  bar.className = 'waveform-bar';
+  const baseH = (heights[i] || 0.5) * 44;
+  bar.style.height = baseH + 'px';
+  const dur = (0.6 + Math.random() * 1.2).toFixed(2) + 's';
+  const delay = (Math.random() * 1.5).toFixed(2) + 's';
+  bar.style.setProperty('--dur', dur);
+  bar.style.animationDelay = delay;
+  bar.style.transformOrigin = 'bottom';
+  waveform.appendChild(bar);
+}
 
-// Beta form
-document.querySelector('.form-wrap button').addEventListener('click', function() {
-  const input = document.querySelector('.form-wrap input');
-  if (input.value && input.value.includes('@')) {
-    this.textContent = '✓ You\'re on the list';
-    this.style.background = '#2d7a50';
-    input.disabled = true; this.disabled = true;
-  } else {
-    input.style.borderLeft = '2px solid #e53e3e';
-    input.focus();
-  }
-});
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 
 </body>

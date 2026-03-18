@@ -54,6 +54,8 @@
   .toc a { color: var(--soft); text-decoration: none; font-size: 0.88rem; display: flex; align-items: baseline; gap: 0.5rem; transition: color 0.15s; justify-content: flex-start; }
   .toc a::before { content: counter(toc, decimal-leading-zero); font-size: 0.72rem; color: var(--muted); min-width: 1.6rem; }
   .toc a:hover { color: var(--accent); }
+  .toc li { padding: 0; position: static; border-bottom: none; text-align: left; }
+  .toc li::before { content: none; }
 
   section { margin-bottom: 3rem; scroll-margin-top: 80px; }
   .section-num { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }

@@ -1,154 +1,50 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 export default function Landing() {
-  useEffect(() => {
-    // ── FONTS ──
-    const link = document.createElement('link')
-    link.rel = 'stylesheet'
-    link.href = 'https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@300;400;500;600;700&display=swap'
-    document.head.appendChild(link)
+  const mounted = useRef(false)
 
-    // ── TITLE & META ──
+  useEffect(() => {
+    if (mounted.current) return
+    mounted.current = true
+
     document.title = 'SomaSyncAI — The Gold Standard Clinical OS for Manual Therapists'
 
-    const meta = (name, content, prop) => {
-      const el = document.createElement('meta')
-      if (prop) el.setAttribute('property', name)
-      else el.setAttribute('name', name)
-      el.setAttribute('content', content)
-      document.head.appendChild(el)
-    }
-    const linkTag = (rel, href) => {
-      const el = document.createElement('link')
-      el.rel = rel; el.href = href
-      document.head.appendChild(el)
+    // Fonts
+    if (!document.getElementById('soma-fonts')) {
+      const link = document.createElement('link')
+      link.id = 'soma-fonts'
+      link.rel = 'stylesheet'
+      link.href = 'https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@300;400;500;600;700&display=swap'
+      document.head.appendChild(link)
     }
 
-    meta('description', 'SomaSyncAI — The Gold Standard OS for Manual Therapists. Live in-ear AI guidance, automatic SOAP notes, voice charting, and treatment memory. Powered by AALIYAH.IO. Now in beta — free access.')
-    meta('keywords', 'SomaSyncAI, AALIYAH.IO, clinical documentation AI, SOAP notes AI, manual therapy AI, live in-ear AI, voice charting, ICD-10 assist, physical therapy AI, chiropractic AI, massage therapy AI, treatment memory, gold standard clinical OS, California manual therapist software')
-    meta('robots', 'index, follow')
-    meta('theme-color', '#080808')
-    meta('author', 'SomaSyncAI · AALIYAH.IO')
-    meta('geo.region', 'US-CA')
-    meta('geo.placename', 'Modesto, California')
-    meta('geo.position', '37.6391;-120.9969')
-    meta('ICBM', '37.6391, -120.9969')
-    meta('language', 'en')
-    meta('coverage', 'California, United States')
-    meta('distribution', 'global')
-
-    // Open Graph
-    meta('og:type', 'website', true)
-    meta('og:url', 'https://somasyncai.com/', true)
-    meta('og:title', 'SomaSyncAI — The Intelligence of You. | AALIYAH.IO', true)
-    meta('og:description', 'Live in-ear AI guidance. Automatic SOAP notes. Voice charting. The gold standard clinical OS built for the world\'s best manual therapists.', true)
-    meta('og:image', '/ss.png', true)
-    meta('og:site_name', 'SomaSyncAI · AALIYAH.IO', true)
-    meta('og:locale', 'en_US', true)
-
-    // Twitter
-    meta('twitter:card', 'summary_large_image')
-    meta('twitter:title', 'SomaSyncAI — The Gold Standard Clinical OS')
-    meta('twitter:description', 'Live in-ear AI guidance. Automatic SOAP notes. Zero documentation debt. Built for manual therapists. Powered by AALIYAH.IO.')
-    meta('twitter:image', '/ss.png')
-
-    linkTag('canonical', 'https://somasyncai.com/')
-
-    // ── STRUCTURED DATA ──
-    const ld = (obj) => {
-      const s = document.createElement('script')
-      s.type = 'application/ld+json'
-      s.textContent = JSON.stringify(obj)
-      document.head.appendChild(s)
+    // Inject scoped styles
+    if (!document.getElementById('soma-styles')) {
+      const style = document.createElement('style')
+      style.id = 'soma-styles'
+      style.textContent = `#soma-root { all: initial; display: block; }
+#soma-root * { box-sizing: border-box; }
+` + CSS
+      document.head.appendChild(style)
     }
 
-    ld({
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "SomaSyncAI",
-      "applicationCategory": "HealthApplication",
-      "operatingSystem": "Web",
-      "description": "The gold standard AI clinical operating system for manual therapists. Live in-ear AI guidance, automatic SOAP notes, voice charting, treatment memory, and ICD-10 code assist. Powered by AALIYAH.IO.",
-      "url": "https://somasyncai.com",
-      "creator": { "@type": "Organization", "name": "AALIYAH.IO", "url": "https://somasyncai.com" },
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free beta access — lifetime free for practitioners who complete all 3 steps" },
-      "featureList": [
-        "Live in-ear AI guidance during treatment",
-        "Automatic SOAP note generation",
-        "Voice charting hands-free",
-        "Treatment memory across sessions",
-        "ICD-10 code assist",
-        "Contraindication analysis",
-        "Voice calibration and consent workflow",
-        "Visual and postural assessment support",
-        "SomaSphere 3D population visualizer (coming)",
-        "SyncLearn in-ear education (coming)",
-        "Wearable integration (coming)",
-        "Predictive care AI (coming)"
-      ],
-      "areaServed": [
-        { "@type": "City", "name": "Modesto", "addressRegion": "CA" },
-        { "@type": "City", "name": "Stockton", "addressRegion": "CA" },
-        { "@type": "City", "name": "Fresno", "addressRegion": "CA" },
-        { "@type": "City", "name": "Bakersfield", "addressRegion": "CA" },
-        { "@type": "City", "name": "Sacramento", "addressRegion": "CA" },
-        { "@type": "City", "name": "San Francisco", "addressRegion": "CA" },
-        { "@type": "City", "name": "Oakland", "addressRegion": "CA" },
-        { "@type": "City", "name": "San Jose", "addressRegion": "CA" },
-        { "@type": "City", "name": "Palo Alto", "addressRegion": "CA" },
-        { "@type": "City", "name": "Los Angeles", "addressRegion": "CA" },
-        { "@type": "City", "name": "Long Beach", "addressRegion": "CA" },
-        { "@type": "City", "name": "Pasadena", "addressRegion": "CA" },
-        { "@type": "City", "name": "San Diego", "addressRegion": "CA" },
-        { "@type": "City", "name": "New York", "addressRegion": "NY" },
-        { "@type": "City", "name": "Chicago", "addressRegion": "IL" }
-      ]
-    })
-
-    ld({
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "SomaSyncAI",
-      "alternateName": "AALIYAH.IO",
-      "url": "https://somasyncai.com",
-      "logo": "https://somasyncai.com/ss.png",
-      "description": "The gold standard AI operating system for manual therapists. Live in-ear guidance, automatic SOAP notes, zero documentation debt.",
-      "telephone": "+12092849066",
-      "email": "hello@somasyncai.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Modesto",
-        "addressRegion": "CA",
-        "addressCountry": "US"
-      },
-      "sameAs": ["https://somasyncai.com"]
-    })
-
-    ld({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        { "@type": "Question", "name": "What is SomaSyncAI?", "acceptedAnswer": { "@type": "Answer", "text": "SomaSyncAI is the gold standard AI clinical operating system for manual therapists. It provides live in-ear AI guidance during treatment, automatic SOAP note generation, voice charting, and treatment memory — powered by AALIYAH.IO." } },
-        { "@type": "Question", "name": "How does the AALIYAH session workflow work?", "acceptedAnswer": { "@type": "Answer", "text": "AALIYAH guides you through 6 steps: intake form review, voice calibration and consent, contraindication analysis, visual postural assessment, generate documentation before bodywork, then live documentation during the session." } },
-        { "@type": "Question", "name": "Is SomaSyncAI free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — lifetime free access for beta practitioners who: use SomaSyncAI, give honest feedback, and refer one therapist who does the same." } },
-        { "@type": "Question", "name": "Where does SomaSyncAI serve practitioners?", "acceptedAnswer": { "@type": "Answer", "text": "Currently prioritising California practitioners — Central Valley, Bay Area, LA region, San Diego — with national expansion underway." } },
-        { "@type": "Question", "name": "What disciplines does SomaSyncAI support?", "acceptedAnswer": { "@type": "Answer", "text": "Massage therapists, physical therapists, chiropractors, and sports medicine / athletic trainers." } }
-      ]
-    })
-
-    // ── INJECT STYLES ──
-    const style = document.createElement('style')
-    style.textContent = CSS
-    document.head.appendChild(style)
-
-    // ── INJECT JS ──
+    // Inject JS after render
     const s = document.createElement('script')
     s.textContent = JS
     document.body.appendChild(s)
 
+    return () => {
+      const s = document.getElementById('soma-styles')
+      if (s) s.remove()
+      mounted.current = false
+    }
   }, [])
 
-  return <div dangerouslySetInnerHTML={{ __html: HTML }} />
+  return (
+    <div id="soma-root" style={{all:'initial',display:'block'}}
+      dangerouslySetInnerHTML={{ __html: HTML }}
+    />
+  )
 }
 
 const CSS = `
@@ -358,8 +254,9 @@ footer{background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,
 
 const HTML = `
 <div id="cd"></div><div id="cr"></div>
+<div id="cd"></div><div id="cr"></div>
 <nav id="nav">
-  <a class="n-logo" href="#" style="gap:0"><img src="/ss.png" alt="SomaSyncAI" style="height:38px;width:auto;object-fit:contain;filter:drop-shadow(0 0 8px rgba(59,158,255,0.4))"/></a>
+  <a class="n-logo" href="#" style="gap:0"><img src="./ss.png" alt="SomaSyncAI" style="height:38px;width:auto;object-fit:contain;filter:drop-shadow(0 0 8px rgba(59,158,255,0.4))"/></a>
   <div class="n-pill"><a href="#features">Features</a><a href="#roadmap">Roadmap</a><a href="#how">Workflow</a><a href="#investors">Investors</a></div>
   <a class="n-cta" href="https://somasyncai.com/auth">Join Beta — Free</a>
 </nav>
@@ -995,7 +892,7 @@ const HTML = `
 </section>
 <footer>
   <div class="foot-top">
-    <div><div class="foot-brand" style="margin-bottom:16px"><img src="/ss.png" alt="SomaSyncAI" style="height:44px;width:auto;object-fit:contain;filter:drop-shadow(0 0 10px rgba(59,158,255,0.35))"/></div><div class="foot-tag">The gold standard AI operating system for manual therapists. Live in-ear guidance. Zero documentation debt.</div></div>
+    <div><div class="foot-brand" style="margin-bottom:16px"><img src="./ss.png" alt="SomaSyncAI" style="height:44px;width:auto;object-fit:contain;filter:drop-shadow(0 0 10px rgba(59,158,255,0.35))"/></div><div class="foot-tag">The gold standard AI operating system for manual therapists. Live in-ear guidance. Zero documentation debt.</div></div>
     <div><div class="foot-col-h">Product</div><ul class="foot-links"><li><a href="#features">Features</a></li><li><a href="#roadmap">Roadmap</a></li><li><a href="#how">How It Works</a></li><li><a href="#cta">Beta Access</a></li></ul></div>
     <div><div class="foot-col-h">Disciplines</div><ul class="foot-links"><li><a href="#">Massage Therapy</a></li><li><a href="#">Physical Therapy</a></li><li><a href="#">Chiropractic</a></li><li><a href="#">Sports Medicine</a></li></ul></div>
     <div><div class="foot-col-h">Company</div><ul class="foot-links"><li><a href="#">Join the Team</a></li><li><a href="https://somasyncai.com/investor-pitch">Pitch Deck</a></li><li><a href="https://somasyncai.com/privacy-policy">Privacy</a></li><li><a href="/cdn-cgi/l/email-protection#dab2bfb6b6b59aa9b5b7bba9a3b4b9bbb3f4b9b5b7">Contact</a></li></ul></div>

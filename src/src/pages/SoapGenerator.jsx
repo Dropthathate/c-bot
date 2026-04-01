@@ -1,142 +1,96 @@
 import { useEffect, useRef, useState } from "react";
 
-// ─── YOUR ORIGINAL SUPABASE CONFIG ───────────────────────────────────────────
-// These match your real App.jsx exactly. Move to .env when ready:
-// VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
-const SUPABASE_URL =
-  import.meta.env.VITE_SUPABASE_URL ?? "https://ucqprtpuuyflnxjmatwo.supabase.co";
-const SUPABASE_ANON_KEY =
-  import.meta.env.VITE_SUPABASE_ANON_KEY ?? "";
-
-// ─────────────────────────────────────────────────────────────────────────────
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? "https://ucqprtpuuyflnxjmatwo.supabase.co";
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? "";
 
 const STATE_LABELS = {
-  idle:       { label: "Ready",       color: "#6e6e73" },
-  active:     { label: "Recording...", color: "#34c759" },
-  paused:     { label: "Paused",      color: "#ff9f0a" },
-  generating: { label: "Generating...",color: "#0a84ff" },
+  idle:       { label: "Ready",        color: "var(--dim)"    },
+  active:     { label: "Recording...", color: "var(--grn)"    },
+  paused:     { label: "Paused",       color: "var(--orange)" },
+  generating: { label: "Generating...",color: "var(--blue)"   },
 };
 
 export default function SoapGenerator() {
   const recognitionRef = useRef(null);
+  const stateRef = useRef("idle");
 
-  const [state, setState]         = useState("idle");
+  const [state, setState]           = useState("idle");
   const [transcript, setTranscript] = useState([]);
-  const [soap, setSoap]           = useState(null);
-  const [error, setError]         = useState(null);
-  const [copied, setCopied]       = useState(false);
-  const [browserOk, setBrowserOk] = useState(true);
+  const [soap, setSoap]             = useState(null);
+  const [error, setError]           = useState(null);
+  const [copied, setCopied]         = useState(false);
+  const [browserOk, setBrowserOk]   = useState(true);
 
-  // ── YOUR ORIGINAL useEffect — untouched ──────────────────────────────────
+  useEffect(() => { stateRef.current = state; }, [state]);
+
   useEffect(() => {
     if (!("webkitSpeechRecognition" in window)) {
       setBrowserOk(false);
       setError("Speech recognition not supported. Use Chrome or Edge.");
       return;
     }
-
     const recognition = new window.webkitSpeechRecognition();
-    recognition.continuous     = true;
+    recognition.continuous = true;
     recognition.interimResults = false;
-    recognition.lang           = "en-US";
-
+    recognition.lang = "en-US";
     recognition.onresult = (e) => {
       const text = e.results[e.results.length - 1][0].transcript.trim();
       handleSpeech(text);
     };
-
     recognition.onend = () => {
-      // restart if still active (your original logic)
       if (stateRef.current === "active") recognition.start();
     };
-
     recognitionRef.current = recognition;
   }, []);
 
-  // Need a ref for state so onend closure can read current value
-  const stateRef = useRef(state);
-  useEffect(() => { stateRef.current = state; }, [state]);
-
-  // ── YOUR ORIGINAL HANDLERS — untouched ───────────────────────────────────
   function handleSpeech(text) {
     const lower = text.toLowerCase();
-    if (lower.includes("pause"))       return pause();
+    if (lower.includes("pause")) return pause();
     if (lower.includes("end session")) return end();
-    setTranscript((t) => [...t, text]);
+    setTranscript(t => [...t, text]);
   }
 
   function start() {
-    setTranscript([]);
-    setSoap(null);
-    setError(null);
-    setState("active");
-    recognitionRef.current?.start();
+    setTranscript([]); setSoap(null); setError(null);
+    setState("active"); recognitionRef.current?.start();
   }
-
-  function pause() {
-    setState("paused");
-    recognitionRef.current?.stop();
-  }
-
-  function resume() {
-    setState("active");
-    recognitionRef.current?.start();
-  }
+  function pause() { setState("paused"); recognitionRef.current?.stop(); }
+  function resume() { setState("active"); recognitionRef.current?.start(); }
 
   async function end() {
     recognitionRef.current?.stop();
     setState("generating");
-
     const notes = transcript.join(". ");
     if (!notes.trim()) {
       setError("No content recorded — start a session and speak your observations.");
-      setState("idle");
-      return;
+      setState("idle"); return;
     }
-
     try {
       const res = await fetch(`${SUPABASE_URL}/functions/v1/generate-soap`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
         body: JSON.stringify({ rawNotes: notes }),
       });
-
       if (!res.ok) throw new Error(`API error: HTTP ${res.status}`);
       const data = await res.json();
       setSoap(data.soap);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setState("idle");
-    }
+    } catch (err) { setError(err.message); }
+    finally { setState("idle"); }
   }
-  // ─────────────────────────────────────────────────────────────────────────
 
   const handleCopy = () => {
     if (!soap) return;
     const text = [
       "SOAP NOTE — SomaSync AI (AALIYAH.IO)",
-      "⚠️ AI-generated draft. Requires licensed clinician review before clinical use.\n",
+      "⚠ AI-generated draft. Requires licensed clinician review before clinical use.\n",
       `SUBJECTIVE\n${soap.subjective}`,
       `OBJECTIVE\n${soap.objective}`,
       `ASSESSMENT\n${soap.assessment}`,
       `PLAN\n${soap.plan}`,
-      soap.icd10?.length
-        ? `ICD-10\n${soap.icd10.map((c) => `${c.code} — ${c.description}`).join("\n")}`
-        : "",
-      soap.cpt?.length
-        ? `CPT\n${soap.cpt.map((c) => `${c.code} — ${c.description}${c.units ? ` (${c.units}u)` : ""}`).join("\n")}`
-        : "",
-      soap.medical_necessity
-        ? `MEDICAL NECESSITY\n${soap.medical_necessity}`
-        : "",
-    ]
-      .filter(Boolean)
-      .join("\n\n");
-
+      soap.icd10?.length ? `ICD-10\n${soap.icd10.map(c => `${c.code} — ${c.description}`).join("\n")}` : "",
+      soap.cpt?.length ? `CPT\n${soap.cpt.map(c => `${c.code} — ${c.description}${c.units ? ` (${c.units}u)` : ""}`).join("\n")}` : "",
+      soap.medical_necessity ? `MEDICAL NECESSITY\n${soap.medical_necessity}` : "",
+    ].filter(Boolean).join("\n\n");
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -146,14 +100,13 @@ export default function SoapGenerator() {
 
   return (
     <div className="page">
-      {/* Header */}
       <div className="page-header">
         <div>
           <h1 className="page-title">SOAP Note Generator</h1>
           <p className="page-sub">Voice-powered clinical documentation via SomaSync AI</p>
         </div>
-        <div className="status-pill" style={{ background: `${stateInfo.color}18`, color: stateInfo.color }}>
-          <span className="status-dot" style={{ background: stateInfo.color }} />
+        <div className="status-pill" style={{ background: `${stateInfo.color}18`, color: stateInfo.color, border: `1px solid ${stateInfo.color}30` }}>
+          <span className="status-dot" style={{ background: stateInfo.color, boxShadow: `0 0 6px ${stateInfo.color}` }} />
           {stateInfo.label}
         </div>
       </div>
@@ -162,17 +115,12 @@ export default function SoapGenerator() {
         🤖 AI-generated — All outputs are suggestions only. A licensed clinician must review before clinical, billing, or legal use.
       </div>
 
-      {/* Browser warning */}
       {!browserOk && (
-        <div className="error-card">
-          🚫 Speech recognition requires Chrome or Edge. Other browsers are not supported.
-        </div>
+        <div className="error-card">🚫 Speech recognition requires Chrome or Edge.</div>
       )}
 
       <div className="soap-layout">
-        {/* ── LEFT: CONTROLS + TRANSCRIPT ──────────────── */}
         <div className="soap-controls-col">
-          {/* Voice controls */}
           <div className="card">
             <div className="card-header">
               <span className="card-title">Voice Controls</span>
@@ -180,51 +128,30 @@ export default function SoapGenerator() {
             </div>
             <div className="controls-body">
               <div className="voice-tip">
-                💡 Say <strong>"pause"</strong> to pause or <strong>"end session"</strong> to generate
+                Say <strong>"pause"</strong> to pause · <strong>"end session"</strong> to generate
               </div>
               <div className="controls-grid">
-                <button
-                  className="ctrl-btn ctrl-start"
-                  onClick={start}
-                  disabled={state !== "idle"}
-                >
-                  <span className="ctrl-icon">🎙</span>
-                  Start Session
+                <button className="ctrl-btn ctrl-start" onClick={start} disabled={state !== "idle"}>
+                  <span className="ctrl-icon">🎙</span>Start Session
                 </button>
-                <button
-                  className="ctrl-btn ctrl-pause"
-                  onClick={pause}
-                  disabled={state !== "active"}
-                >
-                  <span className="ctrl-icon">⏸</span>
-                  Pause
+                <button className="ctrl-btn ctrl-pause" onClick={pause} disabled={state !== "active"}>
+                  <span className="ctrl-icon">⏸</span>Pause
                 </button>
-                <button
-                  className="ctrl-btn ctrl-resume"
-                  onClick={resume}
-                  disabled={state !== "paused"}
-                >
-                  <span className="ctrl-icon">▶</span>
-                  Resume
+                <button className="ctrl-btn ctrl-resume" onClick={resume} disabled={state !== "paused"}>
+                  <span className="ctrl-icon">▶</span>Resume
                 </button>
-                <button
-                  className="ctrl-btn ctrl-generate"
-                  onClick={end}
-                  disabled={state === "idle"}
-                >
-                  <span className="ctrl-icon">⚡</span>
-                  Generate SOAP
+                <button className="ctrl-btn ctrl-generate" onClick={end} disabled={state === "idle"}>
+                  <span className="ctrl-icon">⚡</span>Generate SOAP
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Transcript */}
           <div className="card" style={{ flex: 1 }}>
             <div className="card-header">
               <span className="card-title">Live Transcript</span>
               {transcript.length > 0 && (
-                <span style={{ fontSize: 11, color: "#a1a1a6" }}>
+                <span style={{ fontSize: 11, color: "var(--dim)" }}>
                   {transcript.length} segment{transcript.length !== 1 ? "s" : ""}
                 </span>
               )}
@@ -232,11 +159,9 @@ export default function SoapGenerator() {
             <div className="transcript-body">
               {transcript.length === 0 ? (
                 <div className="transcript-empty">
-                  {state === "active" ? (
-                    <><div className="recording-pulse" />Listening for speech...</>
-                  ) : (
-                    <>"Start session" to begin recording</>
-                  )}
+                  {state === "active"
+                    ? <><div className="recording-pulse" />Listening for speech...</>
+                    : <>Start a session to begin recording</>}
                 </div>
               ) : (
                 <div className="transcript-list">
@@ -252,7 +177,6 @@ export default function SoapGenerator() {
           </div>
         </div>
 
-        {/* ── RIGHT: SOAP OUTPUT ───────────────────────── */}
         <div className="soap-output-col">
           {state === "generating" && (
             <div className="soap-generating">
@@ -279,16 +203,13 @@ export default function SoapGenerator() {
                 </button>
               </div>
 
-              <div className="draft-badge">
-                ⚠️ AI DRAFT — Clinician review required before clinical or billing use
-              </div>
+              <div className="draft-badge">⚠ AI DRAFT — Clinician review required before clinical or billing use</div>
 
-              {/* S O A P */}
               {[
-                { key: "subjective",  label: "S — Subjective",  cls: "soap-s" },
-                { key: "objective",   label: "O — Objective",   cls: "soap-o" },
-                { key: "assessment",  label: "A — Assessment",  cls: "soap-a" },
-                { key: "plan",        label: "P — Plan",        cls: "soap-p" },
+                { key: "subjective", label: "S — Subjective", cls: "soap-s" },
+                { key: "objective",  label: "O — Objective",  cls: "soap-o" },
+                { key: "assessment", label: "A — Assessment", cls: "soap-a" },
+                { key: "plan",       label: "P — Plan",       cls: "soap-p" },
               ].map(({ key, label, cls }) =>
                 soap[key] ? (
                   <div className="soap-section" key={key}>
@@ -298,12 +219,11 @@ export default function SoapGenerator() {
                 ) : null
               )}
 
-              {/* ICD-10 */}
               {soap.icd10?.length > 0 && (
                 <div className="soap-section">
                   <span className="soap-section-label soap-icd">ICD-10 Codes</span>
                   <div className="code-list">
-                    {soap.icd10.map((c) => (
+                    {soap.icd10.map(c => (
                       <div className="code-row" key={c.code}>
                         <span className="code-badge code-teal">{c.code}</span>
                         <span className="code-desc">{c.description}</span>
@@ -313,12 +233,11 @@ export default function SoapGenerator() {
                 </div>
               )}
 
-              {/* CPT */}
               {soap.cpt?.length > 0 && (
                 <div className="soap-section">
                   <span className="soap-section-label soap-cpt">CPT Codes</span>
                   <div className="code-list">
-                    {soap.cpt.map((c) => (
+                    {soap.cpt.map(c => (
                       <div className="code-row" key={c.code}>
                         <span className="code-badge code-blue">{c.code}</span>
                         <span className="code-desc">
@@ -331,7 +250,6 @@ export default function SoapGenerator() {
                 </div>
               )}
 
-              {/* Medical Necessity */}
               {soap.medical_necessity && (
                 <div className="soap-section">
                   <span className="soap-section-label soap-mn">Medical Necessity</span>
@@ -341,11 +259,7 @@ export default function SoapGenerator() {
             </div>
           )}
 
-          {error && (
-            <div className="error-card">
-              ⚠️ {error}
-            </div>
-          )}
+          {error && <div className="error-card">⚠ {error}</div>}
         </div>
       </div>
     </div>

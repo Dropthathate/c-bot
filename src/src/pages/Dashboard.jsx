@@ -2,16 +2,17 @@ import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
 const STATS = [
-  { label: "Notes Generated",  value: "—",     unit: "sessions",  color: "#30d9c0", icon: "📋" },
-  { label: "ICD Codes Mapped", value: "—",     unit: "codes",     color: "#0a84ff", icon: "⚡" },
-  { label: "Avg Confidence",   value: "88.5%", unit: "accuracy",  color: "#34c759", icon: "✓"  },
-  { label: "Time Saved",       value: "~3×",   unit: "vs manual", color: "#ff9f0a", icon: "⏱"  },
+  { label: "Notes Generated",  value: "—",     unit: "sessions",  color: "var(--grn)",    icon: "📋" },
+  { label: "ICD Codes Mapped", value: "—",     unit: "codes",     color: "var(--blue)",   icon: "⚡" },
+  { label: "Avg Confidence",   value: "88.5%", unit: "accuracy",  color: "#34c759",       icon: "✓"  },
+  { label: "Time Saved",       value: "~3×",   unit: "vs manual", color: "var(--orange)", icon: "⏱"  },
 ];
 
 const QUICK_ACTIONS = [
-  { to: "/dashboard/soap", icon: "📋", label: "New SOAP Note",   desc: "Generate from rough notes"    },
-  { to: "/dashboard/icd",  icon: "⚡", label: "ICD-10 Lookup",   desc: "Code a clinical observation"  },
-  { to: "/dashboard/analytics", icon: "📊", label: "View Analytics", desc: "Practice performance data" },
+  { to: "/dashboard/soap",      icon: "📋", label: "New SOAP Note",   desc: "Voice-powered clinical documentation"  },
+  { to: "/dashboard/icd",       icon: "⚡", label: "ICD-10 Lookup",   desc: "Search and map diagnostic codes"       },
+  { to: "/dashboard/analytics", icon: "📊", label: "View Analytics",  desc: "Practice performance and trends"       },
+  { to: "/dashboard/settings",  icon: "⚙", label: "Settings",        desc: "Account, legal, and preferences"       },
 ];
 
 export default function Dashboard() {
@@ -20,18 +21,14 @@ export default function Dashboard() {
 
   return (
     <div className="page">
-      {/* Header */}
       <div className="page-header">
         <div>
           <h1 className="page-title">Good morning, {name} 👋</h1>
-          <p className="page-sub">SomaSync AI · AALIYAH.IO Dashboard · Beta</p>
+          <p className="page-sub">SomaSync AI · AALIYAH.IO Dashboard · Phase 1 Beta</p>
         </div>
-        <div className="beta-warning">
-          ⚠️ Beta — All AI outputs require clinician verification
-        </div>
+        <div className="beta-warning">⚠ Beta — AI outputs require clinician verification</div>
       </div>
 
-      {/* Stats row */}
       <div className="stats-grid">
         {STATS.map((s) => (
           <div className="stat-card" key={s.label}>
@@ -43,7 +40,6 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Quick actions */}
       <div className="section-title">Quick Actions</div>
       <div className="actions-grid">
         {QUICK_ACTIONS.map((a) => (
@@ -58,7 +54,6 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Disclaimer card */}
       <div className="disclaimer-card">
         <div className="disclaimer-title">🤖 AI Disclaimer</div>
         <p className="disclaimer-text">

@@ -22,19 +22,19 @@ const ICD_DB = [
 ];
 
 const COLORS = {
-  Musculoskeletal: { bg: "rgba(48,217,192,0.1)",  text: "#0aab94" },
-  "Soft Tissue":   { bg: "rgba(10,132,255,0.1)",  text: "#0a84ff" },
-  Symptoms:        { bg: "rgba(255,159,10,0.1)",  text: "#c47800" },
-  Spine:           { bg: "rgba(191,90,242,0.1)",  text: "#9f3fd6" },
-  Neurological:    { bg: "rgba(255,69,58,0.1)",   text: "#c0392b" },
-  Joint:           { bg: "rgba(52,199,89,0.1)",   text: "#219a3e" },
-  Status:          { bg: "rgba(162,162,166,0.1)", text: "#6e6e73" },
+  Musculoskeletal: { bg: "rgba(0,232,154,0.08)",   text: "var(--grn)"    },
+  "Soft Tissue":   { bg: "rgba(59,158,255,0.08)",  text: "var(--blue)"   },
+  Symptoms:        { bg: "rgba(255,159,10,0.08)",  text: "var(--orange)" },
+  Spine:           { bg: "rgba(191,90,242,0.08)",  text: "#bf5af2"       },
+  Neurological:    { bg: "rgba(255,69,58,0.08)",   text: "var(--red)"    },
+  Joint:           { bg: "rgba(52,199,89,0.08)",   text: "#34c759"       },
+  Status:          { bg: "rgba(255,255,255,0.06)", text: "var(--muted)"  },
 };
 
 function matchCodes(query) {
   const q = query.toLowerCase();
-  return ICD_DB.filter(
-    (r) => r.code.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q) || r.cat.toLowerCase().includes(q)
+  return ICD_DB.filter(r =>
+    r.code.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q) || r.cat.toLowerCase().includes(q)
   );
 }
 
@@ -46,15 +46,15 @@ export default function IcdCoder() {
   const results = query.trim().length > 1 ? matchCodes(query) : [];
 
   const toggleCode = (item) => {
-    setSelected((prev) =>
-      prev.find((s) => s.code === item.code)
-        ? prev.filter((s) => s.code !== item.code)
+    setSelected(prev =>
+      prev.find(s => s.code === item.code)
+        ? prev.filter(s => s.code !== item.code)
         : [...prev, item]
     );
   };
 
   const handleCopy = () => {
-    const text = selected.map((s) => `${s.code} — ${s.desc}`).join("\n");
+    const text = selected.map(s => `${s.code} — ${s.desc}`).join("\n");
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -70,11 +70,10 @@ export default function IcdCoder() {
       </div>
 
       <div className="ai-disclaimer-bar">
-        ⚠️ Code suggestions are for reference only — verify with a certified medical coder before billing submission.
+        ⚠ Code suggestions are for reference only — verify with a certified medical coder before billing submission.
       </div>
 
       <div className="icd-layout">
-        {/* Search */}
         <div className="card icd-search-card">
           <div className="card-header">
             <span className="card-title">Search Codes</span>
@@ -82,17 +81,17 @@ export default function IcdCoder() {
           <input
             className="icd-search-input"
             type="text"
-            placeholder="Search by code, condition, or body region... e.g. 'low back', 'M54', 'cervical'"
+            placeholder='Search by code, condition, or body region — e.g. "low back", "M54", "cervical"'
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={e => setQuery(e.target.value)}
             autoFocus
           />
           <div className="icd-results">
             {query.trim().length > 1 && results.length === 0 && (
               <div className="icd-empty">No codes found for "{query}"</div>
             )}
-            {results.map((item) => {
-              const isSelected = !!selected.find((s) => s.code === item.code);
+            {results.map(item => {
+              const isSelected = !!selected.find(s => s.code === item.code);
               const color = COLORS[item.cat] ?? COLORS.Status;
               return (
                 <div
@@ -116,17 +115,14 @@ export default function IcdCoder() {
             {query.trim().length < 2 && (
               <div className="icd-hint">
                 <div className="icd-hint-title">Quick searches</div>
-                {["low back", "cervical", "myofascial", "sciatica", "shoulder"].map((t) => (
-                  <button key={t} className="icd-quick-btn" onClick={() => setQuery(t)}>
-                    {t}
-                  </button>
+                {["low back", "cervical", "myofascial", "sciatica", "shoulder"].map(t => (
+                  <button key={t} className="icd-quick-btn" onClick={() => setQuery(t)}>{t}</button>
                 ))}
               </div>
             )}
           </div>
         </div>
 
-        {/* Selected codes */}
         <div className="icd-selected-col">
           <div className="card">
             <div className="card-header">
@@ -139,12 +135,12 @@ export default function IcdCoder() {
             </div>
             {selected.length === 0 ? (
               <div className="icd-selected-empty">
-                <div style={{ fontSize: 32, marginBottom: 8 }}>⚡</div>
+                <div style={{ fontSize: 28, marginBottom: 8 }}>⚡</div>
                 Click codes on the left to add them here
               </div>
             ) : (
               <div className="icd-selected-list">
-                {selected.map((item) => {
+                {selected.map(item => {
                   const color = COLORS[item.cat] ?? COLORS.Status;
                   return (
                     <div className="icd-selected-row" key={item.code}>
@@ -152,11 +148,7 @@ export default function IcdCoder() {
                         {item.code}
                       </span>
                       <div className="icd-result-desc">{item.desc}</div>
-                      <button
-                        className="icd-remove-btn"
-                        onClick={() => toggleCode(item)}
-                        title="Remove"
-                      >×</button>
+                      <button className="icd-remove-btn" onClick={() => toggleCode(item)} title="Remove">×</button>
                     </div>
                   );
                 })}

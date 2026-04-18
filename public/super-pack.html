@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super Pack — SomaSync AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #020617;
+    --surface: #0f172a;
+    --surface2: #1e293b;
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.12);
+    --purple-glow: rgba(168,85,247,0.25);
+    --green: #22c55e;
+    --blue: #3b82f6;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: rgba(255,255,255,0.08);
+    --gold: #f59e0b;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 10%, rgba(168,85,247,0.09) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(168,85,247,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 30% at 60% 30%, rgba(245,158,11,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px;
+    background: rgba(2,6,23,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--purple);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--surface2); }
+  .nav-links a.active { color: var(--purple); background: var(--purple-dim); }
+
+  /* Hero */
+  .hero {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 100px 24px 60px;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px;
+    background: var(--purple-dim);
+    border: 1px solid rgba(168,85,247,0.3);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--purple);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 span { color: var(--purple); }
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .price-display {
+    animation: fadeUp 0.6s 0.3s ease both;
+    margin-bottom: 48px;
+  }
+  .price-was { font-size: 1.1rem; color: var(--muted); text-decoration: line-through; margin-bottom: 4px; }
+  .price-now {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: var(--purple);
+    line-height: 1;
+  }
+  .price-label { font-size: 0.9rem; color: var(--muted); margin-top: 6px; letter-spacing: 0.05em; }
+
+  /* Payment plan note */
+  .payment-plan {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 14px;
+    padding: 8px 18px;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 100px;
+    font-size: 0.82rem;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .container {
+    position: relative; z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 100px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+  }
+
+  /* Growth included callout */
+  .prev-included {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 16px 20px;
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #93c5fd;
+    line-height: 1.5;
+  }
+  .prev-included strong { color: var(--blue); display: block; margin-bottom: 3px; }
+
+  /* Grid */
+  .includes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  .include-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: all 0.25s;
+    animation: fadeUp 0.5s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .include-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--purple), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .include-item:hover { border-color: rgba(168,85,247,0.35); background: var(--surface2); transform: translateY(-2px); }
+  .include-item:hover::before { opacity: 1; }
+  .include-icon {
+    width: 38px; height: 38px;
+    background: var(--purple-dim);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .include-text strong { display: block; font-size: 0.92rem; font-weight: 600; margin-bottom: 3px; }
+  .include-text span { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  /* Value tracker */
+  .value-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .value-row:last-child { border-bottom: none; }
+  .value-row .label { color: var(--muted); }
+  .value-row .val { color: var(--text); font-weight: 600; }
+  .value-row .val.total {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--purple);
+  }
+  .value-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 48px;
+  }
+  .value-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* Best for */
+  .best-for {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--purple);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+  }
+  .best-for h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--purple);
+    margin-bottom: 10px;
+  }
+  .best-for p { color: var(--muted); line-height: 1.7; }
+
+  /* CTA */
+  .cta-block {
+    text-align: center;
+    padding: 64px 40px;
+    background: var(--surface);
+    border: 1px solid rgba(168,85,247,0.2);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-block::before {
+    content: '';
+    position: absolute;
+    top: -40%; left: 50%; transform: translateX(-50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--purple-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .grad-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(245,158,11,0.15));
+    border: 1px solid rgba(168,85,247,0.3);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--purple);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .cta-block h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .cta-block p { color: var(--muted); margin-bottom: 32px; position: relative; }
+  .cta-btn {
+    display: inline-block;
+    padding: 20px 60px;
+    background: linear-gradient(135deg, var(--purple), #7c3aed);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: all 0.2s;
+    position: relative;
+    box-shadow: 0 0 40px rgba(168,85,247,0.35);
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 60px rgba(168,85,247,0.55);
+  }
+  .cta-note { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 16px; position: relative; }
+
+  .payment-option {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: var(--gold);
+    position: relative;
+  }
+
+  .compare-row { text-align: center; padding: 32px 0 0; }
+  .compare-row a {
+    color: var(--muted);
+    font-size: 0.88rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+  }
+  .compare-row a:hover { color: var(--purple); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .include-item:nth-child(1) { animation-delay: 0.05s; }
+  .include-item:nth-child(2) { animation-delay: 0.1s; }
+  .include-item:nth-child(3) { animation-delay: 0.15s; }
+  .include-item:nth-child(4) { animation-delay: 0.2s; }
+  .include-item:nth-child(5) { animation-delay: 0.25s; }
+  .include-item:nth-child(6) { animation-delay: 0.3s; }
+  .include-item:nth-child(7) { animation-delay: 0.35s; }
+  .include-item:nth-child(8) { animation-delay: 0.4s; }
+
+  @media (max-width: 600px) {
+    nav { padding: 14px 20px; }
+    .hero { padding: 70px 20px 40px; }
+    .price-now { font-size: 3.5rem; }
+    .cta-block { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">SomaSync AI</a>
+  <div class="nav-links">
+    <a href="starter.html">Starter</a>
+    <a href="growth.html">Growth</a>
+    <a href="super-pack.html" class="active">Super Pack</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="badge">🟣 Super Pack</div>
+  <h1>Graduate<br><span>Ready</span></h1>
+  <p class="hero-sub">Everything you need to graduate with a complete business — your brand, your web presence, your social media, and your launch strategy. All done.</p>
+  <div class="price-display">
+    <div class="price-was">Regular $499</div>
+    <div class="price-now">$189</div>
+    <div class="price-label">Student Pricing · One-time</div>
+    <div>
+      <div class="payment-plan">💛 Or split it: $99 now + $90 after delivery</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <p class="section-title">What's Included</p>
+
+  <div class="prev-included">
+    ✅
+    <div>
+      <strong>Includes everything in Starter + Growth ($168 combined value)</strong>
+      Logo · Colors · Bio · Service menu · AMTA redesign · Homepage · Booking CTA · SEO · Intake form · Cancellation policy
+    </div>
+  </div>
+
+  <div class="includes-grid">
+    <div class="include-item">
+      <div class="include-icon">✨</div>
+      <div class="include-text">
+        <strong>Logo Refinement</strong>
+        <span>Polish and finalize your logo for professional use across all platforms</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">📱</div>
+      <div class="include-text">
+        <strong>Instagram Setup</strong>
+        <span>Profile optimized and ready to attract local massage clients</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">🖼️</div>
+      <div class="include-text">
+        <strong>6 Starter Posts</strong>
+        <span>Professionally written posts ready to publish on day one</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">📍</div>
+      <div class="include-text">
+        <strong>Google Business Profile</strong>
+        <span>Setup so you appear in local searches and Google Maps</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">📘</div>
+      <div class="include-text">
+        <strong>Brand Guideline Sheet</strong>
+        <span>Your complete brand rules — colors, fonts, voice, and logo usage</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">🚀</div>
+      <div class="include-text">
+        <strong>Launch Strategy</strong>
+        <span>Step-by-step plan for your first 30 days as a licensed therapist</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">✅</div>
+      <div class="include-text">
+        <strong>Client-Ready Checklist</strong>
+        <span>Every system you need before seeing your first paying client</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">⚡</div>
+      <div class="include-text">
+        <strong>Priority Turnaround</strong>
+        <span>Your package moves to the front of the queue — faster delivery</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="value-box">
+    <h3>What You're Getting vs. What You'd Pay</h3>
+    <div class="value-row"><span class="label">Freelance logo + brand kit</span><span class="val">$200–500</span></div>
+    <div class="value-row"><span class="label">Website design + copywriting</span><span class="val">$500–1,500</span></div>
+    <div class="value-row"><span class="label">Social media setup + content</span><span class="val">$150–300</span></div>
+    <div class="value-row"><span class="label">Google Business optimization</span><span class="val">$100–200</span></div>
+    <div class="value-row"><span class="label">Launch strategy consultation</span><span class="val">$150–300</span></div>
+    <div class="value-row">
+      <span class="label" style="font-weight:600;color:var(--text);">Total market value</span>
+      <span class="val" style="text-decoration:line-through;color:var(--muted);">$1,100–2,800</span>
+    </div>
+    <div class="value-row">
+      <span class="label" style="font-weight:700;color:var(--text);">Your student price</span>
+      <span class="val total">$189</span>
+    </div>
+  </div>
+
+  <div class="best-for">
+    <h3>Best For</h3>
+    <p>Students who want to graduate with everything ready. No scrambling, no "I'll set this up later." You walk out of school and straight into business.</p>
+  </div>
+
+  <div class="cta-block">
+    <div class="grad-badge">🎓 Graduate Ready</div>
+    <h2>Launch Your Practice the Right Way</h2>
+    <p>Takes 2 minutes to apply. We'll follow up within 24 hours.</p>
+    <a href="https://formspree.io/f/xdaygbyo" class="cta-btn">Apply for Super Pack — $189</a>
+    <span class="cta-note">🔒 Secure · Student pricing verified at checkout</span>
+    <div class="payment-option">💛 Payment plan available: $99 now + $90 after delivery</div>
+  </div>
+
+  <div class="compare-row">
+    <a href="growth.html">← Compare to Growth Package ($119)</a>
+  </div>
+
+</div>
+
+</body>
+</html>

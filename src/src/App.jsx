@@ -10,6 +10,7 @@ import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import "./App.css";
 
+
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
   if (loading) {

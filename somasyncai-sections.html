@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SomaSyncAI — New Sections Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C96A;
+      --gold-dim: rgba(201,168,76,0.15);
+      --bg: #0A0A0A;
+      --bg2: #111111;
+      --bg3: #161616;
+      --text: #F0EDE6;
+      --text-dim: #8A877F;
+      --border: rgba(201,168,76,0.2);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ── PREVIEW LABEL ── */
+    .preview-bar {
+      background: var(--gold);
+      color: #000;
+      text-align: center;
+      padding: 10px 20px;
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 1 — VIDEO DEMO
+    ══════════════════════════════════════ */
+    .demo-section {
+      padding: 120px 40px;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .demo-section::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      line-height: 1.05;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .section-sub {
+      font-size: 17px;
+      color: var(--text-dim);
+      max-width: 520px;
+      margin-bottom: 56px;
+      line-height: 1.7;
+    }
+
+    .demo-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* Video placeholder */
+    .video-shell {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 */
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.1);
+      cursor: pointer;
+    }
+
+    .video-shell:hover .play-ring {
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+
+    .video-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(201,168,76,0.04) 0%, transparent 50%, rgba(201,168,76,0.02) 100%),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 39px,
+          rgba(201,168,76,0.04) 40px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 79px,
+          rgba(201,168,76,0.04) 80px
+        );
+    }
+
+    .video-overlay-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .play-ring {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform 0.3s ease;
+      background: rgba(201,168,76,0.08);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .play-ring::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+
+    .play-triangle {
+      width: 0;
+      height: 0;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-left: 20px solid var(--gold);
+      margin-left: 4px;
+    }
+
+    .video-coming-label {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      white-space: nowrap;
+      background: var(--bg3);
+      padding: 6px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+    }
+
+    /* Video features strip */
+    .demo-features {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+
+    .demo-chip {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: var(--gold-dim);
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 2 — DATA & SECURITY
+    ══════════════════════════════════════ */
+    .security-section {
+      padding: 120px 40px;
+      background: var(--bg2);
+      position: relative;
+    }
+
+    .security-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .security-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 56px;
+    }
+
+    @media (max-width: 700px) {
+      .security-grid { grid-template-columns: 1fr; }
+      .demo-section, .security-section { padding: 80px 24px; }
+    }
+
+    .security-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .security-card:hover {
+      border-color: rgba(201,168,76,0.45);
+      background: #1a1a1a;
+    }
+
+    .security-card.highlight {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(201,168,76,0.07) 0%, var(--bg3) 100%);
+      border-color: rgba(201,168,76,0.35);
+    }
+
+    .card-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: 0.01em;
+    }
+
+    .card-body {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    .card-body strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Responsibility callout */
+    .responsibility-box {
+      margin-top: 40px;
+      padding: 28px 32px;
+      border-left: 3px solid var(--gold);
+      background: rgba(201,168,76,0.05);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .responsibility-box p {
+      font-size: 15px;
+      color: var(--text-dim);
+      line-height: 1.75;
+    }
+
+    .responsibility-box strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .responsibility-box a {
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+    }
+
+    .responsibility-box a:hover {
+      border-bottom-color: var(--gold);
+    }
+
+    /* Divider between sections */
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<div class="preview-bar">⬇ Preview — Two new sections to add to somasyncai.com ⬇</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 1: VIDEO DEMO
+══════════════════════════════════════ -->
+<section class="demo-section" id="demo">
+  <div class="demo-inner">
+    <p class="section-label">See It In Action</p>
+    <h2 class="section-title">WATCH AALIYAH WORK</h2>
+    <p class="section-sub">See a full session from intake to completed SOAP note — hands never leave the patient.</p>
+
+    <!-- Swap the div.video-shell for an <iframe> when your video is ready -->
+    <div class="video-shell">
+      <div class="video-bg"></div>
+      <div class="video-overlay-text">
+        <div class="play-ring">
+          <div class="play-triangle"></div>
+        </div>
+      </div>
+      <span class="video-coming-label">Full demo dropping soon</span>
+    </div>
+
+    <div class="demo-features">
+      <span class="demo-chip">🎧 Live in-ear guidance</span>
+      <span class="demo-chip">🎤 Voice → SOAP</span>
+      <span class="demo-chip">🧠 Treatment memory</span>
+      <span class="demo-chip">⚡ Notes in real time</span>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════
+     SECTION 2: DATA & SECURITY
+══════════════════════════════════════ -->
+<section class="security-section" id="security">
+  <div class="security-inner">
+    <p class="section-label">Data &amp; Security</p>
+    <h2 class="section-title">YOUR DATA.<br>YOUR RESPONSIBILITY.<br>OUR ARCHITECTURE.</h2>
+    <p class="section-sub" style="margin-bottom:0;">SomaSyncAI is a clinical operating system — a tool you control. Here's exactly how data flows and what that means for your practice.</p>
+
+    <div class="security-grid">
+
+      <div class="security-card highlight">
+        <span class="card-icon">⚖️</span>
+        <p class="card-title">HIPAA: Your Practice, Your Obligation</p>
+        <p class="card-body">
+          SomaSyncAI is a documentation and guidance <strong>tool</strong> — similar to a word processor or EHR system. As with any clinical software, <strong>you as the practitioner are the HIPAA Covered Entity</strong>. You control what patient information enters the system and how it is stored, shared, and protected. We are committed to building infrastructure that supports your compliance obligations as we grow.
+        </p>
+      </div>
+
+      <div class="security-card">
+        <span class="card-icon">🔒</span>
+        <p class="card-title">You Control Your Data</p>
+        <p class="card-body">
+          Your session notes, client records, and voice data belong to you — not us. SomaSyncAI does not sell, license, or share your clinical data with third parties. Period.
+        </p>
+      </div>
+
+      <div class="security-card">
+        <span class="card-icon">🛡️</span>
+        <p class="card-title">Encrypted in Transit &amp; at Rest</p>
+        <p class="card-body">
+          All data transmitted between your device and our servers is encrypted via TLS. Stored session data uses industry-standard encryption at rest. Your notes don't travel in the clear.
+        </p>
+      </div>
+
+      <div class="security-card">
+        <span class="card-icon">🎙️</span>
+        <p class="card-title">Voice Processing Transparency</p>
+        <p class="card-body">
+          Voice input is processed in real time to generate documentation. <strong>Audio is not permanently stored</strong> after note generation is complete. You document — we don't archive your recordings.
+        </p>
+      </div>
+
+      <div class="security-card">
+        <span class="card-icon">🚫</span>
+        <p class="card-title">No Selling. No Training on Your Data.</p>
+        <p class="card-body">
+          Your clinical sessions are never used to train AI models without explicit opt-in consent. We do not monetize your patient data. Full stop.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="responsibility-box">
+      <p>
+        <strong>A note for practitioners evaluating compliance:</strong> We recommend reviewing our <a href="/privacy-policy">Privacy Policy</a> and <a href="/ai-disclaimer">AI Disclaimer</a> with your compliance advisor. As SomaSyncAI grows toward enterprise tiers, BAA (Business Associate Agreement) support is on our roadmap. Questions? <a href="mailto:hello@somasyncai.com">hello@somasyncai.com</a>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>

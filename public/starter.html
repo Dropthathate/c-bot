@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starter Package — SomaSync AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #020617;
+    --surface: #0f172a;
+    --surface2: #1e293b;
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.12);
+    --green-glow: rgba(34,197,94,0.25);
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: rgba(255,255,255,0.08);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 10%, rgba(34,197,94,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(34,197,94,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px;
+    background: rgba(2,6,23,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--surface2); }
+  .nav-links a.active { color: var(--green); background: var(--green-dim); }
+
+  /* Hero */
+  .hero {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 100px 24px 60px;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px;
+    background: var(--green-dim);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--green);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .badge::before { content: '🟢'; font-size: 0.7rem; }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 span { color: var(--green); }
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .price-display {
+    animation: fadeUp 0.6s 0.3s ease both;
+    margin-bottom: 48px;
+  }
+  .price-was {
+    font-size: 1.1rem;
+    color: var(--muted);
+    text-decoration: line-through;
+    margin-bottom: 4px;
+  }
+  .price-now {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+  }
+  .price-label {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Main layout */
+  .container {
+    position: relative; z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 100px;
+  }
+
+  /* What You Get */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+  .includes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  .include-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: all 0.25s;
+    animation: fadeUp 0.5s ease both;
+  }
+  .include-item:hover {
+    border-color: rgba(34,197,94,0.35);
+    background: var(--surface2);
+    transform: translateY(-2px);
+  }
+  .include-icon {
+    width: 38px; height: 38px;
+    background: var(--green-dim);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .include-text { flex: 1; }
+  .include-text strong {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .include-text span {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Best For */
+  .best-for {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+  }
+  .best-for h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--green);
+    margin-bottom: 10px;
+  }
+  .best-for p { color: var(--muted); line-height: 1.7; }
+
+  /* CTA */
+  .cta-block {
+    text-align: center;
+    padding: 60px 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-block::before {
+    content: '';
+    position: absolute;
+    top: -40%; left: 50%; transform: translateX(-50%);
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-block h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .cta-block p {
+    color: var(--muted);
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .cta-btn {
+    display: inline-block;
+    padding: 18px 52px;
+    background: var(--green);
+    color: #020617;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 12px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: all 0.2s;
+    position: relative;
+    box-shadow: 0 0 32px rgba(34,197,94,0.3);
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 48px rgba(34,197,94,0.5);
+    background: #16a34a;
+  }
+  .cta-note {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 16px;
+    position: relative;
+  }
+
+  /* Compare link */
+  .compare-row {
+    text-align: center;
+    padding: 32px 0 0;
+  }
+  .compare-row a {
+    color: var(--muted);
+    font-size: 0.88rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+  }
+  .compare-row a:hover { color: var(--green); }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .include-item:nth-child(1) { animation-delay: 0.05s; }
+  .include-item:nth-child(2) { animation-delay: 0.1s; }
+  .include-item:nth-child(3) { animation-delay: 0.15s; }
+  .include-item:nth-child(4) { animation-delay: 0.2s; }
+  .include-item:nth-child(5) { animation-delay: 0.25s; }
+  .include-item:nth-child(6) { animation-delay: 0.3s; }
+
+  @media (max-width: 600px) {
+    nav { padding: 14px 20px; }
+    .hero { padding: 70px 20px 40px; }
+    .price-now { font-size: 3.5rem; }
+    .cta-block { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">SomaSync AI</a>
+  <div class="nav-links">
+    <a href="starter.html" class="active">Starter</a>
+    <a href="growth.html">Growth</a>
+    <a href="super-pack.html">Super Pack</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="badge">Starter Package</div>
+  <h1>Brand<br><span>Kickstart</span></h1>
+  <p class="hero-sub">Get a professional identity before graduation — so clients take you seriously from day one.</p>
+  <div class="price-display">
+    <div class="price-was">Regular $149</div>
+    <div class="price-now">$49</div>
+    <div class="price-label">Student Pricing · One-time</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <p class="section-title">What's Included</p>
+  <div class="includes-grid">
+    <div class="include-item">
+      <div class="include-icon">🎨</div>
+      <div class="include-text">
+        <strong>Basic Logo Design</strong>
+        <span>A clean, professional logo that represents your practice</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">🎯</div>
+      <div class="include-text">
+        <strong>Brand Colors</strong>
+        <span>A curated palette that feels cohesive and trustworthy</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">✏️</div>
+      <div class="include-text">
+        <strong>Font Selection</strong>
+        <span>Typography that communicates your brand personality</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">💡</div>
+      <div class="include-text">
+        <strong>Business Name Help</strong>
+        <span>Naming guidance to stand out in your local market</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">✍️</div>
+      <div class="include-text">
+        <strong>Professional Bio Written</strong>
+        <span>A compelling bio that builds trust with new clients</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">📋</div>
+      <div class="include-text">
+        <strong>Service Menu Layout</strong>
+        <span>Clearly structured services that convert visitors to bookings</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="best-for">
+    <h3>Best For</h3>
+    <p>Students in their final year who want to look professional, build their name, and hit the ground running — without spending a fortune on branding.</p>
+  </div>
+
+  <div class="cta-block">
+    <h2>Ready to Build Your Brand?</h2>
+    <p>Takes 2 minutes to apply. We'll follow up within 24 hours.</p>
+    <a href="https://formspree.io/f/xdaygbyo" class="cta-btn">Apply for Starter — $49</a>
+    <span class="cta-note">🔒 Secure · Student pricing verified at checkout</span>
+  </div>
+
+  <div class="compare-row">
+    <a href="growth.html">Compare to Growth Package ($119) →</a>
+  </div>
+
+</div>
+
+</body>
+</html>

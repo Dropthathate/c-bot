@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth Package — SomaSync AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #020617;
+    --surface: #0f172a;
+    --surface2: #1e293b;
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.12);
+    --blue-glow: rgba(59,130,246,0.25);
+    --green: #22c55e;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: rgba(255,255,255,0.08);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 10%, rgba(59,130,246,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(59,130,246,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px;
+    background: rgba(2,6,23,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--blue);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--surface2); }
+  .nav-links a.active { color: var(--blue); background: var(--blue-dim); }
+
+  /* Popular ribbon */
+  .popular-banner {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 14px;
+    background: linear-gradient(90deg, var(--blue-dim), rgba(59,130,246,0.18), var(--blue-dim));
+    border-bottom: 1px solid rgba(59,130,246,0.2);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .popular-banner span { color: var(--text); }
+
+  /* Hero */
+  .hero {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 80px 24px 60px;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px;
+    background: var(--blue-dim);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 span { color: var(--blue); }
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .price-display {
+    animation: fadeUp 0.6s 0.3s ease both;
+    margin-bottom: 48px;
+  }
+  .price-was { font-size: 1.1rem; color: var(--muted); text-decoration: line-through; margin-bottom: 4px; }
+  .price-now {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: var(--blue);
+    line-height: 1;
+  }
+  .price-label { font-size: 0.9rem; color: var(--muted); margin-top: 6px; letter-spacing: 0.05em; }
+
+  /* Container */
+  .container {
+    position: relative; z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 100px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  /* Starter included callout */
+  .starter-included {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px;
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #86efac;
+  }
+  .starter-included strong { color: var(--green); }
+
+  /* Includes grid */
+  .includes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  .include-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: all 0.25s;
+    animation: fadeUp 0.5s ease both;
+  }
+  .include-item:hover {
+    border-color: rgba(59,130,246,0.35);
+    background: var(--surface2);
+    transform: translateY(-2px);
+  }
+  .include-icon {
+    width: 38px; height: 38px;
+    background: var(--blue-dim);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .include-text strong {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .include-text span { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  /* Best for */
+  .best-for {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--blue);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+  }
+  .best-for h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+  .best-for p { color: var(--muted); line-height: 1.7; }
+
+  /* CTA */
+  .cta-block {
+    text-align: center;
+    padding: 60px 40px;
+    background: var(--surface);
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-block::before {
+    content: '';
+    position: absolute;
+    top: -40%; left: 50%; transform: translateX(-50%);
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .popular-tag {
+    display: inline-block;
+    padding: 5px 14px;
+    background: var(--blue);
+    color: white;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .cta-block h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .cta-block p { color: var(--muted); margin-bottom: 32px; position: relative; }
+  .cta-btn {
+    display: inline-block;
+    padding: 18px 52px;
+    background: var(--blue);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s;
+    position: relative;
+    box-shadow: 0 0 32px rgba(59,130,246,0.3);
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 48px rgba(59,130,246,0.5);
+    background: #2563eb;
+  }
+  .cta-note {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 16px;
+    position: relative;
+  }
+
+  .compare-row {
+    display: flex; justify-content: space-between;
+    padding: 32px 0 0;
+  }
+  .compare-row a {
+    color: var(--muted);
+    font-size: 0.88rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+  }
+  .compare-row a:hover { color: var(--blue); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .include-item:nth-child(1) { animation-delay: 0.05s; }
+  .include-item:nth-child(2) { animation-delay: 0.1s; }
+  .include-item:nth-child(3) { animation-delay: 0.15s; }
+  .include-item:nth-child(4) { animation-delay: 0.2s; }
+  .include-item:nth-child(5) { animation-delay: 0.25s; }
+  .include-item:nth-child(6) { animation-delay: 0.3s; }
+  .include-item:nth-child(7) { animation-delay: 0.35s; }
+  .include-item:nth-child(8) { animation-delay: 0.4s; }
+
+  @media (max-width: 600px) {
+    nav { padding: 14px 20px; }
+    .hero { padding: 60px 20px 40px; }
+    .price-now { font-size: 3.5rem; }
+    .cta-block { padding: 40px 24px; }
+    .compare-row { flex-direction: column; gap: 16px; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="popular-banner">⭐ <span>Most Popular</span> — Chosen by 70% of SomaSync students</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">SomaSync AI</a>
+  <div class="nav-links">
+    <a href="starter.html">Starter</a>
+    <a href="growth.html" class="active">Growth</a>
+    <a href="super-pack.html">Super Pack</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="badge">🔵 Growth Package</div>
+  <h1>AMTA Site<br><span>Upgrade</span></h1>
+  <p class="hero-sub">Your website becomes client-ready. This is the package that gets you your first booking.</p>
+  <div class="price-display">
+    <div class="price-was">Regular $299</div>
+    <div class="price-now">$119</div>
+    <div class="price-label">Student Pricing · One-time</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <p class="section-title">What's Included</p>
+
+  <div class="starter-included">
+    ✅ <div><strong>Includes everything in Starter ($49 value)</strong> — Logo, colors, fonts, bio, service menu, and business name help</div>
+  </div>
+
+  <div class="includes-grid">
+    <div class="include-item">
+      <div class="include-icon">🌐</div>
+      <div class="include-text">
+        <strong>AMTA Website Redesign</strong>
+        <span>Full refresh of your AMTA site to look polished and professional</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">🏠</div>
+      <div class="include-text">
+        <strong>Homepage Optimization</strong>
+        <span>Strategic layout that converts visitors into booked clients</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">💆</div>
+      <div class="include-text">
+        <strong>Services Page Setup</strong>
+        <span>Clear, compelling presentation of your massage services</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">📅</div>
+      <div class="include-text">
+        <strong>Booking Call-To-Action</strong>
+        <span>Strategically placed CTAs that drive appointment bookings</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">🔍</div>
+      <div class="include-text">
+        <strong>SEO Page Title</strong>
+        <span>Optimized title so local clients can find you on Google</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">📝</div>
+      <div class="include-text">
+        <strong>Meta Description</strong>
+        <span>Click-worthy description that shows in search results</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">📄</div>
+      <div class="include-text">
+        <strong>Intake Form Template</strong>
+        <span>Professional client intake form ready to use immediately</span>
+      </div>
+    </div>
+    <div class="include-item">
+      <div class="include-icon">⚖️</div>
+      <div class="include-text">
+        <strong>Cancellation Policy Template</strong>
+        <span>Clear, professional policy that protects your time and income</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="best-for">
+    <h3>Best For</h3>
+    <p>Students who are ready to start getting clients immediately. You'll have a complete, professional online presence the moment you graduate — not months later.</p>
+  </div>
+
+  <div class="cta-block">
+    <div class="popular-tag">⭐ Most Popular</div>
+    <h2>Ready to Get Clients?</h2>
+    <p>Takes 2 minutes to apply. We'll follow up within 24 hours.</p>
+    <a href="https://formspree.io/f/xdaygbyo" class="cta-btn">Apply for Growth — $119</a>
+    <span class="cta-note">🔒 Secure · Student pricing verified at checkout</span>
+  </div>
+
+  <div class="compare-row">
+    <a href="starter.html">← Back to Starter ($49)</a>
+    <a href="super-pack.html">Compare to Super Pack ($189) →</a>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,7 +1,15 @@
 import { useEffect, useRef } from 'react'
 
+// ─────────────────────────────────────────────
+//  LANDING — SomaSync AI
+//  CSS / JS extracted from somasync-landing.html
+//  HTML rendered as proper JSX (not innerHTML)
+// ─────────────────────────────────────────────
+
 export default function Landing() {
-  const ref = useRef(null)
+  const wf1Ref = useRef(null)
+  const wf2Ref = useRef(null)
+  const canvasRef = useRef(null)
   const mounted = useRef(false)
 
   useEffect(() => {
@@ -10,6 +18,7 @@ export default function Landing() {
 
     document.title = 'SomaSyncAI — The Gold Standard Clinical OS for Manual Therapists'
 
+    // ── Google Fonts ──────────────────────────
     if (!document.getElementById('soma-fonts')) {
       const link = document.createElement('link')
       link.id = 'soma-fonts'
@@ -18,45 +27,943 @@ export default function Landing() {
       document.head.appendChild(link)
     }
 
+    // ── Inject scoped CSS ─────────────────────
     if (!document.getElementById('soma-styles')) {
       const style = document.createElement('style')
       style.id = 'soma-styles'
-      style.textContent = CSS
+      style.textContent = SOMA_CSS
       document.head.appendChild(style)
     }
 
-    if (ref.current) {
-      ref.current.innerHTML = HTML
-      const s = document.createElement('script')
-      s.textContent = JS
-      document.body.appendChild(s)
+    // ── Custom cursor ─────────────────────────
+    const cdEl = document.getElementById('soma-cd')
+    const crEl = document.getElementById('soma-cr')
+    let mx = 0, my = 0, rx = 0, ry = 0
+
+    const onMouseMove = (e) => {
+      mx = e.clientX; my = e.clientY
+      if (cdEl) { cdEl.style.left = mx + 'px'; cdEl.style.top = my + 'px' }
+    }
+    document.addEventListener('mousemove', onMouseMove)
+
+    let rafId
+    const loop = () => {
+      rx += (mx - rx) * 0.12
+      ry += (my - ry) * 0.12
+      if (crEl) { crEl.style.left = rx + 'px'; crEl.style.top = ry + 'px' }
+      rafId = requestAnimationFrame(loop)
+    }
+    loop()
+
+    // ── Hover cursor expand ───────────────────
+    const hoverTargets = document.querySelectorAll(
+      '#soma-root a, #soma-root button, .feat-card, .how-card, .road-card, .inv-stat, .prob-card, .ds-ni, .nav-item'
+    )
+    hoverTargets.forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('soma-h'))
+      el.addEventListener('mouseleave', () => document.body.classList.remove('soma-h'))
+    })
+
+    // ── Sticky nav ────────────────────────────
+    const nav = document.getElementById('soma-nav')
+    const onScroll = () => {
+      if (nav) nav.classList.toggle('stuck', window.scrollY > 60)
+    }
+    window.addEventListener('scroll', onScroll)
+
+    // ── Scroll reveal ─────────────────────────
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) }
+      }),
+      { threshold: 0.1 }
+    )
+    document.querySelectorAll('#soma-root .rv').forEach(el => io.observe(el))
+
+    // ── Waveform builder ──────────────────────
+    const buildWave = (el) => {
+      if (!el) return
+      el.innerHTML = ''
+      for (let i = 0; i < 60; i++) {
+        const b = document.createElement('div')
+        b.className = 'wbar'
+        b.style.cssText = `width:3px;height:4px;flex-shrink:0;animation-delay:${(i * 0.06).toFixed(2)}s;animation-duration:${(0.8 + Math.random() * 0.9).toFixed(2)}s`
+        el.appendChild(b)
+      }
+    }
+    buildWave(wf1Ref.current)
+    buildWave(wf2Ref.current)
+
+    // ── Canvas blob animation ─────────────────
+    const canvas = canvasRef.current
+    if (canvas) {
+      const ctx = canvas.getContext('2d')
+      let W, H, t = 0
+
+      const resize = () => {
+        W = canvas.width = canvas.offsetWidth
+        H = canvas.height = canvas.offsetHeight
+      }
+      resize()
+      window.addEventListener('resize', resize)
+
+      const blobs = [
+        { x: 0.72, y: 0.25, r: 340, hue: 210 },
+        { x: 0.20, y: 0.65, r: 270, hue: 195 },
+        { x: 0.55, y: 0.75, r: 210, hue: 225 },
+      ]
+
+      const drawBlob = (cx, cy, r, hue) => {
+        ctx.beginPath()
+        for (let i = 0; i <= 16; i++) {
+          const a = (i / 16) * Math.PI * 2
+          const noise = Math.sin(a * 3 + t * 0.7) * 35 + Math.cos(a * 2 + t * 0.5) * 22
+          const rad = r + noise
+          const x = cx + Math.cos(a) * rad
+          const y = cy + Math.sin(a) * rad
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
+        }
+        ctx.closePath()
+        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r + 60)
+        g.addColorStop(0, `hsla(${hue},80%,50%,.17)`)
+        g.addColorStop(0.6, `hsla(${hue},70%,40%,.08)`)
+        g.addColorStop(1, 'transparent')
+        ctx.fillStyle = g
+        ctx.fill()
+      }
+
+      let framId
+      const frame = () => {
+        t += 0.008
+        ctx.clearRect(0, 0, W, H)
+        blobs.forEach(b => drawBlob(b.x * W, b.y * H, b.r, b.hue))
+        framId = requestAnimationFrame(frame)
+      }
+      frame()
+
+      // Cleanup
+      return () => {
+        document.removeEventListener('mousemove', onMouseMove)
+        window.removeEventListener('scroll', onScroll)
+        window.removeEventListener('resize', resize)
+        cancelAnimationFrame(rafId)
+        cancelAnimationFrame(framId)
+        io.disconnect()
+        const styleEl = document.getElementById('soma-styles')
+        if (styleEl) styleEl.remove()
+        document.body.classList.remove('soma-h')
+      }
     }
 
     return () => {
-      const el = document.getElementById('soma-styles')
-      if (el) el.remove()
+      document.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(rafId)
+      io.disconnect()
+      const styleEl = document.getElementById('soma-styles')
+      if (styleEl) styleEl.remove()
+      document.body.classList.remove('soma-h')
     }
   }, [])
 
+  // ── JSX ──────────────────────────────────────
   return (
-    <div
-      id="soma-root"
-      ref={ref}
-      style={{
-        all: 'initial',
-        display: 'block',
-        fontFamily: 'Manrope, sans-serif',
-        background: '#080808',
-        color: '#f0ede8',
-        minHeight: '100vh'
-      }}
-    />
+    <div id="soma-root">
+
+      {/* Custom cursor */}
+      <div id="soma-cd" />
+      <div id="soma-cr" />
+
+      {/* NAV */}
+      <nav id="soma-nav">
+        <a className="n-logo" href="#" style={{ gap: 0 }}>
+          <img src="./ss.png" alt="SomaSyncAI" style={{ height: 38, width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 8px rgba(59,158,255,0.4))' }} />
+        </a>
+        <div className="n-pill">
+          <a href="#features">Features</a>
+          <a href="#roadmap">Roadmap</a>
+          <a href="#how">Workflow</a>
+          <a href="#investors">Investors</a>
+        </div>
+        <a className="n-cta" href="https://somasyncai.com/auth">Join Beta — Free</a>
+      </nav>
+
+      {/* HERO */}
+      <section id="hero">
+        <canvas id="c" ref={canvasRef} />
+
+        <div className="hero-top-stats">
+          <div>
+            <div className="ts-n"><span>87</span>%</div>
+            <div className="ts-l">Less charting</div>
+          </div>
+          <div>
+            <div className="ts-n"><span>100</span>%</div>
+            <div className="ts-l">Hands-free</div>
+          </div>
+        </div>
+
+        <div className="hero-inner">
+          <div className="hero-badge">
+            <div className="hero-badge-dot" />
+            Now in Beta — Limited Access
+          </div>
+          <h1 className="hero-h1">
+            THE <span className="out">GOLD</span>
+            <br />
+            <span style={{ color: 'var(--blue)', textShadow: '0 0 80px var(--blue-glow)' }}>STANDARD</span>
+            <br />
+            CLINICAL <span className="out">OS</span>
+          </h1>
+          <div style={{ marginTop: 24, fontFamily: "'Syne',sans-serif", fontSize: 'clamp(.9rem,1.5vw,1.2rem)', fontWeight: 700, letterSpacing: '.04em', color: 'var(--muted)', opacity: 0, animation: 'fadeUp .8s .7s forwards' }}>
+            The Intelligence of You.
+          </div>
+        </div>
+
+        {/* Dashboard mockup */}
+        <div className="dash-wrap">
+          <div className="dash-fade" />
+          <div className="dash-screen">
+            <div className="dash-bar">
+              <div className="dash-dots">
+                <div className="dash-dot dd1" />
+                <div className="dash-dot dd2" />
+                <div className="dash-dot dd3" />
+              </div>
+              <div className="dash-url">app.somasyncai.com/session/live</div>
+            </div>
+            <div className="dash-body">
+              <div className="dash-sidebar">
+                <div className="dash-logo"><div className="dash-logo-dot" />SomaSyncAI</div>
+                {['Live Session','SOAP Notes','Patients','Treatment Memory','ICD-10 Assist','Analytics','Settings'].map((item, i) => (
+                  <div key={item} className={`nav-item${i === 0 ? ' on' : ''}`}>
+                    <div className="ni-dot" />{item}
+                  </div>
+                ))}
+              </div>
+              <div className="dash-main">
+                <div className="dash-header">
+                  <div className="dash-title">New Session — Sarah M. · PT Visit #4</div>
+                  <div className="dash-live"><div className="dlb-dot" />AALIYAH Ready</div>
+                </div>
+
+                {/* Session progress steps */}
+                <div style={{ display: 'flex', gap: 0, marginBottom: 20, border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, overflow: 'hidden' }}>
+                  {[
+                    { label: '✓ Intake', active: true, current: false },
+                    { label: '● Calibration', active: true, current: true },
+                    { label: 'Analysis', active: false },
+                    { label: 'Assessment', active: false },
+                    { label: 'Generate', active: false },
+                    { label: 'Live Session', active: false },
+                  ].map((step, i) => (
+                    <div key={i} style={{ flex: 1, padding: '10px 12px', background: step.current ? 'rgba(0,232,154,0.08)' : step.active ? 'rgba(0,232,154,0.12)' : 'transparent', borderRight: i < 5 ? '1px solid rgba(255,255,255,0.07)' : 'none', textAlign: 'center', opacity: step.active || step.current ? 1 : 0.35 }}>
+                      <div style={{ fontSize: '.55rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: step.active || step.current ? 'var(--grn)' : 'var(--muted)' }}>
+                        {step.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Consent panel */}
+                <div className="aa-box" style={{ marginBottom: 16 }}>
+                  <div className="aa-av">🔒</div>
+                  <div style={{ flex: 1 }}>
+                    <div className="aa-l">Consent — Required Before Calibration</div>
+                    <div className="aa-t" style={{ marginBottom: 10 }}>AALIYAH will listen and process voice during this session. Client consent is required and logged.</div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <div style={{ background: 'var(--grn)', color: '#080808', fontSize: '.65rem', fontWeight: 700, padding: '6px 14px', borderRadius: 100, letterSpacing: '.06em' }}>✓ Consent Given</div>
+                      <div style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--muted)', fontSize: '.65rem', fontWeight: 700, padding: '6px 14px', borderRadius: 100, letterSpacing: '.06em' }}>View Policy</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Voice calibration */}
+                <div className="aa-box">
+                  <div className="aa-av">🎧</div>
+                  <div style={{ flex: 1 }}>
+                    <div className="aa-l">AALIYAH — Voice Calibration</div>
+                    <div className="aa-t" style={{ marginBottom: 10 }}>
+                      Say the following phrase clearly: <b>"AALIYAH, begin session for Sarah Mitchell."</b> Calibrating to your voice in current environment.
+                    </div>
+                    <div ref={wf1Ref} className="waveform" id="wf1" style={{ marginTop: 0, height: 32, border: 'none', background: 'transparent', padding: 0 }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MARQUEE */}
+      <div className="mq-wrap">
+        <div className="mq-track">
+          {[...Array(2)].map((_, dupe) =>
+            ['Live In-Ear AI','Automatic SOAP Notes','Voice Charting','Treatment Memory','Gold Standard Documentation','Physical Therapy','Chiropractic','Massage Therapy','Sports Medicine','ICD-10 Assist','AALIYAH.IO Powered'].map((item, i) => (
+              <span key={`${dupe}-${i}`} className="mq-item">{item} <span className="s">◆</span></span>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* PROBLEM */}
+      <section id="problem" className="sec">
+        <div className="sec-tag rv">The Problem</div>
+        <h2 className="sec-h rv d1">YOU DIDN'T<br />TRAIN TO <span className="out">CHART.</span></h2>
+        <p className="sec-sub rv d2">Manual therapists spend nearly as much time documenting as treating. That ends now.</p>
+        <div className="prob-row">
+          <div className="prob-card rv d1">
+            <div className="prob-n">3H</div>
+            <div className="prob-l">Daily Documentation Burden</div>
+            <div className="prob-d">Average practitioner spends 3+ hours per day on notes, charting, and admin tasks.</div>
+          </div>
+          <div className="prob-card rv d2">
+            <div className="prob-n">40%</div>
+            <div className="prob-l">Of Clinical Time Lost</div>
+            <div className="prob-d">Nearly half your working day goes to paperwork instead of patient care.</div>
+          </div>
+          <div className="prob-card rv d3">
+            <div className="prob-n">#1</div>
+            <div className="prob-l">Cause of Burnout</div>
+            <div className="prob-d">Documentation overload is the leading driver of burnout across every manual therapy discipline.</div>
+          </div>
+          <div className="prob-full rv">
+            <div className="prob-full-t">SOMASYNCAI SOLVES THIS</div>
+            <div className="ptags">
+              <span className="ptag">🎧 Live In-Ear Guidance</span>
+              <span className="ptag">🎤 Voice → SOAP Note</span>
+              <span className="ptag">🧠 Treatment Memory</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section id="features" className="sec">
+        <div className="sec-tag rv">Core Features — Live Now</div>
+        <h2 className="sec-h rv d1">BUILT FOR THE<br /><span className="out">TREATMENT</span> TABLE</h2>
+        <div className="feat-grid">
+          {[
+            { ico: '🎧', title: 'Live In-Ear AI Guidance', desc: "Real-time suggestions whispered during assessments. Like having a brilliant clinical colleague on every case." },
+            { ico: '📋', title: 'Automatic SOAP Notes', desc: "Speak naturally. SomaSyncAI structures everything instantly into compliant, ready-to-sign documentation." },
+            { ico: '🎤', title: 'Voice Charting', desc: "Hands on the patient. Voice on the record. Document without breaking contact." },
+            { ico: '🧠', title: 'Treatment Memory', desc: "Every session deepens the AI's understanding. Pattern recognition compounds across all visits.", row2: true },
+            { ico: '🔬', title: 'ICD-10 Code Assist', desc: "AI suggests relevant diagnostic codes from your documentation. Reduce billing errors instantly.", row2: true },
+            { ico: '⚡', title: 'Instant Documentation', desc: "Walk out of treatment with complete notes already generated. No after-hours charting. Ever again.", row2: true },
+          ].map((f, i) => (
+            <div key={f.title} className={`feat-card${f.row2 ? ' feat-row2' : ''} rv d${(i % 3) + 1}`}>
+              <div className="feat-ico">{f.ico}</div>
+              <div className="feat-title">{f.title}</div>
+              <div className="feat-desc">{f.desc}</div>
+              <div className="feat-live"><div className="feat-live-dot" />Live Now</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* DASHBOARD SECTION */}
+      <section id="ds-sec">
+        <div className="ds-hd">
+          <div>
+            <div className="sec-tag rv">The Dashboard</div>
+            <h2 className="sec-h rv d1">YOUR CLINICAL<br /><span className="g">COMMAND</span> CENTER</h2>
+          </div>
+          <p className="sec-sub rv d2">Live sessions, patient history, SOAP notes, and AALIYAH's real-time guidance — all in one place.</p>
+        </div>
+        <div className="ds-wrap rv">
+          <div className="ds-glow" />
+          <div className="ds-screen">
+            <div className="ds-bar2">
+              <div className="dash-dots">
+                <div className="dash-dot dd1" /><div className="dash-dot dd2" /><div className="dash-dot dd3" />
+              </div>
+              <div className="dash-url" style={{ maxWidth: 300 }}>app.somasyncai.com/dashboard</div>
+            </div>
+            <div className="ds-inner">
+              {/* Sidebar */}
+              <div className="ds-side">
+                <div className="ds-side-logo"><div className="ds-sld" />SomaSyncAI</div>
+                {[['🎧','Live Session',true],['📋','SOAP Notes'],['👤','Patients'],['🧠','Treatment Memory'],['🔬','ICD-10 Assist'],['📊','Analytics'],['⚙️','Settings']].map(([ico,label,active]) => (
+                  <div key={label} className={`ds-ni${active ? ' on' : ''}`}>
+                    <span className="ds-ni-ico">{ico}</span>{label}
+                  </div>
+                ))}
+              </div>
+
+              {/* Center */}
+              <div className="ds-center">
+                <div className="ds-ct">
+                  <div className="ds-cth">James R. — Health History Review</div>
+                  <div className="ds-rec"><div className="ds-rec-dot" style={{ background: 'var(--grn)' }} />Analyzing</div>
+                </div>
+
+                {/* Step progress */}
+                <div style={{ display: 'flex', gap: 0, marginBottom: 22, border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, overflow: 'hidden' }}>
+                  {['✓ Intake','✓ Calibration','● Analysis','Assessment','Generate','Live Session'].map((s, i) => (
+                    <div key={s} style={{ flex: 1, padding: '9px 10px', background: i < 2 ? 'rgba(0,232,154,0.1)' : i === 2 ? 'rgba(0,232,154,0.14)' : 'transparent', borderRight: i < 5 ? '1px solid rgba(255,255,255,0.07)' : 'none', textAlign: 'center', opacity: i >= 3 ? 0.3 : 1 }}>
+                      <div style={{ fontSize: '.52rem', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', color: i < 3 ? 'var(--grn)' : 'var(--muted)' }}>{s}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="ds-sg">
+                  <div className="ds-sc">
+                    <div className="ds-sl">Chief Complaint</div>
+                    <div className="ds-st">Cervical pain and <b>tension headaches.</b> Onset 3 months ago. Progressive. Desk worker, 10hr/day average.</div>
+                  </div>
+                  <div className="ds-sc">
+                    <div className="ds-sl">Relevant History</div>
+                    <div className="ds-st">No prior surgeries. <b>Hypertension (managed).</b> Previous whiplash 2018. No current medications contraindicated.</div>
+                  </div>
+                  <div className="ds-sc" style={{ background: 'rgba(255,80,80,0.04)', borderColor: 'rgba(255,100,100,0.2)' }}>
+                    <div className="ds-sl" style={{ color: '#ff8080' }}>⚠ Contraindication Check</div>
+                    <div className="ds-st">Hypertension noted — <b>avoid aggressive cervical manipulation.</b> AALIYAH flagged: confirm BP before session.</div>
+                  </div>
+                  <div className="ds-sc" style={{ background: 'rgba(0,232,154,0.04)', borderColor: 'rgba(0,232,154,0.18)' }}>
+                    <div className="ds-sl">AALIYAH Recommends</div>
+                    <div className="ds-st">Perform <b>cervical orthopedic tests:</b> Spurling's, distraction, Valsalva. Check dermatomal patterns before bodywork.</div>
+                  </div>
+                </div>
+
+                <div className="ds-aa">
+                  <div className="ds-aa-av">🎧</div>
+                  <div>
+                    <div className="ds-aa-l">AALIYAH — Contraindication Analysis Complete</div>
+                    <div className="ds-aa-t">Health history processed. <b>1 flag raised</b> (hypertension). No session-blocking contraindications. Cleared to proceed — confirm BP reading, then begin visual assessment.</div>
+                  </div>
+                </div>
+                <div ref={wf2Ref} className="ds-wv" id="wf2" />
+              </div>
+
+              {/* Right panel */}
+              <div className="ds-right">
+                <div className="ds-rt">Today's Patients</div>
+                {[
+                  { name: 'James R.', info: '9:00 AM · Cervical / PT\nSession #7 of 12', active: true },
+                  { name: 'Maria S.', info: '10:30 AM · Lower Back\nSession #3 of 8' },
+                  { name: 'David K.', info: '12:00 PM · Shoulder / Sports\nNew Patient' },
+                ].map(p => (
+                  <div key={p.name} className="ds-pat">
+                    <div className="ds-pn">{p.name}</div>
+                    <div className="ds-pi" style={{ whiteSpace: 'pre-line' }}>{p.info}</div>
+                    {p.active && <div className="ds-ptag">● Active Now</div>}
+                  </div>
+                ))}
+                <div style={{ marginTop: 20, paddingTop: 20, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div className="ds-rt">Session Metrics</div>
+                  {[['Charting Time Saved','47 min'],['Notes Generated','3 / 3'],['ICD-10 Codes','M54.2, M54.5'],['AALIYAH Insights','12 today']].map(([l,v]) => (
+                    <div key={l} className="ds-metric">
+                      <div className="ds-ml">{l}</div>
+                      <div className="ds-mv">{v}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* HOW */}
+      <section id="how" className="sec">
+        <div className="sec-tag rv">Full Session Workflow</div>
+        <h2 className="sec-h rv d1">A SESSION WITH <span className="g">AALIYAH</span></h2>
+        <p className="sec-sub rv d2">AALIYAH.IO is the clinical intelligence powering SomaSyncAI. Here's exactly how a session flows — from intake to documentation.</p>
+        <div className="how-grid" style={{ gridTemplateColumns: 'repeat(3,1fr)', marginTop: 60 }}>
+          {[
+            { n: '01', title: 'Intake Form & Health History', desc: "Client fills out the intake form while you prepare. No rushing — a complete health history is the foundation of everything that follows.", sub: 'Intake & Preparation' },
+            { n: '02', title: 'AALIYAH Wakes Up', desc: "Power on the earpiece, open the SOAP dashboard. AALIYAH shows consent first — always. Then runs a brief voice calibration so she recognises your voice precisely in any environment.", sub: 'Calibration & Consent' },
+            { n: '03', title: 'AALIYAH Analyzes for Contraindications', desc: "Reflect the client's intake history out loud. AALIYAH starts clinical analysis — checking contraindications first, flagging conditions, suggesting orthopedic tests.", sub: 'Clinical Analysis' },
+            { n: '04', title: 'Visual Assessment — Circle the Client', desc: "Analyze gait, posture, and alignment while circling the client. Call out what you see. AALIYAH captures every observation, merging Western anatomy with TCM principles in real time.", sub: 'Visual & Postural Assessment', border: true },
+            { n: '05', title: 'Generate Documentation', desc: "Before bodywork begins, hit Generate. AALIYAH produces a full treatment plan and SOAP note draft from everything captured. You review and verify — AI assists, the clinician decides.", sub: null, generateBtn: true, border: true },
+            { n: '06', title: 'Document Live During Bodywork', desc: "Session begins. Start live voice documentation while treating. Tissue response, adjustments, outcomes — all logged in real time by AALIYAH. Walk out with complete notes. Every session. No exceptions.", sub: 'Live Treatment Session', border: true },
+          ].map(s => (
+            <div key={s.n} className="how-card rv" style={s.border ? { borderTop: '1px solid rgba(255,255,255,0.06)' } : {}}>
+              <div className="how-n">{s.n}</div>
+              <div className="how-t">{s.title}</div>
+              <div className="how-d">{s.desc}</div>
+              {s.sub && <div style={{ marginTop: 16, fontSize: '.65rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--grn)' }}>{s.sub}</div>}
+              {s.generateBtn && (
+                <div style={{ marginTop: 16, display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(0,232,154,0.1)', border: '1px solid rgba(0,232,154,0.25)', color: 'var(--grn)', fontSize: '.62rem', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', padding: '5px 14px', borderRadius: 100 }}>
+                  ⚡ Generate Documentation
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ROADMAP */}
+      <section id="roadmap" className="sec">
+        <div className="sec-tag rv">Product Roadmap</div>
+        <h2 className="sec-h rv d1">FOUR PHASES.<br /><span className="out">ONE</span> VISION.</h2>
+        <div className="road-grid">
+          {[
+            { phase: 'Phase 01 — Q1 2026', title: 'Clinical Documentation MVP', live: true, items: ['Live in-ear AI guidance','Automatic SOAP notes','Voice charting','Treatment memory','ICD-10 code assist','Dashboard & chat'] },
+            { phase: 'Phase 02 — Q3 2026', title: 'Intelligence Expansion', date: 'Coming Q3 2026', items: ['SomaSphere 3D visualizer','SyncLearn in-ear education','EHR integrations','Mobile app (iOS)','Practice dashboard','Billing code assist'] },
+            { phase: 'Phase 03 — Q4 2026', title: 'Wearable + Population Layer', date: 'Coming Q4 2026', items: ['Wearable device integration','Real-time biometrics','Population analytics','Outcome tracking','Referral insights','Pattern reporting'] },
+            { phase: 'Phase 04 — 2027', title: 'Predictive Care OS', date: 'Coming 2027', items: ['Predictive care AI','Re-injury risk flags','Personalised care paths','Multi-location enterprise','API for EHR vendors','International expansion'] },
+          ].map((r, i) => (
+            <div key={r.phase} className={`road-card rv d${i + 1}`}>
+              {r.live && <div className="road-live">Live Now</div>}
+              <div className="road-phase">{r.phase}</div>
+              <div className="road-t">{r.title}</div>
+              <ul className="road-items">
+                {r.items.map(item => <li key={item}>{item}</li>)}
+              </ul>
+              {r.date && <div className="road-date">{r.date}</div>}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* INVESTORS */}
+      <section id="investors" className="sec">
+        <div className="sec-tag rv">For Investors</div>
+        <h2 className="sec-h rv d1">THE <span className="g">OPPORTUNITY</span></h2>
+        <p className="sec-sub rv d2">Building the AI OS for a $28B clinical documentation market with no purpose-built real-time solution.</p>
+        <div className="inv-grid">
+          <div className="inv-stats">
+            {[['$28B','Global TAM'],['1.2M','US Practitioners'],['87%','Charting Reduction'],['$2.5M','Seed Round']].map(([n,l],i) => (
+              <div key={l} className={`inv-stat rv d${i+1}`}>
+                <div className="inv-n">{n}</div>
+                <div className="inv-l">{l}</div>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div className="why-list">
+              {[
+                ['Real-Time vs Post-Session','Every competitor transcribes after the session. We operate live during treatment.'],
+                ['Discipline-Specific Intelligence','Built for manual therapy from the ground up — not generic medical transcription.'],
+                ['Longitudinal Treatment Memory','Session-to-session intelligence that compounds. Deep switching costs that grow with usage.'],
+                ['The Full OS Vision','SomaSphere, SyncLearn, Wearables, Predictive Care — a moat competitors cannot replicate.'],
+              ].map(([title,desc],i) => (
+                <div key={title} className={`why-item rv d${i+1}`}>
+                  <div className="why-n">0{i+1}</div>
+                  <div>
+                    <div className="why-t">{title}</div>
+                    <div className="why-d">{desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <a className="deck-link rv" href="https://somasyncai.com/investor-pitch">View Full Pitch Deck →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section id="cta">
+        <div className="sec-tag rv" style={{ justifyContent: 'center' }}>Beta Access — Limited Spots</div>
+        <h2 className="cta-h rv d1">JOIN THE<br /><span className="out">GOLD</span><br /><span className="g">STANDARD</span></h2>
+        <p className="cta-sub rv d2">Lifetime free access for every practitioner who completes all three steps below.</p>
+        <div className="cta-btns rv d3">
+          <a className="cta-b1" href="https://somasyncai.com/auth">Create Free Account →</a>
+          <a className="cta-b2" href="https://somasyncai.com/dashboard/chat">Open Dashboard</a>
+        </div>
+        <div className="cta-note rv d4">
+          No credit card. No commitment. California practitioners prioritised in first cohort.<br />
+          Early adopters grandfathered at beta pricing when paid tiers launch.
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer>
+        <div className="foot-top">
+          <div>
+            <div className="foot-brand" style={{ marginBottom: 16 }}>
+              <img src="./ss.png" alt="SomaSyncAI" style={{ height: 44, width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 10px rgba(59,158,255,0.35))' }} />
+            </div>
+            <div className="foot-tag">The gold standard AI operating system for manual therapists. Live in-ear guidance. Zero documentation debt.</div>
+          </div>
+          <div>
+            <div className="foot-col-h">Product</div>
+            <ul className="foot-links">
+              <li><a href="#features">Features</a></li>
+              <li><a href="#roadmap">Roadmap</a></li>
+              <li><a href="#how">How It Works</a></li>
+              <li><a href="#cta">Beta Access</a></li>
+            </ul>
+          </div>
+          <div>
+            <div className="foot-col-h">Disciplines</div>
+            <ul className="foot-links">
+              <li><a href="#">Massage Therapy</a></li>
+              <li><a href="#">Physical Therapy</a></li>
+              <li><a href="#">Chiropractic</a></li>
+              <li><a href="#">Sports Medicine</a></li>
+            </ul>
+          </div>
+          <div>
+            <div className="foot-col-h">Company</div>
+            <ul className="foot-links">
+              <li><a href="#">Join the Team</a></li>
+              <li><a href="https://somasyncai.com/investor-pitch">Pitch Deck</a></li>
+              <li><a href="https://somasyncai.com/privacy-policy">Privacy</a></li>
+              <li><a href="mailto:hello@somasyncai.com">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="foot-bottom">
+          <div className="foot-copy">© 2026 SomaSyncAI. Built for the gold standard practitioner.</div>
+          <div className="foot-aa"><div className="aa-dot" />Powered by AALIYAH.IO</div>
+        </div>
+      </footer>
+
+    </div>
   )
 }
 
-const CSS = "#soma-root, #soma-root *::before, #soma-root *::after {box-sizing:border-box;margin:0;padding:0}\n#soma-root {--bg:#080808;--ink:#f0ede8;--muted:rgba(240,237,232,0.45);--dim:rgba(240,237,232,0.18);--grn:#00e89a;--blue:#3b9eff;--blue2:#1a7ee0;--blue-glow:rgba(59,158,255,0.25);--r:clamp(24px,5vw,80px)}\n#soma-root {scroll-behavior:smooth}\n#soma-root {background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none}\n#soma-root #cd, #soma-root #cr {position:fixed;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}\n#soma-root #cd {width:8px;height:8px;background:var(--grn)}\n#soma-root #cr {width:34px;height:34px;border:1px solid rgba(0,232,154,0.5);transition:width .2s,height .2s,transform .13s}\n#soma-root body.h #cr {width:52px;height:52px;border-color:var(--grn)}\n#soma-root nav {position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:24px var(--r);transition:background .4s,box-shadow .4s}\n#soma-root nav.stuck {background:rgba(8,8,8,0.9);backdrop-filter:blur(20px);box-shadow:0 1px 0 rgba(255,255,255,0.06)}\n#soma-root .n-logo {font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px}\n#soma-root .n-logo-dot {width:8px;height:8px;background:var(--grn);border-radius:50%;box-shadow:0 0 10px var(--grn)}\n#soma-root .n-pill {background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:4px;display:flex}\n#soma-root .n-pill a {font-size:.74rem;color:var(--muted);text-decoration:none;padding:8px 18px;border-radius:100px;transition:background .2s,color .2s}\n#soma-root .n-pill a:hover {background:rgba(255,255,255,0.08);color:var(--ink)}\n#soma-root .n-cta {font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;background:var(--blue);color:#fff;padding:11px 22px;border-radius:100px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s}\n#soma-root .n-cta:hover {background:var(--blue2);transform:scale(1.04);box-shadow:0 0 24px var(--blue-glow)}\n#soma-root #hero {min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:130px var(--r) 0;position:relative;overflow:hidden}\n#soma-root canvas {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}\n#soma-root .hero-inner {position:relative;z-index:2}\n#soma-root .hero-top-stats {position:absolute;top:130px;right:var(--r);display:flex;flex-direction:column;gap:20px;z-index:2;text-align:right;opacity:0;animation:fadeIn 1s 1s forwards}\n#soma-root .ts-n {font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;letter-spacing:-.03em;line-height:1}\n#soma-root .ts-n span {color:var(--grn)}\n#soma-root .ts-l {font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px}\n#soma-root .hero-badge {display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(59,158,255,0.35);background:rgba(59,158,255,0.07);color:var(--blue);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;border-radius:100px;margin-bottom:32px;opacity:0;animation:fadeUp .7s .3s forwards}\n#soma-root .hero-badge-dot {width:6px;height:6px;background:var(--grn);border-radius:50%;animation:pulse 2s infinite;box-shadow:0 0 6px var(--grn)}\n@keyframes pulse {0%,100%{opacity:1}50%{opacity:.3}}\n#soma-root .hero-h1 {font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(5rem,11vw,12rem);line-height:.85;letter-spacing:-.05em;opacity:0;animation:fadeUp 1s .45s cubic-bezier(.22,1,.36,1) forwards}\n#soma-root .hero-h1 .out {-webkit-text-stroke:clamp(1px,.15vw,2px) rgba(240,237,232,0.3);color:transparent}\n#soma-root .dash-wrap {position:relative;z-index:2;margin-top:52px;opacity:0;animation:fadeUp 1.1s .9s cubic-bezier(.22,1,.36,1) forwards}\n#soma-root .dash-fade {position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to top,var(--bg),transparent);z-index:3;pointer-events:none}\n#soma-root .dash-screen {background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-bottom:none;border-radius:16px 16px 0 0;overflow:hidden}\n#soma-root .dash-bar {background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.06);padding:14px 20px;display:flex;align-items:center;gap:10px}\n#soma-root .dash-dots {display:flex;gap:6px}\n#soma-root .dash-dot {width:10px;height:10px;border-radius:50%}\n#soma-root .dd1 {background:#ff5f57}\n#soma-root .dd2 {background:#ffbd2e}\n#soma-root .dd3 {background:#28c840}\n#soma-root .dash-url {flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 14px;font-size:.72rem;color:var(--muted)}\n#soma-root .dash-body {display:grid;grid-template-columns:220px 1fr;min-height:400px}\n#soma-root .dash-sidebar {border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;display:flex;flex-direction:column;gap:4px}\n#soma-root .dash-logo {font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;color:var(--ink);margin-bottom:16px;padding:0 8px;display:flex;align-items:center;gap:7px}\n#soma-root .dash-logo-dot {width:7px;height:7px;background:var(--grn);border-radius:50%;box-shadow:0 0 8px var(--grn)}\n#soma-root .nav-item {padding:9px 12px;border-radius:8px;font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:10px;cursor:pointer}\n#soma-root .nav-item.on {background:rgba(0,232,154,0.08);color:var(--ink);border:1px solid rgba(0,232,154,0.15)}\n#soma-root .ni-dot {width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15);flex-shrink:0}\n#soma-root .nav-item.on .ni-dot {background:var(--grn);box-shadow:0 0 6px var(--grn)}\n#soma-root .dash-main {padding:28px 32px}\n#soma-root .dash-header {display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}\n#soma-root .dash-title {font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;letter-spacing:-.01em}\n#soma-root .dash-live {background:rgba(0,232,154,0.1);border:1px solid rgba(0,232,154,0.25);color:var(--grn);font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;display:flex;align-items:center;gap:6px}\n#soma-root .dlb-dot {width:5px;height:5px;background:var(--grn);border-radius:50%;animation:pulse 1.5s infinite}\n#soma-root .soap-grid {display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}\n#soma-root .soap-card {background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px}\n#soma-root .soap-l {font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px}\n#soma-root .soap-t {font-size:.75rem;line-height:1.6;color:var(--muted)}\n#soma-root .soap-t b {color:var(--ink);font-weight:500}\n#soma-root .aa-box {background:linear-gradient(135deg,rgba(0,232,154,0.07),rgba(0,232,154,0.02));border:1px solid rgba(0,232,154,0.18);border-radius:10px;padding:16px 20px;display:flex;gap:14px}\n#soma-root .aa-av {width:32px;height:32px;background:linear-gradient(135deg,var(--grn),#00b876);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}\n#soma-root .aa-l {font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn);margin-bottom:5px}\n#soma-root .aa-t {font-size:.76rem;line-height:1.55;color:var(--muted)}\n#soma-root .aa-t b {color:var(--ink);font-weight:500}\n#soma-root .waveform {margin-top:18px;height:40px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:8px;overflow:hidden;display:flex;align-items:center;padding:0 16px;gap:2px}\n#soma-root .wbar {border-radius:2px;background:var(--grn);opacity:.55;flex-shrink:0;width:3px;animation:wv 1.2s ease-in-out infinite alternate}\n@keyframes wv {0%{height:3px}100%{height:28px}}\n#soma-root .mq-wrap {overflow:hidden;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:14px 0;background:rgba(255,255,255,0.015)}\n#soma-root .mq-track {display:flex;width:max-content;animation:march 30s linear infinite}\n#soma-root .mq-item {white-space:nowrap;padding:0 28px;font-family:'Syne',sans-serif;font-size:.67rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(240,237,232,0.22)}\n#soma-root .mq-item .s {color:var(--grn)}\n@keyframes march {from{transform:translateX(0)}to{transform:translateX(-50%)}}\n#soma-root .sec {padding:clamp(80px,10vw,140px) var(--r)}\n#soma-root .sec-tag {display:flex;align-items:center;gap:12px;font-family:'Syne',sans-serif;font-size:.67rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:20px}\n#soma-root .sec-tag::before {content:'';display:block;width:24px;height:1.5px;background:var(--blue);box-shadow:0 0 8px var(--blue-glow)}\n#soma-root .sec-h {font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.6rem,5.5vw,5.5rem);line-height:.88;letter-spacing:-.045em}\n#soma-root .sec-h .out {-webkit-text-stroke:1.5px rgba(240,237,232,0.22);color:transparent}\n#soma-root .sec-h .g {color:var(--blue)}\n#soma-root .sec-sub {font-size:1rem;line-height:1.8;color:var(--muted);max-width:460px;margin-top:20px}\n#soma-root .rv {opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}\n#soma-root .rv.in {opacity:1;transform:none}\n#soma-root .rv.d1 {transition-delay:.1s}\n#soma-root .rv.d2 {transition-delay:.2s}\n#soma-root .rv.d3 {transition-delay:.3s}\n#soma-root .rv.d4 {transition-delay:.4s}\n#soma-root #problem {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .prob-row {display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px}\n#soma-root .prob-card {background:var(--bg);padding:48px 36px;transition:background .3s}\n#soma-root .prob-card:hover {background:rgba(255,255,255,0.025)}\n#soma-root .prob-n {font-family:'Syne',sans-serif;font-weight:800;font-size:4.5rem;color:var(--blue);letter-spacing:-.04em;line-height:1;text-shadow:0 0 60px var(--blue-glow);margin-bottom:12px}\n#soma-root .prob-l {font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}\n#soma-root .prob-d {font-size:.92rem;line-height:1.7;color:rgba(240,237,232,0.5)}\n#soma-root .prob-full {grid-column:1/-1;background:rgba(0,232,154,0.05);border-top:1px solid rgba(0,232,154,0.12);padding:36px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}\n#soma-root .prob-full-t {font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.2rem,2.5vw,2rem);letter-spacing:-.03em}\n#soma-root .ptags {display:flex;gap:10px;flex-wrap:wrap}\n#soma-root .ptag {background:rgba(0,232,154,0.08);border:1px solid rgba(0,232,154,0.18);color:var(--grn);font-size:.67rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:100px}\n#soma-root #features {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .feat-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px}\n#soma-root .feat-card {background:var(--bg);padding:44px 36px;position:relative;overflow:hidden;transition:background .25s}\n#soma-root .feat-card::before {content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,232,154,0.06),transparent);opacity:0;transition:opacity .3s}\n#soma-root .feat-card:hover {background:rgba(255,255,255,0.02)}\n#soma-root .feat-card:hover::before {opacity:1}\n#soma-root .feat-row2 {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .feat-ico {font-size:1.5rem;margin-bottom:20px}\n#soma-root .feat-title {font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;letter-spacing:-.01em;margin-bottom:10px}\n#soma-root .feat-desc {font-size:.86rem;line-height:1.7;color:var(--muted)}\n#soma-root .feat-live {display:inline-flex;align-items:center;gap:6px;background:rgba(0,232,154,0.08);border:1px solid rgba(0,232,154,0.22);color:var(--grn);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;margin-top:16px}\n#soma-root .feat-live-dot {width:5px;height:5px;background:var(--grn);border-radius:50%;animation:pulse 2s infinite}\n#soma-root #ds-sec {border-top:1px solid rgba(255,255,255,0.06);padding:clamp(80px,10vw,140px) var(--r);overflow:hidden}\n#soma-root .ds-hd {display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px;flex-wrap:wrap;gap:24px}\n#soma-root .ds-wrap {position:relative}\n#soma-root .ds-glow {position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70%;height:60%;background:radial-gradient(ellipse,rgba(0,232,154,0.07) 0%,transparent 70%);pointer-events:none}\n#soma-root .ds-screen {position:relative;z-index:1;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.09);border-radius:20px;overflow:hidden}\n#soma-root .ds-bar2 {background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.06);padding:16px 24px;display:flex;align-items:center;gap:10px}\n#soma-root .ds-inner {display:grid;grid-template-columns:240px 1fr 280px;min-height:520px}\n#soma-root .ds-side {border-right:1px solid rgba(255,255,255,0.05);padding:28px 20px}\n#soma-root .ds-side-logo {font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;margin-bottom:28px;display:flex;align-items:center;gap:8px;color:var(--ink)}\n#soma-root .ds-sld {width:8px;height:8px;background:var(--grn);border-radius:50%;box-shadow:0 0 10px var(--grn)}\n#soma-root .ds-ni {display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;font-size:.8rem;color:var(--muted);margin-bottom:2px}\n#soma-root .ds-ni.on {background:rgba(0,232,154,0.08);color:var(--ink);border:1px solid rgba(0,232,154,0.14)}\n#soma-root .ds-ni-ico {font-size:.9rem;width:18px;text-align:center}\n#soma-root .ds-center {padding:32px 36px}\n#soma-root .ds-ct {display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}\n#soma-root .ds-cth {font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:-.01em}\n#soma-root .ds-rec {background:rgba(0,232,154,0.08);border:1px solid rgba(0,232,154,0.22);color:var(--grn);font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:100px;display:flex;align-items:center;gap:7px}\n#soma-root .ds-rec-dot {width:6px;height:6px;background:#ff4040;border-radius:50%;animation:pulse 1s infinite}\n#soma-root .ds-sg {display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}\n#soma-root .ds-sc {background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:18px}\n#soma-root .ds-sl {font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px}\n#soma-root .ds-st {font-size:.78rem;line-height:1.6;color:var(--muted)}\n#soma-root .ds-st b {color:var(--ink);font-weight:500}\n#soma-root .ds-aa {background:linear-gradient(135deg,rgba(0,232,154,0.07),rgba(0,232,154,0.02));border:1px solid rgba(0,232,154,0.18);border-radius:12px;padding:18px 22px;display:flex;gap:14px}\n#soma-root .ds-aa-av {width:36px;height:36px;background:linear-gradient(135deg,var(--grn),#00b876);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}\n#soma-root .ds-aa-l {font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn);margin-bottom:5px}\n#soma-root .ds-aa-t {font-size:.78rem;line-height:1.55;color:var(--muted)}\n#soma-root .ds-aa-t b {color:var(--ink);font-weight:500}\n#soma-root .ds-wv {margin-top:18px;height:44px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;overflow:hidden;display:flex;align-items:center;padding:0 18px;gap:3px}\n#soma-root .ds-right {border-left:1px solid rgba(255,255,255,0.05);padding:28px 24px}\n#soma-root .ds-rt {font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:-.01em;margin-bottom:18px;color:var(--muted)}\n#soma-root .ds-pat {background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px;margin-bottom:10px}\n#soma-root .ds-pn {font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;margin-bottom:4px}\n#soma-root .ds-pi {font-size:.7rem;color:var(--muted);line-height:1.5}\n#soma-root .ds-ptag {display:inline-block;background:rgba(0,232,154,0.08);color:var(--grn);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px;margin-top:8px}\n#soma-root .ds-metric {display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}\n#soma-root .ds-metric:last-child {border-bottom:none}\n#soma-root .ds-ml {font-size:.72rem;color:var(--muted)}\n#soma-root .ds-mv {font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;color:var(--grn)}\n#soma-root #how {background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .how-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px}\n#soma-root .how-card {background:rgba(8,8,8,1);padding:44px 32px;transition:background .25s}\n#soma-root .how-card:hover {background:rgba(255,255,255,0.02)}\n#soma-root .how-n {font-family:'Syne',sans-serif;font-weight:800;font-size:4rem;color:rgba(255,255,255,0.04);line-height:1;letter-spacing:-.05em;margin-bottom:20px}\n#soma-root .how-t {font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;margin-bottom:12px}\n#soma-root .how-d {font-size:.86rem;line-height:1.7;color:var(--muted)}\n#soma-root #roadmap {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .road-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px}\n#soma-root .road-card {background:var(--bg);padding:44px 32px;position:relative;transition:background .3s}\n#soma-root .road-card:hover {background:rgba(255,255,255,0.02)}\n#soma-root .road-phase {font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}\n#soma-root .road-t {font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;letter-spacing:-.01em;margin-bottom:16px;line-height:1.2}\n#soma-root .road-live {position:absolute;top:18px;right:18px;background:rgba(59,158,255,0.1);border:1px solid rgba(59,158,255,0.3);color:var(--blue);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:100px}\n#soma-root .road-items {list-style:none;display:flex;flex-direction:column;gap:8px}\n#soma-root .road-items li {font-size:.8rem;line-height:1.5;color:rgba(240,237,232,0.4);padding-left:14px;position:relative}\n#soma-root .road-items li::before {content:'\u2192';position:absolute;left:0;color:var(--grn);font-size:.68rem}\n#soma-root .road-date {font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,232,0.16);margin-top:20px}\n#soma-root #investors {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .inv-grid {display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:60px;align-items:start}\n#soma-root .inv-stats {display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06)}\n#soma-root .inv-stat {background:var(--bg);padding:40px 32px;transition:background .25s}\n#soma-root .inv-stat:hover {background:rgba(255,255,255,0.02)}\n#soma-root .inv-n {font-family:'Syne',sans-serif;font-weight:800;font-size:3rem;letter-spacing:-.04em;color:var(--blue);text-shadow:0 0 40px var(--blue-glow);line-height:1}\n#soma-root .inv-l {font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:8px}\n#soma-root .why-list {display:flex;flex-direction:column}\n#soma-root .why-item {display:flex;gap:20px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,0.06)}\n#soma-root .why-item:first-child {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .why-n {font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;color:var(--blue);flex-shrink:0;width:28px}\n#soma-root .why-t {font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;margin-bottom:5px}\n#soma-root .why-d {font-size:.84rem;line-height:1.65;color:var(--muted)}\n#soma-root .deck-link {display:inline-flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;background:var(--blue);color:#fff;padding:15px 32px;border-radius:100px;text-decoration:none;margin-top:36px;transition:background .2s,transform .15s,box-shadow .2s}\n#soma-root .deck-link:hover {background:var(--blue2);transform:translateY(-3px);box-shadow:0 12px 40px var(--blue-glow)}\n#soma-root #cta {border-top:1px solid rgba(255,255,255,0.06);text-align:center;padding:clamp(80px,10vw,140px) var(--r)}\n#soma-root .cta-h {font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3.5rem,8vw,8.5rem);line-height:.88;letter-spacing:-.05em;margin:28px 0}\n#soma-root .cta-h .out {-webkit-text-stroke:clamp(1px,.15vw,2px) rgba(240,237,232,0.22);color:transparent}\n#soma-root .cta-h .g {color:var(--blue);text-shadow:0 0 100px var(--blue-glow)}\n#soma-root .cta-sub {font-size:1rem;line-height:1.8;color:var(--muted);max-width:440px;margin:0 auto 44px}\n#soma-root .cta-btns {display:flex;gap:14px;justify-content:center;flex-wrap:wrap}\n#soma-root .cta-b1 {font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;background:var(--blue);color:#fff;padding:17px 38px;border-radius:100px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s}\n#soma-root .cta-b1:hover {background:var(--blue2);transform:translateY(-3px);box-shadow:0 16px 48px var(--blue-glow)}\n#soma-root .cta-b2 {font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;background:transparent;color:var(--ink);padding:16px 34px;border-radius:100px;border:1px solid rgba(255,255,255,0.14);text-decoration:none;transition:border-color .2s,transform .15s}\n#soma-root .cta-b2:hover {border-color:rgba(255,255,255,0.4);transform:translateY(-3px)}\n#soma-root .cta-note {font-size:.76rem;color:var(--dim);margin-top:20px}\n#soma-root footer {background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.06);padding:72px var(--r) 40px}\n#soma-root .foot-top {display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:56px}\n#soma-root .foot-brand {font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;margin-bottom:14px;display:flex;align-items:center;gap:9px}\n#soma-root .foot-brand-dot {display:none}\n#soma-root .foot-tag {font-size:.86rem;line-height:1.75;color:var(--muted);max-width:260px}\n#soma-root .foot-col-h {font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:18px}\n#soma-root .foot-links {list-style:none;display:flex;flex-direction:column;gap:10px}\n#soma-root .foot-links a {font-size:.84rem;color:var(--muted);text-decoration:none;transition:color .2s}\n#soma-root .foot-links a:hover {color:var(--ink)}\n#soma-root .foot-bottom {display:flex;justify-content:space-between;align-items:center;padding-top:28px;border-top:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;gap:12px}\n#soma-root .foot-copy {font-size:.76rem;color:var(--dim)}\n#soma-root .foot-aa {display:flex;align-items:center;gap:8px;font-size:.76rem;color:var(--dim)}\n#soma-root .aa-dot {width:6px;height:6px;background:var(--grn);border-radius:50%;box-shadow:0 0 6px var(--grn)}\n@keyframes fadeIn {from{opacity:0}to{opacity:1}}\n@keyframes fadeUp {from{opacity:0;transform:translateY(44px)}to{opacity:1;transform:translateY(0)}}\n\n"
+// ─────────────────────────────────────────────
+//  CSS — extracted from original Landing.jsx
+//  Scoped to #soma-root to avoid global leakage
+// ─────────────────────────────────────────────
+const SOMA_CSS = `
+/* ── Reset & variables ── */
+#soma-root, #soma-root *,
+#soma-root *::before,
+#soma-root *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+#soma-root {
+  --bg: #080808;
+  --ink: #f0ede8;
+  --muted: rgba(240,237,232,0.45);
+  --dim: rgba(240,237,232,0.18);
+  --grn: #00e89a;
+  --blue: #3b9eff;
+  --blue2: #1a7ee0;
+  --blue-glow: rgba(59,158,255,0.25);
+  --r: clamp(24px,5vw,80px);
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Manrope', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
 
-const HTML = "<div id=\"cd\"></div><div id=\"cr\"></div>\n<div id=\"cd\"></div><div id=\"cr\"></div>\n<nav id=\"nav\">\n  <a class=\"n-logo\" href=\"#\" style=\"gap:0\"><img src=\"./ss.png\" alt=\"SomaSyncAI\" style=\"height:38px;width:auto;object-fit:contain;filter:drop-shadow(0 0 8px rgba(59,158,255,0.4))\"/></a>\n  <div class=\"n-pill\"><a href=\"#features\">Features</a><a href=\"#roadmap\">Roadmap</a><a href=\"#how\">Workflow</a><a href=\"#investors\">Investors</a></div>\n  <a class=\"n-cta\" href=\"https://somasyncai.com/auth\">Join Beta \u2014 Free</a>\n</nav>\n<section id=\"hero\">\n  <canvas id=\"c\"></canvas>\n  <div class=\"hero-top-stats\">\n    <div><div class=\"ts-n\"><span>87</span>%</div><div class=\"ts-l\">Less charting</div></div>\n    <div><div class=\"ts-n\"><span>100</span>%</div><div class=\"ts-l\">Hands-free</div></div>\n  </div>\n  <div class=\"hero-inner\">\n    <div class=\"hero-badge\"><div class=\"hero-badge-dot\"></div>Now in Beta \u2014 Limited Access</div>\n    <h1 class=\"hero-h1\">THE <span class=\"out\">GOLD</span><br><span style=\"color:var(--blue);text-shadow:0 0 80px var(--blue-glow)\">STANDARD</span><br>CLINICAL <span class=\"out\">OS</span></h1>\n    <div style=\"margin-top:24px;font-family:'Syne',sans-serif;font-size:clamp(.9rem,1.5vw,1.2rem);font-weight:700;letter-spacing:.04em;color:var(--muted);opacity:0;animation:fadeUp .8s .7s forwards\">The Intelligence of You.</div>\n  </div>\n  <div class=\"dash-wrap\">\n    <div class=\"dash-fade\"></div>\n    <div class=\"dash-screen\">\n      <div class=\"dash-bar\"><div class=\"dash-dots\"><div class=\"dash-dot dd1\"></div><div class=\"dash-dot dd2\"></div><div class=\"dash-dot dd3\"></div></div><div class=\"dash-url\">app.somasyncai.com/session/live</div></div>\n      <div class=\"dash-body\">\n        <div class=\"dash-sidebar\">\n          <div class=\"dash-logo\"><div class=\"dash-logo-dot\"></div>SomaSyncAI</div>\n          <div class=\"nav-item on\"><div class=\"ni-dot\"></div>Live Session</div>\n          <div class=\"nav-item\"><div class=\"ni-dot\"></div>SOAP Notes</div>\n          <div class=\"nav-item\"><div class=\"ni-dot\"></div>Patients</div>\n          <div class=\"nav-item\"><div class=\"ni-dot\"></div>Treatment Memory</div>\n          <div class=\"nav-item\"><div class=\"ni-dot\"></div>ICD-10 Assist</div>\n          <div class=\"nav-item\"><div class=\"ni-dot\"></div>Analytics</div>\n          <div class=\"nav-item\"><div class=\"ni-dot\"></div>Settings</div>\n        </div>\n        <div class=\"dash-main\">\n          <div class=\"dash-header\"><div class=\"dash-title\">New Session \u2014 Sarah M. \u00b7 PT Visit #4</div><div class=\"dash-live\"><div class=\"dlb-dot\"></div>AALIYAH Ready</div></div>\n          <!-- Session progress steps -->\n          <div style=\"display:flex;gap:0;margin-bottom:20px;border:1px solid rgba(255,255,255,0.07);border-radius:10px;overflow:hidden\">\n            <div style=\"flex:1;padding:10px 12px;background:rgba(0,232,154,0.12);border-right:1px solid rgba(255,255,255,0.07);text-align:center\">\n              <div style=\"font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn)\">\u2713 Intake</div>\n            </div>\n            <div style=\"flex:1;padding:10px 12px;background:rgba(0,232,154,0.08);border-right:1px solid rgba(255,255,255,0.07);text-align:center\">\n              <div style=\"font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn)\">\u25cf Calibration</div>\n            </div>\n            <div style=\"flex:1;padding:10px 12px;border-right:1px solid rgba(255,255,255,0.07);text-align:center;opacity:.35\">\n              <div style=\"font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)\">Analysis</div>\n            </div>\n            <div style=\"flex:1;padding:10px 12px;border-right:1px solid rgba(255,255,255,0.07);text-align:center;opacity:.35\">\n              <div style=\"font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)\">Assessment</div>\n            </div>\n            <div style=\"flex:1;padding:10px 12px;border-right:1px solid rgba(255,255,255,0.07);text-align:center;opacity:.35\">\n              <div style=\"font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)\">Generate</div>\n            </div>\n            <div style=\"flex:1;padding:10px 12px;text-align:center;opacity:.35\">\n              <div style=\"font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)\">Live Session</div>\n            </div>\n          </div>\n          <!-- Calibration + Consent panel -->\n          <div class=\"aa-box\" style=\"margin-bottom:16px\">\n            <div class=\"aa-av\">\ud83d\udd12</div>\n            <div style=\"flex:1\">\n              <div class=\"aa-l\">Consent \u2014 Required Before Calibration</div>\n              <div class=\"aa-t\" style=\"margin-bottom:10px\">AALIYAH will listen and process voice during this session. Client consent is required and logged.</div>\n              <div style=\"display:flex;gap:8px\">\n                <div style=\"background:var(--grn);color:#080808;font-size:.65rem;font-weight:700;padding:6px 14px;border-radius:100px;letter-spacing:.06em\">\u2713 Consent Given</div>\n                <div style=\"background:rgba(255,255,255,0.06);color:var(--muted);font-size:.65rem;font-weight:700;padding:6px 14px;border-radius:100px;letter-spacing:.06em\">View Policy</div>\n              </div>\n            </div>\n          </div>\n          <div class=\"aa-box\">\n            <div class=\"aa-av\">\ud83c\udfa7</div>\n            <div style=\"flex:1\">\n              <div class=\"aa-l\">AALIYAH \u2014 Voice Calibration</div>\n              <div class=\"aa-t\" style=\"margin-bottom:10px\">Say the following phrase clearly: <b>\"AALIYAH, begin session for Sarah Mitchell.\"</b> Calibrating to your voice in current environment.</div>\n              <div class=\"waveform\" id=\"wf1\" style=\"margin-top:0;height:32px;border:none;background:transparent;padding:0\"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n<div class=\"mq-wrap\"><div class=\"mq-track\"><span class=\"mq-item\">Live In-Ear AI <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Automatic SOAP Notes <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Voice Charting <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Treatment Memory <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Gold Standard Documentation <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Physical Therapy <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Chiropractic <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Massage Therapy <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Sports Medicine <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">ICD-10 Assist <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">AALIYAH.IO Powered <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Live In-Ear AI <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Automatic SOAP Notes <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Voice Charting <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Treatment Memory <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Gold Standard Documentation <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Physical Therapy <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Chiropractic <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Massage Therapy <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">Sports Medicine <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">ICD-10 Assist <span class=\"s\">\u25c6</span></span><span class=\"mq-item\">AALIYAH.IO Powered <span class=\"s\">\u25c6</span></span></div></div>\n<section id=\"problem\" class=\"sec\">\n  <div class=\"sec-tag rv\">The Problem</div>\n  <h2 class=\"sec-h rv d1\">YOU DIDN'T<br>TRAIN TO <span class=\"out\">CHART.</span></h2>\n  <p class=\"sec-sub rv d2\">Manual therapists spend nearly as much time documenting as treating. That ends now.</p>\n  <div class=\"prob-row\">\n    <div class=\"prob-card rv d1\"><div class=\"prob-n\">3H</div><div class=\"prob-l\">Daily Documentation Burden</div><div class=\"prob-d\">Average practitioner spends 3+ hours per day on notes, charting, and admin tasks.</div></div>\n    <div class=\"prob-card rv d2\"><div class=\"prob-n\">40%</div><div class=\"prob-l\">Of Clinical Time Lost</div><div class=\"prob-d\">Nearly half your working day goes to paperwork instead of patient care.</div></div>\n    <div class=\"prob-card rv d3\"><div class=\"prob-n\">#1</div><div class=\"prob-l\">Cause of Burnout</div><div class=\"prob-d\">Documentation overload is the leading driver of burnout across every manual therapy discipline.</div></div>\n    <div class=\"prob-full rv\"><div class=\"prob-full-t\">SOMASYNCAI SOLVES THIS</div><div class=\"ptags\"><span class=\"ptag\">\ud83c\udfa7 Live In-Ear Guidance</span><span class=\"ptag\">\ud83c\udfa4 Voice \u2192 SOAP Note</span><span class=\"ptag\">\ud83e\udde0 Treatment Memory</span></div></div>\n  </div>\n</section>\n<section id=\"features\" class=\"sec\">\n  <div class=\"sec-tag rv\">Core Features \u2014 Live Now</div>\n  <h2 class=\"sec-h rv d1\">BUILT FOR THE<br><span class=\"out\">TREATMENT</span> TABLE</h2>\n  <div class=\"feat-grid\">\n    <div class=\"feat-card rv d1\"><div class=\"feat-ico\">\ud83c\udfa7</div><div class=\"feat-title\">Live In-Ear AI Guidance</div><div class=\"feat-desc\">Real-time suggestions whispered during assessments. Like having a brilliant clinical colleague on every case.</div><div class=\"feat-live\"><div class=\"feat-live-dot\"></div>Live Now</div></div>\n    <div class=\"feat-card rv d2\"><div class=\"feat-ico\">\ud83d\udccb</div><div class=\"feat-title\">Automatic SOAP Notes</div><div class=\"feat-desc\">Speak naturally. SomaSyncAI structures everything instantly into compliant, ready-to-sign documentation.</div><div class=\"feat-live\"><div class=\"feat-live-dot\"></div>Live Now</div></div>\n    <div class=\"feat-card rv d3\"><div class=\"feat-ico\">\ud83c\udfa4</div><div class=\"feat-title\">Voice Charting</div><div class=\"feat-desc\">Hands on the patient. Voice on the record. Document without breaking contact.</div><div class=\"feat-live\"><div class=\"feat-live-dot\"></div>Live Now</div></div>\n    <div class=\"feat-card feat-row2 rv d1\"><div class=\"feat-ico\">\ud83e\udde0</div><div class=\"feat-title\">Treatment Memory</div><div class=\"feat-desc\">Every session deepens the AI's understanding. Pattern recognition compounds across all visits.</div><div class=\"feat-live\"><div class=\"feat-live-dot\"></div>Live Now</div></div>\n    <div class=\"feat-card feat-row2 rv d2\"><div class=\"feat-ico\">\ud83d\udd2c</div><div class=\"feat-title\">ICD-10 Code Assist</div><div class=\"feat-desc\">AI suggests relevant diagnostic codes from your documentation. Reduce billing errors instantly.</div><div class=\"feat-live\"><div class=\"feat-live-dot\"></div>Live Now</div></div>\n    <div class=\"feat-card feat-row2 rv d3\"><div class=\"feat-ico\">\u26a1</div><div class=\"feat-title\">Instant Documentation</div><div class=\"feat-desc\">Walk out of treatment with complete notes already generated. No after-hours charting. Ever again.</div><div class=\"feat-live\"><div class=\"feat-live-dot\"></div>Live Now</div></div>\n  </div>\n</section>\n<section id=\"ds-sec\">\n  <div class=\"ds-hd\">\n    <div><div class=\"sec-tag rv\">The Dashboard</div><h2 class=\"sec-h rv d1\">YOUR CLINICAL<br><span class=\"g\">COMMAND</span> CENTER</h2></div>\n    <p class=\"sec-sub rv d2\">Live sessions, patient history, SOAP notes, and AALIYAH's real-time guidance \u2014 all in one place.</p>\n  </div>\n  <div class=\"ds-wrap rv\">\n    <div class=\"ds-glow\"></div>\n    <div class=\"ds-screen\">\n      <div class=\"ds-bar2\"><div class=\"dash-dots\"><div class=\"dash-dot dd1\"></div><div class=\"dash-dot dd2\"></div><div class=\"dash-dot dd3\"></div></div><div class=\"dash-url\" style=\"max-width:300px\">app.somasyncai.com/dashboard</div></div>\n      <div class=\"ds-inner\">\n        <div class=\"ds-side\">\n          <div class=\"ds-side-logo\"><div class=\"ds-sld\"></div>SomaSyncAI</div>\n          <div class=\"ds-ni on\"><span class=\"ds-ni-ico\">\ud83c\udfa7</span>Live Session</div>\n          <div class=\"ds-ni\"><span class=\"ds-ni-ico\">\ud83d\udccb</span>SOAP Notes</div>\n          <div class=\"ds-ni\"><span class=\"ds-ni-ico\">\ud83d\udc64</span>Patients</div>\n          <div class=\"ds-ni\"><span class=\"ds-ni-ico\">\ud83e\udde0</span>Treatment Memory</div>\n          <div class=\"ds-ni\"><span class=\"ds-ni-ico\">\ud83d\udd2c</span>ICD-10 Assist</div>\n          <div class=\"ds-ni\"><span class=\"ds-ni-ico\">\ud83d\udcca</span>Analytics</div>\n          <div class=\"ds-ni\"><span class=\"ds-ni-ico\">\u2699\ufe0f</span>Settings</div>\n        </div>\n        <div class=\"ds-center\">\n          <div class=\"ds-ct\"><div class=\"ds-cth\">James R. \u2014 Health History Review</div><div class=\"ds-rec\"><div class=\"ds-rec-dot\" style=\"background:var(--grn)\"></div>Analyzing</div></div>\n          <!-- Step progress -->\n          <div style=\"display:flex;gap:0;margin-bottom:22px;border:1px solid rgba(255,255,255,0.07);border-radius:10px;overflow:hidden\">\n            <div style=\"flex:1;padding:9px 10px;background:rgba(0,232,154,0.1);border-right:1px solid rgba(255,255,255,0.07);text-align:center\"><div style=\"font-size:.52rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u2713 Intake</div></div>\n            <div style=\"flex:1;padding:9px 10px;background:rgba(0,232,154,0.1);border-right:1px solid rgba(255,255,255,0.07);text-align:center\"><div style=\"font-size:.52rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u2713 Calibration</div></div>\n            <div style=\"flex:1;padding:9px 10px;background:rgba(0,232,154,0.14);border-right:1px solid rgba(255,255,255,0.07);text-align:center\"><div style=\"font-size:.52rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u25cf Analysis</div></div>\n            <div style=\"flex:1;padding:9px 10px;border-right:1px solid rgba(255,255,255,0.07);text-align:center;opacity:.3\"><div style=\"font-size:.52rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)\">Assessment</div></div>\n            <div style=\"flex:1;padding:9px 10px;border-right:1px solid rgba(255,255,255,0.07);text-align:center;opacity:.3\"><div style=\"font-size:.52rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)\">Generate</div></div>\n            <div style=\"flex:1;padding:9px 10px;text-align:center;opacity:.3\"><div style=\"font-size:.52rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)\">Live Session</div></div>\n          </div>\n          <div class=\"ds-sg\">\n            <div class=\"ds-sc\"><div class=\"ds-sl\">Chief Complaint</div><div class=\"ds-st\">Cervical pain and <b>tension headaches.</b> Onset 3 months ago. Progressive. Desk worker, 10hr/day average.</div></div>\n            <div class=\"ds-sc\"><div class=\"ds-sl\">Relevant History</div><div class=\"ds-st\">No prior surgeries. <b>Hypertension (managed).</b> Previous whiplash 2018. No current medications contraindicated.</div></div>\n            <div class=\"ds-sc\" style=\"background:rgba(255,80,80,0.04);border-color:rgba(255,100,100,0.2)\"><div class=\"ds-sl\" style=\"color:#ff8080\">\u26a0 Contraindication Check</div><div class=\"ds-st\">Hypertension noted \u2014 <b>avoid aggressive cervical manipulation.</b> AALIYAH flagged: confirm BP before session.</div></div>\n            <div class=\"ds-sc\" style=\"background:rgba(0,232,154,0.04);border-color:rgba(0,232,154,0.18)\"><div class=\"ds-sl\">AALIYAH Recommends</div><div class=\"ds-st\">Perform <b>cervical orthopedic tests:</b> Spurling's, distraction, Valsalva. Check dermatomal patterns before bodywork.</div></div>\n          </div>\n          <div class=\"ds-aa\"><div class=\"ds-aa-av\">\ud83c\udfa7</div><div><div class=\"ds-aa-l\">AALIYAH \u2014 Contraindication Analysis Complete</div><div class=\"ds-aa-t\">Health history processed. <b>1 flag raised</b> (hypertension). No session-blocking contraindications. Cleared to proceed \u2014 confirm BP reading, then begin visual assessment.</div></div></div>\n          <div class=\"ds-wv\" id=\"wf2\"></div>\n        </div>\n        <div class=\"ds-right\">\n          <div class=\"ds-rt\">Today's Patients</div>\n          <div class=\"ds-pat\"><div class=\"ds-pn\">James R.</div><div class=\"ds-pi\">9:00 AM \u00b7 Cervical / PT<br>Session #7 of 12</div><div class=\"ds-ptag\">\u25cf Active Now</div></div>\n          <div class=\"ds-pat\"><div class=\"ds-pn\">Maria S.</div><div class=\"ds-pi\">10:30 AM \u00b7 Lower Back<br>Session #3 of 8</div></div>\n          <div class=\"ds-pat\"><div class=\"ds-pn\">David K.</div><div class=\"ds-pi\">12:00 PM \u00b7 Shoulder / Sports<br>New Patient</div></div>\n          <div style=\"margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06)\">\n            <div class=\"ds-rt\">Session Metrics</div>\n            <div class=\"ds-metric\"><div class=\"ds-ml\">Charting Time Saved</div><div class=\"ds-mv\">47 min</div></div>\n            <div class=\"ds-metric\"><div class=\"ds-ml\">Notes Generated</div><div class=\"ds-mv\">3 / 3</div></div>\n            <div class=\"ds-metric\"><div class=\"ds-ml\">ICD-10 Codes</div><div class=\"ds-mv\">M54.2, M54.5</div></div>\n            <div class=\"ds-metric\"><div class=\"ds-ml\">AALIYAH Insights</div><div class=\"ds-mv\">12 today</div></div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n<section id=\"how\" class=\"sec\">\n  <div class=\"sec-tag rv\">Full Session Workflow</div>\n  <h2 class=\"sec-h rv d1\">A SESSION WITH <span class=\"g\">AALIYAH</span></h2>\n  <p class=\"sec-sub rv d2\">AALIYAH.IO is the clinical intelligence powering SomaSyncAI. Here's exactly how a session flows \u2014 from intake to documentation.</p>\n  <div class=\"how-grid\" style=\"grid-template-columns:repeat(3,1fr);margin-top:60px\">\n    <div class=\"how-card rv d1\">\n      <div class=\"how-n\">01</div>\n      <div class=\"how-t\">Intake Form & Health History</div>\n      <div class=\"how-d\">Client fills out the intake form while you prepare. No rushing \u2014 a complete health history is the foundation of everything that follows.</div>\n      <div style=\"margin-top:16px;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn)\">Intake & Preparation</div>\n    </div>\n    <div class=\"how-card rv d2\">\n      <div class=\"how-n\">02</div>\n      <div class=\"how-t\">AALIYAH Wakes Up</div>\n      <div class=\"how-d\">Power on the earpiece, open the SOAP dashboard. AALIYAH shows consent first \u2014 always. Then runs a brief voice calibration so she recognises your voice precisely in any environment.</div>\n      <div style=\"margin-top:16px;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn)\">Calibration & Consent</div>\n    </div>\n    <div class=\"how-card rv d3\">\n      <div class=\"how-n\">03</div>\n      <div class=\"how-t\">AALIYAH Analyzes for Contraindications</div>\n      <div class=\"how-d\">Reflect the client's intake history out loud. AALIYAH starts clinical analysis \u2014 checking contraindications first, flagging conditions, suggesting orthopedic tests.</div>\n      <div style=\"margin-top:16px;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn)\">Clinical Analysis</div>\n    </div>\n    <div class=\"how-card rv d1\" style=\"border-top:1px solid rgba(255,255,255,0.06)\">\n      <div class=\"how-n\">04</div>\n      <div class=\"how-t\">Visual Assessment \u2014 Circle the Client</div>\n      <div class=\"how-d\">Analyze gait, posture, and alignment while circling the client. Call out what you see. AALIYAH captures every observation, merging Western anatomy with TCM principles in real time.</div>\n      <div style=\"margin-top:16px;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn)\">Visual & Postural Assessment</div>\n    </div>\n    <div class=\"how-card rv d2\" style=\"border-top:1px solid rgba(255,255,255,0.06)\">\n      <div class=\"how-n\">05</div>\n      <div class=\"how-t\">Generate Documentation</div>\n      <div class=\"how-d\">Before bodywork begins, hit Generate. AALIYAH produces a full treatment plan and SOAP note draft from everything captured. You review and verify \u2014 AI assists, the clinician decides.</div>\n      <div style=\"margin-top:16px;display:inline-flex;align-items:center;gap:7px;background:rgba(0,232,154,0.1);border:1px solid rgba(0,232,154,0.25);color:var(--grn);font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 14px;border-radius:100px\">\u26a1 Generate Documentation</div>\n    </div>\n    <div class=\"how-card rv d3\" style=\"border-top:1px solid rgba(255,255,255,0.06)\">\n      <div class=\"how-n\">06</div>\n      <div class=\"how-t\">Document Live During Bodywork</div>\n      <div class=\"how-d\">Session begins. Start live voice documentation while treating. Tissue response, adjustments, outcomes \u2014 all logged in real time by AALIYAH. Walk out with complete notes. Every session. No exceptions.</div>\n      <div style=\"margin-top:16px;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn)\">Live Treatment Session</div>\n    </div>\n  </div>\n</section>\n<section id=\"roadmap\" class=\"sec\">\n  <div class=\"sec-tag rv\">Product Roadmap</div>\n  <h2 class=\"sec-h rv d1\">FOUR PHASES.<br><span class=\"out\">ONE</span> VISION.</h2>\n  <div class=\"road-grid\">\n    <div class=\"road-card rv d1\"><div class=\"road-live\">Live Now</div><div class=\"road-phase\">Phase 01 \u2014 Q1 2026</div><div class=\"road-t\">Clinical Documentation MVP</div><ul class=\"road-items\"><li>Live in-ear AI guidance</li><li>Automatic SOAP notes</li><li>Voice charting</li><li>Treatment memory</li><li>ICD-10 code assist</li><li>Dashboard & chat</li></ul></div>\n    <div class=\"road-card rv d2\"><div class=\"road-phase\">Phase 02 \u2014 Q3 2026</div><div class=\"road-t\">Intelligence Expansion</div><ul class=\"road-items\"><li>SomaSphere 3D visualizer</li><li>SyncLearn in-ear education</li><li>EHR integrations</li><li>Mobile app (iOS)</li><li>Practice dashboard</li><li>Billing code assist</li></ul><div class=\"road-date\">Coming Q3 2026</div></div>\n    <div class=\"road-card rv d3\"><div class=\"road-phase\">Phase 03 \u2014 Q4 2026</div><div class=\"road-t\">Wearable + Population Layer</div><ul class=\"road-items\"><li>Wearable device integration</li><li>Real-time biometrics</li><li>Population analytics</li><li>Outcome tracking</li><li>Referral insights</li><li>Pattern reporting</li></ul><div class=\"road-date\">Coming Q4 2026</div></div>\n    <div class=\"road-card rv d4\"><div class=\"road-phase\">Phase 04 \u2014 2027</div><div class=\"road-t\">Predictive Care OS</div><ul class=\"road-items\"><li>Predictive care AI</li><li>Re-injury risk flags</li><li>Personalised care paths</li><li>Multi-location enterprise</li><li>API for EHR vendors</li><li>International expansion</li></ul><div class=\"road-date\">Coming 2027</div></div>\n  </div>\n</section>\n<!-- \u2550\u2550 COMING SOON \u2550\u2550 -->\n<section id=\"coming\" class=\"sec\" style=\"border-top:1px solid rgba(255,255,255,0.06)\">\n  <div class=\"sec-tag rv\">The Full Vision</div>\n  <h2 class=\"sec-h rv d1\">WHAT'S <span class=\"g\">COMING</span></h2>\n  <p class=\"sec-sub rv d2\">SomaSyncAI is evolving into a full Practitioner Hub \u2014 collaborative intelligence, continuous learning, and global reach in one platform.</p>\n  <div style=\"display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px\">\n    <div class=\"feat-card rv d1\" style=\"grid-column:span 1\">\n      <div class=\"feat-ico\">\ud83c\udf10</div>\n      <div class=\"feat-title\">SomaSphere</div>\n      <div class=\"feat-desc\">A live interactive 3D anatomical model overlaid with population-level heat maps. See the statistical prevalence of deviations \u2014 anterior pelvic tilt, upper crossed syndrome \u2014 across anonymized demographics. Move from treating one patient to understanding community-level musculoskeletal health trends.</div>\n      <div style=\"margin-top:16px;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:100px;display:inline-block\">Coming Q3 2026</div>\n    </div>\n    <div class=\"feat-card rv d2\">\n      <div class=\"feat-ico\">\ud83d\udcda</div>\n      <div class=\"feat-title\">SyncLearn</div>\n      <div class=\"feat-desc\">Just-in-time clinical education delivered in your ear during treatment. When AALIYAH detects Upper Crossed Syndrome, a Learn icon appears. Tap for a 30\u201390 second video \u2014 palpation techniques, involved muscle groups, or associated TCM patterns. Every session becomes a learning opportunity.</div>\n      <div style=\"margin-top:16px;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:100px;display:inline-block\">Coming Q3 2026</div>\n    </div>\n    <div class=\"feat-card rv d3\">\n      <div class=\"feat-ico\">\u231a</div>\n      <div class=\"feat-title\">Wearable Integration</div>\n      <div class=\"feat-desc\">Real-time biometric data from patient wearables feeding directly into the clinical AI. HRV, movement quality, muscle activation patterns, and recovery metrics woven into every session record and treatment recommendation.</div>\n      <div style=\"margin-top:16px;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:100px;display:inline-block\">Coming Q4 2026</div>\n    </div>\n    <div class=\"feat-card feat-row2 rv d1\">\n      <div class=\"feat-ico\">\ud83d\udd2e</div>\n      <div class=\"feat-title\">Predictive Care Intelligence</div>\n      <div class=\"feat-desc\">AI that predicts patient outcomes before they happen. Re-injury risk flags, treatment response forecasting, and personalised care pathway generation based on population-level pattern intelligence and individual longitudinal data.</div>\n      <div style=\"margin-top:16px;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:100px;display:inline-block\">Coming 2027</div>\n    </div>\n    <div class=\"feat-card feat-row2 rv d2\">\n      <div class=\"feat-ico\">\ud83c\udf0d</div>\n      <div class=\"feat-title\">Global Expansion</div>\n      <div class=\"feat-desc\">SomaSyncAI is being translated into dozens of languages to serve practitioners worldwide. The gold standard clinical OS is not just a California product \u2014 it's a global one. International beta cohorts launching after the US foundation is set.</div>\n      <div style=\"margin-top:16px;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:100px;display:inline-block\">Coming 2027</div>\n    </div>\n    <div class=\"feat-card feat-row2 rv d3\">\n      <div class=\"feat-ico\">\ud83c\udfdb</div>\n      <div class=\"feat-title\">The Practitioner Hub</div>\n      <div class=\"feat-desc\">The full Hub brings everything together \u2014 SomaSphere collaborative insights, SyncLearn education, session review, SOAP documentation, and community-powered wisdom. One ecosystem. Every tool a modern bodywork professional needs, in one place.</div>\n      <div style=\"margin-top:16px;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:100px;display:inline-block\">The Full Vision</div>\n    </div>\n  </div>\n</section>\n\n<!-- \u2550\u2550 DISCIPLINES \u2550\u2550 -->\n<section id=\"who\" style=\"border-top:1px solid rgba(255,255,255,0.06);padding:clamp(80px,10vw,140px) var(--r)\">\n  <div class=\"sec-tag rv\">Disciplines</div>\n  <h2 class=\"sec-h rv d1\">BUILT FOR EVERY<br><span class=\"out\">HANDS-ON</span> PRACTITIONER</h2>\n  <div style=\"display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px\">\n    <div class=\"feat-card rv d1\" style=\"padding:52px 44px\">\n      <div style=\"font-size:2rem;margin-bottom:20px\">\ud83d\udc86</div>\n      <div class=\"feat-title\" style=\"font-size:1.2rem;margin-bottom:12px\">Massage Therapists</div>\n      <div class=\"feat-desc\">Document trigger points, muscle tension, and treatment responses without lifting your hands. Build longitudinal client records that elevate your practice above the rest.</div>\n    </div>\n    <div class=\"feat-card rv d2\" style=\"padding:52px 44px\">\n      <div style=\"font-size:2rem;margin-bottom:20px\">\ud83c\udfc3</div>\n      <div class=\"feat-title\" style=\"font-size:1.2rem;margin-bottom:12px\">Physical Therapists</div>\n      <div class=\"feat-desc\">Real-time AI guidance during functional assessments. Automatic documentation of ROM measurements, functional tests, and treatment progressions.</div>\n    </div>\n    <div class=\"feat-card rv d3\" style=\"padding:52px 44px;border-top:1px solid rgba(255,255,255,0.06)\">\n      <div style=\"font-size:2rem;margin-bottom:20px\">\ud83e\uddb4</div>\n      <div class=\"feat-title\" style=\"font-size:1.2rem;margin-bottom:12px\">Chiropractors</div>\n      <div class=\"feat-desc\">Voice-charted spinal assessments, adjustment records, and patient progress notes. Documentation that keeps pace with your adjusting table.</div>\n    </div>\n    <div class=\"feat-card rv d4\" style=\"padding:52px 44px;border-top:1px solid rgba(255,255,255,0.06)\">\n      <div style=\"font-size:2rem;margin-bottom:20px\">\u26bd</div>\n      <div class=\"feat-title\" style=\"font-size:1.2rem;margin-bottom:12px\">Sports Medicine & Athletic Trainers</div>\n      <div class=\"feat-desc\">Sideline-ready documentation. Rapid injury assessment recording, return-to-play tracking, and performance pattern recognition across your roster.</div>\n    </div>\n  </div>\n</section>\n\n<!-- \u2550\u2550 TRUSTED INSTITUTIONS \u2550\u2550 -->\n<div style=\"border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:56px var(--r);background:rgba(255,255,255,0.015)\">\n  <div style=\"font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,232,0.25);text-align:center;margin-bottom:40px\">Aligned With Leading Medical & Academic Institutions</div>\n  <!-- SCROLLING LOGO STRIP -->\n  <div style=\"overflow:hidden;position:relative\">\n    <!-- Fade edges -->\n    <div style=\"position:absolute;left:0;top:0;bottom:0;width:120px;background:linear-gradient(to right,#080808,transparent);z-index:2;pointer-events:none\"></div>\n    <div style=\"position:absolute;right:0;top:0;bottom:0;width:120px;background:linear-gradient(to left,#080808,transparent);z-index:2;pointer-events:none\"></div>\n    <div class=\"logo-track\" style=\"display:flex;align-items:center;width:max-content;animation:march 40s linear infinite;gap:0\">\n\n      <!-- \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n           LOGO SLOTS \u2014 replace each .logo-slot img src\n           with the path to your official SVG file.\n           Recommended: white/light version of each logo.\n           Height: 28\u201336px. All SVGs should be monochrome\n           white or very light so they read on dark bg.\n      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 -->\n\n      <!-- SLOT 1: Stanford Medicine -->\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\">\n        <!-- REPLACE src WITH: /path/to/stanford-medicine.svg -->\n        <span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">STANFORD<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">MEDICINE</span></span>\n      </div>\n\n      <!-- SLOT 2: Johns Hopkins Medicine -->\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\">\n        <!-- REPLACE src WITH: /path/to/johns-hopkins.svg -->\n        <span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">JOHNS HOPKINS<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">MEDICINE</span></span>\n      </div>\n\n      <!-- SLOT 3: Mayo Clinic -->\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\">\n        <!-- REPLACE src WITH: /path/to/mayo-clinic.svg -->\n        <span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">MAYO<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">CLINIC</span></span>\n      </div>\n\n      <!-- SLOT 4: UCSF Health -->\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\">\n        <!-- REPLACE src WITH: /path/to/ucsf.svg -->\n        <span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">UCSF<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">HEALTH</span></span>\n      </div>\n\n      <!-- SLOT 5: APTA \u2014 American Physical Therapy Association -->\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\">\n        <!-- REPLACE src WITH: /path/to/apta.svg -->\n        <span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">APTA<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">AMERICAN PT ASSOC.</span></span>\n      </div>\n\n      <!-- SLOT 6: AMTA \u2014 American Massage Therapy Association -->\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\">\n        <!-- REPLACE src WITH: /path/to/amta.svg -->\n        <span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">AMTA<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">MASSAGE THERAPY ASSOC.</span></span>\n      </div>\n\n      <!-- SLOT 7: ACA \u2014 American Chiropractic Association -->\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\">\n        <!-- REPLACE src WITH: /path/to/aca-chiro.svg -->\n        <span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">ACA<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">CHIROPRACTIC ASSOC.</span></span>\n      </div>\n\n      <!-- SLOT 8: HIPAA Compliance -->\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\">\n        <!-- REPLACE src WITH: /path/to/hipaa-seal.svg -->\n        <span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">HIPAA<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">COMPLIANT</span></span>\n      </div>\n\n      <!-- DUPLICATE SET for seamless loop -->\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\"><span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">STANFORD<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">MEDICINE</span></span></div>\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\"><span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">JOHNS HOPKINS<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">MEDICINE</span></span></div>\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\"><span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">MAYO<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">CLINIC</span></span></div>\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\"><span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">UCSF<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">HEALTH</span></span></div>\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\"><span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">APTA<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">AMERICAN PT ASSOC.</span></span></div>\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\"><span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">AMTA<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">MASSAGE THERAPY ASSOC.</span></span></div>\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\"><span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">ACA<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">CHIROPRACTIC ASSOC.</span></span></div>\n      <div class=\"logo-slot\" style=\"padding:0 48px;display:flex;align-items:center;flex-shrink:0;opacity:.45;transition:opacity .2s\" onmouseenter=\"this.style.opacity='.9'\" onmouseleave=\"this.style.opacity='.45'\"><span style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;letter-spacing:.04em;color:#fff;white-space:nowrap\">HIPAA<br><span style=\"font-weight:400;font-size:.72rem;letter-spacing:.1em;opacity:.6\">COMPLIANT</span></span></div>\n\n    </div>\n  </div>\n</div>\n\n<!-- \u2550\u2550 TESTIMONIAL \u2550\u2550 -->\n<section style=\"border-top:1px solid rgba(255,255,255,0.06);padding:clamp(80px,10vw,140px) var(--r);background:rgba(255,255,255,0.015)\">\n  <div class=\"sec-tag rv\">Early Access Feedback</div>\n  <div class=\"rv d1\" style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.6rem,3.5vw,3rem);line-height:1.15;letter-spacing:-.03em;max-width:900px;margin:36px 0 20px;border-left:3px solid var(--grn);padding-left:32px\">\"I finished my last patient and my notes were already done. For the first time in 12 years of practice, I left on time.\"</div>\n  <div class=\"rv d2\" style=\"font-size:.88rem;color:var(--muted);padding-left:35px\">Beta Practitioner \u2014 Physical Therapist, California</div>\n</section>\n\n<!-- \u2550\u2550 CALIFORNIA LOCATIONS \u2550\u2550 -->\n<section style=\"border-top:1px solid rgba(255,255,255,0.06);padding:clamp(80px,10vw,140px) var(--r)\">\n  <div class=\"sec-tag rv\">Serving California & Beyond</div>\n  <h2 class=\"sec-h rv d1\">BUILT FOR<br><span class=\"g\">CALIFORNIA</span> PRACTITIONERS</h2>\n  <p class=\"sec-sub rv d2\">Currently prioritising California practitioners in our first beta cohort \u2014 with national expansion underway.</p>\n  <div style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin-top:60px\">\n    <div class=\"rv d1\">\n      <div style=\"font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grn);margin-bottom:16px\">Central Valley</div>\n      <ul style=\"list-style:none;display:flex;flex-direction:column;gap:10px\">\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Fresno, CA</strong>Physical therapy & chiropractic</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Bakersfield, CA</strong>Manual therapy & sports medicine</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Stockton, CA</strong>Massage therapy & rehabilitation</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Modesto, CA</strong>Chiropractic & wellness</li>\n      </ul>\n    </div>\n    <div class=\"rv d2\">\n      <div style=\"font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grn);margin-bottom:16px\">Los Angeles Region</div>\n      <ul style=\"list-style:none;display:flex;flex-direction:column;gap:10px\">\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Los Angeles, CA</strong>Manual therapy & sports medicine</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Long Beach, CA</strong>Physical therapy & chiropractic</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Pasadena, CA</strong>Sports medicine & PT</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Glendale, CA</strong>Massage therapy & wellness</li>\n      </ul>\n    </div>\n    <div class=\"rv d3\">\n      <div style=\"font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grn);margin-bottom:16px\">Bay Area</div>\n      <ul style=\"list-style:none;display:flex;flex-direction:column;gap:10px\">\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">San Francisco, CA</strong>Physical therapy & chiropractic</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">San Jose, CA</strong>Sports medicine & PT</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Oakland, CA</strong>Massage therapy & rehab</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Palo Alto, CA</strong>Clinical AI & sports medicine</li>\n      </ul>\n    </div>\n    <div class=\"rv d4\">\n      <div style=\"font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grn);margin-bottom:16px\">Sacramento & Beyond</div>\n      <ul style=\"list-style:none;display:flex;flex-direction:column;gap:10px\">\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Sacramento, CA</strong>Rehabilitation & chiropractic</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">San Diego, CA</strong>Athletic training & massage</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">New York, NY</strong>Multi-discipline practices</li>\n        <li style=\"font-size:.88rem;color:var(--muted)\"><strong style=\"color:var(--ink);display:block;font-size:.88rem\">Chicago, IL</strong>Sports & orthopedic therapy</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section id=\"investors\" class=\"sec\">\n  <div class=\"sec-tag rv\">For Investors</div>\n  <h2 class=\"sec-h rv d1\">THE <span class=\"g\">OPPORTUNITY</span></h2>\n  <p class=\"sec-sub rv d2\">Building the AI OS for a $28B clinical documentation market with no purpose-built real-time solution.</p>\n  <div class=\"inv-grid\">\n    <div class=\"inv-stats\">\n      <div class=\"inv-stat rv d1\"><div class=\"inv-n\">$28B</div><div class=\"inv-l\">Global TAM</div></div>\n      <div class=\"inv-stat rv d2\"><div class=\"inv-n\">1.2M</div><div class=\"inv-l\">US Practitioners</div></div>\n      <div class=\"inv-stat rv d3\"><div class=\"inv-n\">87%</div><div class=\"inv-l\">Charting Reduction</div></div>\n      <div class=\"inv-stat rv d4\"><div class=\"inv-n\">$2.5M</div><div class=\"inv-l\">Seed Round</div></div>\n    </div>\n    <div>\n      <div class=\"why-list\">\n        <div class=\"why-item rv d1\"><div class=\"why-n\">01</div><div><div class=\"why-t\">Real-Time vs Post-Session</div><div class=\"why-d\">Every competitor transcribes after the session. We operate live during treatment.</div></div></div>\n        <div class=\"why-item rv d2\"><div class=\"why-n\">02</div><div><div class=\"why-t\">Discipline-Specific Intelligence</div><div class=\"why-d\">Built for manual therapy from the ground up \u2014 not generic medical transcription.</div></div></div>\n        <div class=\"why-item rv d3\"><div class=\"why-n\">03</div><div><div class=\"why-t\">Longitudinal Treatment Memory</div><div class=\"why-d\">Session-to-session intelligence that compounds. Deep switching costs that grow with usage.</div></div></div>\n        <div class=\"why-item rv d4\"><div class=\"why-n\">04</div><div><div class=\"why-t\">The Full OS Vision</div><div class=\"why-d\">SomaSphere, SyncLearn, Wearables, Predictive Care \u2014 a moat competitors can't replicate.</div></div></div>\n      </div>\n      <a class=\"deck-link rv\" href=\"https://somasyncai.com/investor-pitch\">View Full Pitch Deck \u2192</a>\n    </div>\n  </div>\n</section>\n<!-- \u2550\u2550 FREE EBOOKS \u2550\u2550 -->\n<section id=\"ebooks\" style=\"border-top:1px solid rgba(255,255,255,0.06);padding:clamp(80px,10vw,140px) var(--r)\">\n  <div class=\"sec-tag rv\">Free Resources</div>\n  <h2 class=\"sec-h rv d1\">FREE CLINICAL<br><span class=\"g\">LIBRARY</span></h2>\n  <p style=\"font-size:1rem;line-height:1.8;color:var(--muted);max-width:500px;margin-top:20px;margin-bottom:60px\" class=\"rv d2\">Gold standard references for every manual therapist \u2014 free to download. No email required.</p>\n\n  <div style=\"display:grid;grid-template-columns:repeat(3,1fr);gap:16px\">\n\n    <!-- EBOOK 1 -->\n    <a href=\"https://drive.google.com/file/d/1_e4YjvFsmpocpoJIdsmOtuILvUeG7ep7/view?usp=drivesdk\" target=\"_blank\" class=\"rv d1\"\n      style=\"display:block;text-decoration:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:32px 28px;position:relative;overflow:hidden;transition:background .25s,border-color .25s;cursor:pointer\"\n      onmouseenter=\"this.style.background='rgba(0,232,154,0.05)';this.style.borderColor='rgba(0,232,154,0.25)'\"\n      onmouseleave=\"this.style.background='rgba(255,255,255,0.03)';this.style.borderColor='rgba(255,255,255,0.08)'\">\n      <div style=\"position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--grn),transparent)\"></div>\n      <div style=\"font-size:2rem;margin-bottom:16px\">\ud83d\udcd6</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Manual Therapy</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;color:#fff;margin-bottom:10px;line-height:1.3\">Handbook of Massage Therapy</div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted);margin-bottom:20px\">Emil Scheider's comprehensive reference covering massage techniques, protocols, and clinical applications for manual therapists.</div>\n      <div style=\"display:inline-flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u2b07 Download Free</div>\n    </a>\n\n    <!-- EBOOK 2 \u2014 UPDATE TITLE if wrong -->\n    <a href=\"https://drive.google.com/file/d/1Y5dbHmhOwi2tsu3J9C-NRwQFaPdufW_H/view?usp=drivesdk\" target=\"_blank\" class=\"rv d2\"\n      style=\"display:block;text-decoration:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:32px 28px;position:relative;overflow:hidden;transition:background .25s,border-color .25s\"\n      onmouseenter=\"this.style.background='rgba(0,232,154,0.05)';this.style.borderColor='rgba(0,232,154,0.25)'\"\n      onmouseleave=\"this.style.background='rgba(255,255,255,0.03)';this.style.borderColor='rgba(255,255,255,0.08)'\">\n      <div style=\"position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--grn),transparent)\"></div>\n      <div style=\"font-size:2rem;margin-bottom:16px\">\ud83d\udcd6</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Chinese Medicine</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;color:#fff;margin-bottom:10px;line-height:1.3\"><!-- UPDATE TITLE --></div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted);margin-bottom:20px\">Traditional Chinese Medicine principles applied to manual therapy practice \u2014 meridians, TCM patterns, and clinical integration.</div>\n      <div style=\"display:inline-flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u2b07 Download Free</div>\n    </a>\n\n    <!-- EBOOK 3 \u2014 UPDATE TITLE if wrong -->\n    <a href=\"https://drive.google.com/file/d/1dcVmz-91bSgK0MsmiQ4RgsGoPQUb877J/view?usp=drivesdk\" target=\"_blank\" class=\"rv d3\"\n      style=\"display:block;text-decoration:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:32px 28px;position:relative;overflow:hidden;transition:background .25s,border-color .25s\"\n      onmouseenter=\"this.style.background='rgba(0,232,154,0.05)';this.style.borderColor='rgba(0,232,154,0.25)'\"\n      onmouseleave=\"this.style.background='rgba(255,255,255,0.03)';this.style.borderColor='rgba(255,255,255,0.08)'\">\n      <div style=\"position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--grn),transparent)\"></div>\n      <div style=\"font-size:2rem;margin-bottom:16px\">\ud83d\udcd6</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Orthopedic Manual Therapy</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;color:#fff;margin-bottom:10px;line-height:1.3\"><!-- UPDATE TITLE --></div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted);margin-bottom:20px\">Orthopedic assessment and treatment protocols for manual therapists \u2014 joint mechanics, special tests, and evidence-based interventions.</div>\n      <div style=\"display:inline-flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u2b07 Download Free</div>\n    </a>\n\n    <!-- EBOOK 4 \u2014 UPDATE TITLE if wrong -->\n    <a href=\"https://drive.google.com/file/d/1fSaVCEKT-Y7UYIsqFfBUCtoMnlYxzUih/view?usp=drivesdk\" target=\"_blank\" class=\"rv d1\"\n      style=\"display:block;text-decoration:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:32px 28px;position:relative;overflow:hidden;transition:background .25s,border-color .25s\"\n      onmouseenter=\"this.style.background='rgba(0,232,154,0.05)';this.style.borderColor='rgba(0,232,154,0.25)'\"\n      onmouseleave=\"this.style.background='rgba(255,255,255,0.03)';this.style.borderColor='rgba(255,255,255,0.08)'\">\n      <div style=\"position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--grn),transparent)\"></div>\n      <div style=\"font-size:2rem;margin-bottom:16px\">\ud83d\udcd6</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Anatomy Reference</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;color:#fff;margin-bottom:10px;line-height:1.3\"><!-- UPDATE TITLE --></div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted);margin-bottom:20px\">Clinical anatomy reference for hands-on practitioners \u2014 musculoskeletal structures, nerve pathways, and palpation landmarks.</div>\n      <div style=\"display:inline-flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u2b07 Download Free</div>\n    </a>\n\n    <!-- EBOOK 5 \u2014 UPDATE TITLE if wrong -->\n    <a href=\"https://drive.google.com/file/d/16T4mgR8Z0twnoxbzAdQdFmVJYNlVkoIS/view?usp=drivesdk\" target=\"_blank\" class=\"rv d2\"\n      style=\"display:block;text-decoration:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:32px 28px;position:relative;overflow:hidden;transition:background .25s,border-color .25s\"\n      onmouseenter=\"this.style.background='rgba(0,232,154,0.05)';this.style.borderColor='rgba(0,232,154,0.25)'\"\n      onmouseleave=\"this.style.background='rgba(255,255,255,0.03)';this.style.borderColor='rgba(255,255,255,0.08)'\">\n      <div style=\"position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--grn),transparent)\"></div>\n      <div style=\"font-size:2rem;margin-bottom:16px\">\ud83d\udcd6</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Manual Therapy</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;color:#fff;margin-bottom:10px;line-height:1.3\"><!-- UPDATE TITLE --></div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted);margin-bottom:20px\">Essential manual therapy reference covering soft tissue techniques, joint mobilisation, and clinical reasoning frameworks.</div>\n      <div style=\"display:inline-flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u2b07 Download Free</div>\n    </a>\n\n    <!-- EBOOK 6 \u2014 UPDATE TITLE if wrong -->\n    <a href=\"https://drive.google.com/file/d/1O4wxECMZ4fKQF01wQAjZS2Jz5IOyGLry/view?usp=drivesdk\" target=\"_blank\" class=\"rv d3\"\n      style=\"display:block;text-decoration:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:32px 28px;position:relative;overflow:hidden;transition:background .25s,border-color .25s\"\n      onmouseenter=\"this.style.background='rgba(0,232,154,0.05)';this.style.borderColor='rgba(0,232,154,0.25)'\"\n      onmouseleave=\"this.style.background='rgba(255,255,255,0.03)';this.style.borderColor='rgba(255,255,255,0.08)'\">\n      <div style=\"position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--grn),transparent)\"></div>\n      <div style=\"font-size:2rem;margin-bottom:16px\">\ud83d\udcd6</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Chinese Medicine</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;color:#fff;margin-bottom:10px;line-height:1.3\"><!-- UPDATE TITLE --></div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted);margin-bottom:20px\">Advanced TCM clinical protocols for bodywork practitioners \u2014 acupuncture points, five element theory, and treatment strategies.</div>\n      <div style=\"display:inline-flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u2b07 Download Free</div>\n    </a>\n\n    <!-- EBOOK 7 \u2014 UPDATE TITLE if wrong -->\n    <a href=\"https://drive.google.com/file/d/1pQ3-f91zNkBB5tcmdJB7ZBBADapcL2D1/view?usp=drivesdk\" target=\"_blank\" class=\"rv d1\"\n      style=\"display:block;text-decoration:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:32px 28px;position:relative;overflow:hidden;transition:background .25s,border-color .25s\"\n      onmouseenter=\"this.style.background='rgba(0,232,154,0.05)';this.style.borderColor='rgba(0,232,154,0.25)'\"\n      onmouseleave=\"this.style.background='rgba(255,255,255,0.03)';this.style.borderColor='rgba(255,255,255,0.08)'\">\n      <div style=\"position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--grn),transparent)\"></div>\n      <div style=\"font-size:2rem;margin-bottom:16px\">\ud83d\udcd6</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Anatomy Reference</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;color:#fff;margin-bottom:10px;line-height:1.3\">Netter's Atlas of Human Anatomy</div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted);margin-bottom:20px\">The gold standard anatomical atlas for clinical practitioners \u2014 Frank Netter's legendary illustrations of musculoskeletal, nervous, and vascular systems.</div>\n      <div style=\"display:inline-flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u2b07 Download Free</div>\n    </a>\n\n    <!-- EBOOK 8 \u2014 UPDATE TITLE if wrong -->\n    <a href=\"https://drive.google.com/file/d/1T7sgcTXZYIb4XPm_WAgalWxhjCWEiksy/view?usp=drivesdk\" target=\"_blank\" class=\"rv d2\"\n      style=\"display:block;text-decoration:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:32px 28px;position:relative;overflow:hidden;transition:background .25s,border-color .25s\"\n      onmouseenter=\"this.style.background='rgba(0,232,154,0.05)';this.style.borderColor='rgba(0,232,154,0.25)'\"\n      onmouseleave=\"this.style.background='rgba(255,255,255,0.03)';this.style.borderColor='rgba(255,255,255,0.08)'\">\n      <div style=\"position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--grn),transparent)\"></div>\n      <div style=\"font-size:2rem;margin-bottom:16px\">\ud83d\udcd6</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Orthopedic Manual Therapy</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;color:#fff;margin-bottom:10px;line-height:1.3\"><!-- UPDATE TITLE --></div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted);margin-bottom:20px\">Orthopedic manual therapy techniques \u2014 Maitland, Mulligan, and McKenzie approaches with clinical decision-making frameworks.</div>\n      <div style=\"display:inline-flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u2b07 Download Free</div>\n    </a>\n\n    <!-- EBOOK 9 \u2014 UPDATE TITLE if wrong -->\n    <a href=\"https://drive.google.com/file/d/1VvL3wVqm7Z4KVeJUhVVFSvkVxALoNVQP/view?usp=drivesdk\" target=\"_blank\" class=\"rv d3\"\n      style=\"display:block;text-decoration:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:32px 28px;position:relative;overflow:hidden;transition:background .25s,border-color .25s\"\n      onmouseenter=\"this.style.background='rgba(0,232,154,0.05)';this.style.borderColor='rgba(0,232,154,0.25)'\"\n      onmouseleave=\"this.style.background='rgba(255,255,255,0.03)';this.style.borderColor='rgba(255,255,255,0.08)'\">\n      <div style=\"position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--grn),transparent)\"></div>\n      <div style=\"font-size:2rem;margin-bottom:16px\">\ud83d\udcd6</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Manual Therapy Protocols</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;color:#fff;margin-bottom:10px;line-height:1.3\"><!-- UPDATE TITLE --></div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted);margin-bottom:20px\">Advanced manual therapy protocols integrating Western and Eastern approaches for complex musculoskeletal presentations.</div>\n      <div style=\"display:inline-flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grn)\">\u2b07 Download Free</div>\n    </a>\n\n  </div>\n  <div style=\"text-align:center;margin-top:20px;font-size:.76rem;color:var(--muted)\">All resources free to download. No email. No paywall. Just knowledge.</div>\n</section>\n\n<!-- \u2550\u2550 TEAM \u2550\u2550 -->\n<section id=\"team\" style=\"border-top:1px solid rgba(255,255,255,0.06);padding:clamp(80px,10vw,140px) var(--r)\">\n  <div class=\"sec-tag rv\">Join the Founding Team</div>\n  <h2 class=\"sec-h rv d1\">WE'RE BUILDING<br><span class=\"out\">SOMETHING</span> RARE</h2>\n  <p style=\"font-size:1rem;line-height:1.8;color:var(--muted);max-width:460px;margin-top:20px\" class=\"rv d2\">We're looking for rare people who see the full vision and want to help build it from the ground up.</p>\n  <div style=\"display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px\">\n    <div class=\"feat-card rv d1\" style=\"padding:52px 44px\">\n      <div style=\"font-size:1.8rem;margin-bottom:20px\">\ud83e\udd1d</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Co-Founder</div>\n      <div class=\"feat-title\" style=\"font-size:1.2rem;margin-bottom:12px\">Build This With Me</div>\n      <div class=\"feat-desc\" style=\"margin-bottom:24px\">Looking for a co-founder who is obsessed with healthcare technology, understands the manual therapy space, and wants to own a significant piece of something that could change how 1.2 million practitioners work every day.</div>\n      <a href=\"/cdn-cgi/l/email-protection#5e363b3232311e2d31333f2d27303d3f37703d3133612d2b3c343b3d2a631d317318312b303a3b2c7e17302f2b372c27\" style=\"font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--grn);text-decoration:none;display:inline-flex;align-items:center;gap:6px\">Get In Touch \u2192</a>\n    </div>\n    <div class=\"feat-card rv d2\" style=\"padding:52px 44px\">\n      <div style=\"font-size:1.8rem;margin-bottom:20px\">\ud83d\udcb0</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Investor</div>\n      <div class=\"feat-title\" style=\"font-size:1.2rem;margin-bottom:12px\">Seed Round Open</div>\n      <div class=\"feat-desc\" style=\"margin-bottom:24px\">We are raising a $2.5M seed round. Live MVP. Real beta users. A $28B addressable market with no purpose-built real-time solution. If you invest in healthcare AI at the seed stage, let's talk.</div>\n      <a href=\"https://somasyncai.com/investor-pitch\" style=\"font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--grn);text-decoration:none;display:inline-flex;align-items:center;gap:6px\">View Pitch Deck \u2192</a>\n    </div>\n    <div class=\"feat-card rv d3\" style=\"padding:52px 44px;border-top:1px solid rgba(255,255,255,0.06)\">\n      <div style=\"font-size:1.8rem;margin-bottom:20px\">\u2699\ufe0f</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Engineer / Developer</div>\n      <div class=\"feat-title\" style=\"font-size:1.2rem;margin-bottom:12px\">Build the Infrastructure</div>\n      <div class=\"feat-desc\" style=\"margin-bottom:24px\">We need engineers excited about real-time AI, voice processing, and healthcare infrastructure. React, Node, Supabase, voice AI. Build something that genuinely matters in people's working lives.</div>\n      <a href=\"/cdn-cgi/l/email-protection#adc5c8c1c1c2eddec2c0ccded4c3ceccc483cec2c092ded8cfc7c8ced990e8c3cac4c3c8c8df8de4c3dcd8c4dfd4\" style=\"font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--grn);text-decoration:none;display:inline-flex;align-items:center;gap:6px\">Get In Touch \u2192</a>\n    </div>\n    <div class=\"feat-card rv d4\" style=\"padding:52px 44px;border-top:1px solid rgba(255,255,255,0.06)\">\n      <div style=\"font-size:1.8rem;margin-bottom:20px\">\ud83d\udd2c</div>\n      <div style=\"font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grn);margin-bottom:8px\">Data Researcher</div>\n      <div class=\"feat-title\" style=\"font-size:1.2rem;margin-bottom:12px\">Shape the Intelligence Layer</div>\n      <div class=\"feat-desc\" style=\"margin-bottom:24px\">SomaSphere and Predictive Care are built on population-level clinical data. We need researchers with backgrounds in clinical NLP, musculoskeletal data, or healthcare AI who want to define what that intelligence layer looks like.</div>\n      <a href=\"/cdn-cgi/l/email-protection#e189848d8d8ea1928e8c8092988f828088cf828e8cde9294838b848295dca5809580c1b3849284809382898493c1a88f9094889398\" style=\"font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--grn);text-decoration:none;display:inline-flex;align-items:center;gap:6px\">Get In Touch \u2192</a>\n    </div>\n  </div>\n  <div style=\"margin-top:32px;text-align:center;font-size:.84rem;color:var(--muted)\">Don't fit neatly into a box but feel the pull? <a href=\"/cdn-cgi/l/email-protection#0169646d6d6e41726e6c6072786f6260682f626e6c3e7274636b6462753c46646f6473606d21486f7074687378\" style=\"color:var(--grn);text-decoration:none\">Reach out anyway \u2192</a></div>\n</section>\n\n<!-- \u2550\u2550 BETA CTA \u2550\u2550 -->\n<section id=\"cta\">\n  <div class=\"sec-tag rv\" style=\"justify-content:center\">Beta Access \u2014 Limited Spots</div>\n  <h2 class=\"cta-h rv d1\">JOIN THE<br><span class=\"out\">GOLD</span><br><span class=\"g\">STANDARD</span></h2>\n  <p class=\"cta-sub rv d2\">Lifetime free access for every practitioner who completes all three steps below.</p>\n\n  <!-- Lifetime access steps -->\n  <div style=\"display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08);max-width:860px;margin:0 auto 48px;border-radius:12px;overflow:hidden\" class=\"rv d2\">\n    <div style=\"padding:28px 24px;background:rgba(255,255,255,0.03);text-align:center\">\n      <div style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;color:var(--grn);margin-bottom:8px\">01</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;margin-bottom:8px\">Use SomaSyncAI</div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted)\">Join beta. Use it in your practice. Experience the difference hands-free documentation makes.</div>\n    </div>\n    <div style=\"padding:28px 24px;background:rgba(255,255,255,0.03);text-align:center;border-left:1px solid rgba(255,255,255,0.08);border-right:1px solid rgba(255,255,255,0.08)\">\n      <div style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;color:var(--grn);margin-bottom:8px\">02</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;margin-bottom:8px\">Give Feedback</div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted)\">Share honest feedback on what works, what doesn't, and what you wish it could do.</div>\n    </div>\n    <div style=\"padding:28px 24px;background:rgba(255,255,255,0.03);text-align:center\">\n      <div style=\"font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;color:var(--grn);margin-bottom:8px\">03</div>\n      <div style=\"font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;margin-bottom:8px\">Refer One Therapist</div>\n      <div style=\"font-size:.78rem;line-height:1.6;color:var(--muted)\">Refer one colleague who beta tests, gives feedback, and refers someone too. Everyone who completes all 3 gets lifetime free access \u2014 no exceptions, no expiry.</div>\n    </div>\n  </div>\n\n  <div class=\"cta-btns rv d3\"><a class=\"cta-b1\" href=\"https://somasyncai.com/auth\">Create Free Account \u2192</a><a class=\"cta-b2\" href=\"https://somasyncai.com/dashboard/chat\">Open Dashboard</a></div>\n  <div class=\"cta-note rv d4\">No credit card. No commitment. California practitioners prioritised in first cohort.<br>Early adopters grandfathered at beta pricing when paid tiers launch.</div>\n</section>\n<footer>\n  <div class=\"foot-top\">\n    <div><div class=\"foot-brand\" style=\"margin-bottom:16px\"><img src=\"./ss.png\" alt=\"SomaSyncAI\" style=\"height:44px;width:auto;object-fit:contain;filter:drop-shadow(0 0 10px rgba(59,158,255,0.35))\"/></div><div class=\"foot-tag\">The gold standard AI operating system for manual therapists. Live in-ear guidance. Zero documentation debt.</div></div>\n    <div><div class=\"foot-col-h\">Product</div><ul class=\"foot-links\"><li><a href=\"#features\">Features</a></li><li><a href=\"#roadmap\">Roadmap</a></li><li><a href=\"#how\">How It Works</a></li><li><a href=\"#cta\">Beta Access</a></li></ul></div>\n    <div><div class=\"foot-col-h\">Disciplines</div><ul class=\"foot-links\"><li><a href=\"#\">Massage Therapy</a></li><li><a href=\"#\">Physical Therapy</a></li><li><a href=\"#\">Chiropractic</a></li><li><a href=\"#\">Sports Medicine</a></li></ul></div>\n    <div><div class=\"foot-col-h\">Company</div><ul class=\"foot-links\"><li><a href=\"#\">Join the Team</a></li><li><a href=\"https://somasyncai.com/investor-pitch\">Pitch Deck</a></li><li><a href=\"https://somasyncai.com/privacy-policy\">Privacy</a></li><li><a href=\"/cdn-cgi/l/email-protection#dab2bfb6b6b59aa9b5b7bba9a3b4b9bbb3f4b9b5b7\">Contact</a></li></ul></div>\n  </div>\n  <div class=\"foot-bottom\"><div class=\"foot-copy\">\u00a9 2026 SomaSyncAI. Built for the gold standard practitioner.</div><div class=\"foot-aa\"><div class=\"aa-dot\"></div>Powered by AALIYAH.IO</div></div>\n</footer>\n<script>\nconst cd=document.getElementById('cd'),cr=document.getElementById('cr');\nlet mx=0,my=0,rx=0,ry=0;\ndocument.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cd.style.left=mx+'px';cd.style.top=my+'px'});\n(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(loop)})();\ndocument.querySelectorAll('a,button,.feat-card,.how-card,.road-card,.inv-stat,.prob-card,.ds-ni,.nav-item').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('h'));el.addEventListener('mouseleave',()=>document.body.classList.remove('h'))});\nconst nav=document.getElementById('nav');\nwindow.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>60));\nconst io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});\ndocument.querySelectorAll('.rv').forEach(el=>io.observe(el));\nfunction buildWave(id,cls){\n  const el=document.getElementById(id);if(!el)return;\n  for(let i=0;i<60;i++){const b=document.createElement('div');b.className=cls;b.style.cssText=`width:3px;height:4px;flex-shrink:0;animation-delay:${(i*.06).toFixed(2)}s;animation-duration:${(.8+Math.random()*.9).toFixed(2)}s`;el.appendChild(b)}\n}\nbuildWave('wf1','wbar');buildWave('wf2','wbar');\nconst canvas=document.getElementById('c'),ctx=canvas.getContext('2d');\nlet W,H,t=0;\nfunction resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight}\nresize();window.addEventListener('resize',resize);\nconst blobs=[{x:.72,y:.25,r:340,hue:210},{x:.2,y:.65,r:270,hue:195},{x:.55,y:.75,r:210,hue:225}];\nfunction drawBlob(cx,cy,r,hue){\n  ctx.beginPath();\n  for(let i=0;i<=16;i++){const a=(i/16)*Math.PI*2,noise=Math.sin(a*3+t*.7)*35+Math.cos(a*2+t*.5)*22,rad=r+noise,x=cx+Math.cos(a)*rad,y=cy+Math.sin(a)*rad;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}\n  ctx.closePath();\n  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,r+60);\n  g.addColorStop(0,`hsla(${hue},80%,50%,.17)`);g.addColorStop(.6,`hsla(${hue},70%,40%,.08)`);g.addColorStop(1,`transparent`);ctx.fill()}
-function frame(){t+=.008;ctx.clearRect(0,0,W,H);blobs.forEach(b=>drawBlob(b.x*W,b.y*H,b.r,b.hue));requestAnimationFrame(frame)}frame()"
+/* ── Custom cursor (fixed, outside soma-root) ── */
+#soma-cd, #soma-cr {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+}
+#soma-cd { width: 8px; height: 8px; background: var(--grn, #00e89a); }
+#soma-cr { width: 34px; height: 34px; border: 1px solid rgba(0,232,154,0.5); transition: width .2s, height .2s, transform .13s; }
+body.soma-h #soma-cr { width: 52px; height: 52px; border-color: #00e89a; }
 
-const JS = ""
+/* ── Nav ── */
+#soma-root nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px var(--r);
+  transition: background .4s, box-shadow .4s;
+}
+#soma-root nav.stuck {
+  background: rgba(8,8,8,0.9);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+}
+#soma-root .n-logo {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: .95rem;
+  color: var(--ink); text-decoration: none;
+  display: flex; align-items: center;
+}
+#soma-root .n-pill {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px; padding: 4px;
+  display: flex;
+}
+#soma-root .n-pill a {
+  font-size: .74rem; color: var(--muted); text-decoration: none;
+  padding: 8px 18px; border-radius: 100px;
+  transition: background .2s, color .2s;
+}
+#soma-root .n-pill a:hover { background: rgba(255,255,255,0.08); color: var(--ink); }
+#soma-root .n-cta {
+  font-family: 'Syne', sans-serif; font-size: .78rem; font-weight: 700;
+  background: var(--blue); color: #fff;
+  padding: 11px 22px; border-radius: 100px; text-decoration: none;
+  transition: background .2s, transform .15s, box-shadow .2s;
+}
+#soma-root .n-cta:hover { background: var(--blue2); transform: scale(1.04); box-shadow: 0 0 24px var(--blue-glow); }
+
+/* ── Hero ── */
+#soma-root #hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 130px var(--r) 0;
+  position: relative; overflow: hidden;
+}
+#soma-root #hero canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+#soma-root .hero-inner { position: relative; z-index: 2; }
+#soma-root .hero-top-stats {
+  position: absolute; top: 130px; right: var(--r);
+  display: flex; flex-direction: column; gap: 20px;
+  z-index: 2; text-align: right;
+  opacity: 0; animation: fadeIn 1s 1s forwards;
+}
+#soma-root .ts-n { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.6rem; letter-spacing: -.03em; line-height: 1; }
+#soma-root .ts-n span { color: var(--grn); }
+#soma-root .ts-l { font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+
+#soma-root .hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(59,158,255,0.35);
+  background: rgba(59,158,255,0.07);
+  color: var(--blue); font-size: .68rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 7px 16px; border-radius: 100px; margin-bottom: 32px;
+  opacity: 0; animation: fadeUp .7s .3s forwards;
+}
+#soma-root .hero-badge-dot {
+  width: 6px; height: 6px; background: var(--grn);
+  border-radius: 50%; animation: pulse 2s infinite;
+  box-shadow: 0 0 6px var(--grn);
+}
+#soma-root .hero-h1 {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: clamp(5rem,11vw,12rem); line-height: .85; letter-spacing: -.05em;
+  opacity: 0; animation: fadeUp 1s .45s cubic-bezier(.22,1,.36,1) forwards;
+}
+#soma-root .hero-h1 .out {
+  -webkit-text-stroke: clamp(1px,.15vw,2px) rgba(240,237,232,0.3);
+  color: transparent;
+}
+#soma-root .dash-wrap {
+  position: relative; z-index: 2; margin-top: 52px;
+  opacity: 0; animation: fadeUp 1.1s .9s cubic-bezier(.22,1,.36,1) forwards;
+}
+#soma-root .dash-fade {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+  background: linear-gradient(to top, var(--bg), transparent);
+  z-index: 3; pointer-events: none;
+}
+#soma-root .dash-screen {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-bottom: none; border-radius: 16px 16px 0 0; overflow: hidden;
+}
+#soma-root .dash-bar {
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 14px 20px; display: flex; align-items: center; gap: 10px;
+}
+#soma-root .dash-dots { display: flex; gap: 6px; }
+#soma-root .dash-dot { width: 10px; height: 10px; border-radius: 50%; }
+#soma-root .dd1 { background: #ff5f57; }
+#soma-root .dd2 { background: #ffbd2e; }
+#soma-root .dd3 { background: #28c840; }
+#soma-root .dash-url {
+  flex: 1; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;
+  padding: 6px 14px; font-size: .72rem; color: var(--muted);
+}
+#soma-root .dash-body { display: grid; grid-template-columns: 220px 1fr; min-height: 400px; }
+#soma-root .dash-sidebar {
+  border-right: 1px solid rgba(255,255,255,0.06);
+  padding: 24px 16px; display: flex; flex-direction: column; gap: 4px;
+}
+#soma-root .dash-logo {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: .82rem;
+  color: var(--ink); margin-bottom: 16px; padding: 0 8px;
+  display: flex; align-items: center; gap: 7px;
+}
+#soma-root .dash-logo-dot { width: 7px; height: 7px; background: var(--grn); border-radius: 50%; box-shadow: 0 0 8px var(--grn); }
+#soma-root .nav-item { padding: 9px 12px; border-radius: 8px; font-size: .78rem; color: var(--muted); display: flex; align-items: center; gap: 10px; cursor: pointer; }
+#soma-root .nav-item.on { background: rgba(0,232,154,0.08); color: var(--ink); border: 1px solid rgba(0,232,154,0.15); }
+#soma-root .ni-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); flex-shrink: 0; }
+#soma-root .nav-item.on .ni-dot { background: var(--grn); box-shadow: 0 0 6px var(--grn); }
+
+#soma-root .dash-main { padding: 28px 32px; }
+#soma-root .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+#soma-root .dash-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: -.01em; }
+#soma-root .dash-live { background: rgba(0,232,154,0.1); border: 1px solid rgba(0,232,154,0.25); color: var(--grn); font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; display: flex; align-items: center; gap: 6px; }
+#soma-root .dlb-dot { width: 5px; height: 5px; background: var(--grn); border-radius: 50%; animation: pulse 1.5s infinite; }
+
+/* SOAP cards */
+#soma-root .aa-box { background: linear-gradient(135deg,rgba(0,232,154,0.07),rgba(0,232,154,0.02)); border: 1px solid rgba(0,232,154,0.18); border-radius: 10px; padding: 16px 20px; display: flex; gap: 14px; }
+#soma-root .aa-av { width: 32px; height: 32px; background: linear-gradient(135deg,var(--grn),#00b876); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: .9rem; flex-shrink: 0; }
+#soma-root .aa-l { font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--grn); margin-bottom: 5px; }
+#soma-root .aa-t { font-size: .76rem; line-height: 1.55; color: var(--muted); }
+#soma-root .aa-t b { color: var(--ink); font-weight: 500; }
+
+/* Waveform */
+#soma-root .waveform { height: 40px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; display: flex; align-items: center; padding: 0 16px; gap: 2px; }
+#soma-root .wbar { border-radius: 2px; background: var(--grn); opacity: .55; flex-shrink: 0; width: 3px; animation: wv 1.2s ease-in-out infinite alternate; }
+
+/* Marquee */
+#soma-root .mq-wrap { overflow: hidden; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 14px 0; background: rgba(255,255,255,0.015); }
+#soma-root .mq-track { display: flex; width: max-content; animation: march 30s linear infinite; }
+#soma-root .mq-item { white-space: nowrap; padding: 0 28px; font-family: 'Syne', sans-serif; font-size: .67rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(240,237,232,0.22); }
+#soma-root .mq-item .s { color: var(--grn); }
+
+/* Sections */
+#soma-root .sec { padding: clamp(80px,10vw,140px) var(--r); }
+#soma-root .sec-tag { display: flex; align-items: center; gap: 12px; font-family: 'Syne', sans-serif; font-size: .67rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--blue); margin-bottom: 20px; }
+#soma-root .sec-tag::before { content: ''; display: block; width: 24px; height: 1.5px; background: var(--blue); box-shadow: 0 0 8px var(--blue-glow); }
+#soma-root .sec-h { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.6rem,5.5vw,5.5rem); line-height: .88; letter-spacing: -.045em; }
+#soma-root .sec-h .out { -webkit-text-stroke: 1.5px rgba(240,237,232,0.22); color: transparent; }
+#soma-root .sec-h .g { color: var(--blue); }
+#soma-root .sec-sub { font-size: 1rem; line-height: 1.8; color: var(--muted); max-width: 460px; margin-top: 20px; }
+
+/* Scroll reveal */
+#soma-root .rv { opacity: 0; transform: translateY(40px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
+#soma-root .rv.in { opacity: 1; transform: none; }
+#soma-root .rv.d1 { transition-delay: .1s; }
+#soma-root .rv.d2 { transition-delay: .2s; }
+#soma-root .rv.d3 { transition-delay: .3s; }
+#soma-root .rv.d4 { transition-delay: .4s; }
+
+/* Problem section */
+#soma-root #problem { border-top: 1px solid rgba(255,255,255,0.06); }
+#soma-root .prob-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); margin-top: 60px; }
+#soma-root .prob-card { background: var(--bg); padding: 48px 36px; transition: background .3s; }
+#soma-root .prob-card:hover { background: rgba(255,255,255,0.025); }
+#soma-root .prob-n { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 4.5rem; color: var(--blue); letter-spacing: -.04em; line-height: 1; text-shadow: 0 0 60px var(--blue-glow); margin-bottom: 12px; }
+#soma-root .prob-l { font-size: .67rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+#soma-root .prob-d { font-size: .92rem; line-height: 1.7; color: rgba(240,237,232,0.5); }
+#soma-root .prob-full { grid-column: 1/-1; background: rgba(0,232,154,0.05); border-top: 1px solid rgba(0,232,154,0.12); padding: 36px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+#soma-root .prob-full-t { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.2rem,2.5vw,2rem); letter-spacing: -.03em; }
+#soma-root .ptags { display: flex; gap: 10px; flex-wrap: wrap; }
+#soma-root .ptag { background: rgba(0,232,154,0.08); border: 1px solid rgba(0,232,154,0.18); color: var(--grn); font-size: .67rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 100px; }
+
+/* Features */
+#soma-root #features { border-top: 1px solid rgba(255,255,255,0.06); }
+#soma-root .feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); margin-top: 60px; }
+#soma-root .feat-card { background: var(--bg); padding: 44px 36px; position: relative; overflow: hidden; transition: background .25s; }
+#soma-root .feat-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,rgba(0,232,154,0.06),transparent); opacity: 0; transition: opacity .3s; }
+#soma-root .feat-card:hover { background: rgba(255,255,255,0.02); }
+#soma-root .feat-card:hover::before { opacity: 1; }
+#soma-root .feat-row2 { border-top: 1px solid rgba(255,255,255,0.06); }
+#soma-root .feat-ico { font-size: 1.5rem; margin-bottom: 20px; }
+#soma-root .feat-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: -.01em; margin-bottom: 10px; }
+#soma-root .feat-desc { font-size: .86rem; line-height: 1.7; color: var(--muted); }
+#soma-root .feat-live { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,232,154,0.08); border: 1px solid rgba(0,232,154,0.22); color: var(--grn); font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-top: 16px; }
+#soma-root .feat-live-dot { width: 5px; height: 5px; background: var(--grn); border-radius: 50%; animation: pulse 2s infinite; }
+
+/* Dashboard section */
+#soma-root #ds-sec { border-top: 1px solid rgba(255,255,255,0.06); padding: clamp(80px,10vw,140px) var(--r); overflow: hidden; }
+#soma-root .ds-hd { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; flex-wrap: wrap; gap: 24px; }
+#soma-root .ds-wrap { position: relative; }
+#soma-root .ds-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 70%; height: 60%; background: radial-gradient(ellipse,rgba(0,232,154,0.07) 0%,transparent 70%); pointer-events: none; }
+#soma-root .ds-screen { position: relative; z-index: 1; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.09); border-radius: 20px; overflow: hidden; }
+#soma-root .ds-bar2 { background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 16px 24px; display: flex; align-items: center; gap: 10px; }
+#soma-root .ds-inner { display: grid; grid-template-columns: 240px 1fr 280px; min-height: 520px; }
+#soma-root .ds-side { border-right: 1px solid rgba(255,255,255,0.05); padding: 28px 20px; }
+#soma-root .ds-side-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: .88rem; margin-bottom: 28px; display: flex; align-items: center; gap: 8px; color: var(--ink); }
+#soma-root .ds-sld { width: 8px; height: 8px; background: var(--grn); border-radius: 50%; box-shadow: 0 0 10px var(--grn); }
+#soma-root .ds-ni { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; font-size: .8rem; color: var(--muted); margin-bottom: 2px; }
+#soma-root .ds-ni.on { background: rgba(0,232,154,0.08); color: var(--ink); border: 1px solid rgba(0,232,154,0.14); }
+#soma-root .ds-ni-ico { font-size: .9rem; width: 18px; text-align: center; }
+#soma-root .ds-center { padding: 32px 36px; }
+#soma-root .ds-ct { display: flex; justify-content: space-between; align-items: center; margin-bottom: 26px; }
+#soma-root .ds-cth { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: -.01em; }
+#soma-root .ds-rec { background: rgba(0,232,154,0.08); border: 1px solid rgba(0,232,154,0.22); color: var(--grn); font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; display: flex; align-items: center; gap: 7px; }
+#soma-root .ds-rec-dot { width: 6px; height: 6px; background: #ff4040; border-radius: 50%; animation: pulse 1s infinite; }
+#soma-root .ds-sg { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+#soma-root .ds-sc { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 18px; }
+#soma-root .ds-sl { font-size: .6rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--grn); margin-bottom: 8px; }
+#soma-root .ds-st { font-size: .78rem; line-height: 1.6; color: var(--muted); }
+#soma-root .ds-st b { color: var(--ink); font-weight: 500; }
+#soma-root .ds-aa { background: linear-gradient(135deg,rgba(0,232,154,0.07),rgba(0,232,154,0.02)); border: 1px solid rgba(0,232,154,0.18); border-radius: 12px; padding: 18px 22px; display: flex; gap: 14px; }
+#soma-root .ds-aa-av { width: 36px; height: 36px; background: linear-gradient(135deg,var(--grn),#00b876); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+#soma-root .ds-aa-l { font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--grn); margin-bottom: 5px; }
+#soma-root .ds-aa-t { font-size: .78rem; line-height: 1.55; color: var(--muted); }
+#soma-root .ds-aa-t b { color: var(--ink); font-weight: 500; }
+#soma-root .ds-wv { margin-top: 18px; height: 44px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; display: flex; align-items: center; padding: 0 18px; gap: 3px; }
+#soma-root .ds-right { border-left: 1px solid rgba(255,255,255,0.05); padding: 28px 24px; }
+#soma-root .ds-rt { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .82rem; letter-spacing: -.01em; margin-bottom: 18px; color: var(--muted); }
+#soma-root .ds-pat { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+#soma-root .ds-pn { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .82rem; margin-bottom: 4px; }
+#soma-root .ds-pi { font-size: .7rem; color: var(--muted); line-height: 1.5; }
+#soma-root .ds-ptag { display: inline-block; background: rgba(0,232,154,0.08); color: var(--grn); font-size: .58rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 100px; margin-top: 8px; }
+#soma-root .ds-metric { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+#soma-root .ds-metric:last-child { border-bottom: none; }
+#soma-root .ds-ml { font-size: .72rem; color: var(--muted); }
+#soma-root .ds-mv { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .88rem; color: var(--grn); }
+
+/* How */
+#soma-root #how { background: rgba(255,255,255,0.015); border-top: 1px solid rgba(255,255,255,0.06); }
+#soma-root .how-grid { display: grid; gap: 1px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); margin-top: 60px; }
+#soma-root .how-card { background: rgba(8,8,8,1); padding: 44px 32px; transition: background .25s; }
+#soma-root .how-card:hover { background: rgba(255,255,255,0.02); }
+#soma-root .how-n { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 4rem; color: rgba(255,255,255,0.04); line-height: 1; letter-spacing: -.05em; margin-bottom: 20px; }
+#soma-root .how-t { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .98rem; letter-spacing: -.01em; margin-bottom: 12px; }
+#soma-root .how-d { font-size: .86rem; line-height: 1.7; color: var(--muted); }
+
+/* Roadmap */
+#soma-root #roadmap { border-top: 1px solid rgba(255,255,255,0.06); }
+#soma-root .road-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); margin-top: 60px; }
+#soma-root .road-card { background: var(--bg); padding: 44px 32px; position: relative; transition: background .3s; }
+#soma-root .road-card:hover { background: rgba(255,255,255,0.02); }
+#soma-root .road-phase { font-size: .62rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+#soma-root .road-t { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: -.01em; margin-bottom: 16px; line-height: 1.2; }
+#soma-root .road-live { position: absolute; top: 18px; right: 18px; background: rgba(59,158,255,0.1); border: 1px solid rgba(59,158,255,0.3); color: var(--blue); font-size: .58rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 5px 11px; border-radius: 100px; }
+#soma-root .road-items { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+#soma-root .road-items li { font-size: .8rem; line-height: 1.5; color: rgba(240,237,232,0.4); padding-left: 14px; position: relative; }
+#soma-root .road-items li::before { content: '→'; position: absolute; left: 0; color: var(--grn); font-size: .68rem; }
+#soma-root .road-date { font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(240,237,232,0.16); margin-top: 20px; }
+
+/* Investors */
+#soma-root #investors { border-top: 1px solid rgba(255,255,255,0.06); }
+#soma-root .inv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 60px; align-items: start; }
+#soma-root .inv-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); }
+#soma-root .inv-stat { background: var(--bg); padding: 40px 32px; transition: background .25s; }
+#soma-root .inv-stat:hover { background: rgba(255,255,255,0.02); }
+#soma-root .inv-n { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 3rem; letter-spacing: -.04em; color: var(--blue); text-shadow: 0 0 40px var(--blue-glow); line-height: 1; }
+#soma-root .inv-l { font-size: .67rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+#soma-root .why-list { display: flex; flex-direction: column; }
+#soma-root .why-item { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+#soma-root .why-item:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+#soma-root .why-n { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .82rem; color: var(--blue); flex-shrink: 0; width: 28px; }
+#soma-root .why-t { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .92rem; margin-bottom: 5px; }
+#soma-root .why-d { font-size: .84rem; line-height: 1.65; color: var(--muted); }
+#soma-root .deck-link { display: inline-flex; align-items: center; gap: 10px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: .88rem; background: var(--blue); color: #fff; padding: 15px 32px; border-radius: 100px; text-decoration: none; margin-top: 36px; transition: background .2s, transform .15s, box-shadow .2s; }
+#soma-root .deck-link:hover { background: var(--blue2); transform: translateY(-3px); box-shadow: 0 12px 40px var(--blue-glow); }
+
+/* CTA */
+#soma-root #cta { border-top: 1px solid rgba(255,255,255,0.06); text-align: center; padding: clamp(80px,10vw,140px) var(--r); }
+#soma-root .cta-h { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(3.5rem,8vw,8.5rem); line-height: .88; letter-spacing: -.05em; margin: 28px 0; }
+#soma-root .cta-h .out { -webkit-text-stroke: clamp(1px,.15vw,2px) rgba(240,237,232,0.22); color: transparent; }
+#soma-root .cta-h .g { color: var(--blue); text-shadow: 0 0 100px var(--blue-glow); }
+#soma-root .cta-sub { font-size: 1rem; line-height: 1.8; color: var(--muted); max-width: 440px; margin: 0 auto 44px; }
+#soma-root .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+#soma-root .cta-b1 { font-family: 'Syne', sans-serif; font-size: .92rem; font-weight: 700; background: var(--blue); color: #fff; padding: 17px 38px; border-radius: 100px; text-decoration: none; transition: background .2s, transform .15s, box-shadow .2s; }
+#soma-root .cta-b1:hover { background: var(--blue2); transform: translateY(-3px); box-shadow: 0 16px 48px var(--blue-glow); }
+#soma-root .cta-b2 { font-family: 'Syne', sans-serif; font-size: .92rem; font-weight: 700; background: transparent; color: var(--ink); padding: 16px 34px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14); text-decoration: none; transition: border-color .2s, transform .15s; }
+#soma-root .cta-b2:hover { border-color: rgba(255,255,255,0.4); transform: translateY(-3px); }
+#soma-root .cta-note { font-size: .76rem; color: var(--dim); margin-top: 20px; }
+
+/* Footer */
+#soma-root footer { background: rgba(255,255,255,0.015); border-top: 1px solid rgba(255,255,255,0.06); padding: 72px var(--r) 40px; }
+#soma-root .foot-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+#soma-root .foot-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; margin-bottom: 14px; display: flex; align-items: center; gap: 9px; }
+#soma-root .foot-tag { font-size: .86rem; line-height: 1.75; color: var(--muted); max-width: 260px; }
+#soma-root .foot-col-h { font-family: 'Syne', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); margin-bottom: 18px; }
+#soma-root .foot-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+#soma-root .foot-links a { font-size: .84rem; color: var(--muted); text-decoration: none; transition: color .2s; }
+#soma-root .foot-links a:hover { color: var(--ink); }
+#soma-root .foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; gap: 12px; }
+#soma-root .foot-copy { font-size: .76rem; color: var(--dim); }
+#soma-root .foot-aa { display: flex; align-items: center; gap: 8px; font-size: .76rem; color: var(--dim); }
+#soma-root .aa-dot { width: 6px; height: 6px; background: var(--grn); border-radius: 50%; box-shadow: 0 0 6px var(--grn); }
+
+/* ── Keyframes ── */
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+@keyframes wv { 0%{height:3px} 100%{height:28px} }
+@keyframes march { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(44px)} to{opacity:1;transform:translateY(0)} }
+`

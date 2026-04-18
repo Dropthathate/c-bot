@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { useAuth } from "@/hooks/useAuth";
+import { Analytics } from "@vercel/analytics/react";
 
 // Lazy-load pages for better performance
 const Landing = lazy(() => import("./Landing"));
@@ -53,6 +54,7 @@ export default function App() {
         </Routes>
       </Suspense>
       <Toaster />
+      <Analytics />
     </>
   );
 }

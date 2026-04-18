@@ -7,6 +7,318 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
   </head>
   <body>
+    <!-- ============================================================
+     SOMASYNC AI — STUDENT LANDING SECTION
+     Paste this near the TOP of your index.html body
+     Links to: starter.html / growth.html / super-pack.html / compare.html
+     Formspree: https://formspree.io/f/xdaygbyo
+     ============================================================ -->
+
+<style>
+  /* Student Section Styles — scoped with .ss- prefix to avoid conflicts */
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+
+  .ss-section {
+    background: #020617;
+    padding: 80px 24px;
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+  .ss-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 50% 60% at 50% -10%, rgba(34,197,94,0.1) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 30% at 10% 80%, rgba(59,130,246,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse 30% 30% at 90% 80%, rgba(168,85,247,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .ss-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* Top label */
+  .ss-eyebrow {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .ss-eyebrow span {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 18px;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.25);
+    border-radius: 100px;
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: #22c55e;
+  }
+
+  .ss-headline {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .ss-headline h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1;
+    color: #f1f5f9;
+    letter-spacing: 0.03em;
+  }
+  .ss-headline h2 em {
+    font-style: normal;
+    color: #22c55e;
+  }
+
+  .ss-sub {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 1rem;
+    max-width: 520px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  /* Package Cards */
+  .ss-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .ss-card {
+    background: #0f172a;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 32px 28px;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s;
+    text-decoration: none;
+    color: #f1f5f9;
+  }
+  .ss-card:hover { transform: translateY(-5px); }
+  .ss-card.popular {
+    border-color: rgba(59,130,246,0.35);
+    box-shadow: 0 0 40px rgba(59,130,246,0.12);
+  }
+  .ss-card.popular:hover { box-shadow: 0 0 60px rgba(59,130,246,0.2); }
+
+  .ss-popular-tag {
+    position: absolute; top: 16px; right: 16px;
+    padding: 4px 12px;
+    background: #3b82f6;
+    border-radius: 100px;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: white;
+  }
+
+  .ss-dot {
+    width: 12px; height: 12px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+  .ss-dot.green { background: #22c55e; box-shadow: 0 0 12px rgba(34,197,94,0.5); }
+  .ss-dot.blue  { background: #3b82f6; box-shadow: 0 0 12px rgba(59,130,246,0.5); }
+  .ss-dot.purple{ background: #a855f7; box-shadow: 0 0 12px rgba(168,85,247,0.5); }
+
+  .ss-pkg-name {
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 6px;
+  }
+  .ss-pkg-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: #f1f5f9;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .ss-price-row {
+    display: flex; align-items: baseline; gap: 8px;
+    margin-bottom: 20px;
+  }
+  .ss-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; line-height: 1;
+  }
+  .ss-price.green { color: #22c55e; }
+  .ss-price.blue  { color: #3b82f6; }
+  .ss-price.purple{ color: #a855f7; }
+  .ss-price-was {
+    font-size: 0.82rem;
+    color: #64748b;
+    text-decoration: line-through;
+  }
+
+  .ss-features {
+    list-style: none; padding: 0; margin: 0 0 28px;
+    flex: 1;
+  }
+  .ss-features li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 0.83rem; color: #94a3b8;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    line-height: 1.4;
+  }
+  .ss-features li:last-child { border-bottom: none; }
+  .ss-features li::before {
+    content: '✓';
+    font-weight: 700;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .ss-card.green-card .ss-features li::before { color: #22c55e; }
+  .ss-card.blue-card  .ss-features li::before { color: #3b82f6; }
+  .ss-card.purple-card .ss-features li::before { color: #a855f7; }
+
+  .ss-btn {
+    display: block; width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; font-weight: 700;
+    text-align: center; text-decoration: none;
+    transition: all 0.2s;
+    border: none; cursor: pointer;
+  }
+  .ss-btn.green  { background: #22c55e; color: #020617; }
+  .ss-btn.blue   { background: #3b82f6; color: white; }
+  .ss-btn.purple { background: #a855f7; color: white; }
+  .ss-btn:hover  { opacity: 0.88; transform: translateY(-1px); }
+
+  /* Bottom row */
+  .ss-bottom {
+    display: flex; align-items: center; justify-content: center;
+    gap: 20px; flex-wrap: wrap;
+  }
+  .ss-compare-link {
+    font-size: 0.88rem; color: #94a3b8;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+  }
+  .ss-compare-link:hover { color: #f1f5f9; }
+  .ss-divider-dot { color: rgba(255,255,255,0.15); }
+
+  /* Payment note */
+  .ss-payment-note {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.82rem; color: #f59e0b;
+  }
+
+  @media (max-width: 800px) {
+    .ss-cards { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto 32px; }
+    .ss-section { padding: 60px 20px; }
+  }
+  @media (max-width: 500px) {
+    .ss-cards { max-width: 100%; }
+  }
+</style>
+
+<section class="ss-section" id="student-packages">
+  <div class="ss-inner">
+
+    <div class="ss-eyebrow">
+      <span>🎓 Student Pricing — Limited Time</span>
+    </div>
+
+    <div class="ss-headline">
+      <h2>Graduate <em>Ready</em> for Business</h2>
+    </div>
+
+    <p class="ss-sub">
+      Built specifically for massage therapy students. Professional branding, websites, and launch tools — at prices that actually make sense before you start earning.
+    </p>
+
+    <div class="ss-cards">
+
+      <!-- STARTER -->
+      <a href="starter.html" class="ss-card green-card">
+        <div class="ss-dot green"></div>
+        <div class="ss-pkg-name">Starter</div>
+        <div class="ss-pkg-title">Brand Kickstart</div>
+        <div class="ss-price-row">
+          <div class="ss-price green">$49</div>
+          <div class="ss-price-was">$149</div>
+        </div>
+        <ul class="ss-features">
+          <li>Basic Logo Design</li>
+          <li>Brand Colors & Fonts</li>
+          <li>Business Name Help</li>
+          <li>Professional Bio Written</li>
+          <li>Service Menu Layout</li>
+        </ul>
+        <div class="ss-btn green">Get Started →</div>
+      </a>
+
+      <!-- GROWTH -->
+      <a href="growth.html" class="ss-card blue-card popular">
+        <div class="ss-popular-tag">⭐ Most Popular</div>
+        <div class="ss-dot blue"></div>
+        <div class="ss-pkg-name">Growth</div>
+        <div class="ss-pkg-title">AMTA Site Upgrade</div>
+        <div class="ss-price-row">
+          <div class="ss-price blue">$119</div>
+          <div class="ss-price-was">$299</div>
+        </div>
+        <ul class="ss-features">
+          <li>Everything in Starter</li>
+          <li>AMTA Website Redesign</li>
+          <li>Homepage Optimization</li>
+          <li>Booking Call-To-Action</li>
+          <li>SEO + Meta Description</li>
+          <li>Intake & Cancellation Templates</li>
+        </ul>
+        <div class="ss-btn blue">Apply for Growth →</div>
+      </a>
+
+      <!-- SUPER PACK -->
+      <a href="super-pack.html" class="ss-card purple-card">
+        <div class="ss-dot purple"></div>
+        <div class="ss-pkg-name">Super Pack</div>
+        <div class="ss-pkg-title">Graduate Ready</div>
+        <div class="ss-price-row">
+          <div class="ss-price purple">$189</div>
+          <div class="ss-price-was">$499</div>
+        </div>
+        <ul class="ss-features">
+          <li>Everything in Growth</li>
+          <li>Instagram Setup + 6 Posts</li>
+          <li>Google Business Profile</li>
+          <li>Brand Guideline Sheet</li>
+          <li>30-Day Launch Strategy</li>
+          <li>Priority Turnaround</li>
+        </ul>
+        <div class="ss-btn purple">Get Super Pack →</div>
+      </a>
+
+    </div>
+
+    <div class="ss-bottom">
+      <a href="compare.html" class="ss-compare-link">Compare all packages side by side →</a>
+      <span class="ss-divider-dot">·</span>
+      <span class="ss-payment-note">💛 Super Pack: split into $99 + $90</span>
+      <span class="ss-divider-dot">·</span>
+      <a href="https://formspree.io/f/xdaygbyo" class="ss-compare-link">Questions? Contact us</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- END STUDENT LANDING SECTION -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

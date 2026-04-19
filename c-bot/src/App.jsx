@@ -5,10 +5,19 @@ export default function Home() {
   useEffect(() => {
 
   }, []);
+import { useEffect } from 'react';
 
-  return (
+function App() {
+  
+  useEffect(() => {
+    // Paste all your Vanilla JS here (cursor tracking, canvas blobs, intersection observers)
+    // This ensures the code only runs AFTER React has actually rendered the HTML elements.
+  }, []);
+
+  return ({
     <>
-      <style dangerouslySetInnerHTML={{__html: `
+      {/* Your HTML/JSX goes here */}
+       {/ <style dangerouslySetInnerHTML={{__html:*/} `
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#080808;--ink:#f0ede8;--muted:rgba(240,237,232,0.45);--dim:rgba(240,237,232,0.18);--grn:#00e89a;--blue:#3b9eff;--blue2:#1a7ee0;--blue-glow:rgba(59,158,255,0.25);--r:clamp(24px,5vw,80px)}
 html{scroll-behavior:smooth}
@@ -293,7 +302,7 @@ footer{background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,
 <div className="mq-wrap"><div className="mq-track"><span className="mq-item">Live In-Ear AI <span className="s">◆</span></span><span className="mq-item">Automatic SOAP Notes <span className="s">◆</span></span><span className="mq-item">Voice Charting <span className="s">◆</span></span><span className="mq-item">Treatment Memory <span className="s">◆</span></span><span className="mq-item">Gold Standard Documentation <span className="s">◆</span></span><span className="mq-item">Physical Therapy <span className="s">◆</span></span><span className="mq-item">Chiropractic <span className="s">◆</span></span><span className="mq-item">Massage Therapy <span className="s">◆</span></span><span className="mq-item">Sports Medicine <span className="s">◆</span></span><span className="mq-item">ICD-10 Assist <span className="s">◆</span></span><span className="mq-item">AALIYAH.IO Powered <span className="s">◆</span></span><span className="mq-item">Live In-Ear AI <span className="s">◆</span></span><span className="mq-item">Automatic SOAP Notes <span className="s">◆</span></span><span className="mq-item">Voice Charting <span className="s">◆</span></span><span className="mq-item">Treatment Memory <span className="s">◆</span></span><span className="mq-item">Gold Standard Documentation <span className="s">◆</span></span><span className="mq-item">Physical Therapy <span className="s">◆</span></span><span className="mq-item">Chiropractic <span className="s">◆</span></span><span className="mq-item">Massage Therapy <span className="s">◆</span></span><span className="mq-item">Sports Medicine <span className="s">◆</span></span><span className="mq-item">ICD-10 Assist <span className="s">◆</span></span><span className="mq-item">AALIYAH.IO Powered <span className="s">◆</span></span></div></div>
 <section id="problem" className="sec">
   <div className="sec-tag rv">The Problem</div>
-  <h2 className="sec-h rv d1">YOU DIDN'T<br>TRAIN TO <span className="out">CHART.</span></h2>
+  <h2 className="sec-h rv d1">YOU DIDN'T<br />TRAIN TO <span className="out">CHART.</span></h2>
   <p className="sec-sub rv d2">Manual therapists spend nearly as much time documenting as treating. That ends now.</p>
   <div className="prob-row">
     <div className="prob-card rv d1"><div className="prob-n">3H</div><div className="prob-l">Daily Documentation Burden</div><div className="prob-d">Average practitioner spends 3+ hours per day on notes, charting, and admin tasks.</div></div>
@@ -304,7 +313,7 @@ footer{background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,
 </section>
 <section id="features" className="sec">
   <div className="sec-tag rv">Core Features — Live Now</div>
-  <h2 className="sec-h rv d1">BUILT FOR THE<br><span className="out">TREATMENT</span> TABLE</h2>
+  <h2 className="sec-h rv d1">BUILT FOR THE<br /><span className="out">TREATMENT</span> TABLE</h2>
   <div className="feat-grid">
     <div className="feat-card rv d1"><div className="feat-ico">🎧</div><div className="feat-title">Live In-Ear AI Guidance</div><div className="feat-desc">Real-time suggestions whispered during assessments. Like having a brilliant clinical colleague on every case.</div><div className="feat-live"><div className="feat-live-dot"></div>Live Now</div></div>
     <div className="feat-card rv d2"><div className="feat-ico">📋</div><div className="feat-title">Automatic SOAP Notes</div><div className="feat-desc">Speak naturally. SomaSyncAI structures everything instantly into compliant, ready-to-sign documentation.</div><div className="feat-live"><div className="feat-live-dot"></div>Live Now</div></div>
@@ -587,7 +596,7 @@ footer{background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,
 {/* ══ CALIFORNIA LOCATIONS ══ */}
 <section style="border-top:1px solid rgba(255,255,255,0.06);padding:clamp(80px,10vw,140px) var(--r)">
   <div className="sec-tag rv">Serving California & Beyond</div>
-  <h2 className="sec-h rv d1">BUILT FOR<br><span className="g">CALIFORNIA</span> PRACTITIONERS</h2>
+  <h2 className="sec-h rv d1">BUILT FOR<br /><span className="g">CALIFORNIA</span> PRACTITIONERS</h2>
   <p className="sec-sub rv d2">Currently prioritising California practitioners in our first beta cohort — with national expansion underway.</p>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin-top:60px">
     <div className="rv d1">
@@ -654,7 +663,7 @@ footer{background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,
 {/* ══ FREE EBOOKS ══ */}
 <section id="ebooks" style="border-top:1px solid rgba(255,255,255,0.06);padding:clamp(80px,10vw,140px) var(--r)">
   <div className="sec-tag rv">Free Resources</div>
-  <h2 className="sec-h rv d1">FREE CLINICAL<br><span className="g">LIBRARY</span></h2>
+  <h2 className="sec-h rv d1">FREE CLINICAL<br /><span className="g">LIBRARY</span></h2>
   <p style="font-size:1rem;line-height:1.8;color:var(--muted);max-width:500px;margin-top:20px;margin-bottom:60px" className="rv d2">Gold standard references for every manual therapist — free to download. No email required.</p>
 
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
@@ -783,7 +792,7 @@ footer{background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,
 {/* ══ TEAM ══ */}
 <section id="team" style="border-top:1px solid rgba(255,255,255,0.06);padding:clamp(80px,10vw,140px) var(--r)">
   <div className="sec-tag rv">Join the Founding Team</div>
-  <h2 className="sec-h rv d1">WE'RE BUILDING<br><span className="out">SOMETHING</span> RARE</h2>
+  <h2 className="sec-h rv d1">WE'RE BUILDING<br /><span className="out">SOMETHING</span> RARE</h2>
   <p style="font-size:1rem;line-height:1.8;color:var(--muted);max-width:460px;margin-top:20px" className="rv d2">We're looking for rare people who see the full vision and want to help build it from the ground up.</p>
   <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px">
     <div className="feat-card rv d1" style="padding:52px 44px">
@@ -855,32 +864,12 @@ footer{background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,
   </div>
   <div className="foot-bottom"><div className="foot-copy">© 2026 SomaSyncAI. Built for the gold standard practitioner.</div><div className="foot-aa"><div className="aa-dot"></div>Powered by AALIYAH.IO</div></div>
 </footer>
-<script>
-const cd=document.getElementById('cd'),cr=document.getElementById('cr');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cd.style.left=mx+'px';cd.style.top=my+'px'});
-(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(loop)})();
-document.querySelectorAll('a,button,.feat-card,.how-card,.road-card,.inv-stat,.prob-card,.ds-ni,.nav-item').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('h'));el.addEventListener('mouseleave',()=>document.body.classList.remove('h'))});
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>60));
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
-document.querySelectorAll('.rv').forEach(el=>io.observe(el));
-function buildWave(id,cls){
-  const el=document.getElementById(id);if(!el)return;
-  for(let i=0;i<60;i++){const b=document.createElement('div');b.className=cls;b.style.cssText=`width:3px;height:4px;flex-shrink:0;animation-delay:${(i*.06).toFixed(2)}s;animation-duration:${(.8+Math.random()*.9).toFixed(2)}s`;el.appendChild(b)}
-}
-buildWave('wf1','wbar');buildWave('wf2','wbar');
-const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
-let W,H,t=0;
-function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight}
-resize();window.addEventListener('resize',resize);
-const blobs=[{x:.72,y:.25,r:340,hue:210},{x:.2,y:.65,r:270,hue:195},{x:.55,y:.75,r:210,hue:225}];
-function drawBlob(cx,cy,r,hue){
-  ctx.beginPath();
-  for(let i=0;i<=16;i++){const a=(i/16)*Math.PI*2,noise=Math.sin(a*3+t*.7)*35+Math.cos(a*2+t*.5)*22,rad=r+noise,x=cx+Math.cos(a)*rad,y=cy+Math.sin(a)*rad;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}
-  ctx.closePath();
-  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,r+60);
-  g.addColorStop(0,`hsla(${hue},80%,50%,.17)`);g.addColorStop(.6,`hsla(${hue},70%,40%,.08)`);g.addColorStop(1,
-    </>
+{/* ... rest of your footer ... */}
+  <div className="foot-bottom">
+    <div className="foot-copy">© 2026 SomaSyncAI. Built for the gold standard practitioner.</div>
+    <div className="foot-aa"><div className="aa-dot"></div>Powered by AALIYAH.IO</div>
+  </div>
+</footer>
+</> // <-- 1. Close the fragment you opened at the very top of the file
   );
-}
+} // <-- 2. Close your main App() function

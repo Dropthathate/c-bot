@@ -1,12 +1,28 @@
 {
-  "routes": [
-    {"src": "/", "dest": "/somasync-landing.html"},
-    {"src": "/privacy-policy", "dest": "/privacy-policy.html"},
-    {"src": "/terms-and-conditions", "dest": "/terms-and-conditions.html"},
-    {"src": "/ai-disclaimer", "dest": "/ai-disclaimer.html"},
-    {"src": "/california-ai-clinical-documentation", "dest": "/seo-article.html"},
-    {"src": "/investor-pitch", "dest": "/investor-pitch.html"},
-    {"src": "/(.*\\.(js|css|png|jpg|svg|ico|txt|mp3))", "dest": "/$1"},
-    {"src": "/(.*)", "dest": "/index.html"}
+  "rewrites": [
+    {
+      "source": "/starter.html",
+      "destination": "/starter.html"
+    },
+    {
+      "source": "/growth.html",
+      "destination": "/growth.html"
+    },
+    {
+      "source": "/super-pack.html",
+      "destination": "/super-pack.html"
+    },
+    {
+      "source": "/compare.html",
+      "destination": "/compare.html"
+    },
+    {
+      "source": "/about.html",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/((?!.*\\..*|_next).*)",
+      "destination": "/index.html"
+    }
   ]
 }

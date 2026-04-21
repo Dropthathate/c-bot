@@ -167,7 +167,7 @@ export default function StudentSection() {
             <span className="ss-divider-dot">·</span>
             <a href="https://formspree.io/f/xdaygbyo" className="ss-compare-link">Questions? Contact us</a>
           </div>
-
+<StudentSection />
         </div>
       </section>
     </>

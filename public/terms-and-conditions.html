@@ -1,341 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Terms &amp; Conditions — SomaSyncAI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms & Conditions — SomaSync AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0d0d12; --soft: #3a3a4a; --muted: #8888a0; --rule: #e4e4ef;
-    --bg: #f9f9fc; --white: #ffffff; --accent: #2d6b8f; --accent-light: #e8f3f9;
-    --warn: #7a3f00; --warn-bg: #fff4e6; --warn-border: #f0a040;
-    --ca-bg: #f0f7ff; --ca-border: #1a56a0; --ca-text: #1a3a5c;
-    --critical-bg: #fff1f2; --critical-border: #e53e3e; --critical-text: #7b1e1e;
+    --bg: #080808; --surface: #0f172a; --s2: #1e293b;
+    --grn: #00e89a; --blue: #3b9eff;
+    --text: #f0ede8; --muted: rgba(240,237,232,0.55); --dim: rgba(240,237,232,0.2);
+    --border: rgba(255,255,255,0.08); --r: clamp(24px,5vw,80px);
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.75; font-weight: 300; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; -webkit-font-smoothing: antialiased; }
 
-  nav { position: sticky; top: 0; z-index: 100; background: rgba(249,249,252,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(1.5rem, 5vw, 4rem); height: 64px; }
-  .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
-  .nav-badge { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 4px 10px; border-radius: 20px; }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px var(--r); background: rgba(8,8,8,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: .95rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  .nav-back { font-size: .8rem; color: var(--muted); text-decoration: none; border: 1px solid var(--border); padding: 7px 16px; border-radius: 100px; transition: all .2s; }
+  .nav-back:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
 
-  .hero { border-bottom: 1px solid var(--rule); padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem); background: var(--white); display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2rem; }
-  .hero-tag { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
-  .hero-tag::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent); }
-  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); }
-  .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero-meta { text-align: right; font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
-  .hero-meta strong { display: block; font-size: 0.85rem; color: var(--soft); font-weight: 500; }
+  .hero { padding: 80px var(--r) 60px; border-bottom: 1px solid var(--border); }
+  .hero-tag { font-size: .68rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .hero-tag::before { content: ''; display: block; width: 24px; height: 1.5px; background: var(--blue); }
+  .hero h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.5rem, 5vw, 4rem); line-height: .9; letter-spacing: -.04em; margin-bottom: 20px; }
+  .hero-meta { font-size: .82rem; color: var(--dim); }
 
-  .page-wrap { max-width: 860px; margin: 0 auto; padding: clamp(2rem, 6vw, 5rem) clamp(1.5rem, 5vw, 2rem); }
+  .content { max-width: 780px; margin: 0 auto; padding: 72px var(--r) 120px; }
 
-  .ca-notice { background: var(--ca-bg); border: 1.5px solid var(--ca-border); border-radius: 10px; padding: 1.5rem 2rem; margin-bottom: 2rem; }
-  .ca-notice-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ca-border); margin-bottom: 0.5rem; }
-  .ca-notice p { color: var(--ca-text); font-size: 0.92rem; margin-bottom: 0; }
+  .toc { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: 12px; padding: 28px 32px; margin-bottom: 60px; }
+  .toc-title { font-family: 'Syne', sans-serif; font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; }
+  .toc ol { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .toc li { font-size: .86rem; color: var(--muted); }
+  .toc a { color: var(--muted); text-decoration: none; transition: color .2s; }
+  .toc a:hover { color: var(--blue); }
 
-  .toc { background: var(--white); border: 1px solid var(--rule); border-radius: 12px; padding: 1.75rem 2rem; margin-bottom: 3.5rem; text-align: left; }
-  .toc-title { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; text-align: left; }
-  .toc ol { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 2rem; counter-reset: toc; text-align: left; }
-  .toc li { counter-increment: toc; text-align: left; }
-  .toc a { color: var(--soft); text-decoration: none; font-size: 0.88rem; display: flex; align-items: baseline; gap: 0.5rem; transition: color 0.15s; justify-content: flex-start; }
-  .toc a::before { content: counter(toc, decimal-leading-zero); font-size: 0.72rem; color: var(--muted); min-width: 1.6rem; }
-  .toc a:hover { color: var(--accent); }
-  .toc li { padding: 0; position: static; border-bottom: none; text-align: left; }
-  .toc li::before { content: none; }
+  .summary-box { background: rgba(59,158,255,0.06); border: 1px solid rgba(59,158,255,0.2); border-left: 3px solid var(--blue); border-radius: 10px; padding: 24px 28px; margin-bottom: 48px; }
+  .summary-box p { font-size: .9rem; color: rgba(240,237,232,0.7); line-height: 1.8; margin-bottom: 10px; }
+  .summary-box p:last-child { margin-bottom: 0; }
 
-  section { margin-bottom: 3rem; scroll-margin-top: 80px; }
-  .section-num { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
-  .ca-tag { display: inline-block; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ca-border); background: var(--ca-bg); border: 1px solid var(--ca-border); padding: 2px 8px; border-radius: 20px; margin-left: 8px; vertical-align: middle; }
+  .section { margin-bottom: 56px; }
+  .section-num { font-family: 'Syne', sans-serif; font-size: .68rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+  .section h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; letter-spacing: -.02em; margin-bottom: 20px; }
+  .section p { font-size: .92rem; color: var(--muted); line-height: 1.85; margin-bottom: 16px; }
+  .section p:last-child { margin-bottom: 0; }
+  .section ul, .section ol { padding-left: 20px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .section li { font-size: .92rem; color: var(--muted); line-height: 1.7; }
+  .section strong { color: var(--text); font-weight: 600; }
+  .section h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin: 24px 0 12px; color: var(--text); }
+  .divider { height: 1px; background: var(--border); margin-bottom: 56px; }
 
-  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.35rem, 2.5vw, 1.65rem); letter-spacing: -0.015em; color: var(--ink); margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--rule); }
-  p { color: var(--soft); margin-bottom: 1rem; }
-  p:last-child { margin-bottom: 0; }
-  ul { color: var(--soft); padding-left: 0; list-style: none; margin-bottom: 1rem; }
-  li { padding: 0.45rem 0 0.45rem 1.5rem; position: relative; border-bottom: 1px solid var(--rule); font-size: 0.95rem; }
-  li:last-child { border-bottom: none; }
-  li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.8rem; }
+  .highlight-box { background: var(--surface); border: 1px solid rgba(0,232,154,0.2); border-left: 3px solid var(--grn); border-radius: 10px; padding: 20px 24px; margin: 20px 0; }
+  .highlight-box p { margin-bottom: 0; }
 
-  .highlight-box { background: var(--accent-light); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: 0.92rem; color: var(--soft); }
-  .warning-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: 0.92rem; color: var(--warn); }
-  .warning-box strong { display: block; margin-bottom: 0.3rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; }
-  .critical-box { background: var(--critical-bg); border-left: 3px solid var(--critical-border); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: 0.92rem; color: var(--critical-text); }
-  .critical-box strong { display: block; margin-bottom: 0.3rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; }
-
-  .contact-card { background: var(--ink); color: var(--white); border-radius: 14px; padding: 2.5rem; margin-top: 3rem; }
-  .contact-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
-  .contact-card p { color: rgba(255,255,255,0.65); margin-bottom: 0.75rem; }
-  .contact-card a { color: var(--white); font-weight: 500; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 2px; display: inline-block; margin-bottom: 0.5rem; }
-
-  footer { border-top: 1px solid var(--rule); padding: 2rem clamp(1.5rem, 5vw, 4rem); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: var(--white); }
-  footer p { font-size: 0.8rem; color: var(--muted); margin: 0; }
-  .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-  .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.15s; }
-  .footer-links a:hover, .footer-links a.active { color: var(--accent); font-weight: 500; }
-  .footer-links a.dns { color: var(--ca-border); font-weight: 500; }
+  footer { border-top: 1px solid var(--border); padding: 32px var(--r); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .foot-copy { font-size: .76rem; color: var(--dim); }
+  .foot-links { display: flex; gap: 20px; }
+  .foot-links a { font-size: .76rem; color: var(--dim); text-decoration: none; transition: color .2s; }
+  .foot-links a:hover { color: var(--text); }
 
   @media (max-width: 600px) {
-    .hero { grid-template-columns: 1fr; } .hero-meta { text-align: left; }
-    .toc ol { grid-template-columns: 1fr; }
+    nav { padding: 14px 20px; }
+    .hero { padding: 60px 20px 40px; }
+    .content { padding: 48px 20px 80px; }
+    footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="/" class="nav-brand">SomaSyncAI</a>
-  <span class="nav-badge">Terms &amp; Conditions</span>
+  <a href="/" class="nav-logo">
+    <img src="./ss.png" alt="SomaSyncAI" style="height:32px;width:auto;object-fit:contain;filter:drop-shadow(0 0 6px rgba(59,158,255,0.4))" onerror="this.style.display='none'">
+    SomaSyncAI
+  </a>
+  <a href="/" class="nav-back">← Back to Site</a>
 </nav>
 
 <div class="hero">
-  <div>
-    <div class="hero-tag">Legal</div>
-    <h1>Terms &amp; <em>Conditions</em></h1>
-  </div>
-  <div class="hero-meta">
-    <strong>Last Updated</strong>
-    March 15, 2026
-  </div>
+  <div class="hero-tag">Legal</div>
+  <h1>Terms &amp; Conditions</h1>
+  <div class="hero-meta">Last updated: April 20, 2026 &nbsp;·&nbsp; Effective: April 20, 2026</div>
 </div>
 
-<div class="page-wrap">
+<div class="content">
 
-  <div class="ca-notice">
-    <div class="ca-notice-label">🏛 California Compliance Notice</div>
-    <p>These Terms include provisions required under California law, including consumer protections under the CCPA/CPRA, California Business and Professions Code, and applicable healthcare regulations. California residents may have additional rights described herein.</p>
-  </div>
-
-  <nav class="toc">
-    <div class="toc-title">Contents</div>
+  <div class="toc">
+    <div class="toc-title">Table of Contents</div>
     <ol>
       <li><a href="#t1">Acceptance of Terms</a></li>
-      <li><a href="#t2">Description of Services</a></li>
-      <li><a href="#t3">Eligibility</a></li>
-      <li><a href="#t4">Account Responsibilities</a></li>
-      <li><a href="#t5">Permitted Use</a></li>
-      <li><a href="#t6">Prohibited Conduct</a></li>
-      <li><a href="#t7">Practitioner Responsibilities</a></li>
-      <li><a href="#t8">No Clinical Reliance</a></li>
-      <li><a href="#t9">HIPAA Awareness</a></li>
-      <li><a href="#t10">Subscriptions &amp; Payments</a></li>
-      <li><a href="#t11">AI Output Limitations</a></li>
-      <li><a href="#t12">Intellectual Property</a></li>
-      <li><a href="#t13">Limitation of Liability</a></li>
+      <li><a href="#t2">Eligibility</a></li>
+      <li><a href="#t3">Description of Service</a></li>
+      <li><a href="#t4">Beta Access Program</a></li>
+      <li><a href="#t5">Account Registration</a></li>
+      <li><a href="#t6">Practitioner Obligations</a></li>
+      <li><a href="#t7">Acceptable Use</a></li>
+      <li><a href="#t8">Intellectual Property</a></li>
+      <li><a href="#t9">Clinical Data Ownership</a></li>
+      <li><a href="#t10">Payment & Subscriptions</a></li>
+      <li><a href="#t11">Disclaimers</a></li>
+      <li><a href="#t12">Limitation of Liability</a></li>
+      <li><a href="#t13">Indemnification</a></li>
       <li><a href="#t14">Termination</a></li>
-      <li><a href="#t15">Governing Law — California</a></li>
-      <li><a href="#t16">Contact</a></li>
+      <li><a href="#t15">Governing Law</a></li>
+      <li><a href="#t16">Changes to Terms</a></li>
+      <li><a href="#t17">Contact</a></li>
     </ol>
-  </nav>
+  </div>
 
-  <section id="t1">
+  <div class="summary-box">
+    <p><strong>Plain-language summary:</strong> SomaSyncAI is a professional tool for licensed healthcare practitioners. You must be a licensed practitioner to use it. The AI assists your documentation — it doesn't replace your clinical judgment. Your clinical data belongs to you. During beta, access is free in exchange for feedback.</p>
+    <p>These Terms are a legal agreement. Please read them fully.</p>
+  </div>
+
+  <!-- T1 -->
+  <div class="section" id="t1">
     <div class="section-num">01</div>
     <h2>Acceptance of Terms</h2>
-    <p>These Terms and Conditions ("Terms") constitute a legally binding agreement between you ("User," "Practitioner," "you") and SomaSyncAI ("Company," "we," "us," "our"). By creating an account, accessing, or using any part of our platform at <strong>somasyncai.com</strong>, you confirm you have read, understood, and agree to these Terms and our Privacy Policy.</p>
-    <p>We reserve the right to modify these Terms at any time. Material changes will be communicated with at least 30 days' notice. Continued use after changes take effect constitutes acceptance.</p>
-  </section>
+    <p>These Terms and Conditions ("Terms") constitute a legally binding agreement between you ("Practitioner," "User," or "you") and SomaSyncAI ("Company," "we," "us," or "our") governing your access to and use of the SomaSyncAI platform, including all associated services, software, and AI features (collectively, the "Service").</p>
+    <p>By creating an account, accessing the platform, or using any feature of SomaSyncAI, you confirm that you have read, understood, and agreed to be bound by these Terms, our <a href="/privacy-policy.html" style="color:var(--grn)">Privacy Policy</a>, and our <a href="/ai-disclaimer.html" style="color:var(--grn)">AI Disclaimer</a>.</p>
+    <p><strong>If you do not agree to these Terms, do not use SomaSyncAI.</strong></p>
+  </div>
+  <div class="divider"></div>
 
-  <section id="t2">
+  <!-- T2 -->
+  <div class="section" id="t2">
     <div class="section-num">02</div>
-    <h2>Description of Services</h2>
-    <p>SomaSyncAI provides an AI-powered clinical documentation platform offering live in-ear guidance, automatic SOAP note generation, voice charting, and long-term treatment memory for licensed healthcare practitioners. Our services include:</p>
-    <ul>
-      <li>Real-time voice-to-documentation processing during clinical assessments</li>
-      <li>Automatic SOAP note generation from spoken clinical observations</li>
-      <li>Hands-free voice charting during treatment sessions</li>
-      <li>Long-term patient session history and pattern tracking</li>
-      <li>AI-generated clinical insights and documentation suggestions</li>
-    </ul>
-    <div class="critical-box">
-      <strong>Not a Medical Service</strong>
-      SomaSyncAI is a documentation assistance tool for licensed professionals. It is not a medical device, clinical service, or healthcare provider. All content generated by the platform is for documentation support only and does not constitute medical advice, diagnosis, or treatment.
-    </div>
-  </section>
-
-  <section id="t3">
-    <div class="section-num">03</div>
     <h2>Eligibility</h2>
-    <p>SomaSyncAI is intended for use by licensed or otherwise qualified healthcare and wellness practitioners. To use the platform, you must:</p>
+    <p>You may use SomaSyncAI only if you:</p>
     <ul>
-      <li>Be at least 18 years of age</li>
-      <li>Be a licensed or qualified healthcare professional, wellness practitioner, or operate in a professional clinical capacity</li>
-      <li>Have the legal capacity to enter into binding agreements</li>
-      <li>Not be previously suspended or banned from our platform</li>
-      <li>Comply with all applicable professional licensing and regulatory requirements in your jurisdiction</li>
+      <li>Are a <strong>licensed healthcare practitioner</strong> in good standing in your jurisdiction, including but not limited to: massage therapists, physical therapists, chiropractors, athletic trainers, and sports medicine professionals</li>
+      <li>Are at least 18 years of age</li>
+      <li>Have the legal authority to enter into a binding agreement</li>
+      <li>Are not prohibited from using the Service by applicable law</li>
     </ul>
-    <p>By registering, you represent and warrant that you meet all eligibility requirements.</p>
-  </section>
+    <p>Students enrolled in accredited healthcare programs may access designated student features (student packages) but are not authorized to use clinical session features until licensed.</p>
+    <p>By using the Service, you represent and warrant that you meet all eligibility requirements. We reserve the right to verify credentials and suspend accounts that do not meet eligibility criteria.</p>
+  </div>
+  <div class="divider"></div>
 
-  <section id="t4">
+  <!-- T3 -->
+  <div class="section" id="t3">
+    <div class="section-num">03</div>
+    <h2>Description of Service</h2>
+    <p>SomaSyncAI provides an AI-powered clinical documentation platform for manual therapy practitioners, including:</p>
+    <ul>
+      <li>Live in-ear AI guidance during clinical sessions (powered by AALIYAH.IO)</li>
+      <li>Voice-to-SOAP note generation</li>
+      <li>ICD-10 code suggestions</li>
+      <li>Treatment memory and longitudinal session intelligence</li>
+      <li>Clinical dashboard and patient management tools</li>
+      <li>Educational resources and clinical reference library</li>
+    </ul>
+    <p>The Service is provided "as a service" via web browser and may include mobile applications in future releases. We reserve the right to modify, update, or discontinue features at any time with reasonable notice.</p>
+  </div>
+  <div class="divider"></div>
+
+  <!-- T4 -->
+  <div class="section" id="t4">
     <div class="section-num">04</div>
-    <h2>Account Responsibilities</h2>
+    <h2>Beta Access Program</h2>
+    <p>SomaSyncAI is currently in beta. Beta access is provided under the following terms:</p>
+    <h3>Lifetime Access Offer</h3>
+    <p>Practitioners who complete all three steps of the beta program — (1) using the platform in practice, (2) providing honest feedback, and (3) referring one colleague who completes the same steps — will receive <strong>lifetime free access</strong> to SomaSyncAI's core features at no charge, even when paid tiers launch.</p>
+    <h3>Beta Feedback</h3>
+    <p>By participating in beta, you agree to provide good-faith feedback on your experience. Feedback may be used to improve the platform. We may quote anonymized feedback in marketing materials with your permission.</p>
+    <h3>Beta Limitations</h3>
     <ul>
-      <li>Provide accurate, current, and complete information during registration and maintain it</li>
-      <li>Keep your login credentials secure and confidential</li>
-      <li>Not share account access with unauthorised individuals</li>
-      <li>Notify us immediately at <a href="mailto:support@somasyncai.com">support@somasyncai.com</a> if you suspect unauthorised account access</li>
-      <li>Accept responsibility for all activities conducted under your account</li>
+      <li>Beta features may be unstable, incomplete, or subject to change</li>
+      <li>Lifetime access is contingent on completing all three beta program steps</li>
+      <li>We reserve the right to modify the beta program terms with 30 days notice</li>
+      <li>Beta practitioners will be grandfathered at beta pricing when paid tiers launch — this means you will never pay full retail price</li>
     </ul>
-  </section>
-
-  <section id="t5">
-    <div class="section-num">05</div>
-    <h2>Permitted Use</h2>
-    <p>SomaSyncAI grants you a limited, non-exclusive, non-transferable, revocable licence to access and use the platform for professional clinical documentation purposes, subject to these Terms.</p>
-    <ul>
-      <li>Generate clinical documentation for patients under your professional care</li>
-      <li>Use AI-assisted insights to support your own professional documentation workflow</li>
-      <li>Access and review historical session records within your account</li>
-      <li>Use the platform in accordance with your professional scope of practice</li>
-    </ul>
-  </section>
-
-  <section id="t6">
-    <div class="section-num">06</div>
-    <h2>Prohibited Conduct</h2>
-    <ul>
-      <li>Reverse engineering, decompiling, or attempting to extract source code or AI models</li>
-      <li>Using automated scripts, bots, or scrapers to access the platform</li>
-      <li>Entering patient data without obtaining appropriate patient consent</li>
-      <li>Using the platform outside your licensed scope of professional practice</li>
-      <li>Submitting AI-generated documentation to patient records without human review and verification</li>
-      <li>Commercially reselling or redistributing AI outputs without written consent</li>
-      <li>Sharing, publishing, or disclosing another user's data without authorisation</li>
-      <li>Uploading malicious code or attempting to interfere with platform security</li>
-      <li>Impersonating any person, entity, or professional credential</li>
-    </ul>
-  </section>
-
-  <section id="t7">
-    <div class="section-num">07</div>
-    <h2>Practitioner Responsibilities <span class="ca-tag">Healthcare Compliance</span></h2>
-    <p>As a licensed professional using SomaSyncAI, you assume full responsibility for:</p>
-    <ul>
-      <li><strong>Patient Consent:</strong> Obtaining informed consent from patients before documenting any patient information using our platform</li>
-      <li><strong>Documentation Verification:</strong> Reviewing, verifying, and approving all AI-generated documentation before it is used in official patient records or submitted for billing</li>
-      <li><strong>Regulatory Compliance:</strong> Ensuring your use of SomaSyncAI complies with all applicable laws, including HIPAA, California confidentiality laws, and your professional licensing board's requirements</li>
-      <li><strong>Scope of Practice:</strong> Using the platform only within your licensed and permitted scope of professional practice</li>
-      <li><strong>Clinical Judgment:</strong> Applying your own independent professional judgment to all treatment decisions — AI outputs are suggestions only</li>
-    </ul>
-    <div class="warning-box">
-      <strong>California-Specific Obligation</strong>
-      California practitioners are subject to the Confidentiality of Medical Information Act (CMIA) and applicable Board of Behavioral Sciences, Board of Physical Therapy, and Chiropractic Examiners regulations. Compliance with these regulations when using SomaSyncAI is the practitioner's sole responsibility.
-    </div>
-  </section>
-
-  <section id="t8">
-    <div class="section-num">08</div>
-    <h2>No Clinical Reliance</h2>
-    <div class="critical-box">
-      <strong>Critical — No Medical Advice</strong>
-      AI suggestions, SOAP note content, treatment summaries, and all other outputs generated by SomaSyncAI are informational documentation tools only. They do not constitute medical advice, clinical diagnosis, therapeutic recommendations, or any form of licensed healthcare service.
-    </div>
-    <p>SomaSyncAI does not guarantee:</p>
-    <ul>
-      <li>The diagnostic accuracy of any AI-generated content</li>
-      <li>The clinical appropriateness of any suggested documentation</li>
-      <li>Any specific treatment or patient outcomes</li>
-      <li>That AI outputs meet the documentation standards of any particular regulatory body</li>
-    </ul>
-    <p>All clinical decisions remain the sole professional responsibility of the licensed practitioner.</p>
-  </section>
-
-  <section id="t9">
-    <div class="section-num">09</div>
-    <h2>HIPAA Awareness <span class="ca-tag">Healthcare Compliance</span></h2>
-    <p>SomaSyncAI is a software tool designed to assist licensed professionals with clinical documentation. We are committed to reasonable data security and privacy practices.</p>
     <div class="highlight-box">
-      <strong>Important:</strong> SomaSyncAI is not a HIPAA-covered entity and does not represent that its platform is HIPAA-compliant by default. Practitioners who are covered entities or business associates under HIPAA are responsible for determining whether SomaSyncAI meets their specific HIPAA obligations, and for executing any required Business Associate Agreements (BAA). Please contact <a href="mailto:legal@somasyncai.com">legal@somasyncai.com</a> to enquire about BAA arrangements.
+      <p>Early adopters who complete all three beta steps will receive lifetime free access to core features. This commitment is in writing here and we stand behind it.</p>
     </div>
-    <p>We recommend practitioners consult with a healthcare compliance attorney to determine their regulatory obligations when using third-party documentation tools.</p>
-  </section>
+  </div>
+  <div class="divider"></div>
 
-  <section id="t10">
-    <div class="section-num">10</div>
-    <h2>Subscriptions &amp; Payments</h2>
+  <!-- T5 -->
+  <div class="section" id="t5">
+    <div class="section-num">05</div>
+    <h2>Account Registration</h2>
+    <p>To use SomaSyncAI, you must create an account. You agree to:</p>
     <ul>
-      <li><strong>Billing:</strong> Paid plans are billed on a recurring monthly or annual basis unless cancelled prior to renewal</li>
-      <li><strong>Cancellation:</strong> Cancel at any time via account settings; access continues through the end of the billing period</li>
-      <li><strong>Refunds:</strong> Fees are generally non-refundable except as required by applicable California law</li>
-      <li><strong>Price Changes:</strong> At least 30 days' notice will be provided before any subscription price changes</li>
-      <li><strong>Free Trials:</strong> Where offered, free trials automatically convert to paid plans unless cancelled before the trial period ends</li>
-      <li><strong>California Auto-Renewal:</strong> In compliance with California Business and Professions Code §17601, automatic renewal terms are disclosed clearly at the time of purchase. You will receive advance notice before any renewal charge.</li>
+      <li>Provide accurate, current, and complete information during registration</li>
+      <li>Maintain and promptly update your account information</li>
+      <li>Keep your password secure and confidential</li>
+      <li>Notify us immediately of any unauthorized account access at <a href="mailto:security@somasyncai.com" style="color:var(--grn)">security@somasyncai.com</a></li>
+      <li>Accept responsibility for all activity under your account</li>
     </ul>
-  </section>
+    <p>One account per practitioner. Sharing accounts between multiple practitioners is not permitted. Enterprise or group practice accounts require a separate agreement.</p>
+  </div>
+  <div class="divider"></div>
 
-  <section id="t11">
-    <div class="section-num">11</div>
-    <h2>AI Output Limitations <span class="ca-tag">AI Transparency</span></h2>
-    <p>In accordance with evolving California AI transparency expectations, we disclose the following:</p>
+  <!-- T6 -->
+  <div class="section" id="t6">
+    <div class="section-num">06</div>
+    <h2>Practitioner Obligations</h2>
+    <p>As a licensed healthcare practitioner using SomaSyncAI, you agree that:</p>
     <ul>
-      <li><strong>AI-Generated Content:</strong> Documentation, notes, and suggestions produced by our platform are generated by artificial intelligence and may contain errors, omissions, or inaccuracies</li>
-      <li><strong>Hallucination Risk:</strong> AI systems can generate plausible but factually incorrect information. All AI outputs must be reviewed by a qualified professional before use</li>
-      <li><strong>No Autonomous Clinical Decisions:</strong> SomaSyncAI does not make autonomous clinical or medical decisions. All outputs require human review and verification</li>
-      <li><strong>Bias Disclosure:</strong> AI models may reflect biases present in training data. We continuously work to identify and mitigate these limitations</li>
-      <li><strong>Verification Requirement:</strong> Practitioners must review and verify all AI-generated documentation before including it in official patient records or submitting for billing or insurance purposes</li>
+      <li><strong>You maintain clinical responsibility.</strong> All clinical decisions, treatment plans, and patient documentation are your professional responsibility. AI outputs do not substitute for your clinical judgment.</li>
+      <li><strong>You obtain proper patient consent.</strong> Before using voice or AI features during any patient session, you will obtain appropriate informed consent from the patient in accordance with applicable law and your professional licensing requirements.</li>
+      <li><strong>You review all AI-generated content.</strong> You will review, verify, and approve all SOAP notes, ICD-10 suggestions, and AI outputs before clinical use, billing submission, or any legal purpose.</li>
+      <li><strong>You comply with applicable law.</strong> Your use of SomaSyncAI complies with HIPAA, state privacy laws, your professional licensing board requirements, and all applicable regulations.</li>
+      <li><strong>You maintain current licensure.</strong> You will notify us if your professional license is suspended, revoked, or otherwise impaired.</li>
     </ul>
-  </section>
+  </div>
+  <div class="divider"></div>
 
-  <section id="t12">
-    <div class="section-num">12</div>
+  <!-- T7 -->
+  <div class="section" id="t7">
+    <div class="section-num">07</div>
+    <h2>Acceptable Use</h2>
+    <p>You may use SomaSyncAI only for lawful purposes consistent with these Terms. You agree <strong>not</strong> to:</p>
+    <ul>
+      <li>Use the platform for any unlicensed or illegal clinical practice</li>
+      <li>Share account credentials with other practitioners or third parties</li>
+      <li>Attempt to reverse engineer, decompile, or extract the AI models</li>
+      <li>Use the Service to train competing AI systems</li>
+      <li>Submit false, misleading, or fraudulent clinical documentation</li>
+      <li>Interfere with or disrupt the platform's infrastructure</li>
+      <li>Use the Service in any way that could harm patients</li>
+      <li>Misrepresent AI-generated content as exclusively human-authored documentation without appropriate disclosure where required</li>
+    </ul>
+    <p>Violation of acceptable use policies may result in immediate account termination without refund.</p>
+  </div>
+  <div class="divider"></div>
+
+  <!-- T8 -->
+  <div class="section" id="t8">
+    <div class="section-num">08</div>
     <h2>Intellectual Property</h2>
-    <p>All platform technology, AI models, software, content, branding, and intellectual property are owned by or licensed to SomaSyncAI and protected by applicable law.</p>
-    <p><strong>Your Content:</strong> You retain ownership of clinical notes and data you create. By submitting content, you grant us a limited licence to process it to provide our services and improve the platform.</p>
-    <p><strong>AI Outputs:</strong> Documentation generated using our AI is provided for your professional use. Commercial redistribution of AI outputs without written consent is prohibited.</p>
-  </section>
+    <h3>Our IP</h3>
+    <p>SomaSyncAI, AALIYAH.IO, and all associated software, AI models, designs, trademarks, and content are owned by SomaSyncAI and protected by copyright, trademark, and other intellectual property laws. You receive a limited, non-exclusive, non-transferable license to use the Service for its intended purpose.</p>
+    <h3>Your Content</h3>
+    <p>Clinical notes, session records, and documentation you create using SomaSyncAI remain yours. You grant SomaSyncAI a limited license to process this content solely to provide and improve the Service, subject to the Privacy Policy.</p>
+    <h3>Feedback</h3>
+    <p>Any feedback, suggestions, or ideas you provide about the Service may be used by SomaSyncAI without compensation or attribution obligation, though we will never identify you without permission.</p>
+  </div>
+  <div class="divider"></div>
 
-  <section id="t13">
-    <div class="section-num">13</div>
+  <!-- T9 -->
+  <div class="section" id="t9">
+    <div class="section-num">09</div>
+    <h2>Clinical Data Ownership</h2>
+    <p><strong>Your clinical data belongs to you.</strong> SomaSyncAI does not claim ownership of patient records, SOAP notes, session transcripts, or any clinical documentation you create using the platform.</p>
+    <p>Upon account deletion, your clinical data will be deleted within 30 days. You may export your data at any time through account settings or by contacting support.</p>
+    <p>We do not use identifiable clinical data to train AI models or for any commercial purpose beyond providing the Service to you.</p>
+  </div>
+  <div class="divider"></div>
+
+  <!-- T10 -->
+  <div class="section" id="t10">
+    <div class="section-num">10</div>
+    <h2>Payment &amp; Subscriptions</h2>
+    <h3>Beta Period</h3>
+    <p>During the current beta period, SomaSyncAI core features are available free of charge to qualifying practitioners who complete the beta program requirements.</p>
+    <h3>Future Paid Tiers</h3>
+    <p>When paid subscription tiers launch, beta practitioners who completed all program requirements will be grandfathered at beta pricing. We will provide at least 60 days notice before any billing begins for previously free features.</p>
+    <h3>Student Packages</h3>
+    <p>One-time student branding and web design packages are offered at student pricing through the SomaSyncAI student program. These are non-recurring service fees, not platform subscriptions. Payment is collected at time of service. Refund requests must be submitted within 7 days of delivery.</p>
+    <h3>Billing</h3>
+    <p>When applicable, subscriptions are billed in advance on a monthly or annual basis. You may cancel at any time. Cancellation takes effect at the end of the current billing period.</p>
+  </div>
+  <div class="divider"></div>
+
+  <!-- T11 -->
+  <div class="section" id="t11">
+    <div class="section-num">11</div>
+    <h2>Disclaimers</h2>
+    <p>THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.</p>
+    <p>WE DO NOT WARRANT THAT:</p>
+    <ul>
+      <li>AI-generated content is accurate, complete, or appropriate for any clinical or legal purpose</li>
+      <li>The Service will be uninterrupted, error-free, or secure</li>
+      <li>Any specific clinical outcome will result from use of the Service</li>
+      <li>The Service meets requirements of any specific regulatory body or payer</li>
+    </ul>
+    <p>See our <a href="/ai-disclaimer.html" style="color:var(--grn)">AI Disclaimer</a> for comprehensive information about the limitations of AI-generated clinical content.</p>
+  </div>
+  <div class="divider"></div>
+
+  <!-- T12 -->
+  <div class="section" id="t12">
+    <div class="section-num">12</div>
     <h2>Limitation of Liability</h2>
-    <div class="warning-box">
-      <strong>Read Carefully</strong>
-      To the fullest extent permitted by California and applicable law, SomaSyncAI shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of, or reliance on, the platform or its AI-generated outputs.
-    </div>
-    <p>Our aggregate liability for claims arising under these Terms shall not exceed the total amount you paid to us in the 12 months preceding the claim.</p>
-    <p>We make no warranties — express or implied — regarding the accuracy, completeness, clinical appropriateness, or fitness for a particular professional purpose of AI-generated documentation. Practitioners assume full responsibility for reviewing and using AI outputs in their professional practice.</p>
-    <p>Nothing in these Terms limits liability that cannot be excluded under California law, including liability for fraud, gross negligence, or wilful misconduct.</p>
-  </section>
+    <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, SOMASYNCAI SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO:</p>
+    <ul>
+      <li>Patient harm or adverse clinical outcomes</li>
+      <li>Billing errors, claim denials, or regulatory penalties</li>
+      <li>Loss of practice revenue or business opportunity</li>
+      <li>Loss of data or clinical records</li>
+      <li>Reputational harm</li>
+    </ul>
+    <p>IN NO EVENT SHALL SOMASYNCAI'S TOTAL LIABILITY EXCEED THE GREATER OF (A) THE AMOUNT YOU PAID US IN THE TWELVE MONTHS PRECEDING THE CLAIM OR (B) ONE HUNDRED DOLLARS ($100).</p>
+    <p>These limitations apply regardless of the legal theory under which liability is claimed and whether we have been advised of the possibility of such damages.</p>
+  </div>
+  <div class="divider"></div>
 
-  <section id="t14">
+  <!-- T13 -->
+  <div class="section" id="t13">
+    <div class="section-num">13</div>
+    <h2>Indemnification</h2>
+    <p>You agree to defend, indemnify, and hold harmless SomaSyncAI and its officers, directors, employees, and agents from any claims, damages, losses, or expenses (including legal fees) arising from:</p>
+    <ul>
+      <li>Your use of the Service in violation of these Terms</li>
+      <li>Your clinical practice or patient care decisions</li>
+      <li>Your violation of any law or third-party rights</li>
+      <li>Any clinical documentation you submit, sign, or bill based on AI-generated content</li>
+    </ul>
+  </div>
+  <div class="divider"></div>
+
+  <!-- T14 -->
+  <div class="section" id="t14">
     <div class="section-num">14</div>
     <h2>Termination</h2>
+    <h3>By You</h3>
+    <p>You may terminate your account at any time by contacting <a href="mailto:hello@somasyncai.com" style="color:var(--grn)">hello@somasyncai.com</a> or through account settings. Upon termination, your access to the Service ends immediately.</p>
+    <h3>By Us</h3>
+    <p>We may suspend or terminate your account immediately if you:</p>
     <ul>
-      <li><strong>By You:</strong> Delete your account via account settings or contact support at any time</li>
-      <li><strong>By Us:</strong> We may suspend or terminate access immediately for material breach of these Terms, fraudulent activity, or as required by law — with notice where reasonably practicable</li>
+      <li>Violate these Terms or our Acceptable Use Policy</li>
+      <li>Lose your professional licensure</li>
+      <li>Engage in fraudulent, abusive, or illegal activity</li>
+      <li>Create risk or legal exposure for SomaSyncAI or its users</li>
     </ul>
-    <p>Upon termination, your right to use the platform ceases. Provisions that by nature should survive — including IP rights, limitation of liability, and dispute resolution — will continue in effect.</p>
-  </section>
+    <h3>Effect of Termination</h3>
+    <p>Upon termination, your right to use the Service ends. Sections that by their nature should survive termination (including Disclaimers, Limitation of Liability, Indemnification, and Governing Law) will survive.</p>
+  </div>
+  <div class="divider"></div>
 
-  <section id="t15">
+  <!-- T15 -->
+  <div class="section" id="t15">
     <div class="section-num">15</div>
-    <h2>Governing Law — California <span class="ca-tag">California Law</span></h2>
-    <p>These Terms are governed by and construed in accordance with the laws of the State of California, without regard to its conflict of law principles. Any disputes arising from these Terms or your use of SomaSyncAI shall be subject to the exclusive jurisdiction of the state and federal courts located in California.</p>
-    <p>Nothing in these Terms waives any rights you may have under California consumer protection laws. If you are a California resident, you may contact the California Attorney General's Office or the California Department of Consumer Affairs regarding your rights.</p>
-    <p>If any provision of these Terms is found to be unenforceable under California law, the remaining provisions will continue in full force.</p>
-  </section>
+    <h2>Governing Law &amp; Disputes</h2>
+    <p>These Terms are governed by the laws of the State of California, without regard to conflict of law principles. Any dispute arising from these Terms or the Service shall be resolved through binding arbitration in California, except that either party may seek injunctive relief in court for intellectual property violations.</p>
+    <p>By agreeing to these Terms, you waive the right to a jury trial and the right to participate in a class action lawsuit related to the Service.</p>
+  </div>
+  <div class="divider"></div>
 
-  <section id="t16">
+  <!-- T16 -->
+  <div class="section" id="t16">
     <div class="section-num">16</div>
-    <h2>Contact</h2>
-    <p>For questions about these Terms, compliance enquiries, or BAA requests, please contact our legal team.</p>
-  </section>
+    <h2>Changes to Terms</h2>
+    <p>We may update these Terms from time to time. When we make material changes, we will:</p>
+    <ul>
+      <li>Post the updated Terms on this page with a new "Last Updated" date</li>
+      <li>Send email notification to your registered account email at least 30 days before changes take effect</li>
+    </ul>
+    <p>Your continued use of SomaSyncAI after the effective date of updated Terms constitutes acceptance. If you do not agree to updated Terms, you must stop using the Service before the effective date.</p>
+  </div>
+  <div class="divider"></div>
 
-  <div class="contact-card">
-    <h3>Legal &amp; Compliance</h3>
-    <p>Terms enquiries, BAA requests, and compliance questions.</p>
-    <a href="mailto:legal@somasyncai.com">legal@somasyncai.com</a><br>
-    <p style="margin-top:1rem; font-size:0.85rem; color:rgba(255,255,255,0.5);">SomaSyncAI · somasyncai.com</p>
+  <!-- T17 -->
+  <div class="section" id="t17">
+    <div class="section-num">17</div>
+    <h2>Contact</h2>
+    <p>For questions about these Terms:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:hello@somasyncai.com" style="color:var(--grn)">hello@somasyncai.com</a></li>
+      <li><strong>Legal:</strong> <a href="mailto:legal@somasyncai.com" style="color:var(--grn)">legal@somasyncai.com</a></li>
+      <li><strong>Privacy:</strong> <a href="mailto:privacy@somasyncai.com" style="color:var(--grn)">privacy@somasyncai.com</a></li>
+    </ul>
   </div>
 
 </div>
 
 <footer>
-  <p>© 2026 SomaSyncAI. All rights reserved.</p>
-  <div class="footer-links">
-    <a href="/privacy-policy">Privacy Policy</a>
-    <a href="/terms-and-conditions" class="active">Terms &amp; Conditions</a>
-    <a href="/ai-disclaimer">AI Disclaimer</a>
-    <a href="mailto:privacy@somasyncai.com?subject=Do Not Sell My Information" class="dns">Do Not Sell My Information</a>
+  <div class="foot-copy">© 2026 SomaSyncAI. All rights reserved.</div>
+  <div class="foot-links">
+    <a href="/privacy-policy.html">Privacy</a>
+    <a href="/terms-and-conditions.html">Terms</a>
+    <a href="/ai-disclaimer.html">AI Disclaimer</a>
+    <a href="/">Home</a>
   </div>
 </footer>
 

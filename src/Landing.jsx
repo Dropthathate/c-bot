@@ -1,3 +1,4 @@
+import StudentSection from './StudentSection'
 import { useEffect, useRef } from 'react'
 
 export default function Landing() {

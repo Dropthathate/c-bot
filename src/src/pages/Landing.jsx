@@ -62,3 +62,4 @@ function frame(){t+=.008;ctx.clearRect(0,0,W,H);blobs.forEach(b=>drawBlob(b.x*W,
 const JS = ""
 
 
+

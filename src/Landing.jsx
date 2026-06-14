@@ -148,7 +148,7 @@ export default function Landing() {
             <a href="#how">Workflow</a>
             <a href="#investors">Investors</a>
           </div>
-          <a className="n-cta" href="https://somasyncai.com/auth">Join Beta — Free</a>
+          <a className="n-cta" href="/login">Join Beta — Free</a>
         </nav>
 
         {/* HERO */}
@@ -484,7 +484,7 @@ export default function Landing() {
             ))}
           </div>
           <div className="cta-btns rv d3">
-            <a className="cta-b1" href="https://somasyncai.com/auth">Create Free Account →</a>
+            <a className="cta-b1" href="/login">Create Free Account →</a>
             <a className="cta-b2" href="https://somasyncai.com/dashboard/chat">Open Dashboard</a>
           </div>
           <div className="cta-note rv d4">No credit card. No commitment. California practitioners prioritised in first cohort.<br />Early adopters grandfathered at beta pricing when paid tiers launch.</div>

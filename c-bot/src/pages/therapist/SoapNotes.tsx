@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import DashboardLayout from "@/components/layout/DashboardLayout";
 import ChatInterface from "@/components/chat/ChatInterface";
+import NoPhiGuard from "@/components/NoPhiGuard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -166,7 +166,7 @@ const SoapNotes = () => {
   };
 
   return (
-    <DashboardLayout requiredRole="therapist" requiredTier="pro">
+    <NoPhiGuard>
       <div className="h-screen flex">
         {/* Sidebar - Note List */}
         <div className="w-80 border-r border-border bg-card flex flex-col">
@@ -337,7 +337,7 @@ const SoapNotes = () => {
           )}
         </div>
       </div>
-    </DashboardLayout>
+    </NoPhiGuard>
   );
 };
 

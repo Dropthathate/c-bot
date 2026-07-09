@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 import Landing from './Landing.jsx'
-import Onboarding from './Onboarding.tsx'
 import TherapistLayout from './pages/therapist/TherapistLayout.tsx'
 import TherapistDashboard from './pages/therapist/TherapistDashboard.tsx'
 import TherapistChat from './pages/therapist/TherapistChat.tsx'
@@ -15,7 +14,6 @@ function AppRouter() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/auth" element={<Landing />} />
-        <Route path="/onboarding" element={<Onboarding />} />
 
         {/* Therapist area as a nested layout */}
         <Route path="/therapist" element={<TherapistLayout />}>

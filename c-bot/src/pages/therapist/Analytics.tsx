@@ -1,9 +1,6 @@
 import "./legacy-dashboard.css";
 
-import { useEffect, useRef } from "react";
-
-let Chart;
-try { Chart = (await import("chart.js/auto")).default; } catch { Chart = null; }
+import { useEffect, useRef, useState } from "react";
 
 const CHART_DEFAULTS = {
   responsive: true,
@@ -17,6 +14,12 @@ const CHART_DEFAULTS = {
 
 function LineChart({ id, data, labels, color }) {
   const ref = useRef(null);
+  const [Chart, setChart] = useState(null);
+
+  useEffect(() => {
+    import("chart.js/auto").then(m => setChart(m.default)).catch(() => setChart(null));
+  }, []);
+
   useEffect(() => {
     if (!Chart || !ref.current) return;
     const chart = new Chart(ref.current.getContext("2d"), {
@@ -33,12 +36,18 @@ function LineChart({ id, data, labels, color }) {
       options: CHART_DEFAULTS,
     });
     return () => chart.destroy();
-  }, []);
+  }, [Chart]);
   return <canvas ref={ref} id={id} />;
 }
 
 function BarChart({ id, data, labels, color }) {
   const ref = useRef(null);
+  const [Chart, setChart] = useState(null);
+
+  useEffect(() => {
+    import("chart.js/auto").then(m => setChart(m.default)).catch(() => setChart(null));
+  }, []);
+
   useEffect(() => {
     if (!Chart || !ref.current) return;
     const chart = new Chart(ref.current.getContext("2d"), {
@@ -54,12 +63,18 @@ function BarChart({ id, data, labels, color }) {
       options: CHART_DEFAULTS,
     });
     return () => chart.destroy();
-  }, []);
+  }, [Chart]);
   return <canvas ref={ref} id={id} />;
 }
 
 function DonutChart({ id, data, labels, colors }) {
   const ref = useRef(null);
+  const [Chart, setChart] = useState(null);
+
+  useEffect(() => {
+    import("chart.js/auto").then(m => setChart(m.default)).catch(() => setChart(null));
+  }, []);
+
   useEffect(() => {
     if (!Chart || !ref.current) return;
     const chart = new Chart(ref.current.getContext("2d"), {
@@ -76,7 +91,7 @@ function DonutChart({ id, data, labels, colors }) {
       },
     });
     return () => chart.destroy();
-  }, []);
+  }, [Chart]);
   return <canvas ref={ref} id={id} />;
 }
 

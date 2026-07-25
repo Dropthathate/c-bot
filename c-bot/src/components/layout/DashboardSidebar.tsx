@@ -28,6 +28,9 @@ const DashboardSidebar = () => {
     { href: "/therapist", icon: Home, label: "Command Center" },
     { href: "/therapist/chat", icon: MessageSquare, label: "AI Chat" },
     { href: "/therapist/soap", icon: ClipboardList, label: "SOAP Notes", tier: "pro" },
+    { href: "/therapist/soap-live", icon: MessageSquare, label: "SOAP Live", tier: "pro" },
+    { href: "/therapist/analytics", icon: Activity, label: "Analytics", tier: "pro" },
+    { href: "/therapist/icd", icon: ClipboardList, label: "ICD Coder", tier: "pro" },
     { href: "/therapist/legal", icon: Shield, label: "Legal Forms", tier: "pro" },
     { href: "/therapist/videos", icon: Video, label: "Video Library" },
   ];

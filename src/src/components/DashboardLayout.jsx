@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const CSS = `
@@ -280,7 +280,7 @@ export default function DashboardLayout({ children }) {
             </div>
           </div>
         </aside>
-        <main className="main-content">{children}</main>
+        <main className="main-content"><Outlet /></main>
       </div>
     </>
   );

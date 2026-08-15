@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 
-let Chart;
-try { Chart = (await import("chart.js/auto")).default; } catch { Chart = null; }
+import Chart from "chart.js/auto";
 
 const CHART_DEFAULTS = {
   responsive: true,

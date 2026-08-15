@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -10,7 +10,11 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  if (user) { navigate("/dashboard"); return null; }
+  useEffect(() => {
+    if (user) navigate("/dashboard");
+  }, [user, navigate]);
+
+  if (user) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +31,7 @@ export default function Login() {
       <div className="login-mesh" />
       <div className="login-card">
         <div className="login-header">
-          <span className="login-logo-badge">🩺</span>
+          <img className="login-logo-image" src="/favicon.png" alt="SomaSync AI" />
           <h1 className="login-title">SomaSync AI</h1>
           <p className="login-sub">AALIYAH.IO · Clinical Documentation Dashboard</p>
         </div>

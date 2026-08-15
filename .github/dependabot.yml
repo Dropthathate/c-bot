@@ -1,0 +1,48 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"               # root project
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+  - package-ecosystem: "npm"
+    directory: "/c-bot"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+  - package-ecosystem: "npm"
+    directory: "/c-bot/SomaSync-AI"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+  - package-ecosystem: "npm"
+    directory: "/c-bot/somasync"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+  - package-ecosystem: "npm"
+    directory: "/somasync"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"

@@ -34,9 +34,13 @@ for (const { path, heading } of publicPages) {
 
 test('member sign-in is invitation-only and keeps authentication routes available', async ({ page }) => {
   await page.goto('/login')
-  await expect(page.getByRole('heading', { name: 'Welcome back' })).toBeVisible()
+  const signInHeading = page.getByRole('heading', { name: 'Welcome back' })
+  const signInButton = page.getByRole('button', { name: /^Sign in/ })
+  await expect(signInHeading).toBeVisible()
+  await expect(signInHeading).toBeInViewport()
   await expect(page.getByText('Beta access is invitation-only.')).toBeVisible()
-  await expect(page.getByRole('button', { name: /^Sign in/ })).toBeVisible()
+  await expect(signInButton).toBeVisible()
+  await expect(signInButton).toBeInViewport()
   await expect(page.getByRole('button', { name: /Create Account/i })).toHaveCount(0)
   await expect(page.getByRole('link', { name: 'Join the beta waitlist' })).toHaveAttribute('href', '/#cta')
 

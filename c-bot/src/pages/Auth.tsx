@@ -1,11 +1,7 @@
 import { useEffect, useCallback, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight, Lock, Mail } from "lucide-react";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -73,67 +69,155 @@ const Auth = () => {
   };
 
   return (
-    <main className="min-h-screen bg-background flex items-center justify-center p-6">
-      <section className="w-full max-w-md space-y-8" aria-labelledby="member-sign-in-title">
-        <div className="text-center space-y-4">
-          <Link to="/" aria-label="Return to SomaSyncAI home">
-            <img src="/ss.png" alt="SomaSyncAI" className="w-16 h-16 mx-auto" />
-          </Link>
-          <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.16em] text-primary font-semibold">Beta member access</p>
-            <h1 id="member-sign-in-title" className="text-3xl font-bold">Welcome back</h1>
-            <p className="text-muted-foreground">
-              Beta access is invitation-only. If you received an invitation, sign in with the email address on that invitation.
-            </p>
-          </div>
+    <main style={pageStyle}>
+      <section style={cardStyle} aria-labelledby="member-sign-in-title">
+        <Link to="/" aria-label="Return to SomaSyncAI home" style={brandStyle}>SomaSyncAI</Link>
+        <div style={{ marginTop: 48 }}>
+          <p style={eyebrowStyle}>Beta member access</p>
+          <h1 id="member-sign-in-title" style={headingStyle}>Welcome back</h1>
+          <p style={subheadingStyle}>
+            Beta access is invitation-only. If you received an invitation, sign in with the email address on that invitation.
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              <Input
-                id="email"
-                type="email"
-                autoComplete="email"
-                placeholder="you@practice.com"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                className="pl-10"
-                required
-              />
-            </div>
-          </div>
+        <form onSubmit={handleSubmit} style={{ display: "grid", gap: 20, marginTop: 32 }}>
+          <label htmlFor="email" style={labelStyle}>
+            Email
+            <input
+              id="email"
+              type="email"
+              autoComplete="email"
+              placeholder="you@practice.com"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              style={inputStyle}
+              required
+            />
+          </label>
 
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              <Input
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                className="pl-10"
-                required
-              />
-            </div>
-          </div>
+          <label htmlFor="password" style={labelStyle}>
+            Password
+            <input
+              id="password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              style={inputStyle}
+              required
+            />
+          </label>
 
-          <Button type="submit" className="w-full" size="lg" disabled={loading}>
-            {loading ? "Signing in…" : <>Sign in <ArrowRight className="ml-2 h-5 w-5" /></>}
-          </Button>
+          <button type="submit" style={buttonStyle} disabled={loading}>
+            {loading ? "Signing in…" : "Sign in →"}
+          </button>
         </form>
 
-        <p className="text-center text-sm text-muted-foreground">
-          Need an invitation? <Link to="/#cta" className="underline underline-offset-4 hover:text-foreground">Join the beta waitlist</Link>.
+        <p style={waitlistStyle}>
+          Need an invitation? <Link to="/#cta" style={linkStyle}>Join the beta waitlist</Link>.
         </p>
       </section>
     </main>
   );
+};
+
+const pageStyle = {
+  minHeight: "100vh",
+  display: "grid",
+  placeItems: "center",
+  boxSizing: "border-box" as const,
+  padding: "32px 20px",
+  background: "radial-gradient(circle at top right, rgba(59,158,255,0.22), transparent 38%), #080808",
+  color: "#f0ede8",
+  fontFamily: "Manrope, Arial, sans-serif",
+};
+
+const cardStyle = {
+  width: "min(100%, 460px)",
+  boxSizing: "border-box" as const,
+  padding: "clamp(28px, 6vw, 48px)",
+  borderRadius: 22,
+  border: "1px solid rgba(255,255,255,0.12)",
+  background: "rgba(8,8,8,0.82)",
+  boxShadow: "0 30px 90px rgba(0,0,0,0.35)",
+};
+
+const brandStyle = {
+  color: "#f0ede8",
+  textDecoration: "none",
+  fontFamily: "Syne, Arial, sans-serif",
+  fontSize: 17,
+  fontWeight: 800,
+  letterSpacing: "-0.03em",
+};
+
+const eyebrowStyle = {
+  color: "#67b4ff",
+  margin: 0,
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: "0.15em",
+  textTransform: "uppercase" as const,
+};
+
+const headingStyle = {
+  margin: "13px 0 12px",
+  fontFamily: "Syne, Arial, sans-serif",
+  fontSize: "clamp(2.2rem, 8vw, 3.5rem)",
+  lineHeight: 0.98,
+  letterSpacing: "-0.05em",
+};
+
+const subheadingStyle = {
+  color: "rgba(240,237,232,0.65)",
+  lineHeight: 1.65,
+  margin: 0,
+};
+
+const labelStyle = {
+  display: "grid",
+  gap: 8,
+  color: "rgba(240,237,232,0.78)",
+  fontSize: 14,
+  fontWeight: 700,
+};
+
+const inputStyle = {
+  width: "100%",
+  boxSizing: "border-box" as const,
+  border: "1px solid rgba(255,255,255,0.18)",
+  borderRadius: 10,
+  padding: "14px 15px",
+  background: "rgba(255,255,255,0.06)",
+  color: "#f0ede8",
+  font: "inherit",
+  outline: "none",
+};
+
+const buttonStyle = {
+  width: "100%",
+  border: "none",
+  borderRadius: 10,
+  padding: "15px 18px",
+  background: "#3b9eff",
+  color: "white",
+  fontFamily: "Syne, Arial, sans-serif",
+  fontSize: 15,
+  fontWeight: 700,
+  cursor: "pointer",
+};
+
+const waitlistStyle = {
+  margin: "28px 0 0",
+  color: "rgba(240,237,232,0.6)",
+  fontSize: 14,
+  lineHeight: 1.6,
+};
+
+const linkStyle = {
+  color: "#8bc5ff",
+  textUnderlineOffset: 3,
 };
 
 export default Auth;

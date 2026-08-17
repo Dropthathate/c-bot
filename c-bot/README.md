@@ -60,3 +60,35 @@ MIT License - Open Source
 **Made with ❤️ for bodywork practitioners worldwide**
 
 ⭐ Star this repo if you're interested in voice-first clinical documentation!
+
+## Production Source and Verification Guide
+
+This directory is the **active Vercel project root** for the public `www.somasyncai.com` deployment. Public-site changes must be made here, not in the repository's legacy or duplicate source directories.
+
+| Area | Location | Purpose |
+|---|---|---|
+| Public marketing site | `src/Landing.jsx` | Public landing page, beta waitlist, investor link, and footer navigation. |
+| Public routes | `src/main.jsx` | Routes for the landing page, About page, member sign-in, and therapist application. |
+| Member sign-in | `src/pages/Auth.tsx` | Invitation-only beta member sign-in interface. Self-service registration is intentionally not exposed in the UI. |
+| Public legal pages | `public/*.html` | Privacy policy, terms, AI disclaimer, and investor pitch content. |
+| Deployment/security configuration | `vercel.json` | Build settings, SPA fallback, and response-security headers. |
+| Browser regression checks | `tests/public-routes.spec.mjs` | Public-route and critical-flow smoke tests. |
+
+### Local validation
+
+The application requires public Supabase configuration at build time. Use non-production placeholder values for UI-only route validation; do not commit credentials.
+
+```bash
+cd c-bot
+npm ci
+VITE_SUPABASE_URL='https://example.supabase.co' \
+VITE_SUPABASE_PUBLISHABLE_KEY='local-validation-key' \
+npm run build
+npm run test:routes
+```
+
+### Deployment guardrails
+
+The browser test suite runs in continuous integration for changes that affect this application or its deployment configuration. It verifies that public routes have page-specific content, the beta CTA reaches the waitlist, legal pages resolve, and the invitation-only sign-in page remains available.
+
+> **Operational note:** The sign-in page intentionally does not offer self-service registration. To enforce invitation-only access at the identity-provider layer as well, keep public sign-up disabled in the Supabase Auth dashboard and provision or invite beta members through the approved internal process.

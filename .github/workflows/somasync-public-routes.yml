@@ -1,0 +1,58 @@
+name: SomaSyncAI public-route checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'c-bot/**'
+      - '.github/workflows/somasync-public-routes.yml'
+  pull_request:
+    paths:
+      - 'c-bot/**'
+      - '.github/workflows/somasync-public-routes.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  public-route-regression:
+    name: Build and test public routes
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: c-bot
+    env:
+      VITE_SUPABASE_URL: https://example.supabase.co
+      VITE_SUPABASE_PUBLISHABLE_KEY: ci-validation-key
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: c-bot/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run public-route regression tests
+        run: npm run test:routes
+
+      - name: Upload failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-route-regression-artifacts
+          path: |
+            c-bot/playwright-report
+            c-bot/test-results
+          if-no-files-found: ignore

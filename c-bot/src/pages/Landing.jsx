@@ -56,7 +56,7 @@ export default function Landing() {
   )
 }
 
-const CSS = \`
+const CSS = `
 #soma-root, #soma-root *::before, #soma-root *::after {box-sizing:border-box;margin:0;padding:0}
 #soma-root {
   --bg: #050505;
@@ -334,9 +334,9 @@ const CSS = \`
   #soma-root .input-group { flex-direction: column; border-radius: 20px; padding: 20px; }
   #soma-root .btn-submit { width: 100%; }
 }
-\`
+`
 
-const HTML = \`
+const HTML = `
 <div class="neural-bg"></div>
 <div class="grid-overlay"></div>
 
@@ -411,9 +411,9 @@ const HTML = \`
     <a href="/terms" style="color:inherit; text-decoration:none">Terms</a>
   </div>
 </footer>
-\`
+`
 
-const JS = \`
+const JS = `
 (() => {
   const nav = document.getElementById('nav');
   const root = document.getElementById('soma-root');
@@ -427,7 +427,7 @@ const JS = \`
   });
 
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('stuck', window.scrollY > 50);
+    if (nav) nav.classList.toggle('stuck', window.scrollY > 50);
   });
 
   // Reveal animations
@@ -482,4 +482,4 @@ const JS = \`
     });
   }
 })();
-\`
+`

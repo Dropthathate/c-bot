@@ -1,40 +1,9 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
+  "framework": "vite",
   "rewrites": [
-    {
-      "source": "/starter.html",
-      "destination": "/starter.html"
-    },
-    {
-      "source": "/growth.html",
-      "destination": "/growth.html"
-    },
-    {
-      "source": "/super-pack.html",
-      "destination": "/super-pack.html"
-    },
-    {
-      "source": "/compare.html",
-      "destination": "/compare.html"
-    },
-    {
-      "source": "/about.html",
-      "destination": "/about.html"
-    },
-    {
-       "source": "/privacy", 
-      "destination": "/privacy-policy.html" 
-    },
-    {
-       "source": "/terms",
-      "destination": "/terms-and-conditions.html" 
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

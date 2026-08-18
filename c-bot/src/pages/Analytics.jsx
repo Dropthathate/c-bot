@@ -83,7 +83,7 @@ export default function Analytics() {
       <div className="page-header">
         <div>
           <h1 className="page-title">Analytics</h1>
-          <p className="page-sub">Practice performance · documentation trends · coding accuracy</p>
+          <p className="page-sub">Practice performance · documentation trends · reference-review activity</p>
         </div>
         <div className="beta-warning">Beta — Illustrative data</div>
       </div>
@@ -109,8 +109,8 @@ export default function Analytics() {
       <div className="charts-3col">
         <div className="card chart-card">
           <div className="chart-card-header">
-            <div className="chart-card-title">ICD-10 Accuracy</div>
-            <div className="chart-card-sub">Confidence score over 8 weeks</div>
+            <div className="chart-card-title">ICD-10-CM Reference Review</div>
+            <div className="chart-card-sub">Illustrative review-confidence trend; verify every code independently</div>
           </div>
           <div className="chart-wrap">
             <LineChart id="acc" labels={["W1","W2","W3","W4","W5","W6","W7","W8"]}
@@ -129,8 +129,8 @@ export default function Analytics() {
         </div>
         <div className="card chart-card">
           <div className="chart-card-header">
-            <div className="chart-card-title">Top Diagnoses</div>
-            <div className="chart-card-sub">Most frequently coded conditions</div>
+            <div className="chart-card-title">Top Reference Categories</div>
+            <div className="chart-card-sub">Illustrative ICD-10-CM reference activity, not clinical or billing data</div>
           </div>
           <div className="chart-wrap">
             <DonutChart id="dx"

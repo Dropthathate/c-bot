@@ -64,19 +64,25 @@ export default function IcdCoder() {
     <div className="page">
       <div className="page-header">
         <div>
-          <h1 className="page-title">ICD-10 Coder</h1>
-          <p className="page-sub">Search and select diagnostic codes for your clinical documentation</p>
+          <h1 className="page-title">ICD-10-CM Reference Lookup</h1>
+          <p className="page-sub">Review diagnostic-code references for documentation — not a diagnosis, coding, billing, coverage, or payer decision</p>
         </div>
       </div>
 
       <div className="ai-disclaimer-bar">
-        ⚠ Code suggestions are for reference only — verify with a certified medical coder before billing submission.
+        ⚠ <strong>ICD-10-CM reference only.</strong> Verify every code against current official guidelines, supporting documentation, payer requirements, and the appropriate licensed clinician or coding professional before any clinical, billing, or coverage use.
       </div>
+
+      <p className="settings-body-text" style={{ margin: "0 0 18px", maxWidth: 900 }}>
+        <strong style={{ color: "var(--ink)" }}>Official verification source:</strong>{" "}
+        <a href="https://icd10cmtool.cdc.gov/" target="_blank" rel="noreferrer" style={{ color: "var(--blue)" }}>CDC/NCHS ICD-10-CM Browser</a>.
+        {" "}This beta screen contains a limited illustrative reference dataset, not the complete current ICD-10-CM release. Confirm the applicable release for the date of service.
+      </p>
 
       <div className="icd-layout">
         <div className="card icd-search-card">
           <div className="card-header">
-            <span className="card-title">Search Codes</span>
+              <span className="card-title">Search ICD-10-CM References</span>
           </div>
           <input
             className="icd-search-input"
@@ -126,7 +132,7 @@ export default function IcdCoder() {
         <div className="icd-selected-col">
           <div className="card">
             <div className="card-header">
-              <span className="card-title">Selected Codes ({selected.length})</span>
+              <span className="card-title">Selected References ({selected.length})</span>
               {selected.length > 0 && (
                 <button className="btn-copy" onClick={handleCopy}>
                   {copied ? "✓ Copied!" : "Copy All"}
@@ -136,7 +142,7 @@ export default function IcdCoder() {
             {selected.length === 0 ? (
               <div className="icd-selected-empty">
                 <div style={{ fontSize: 28, marginBottom: 8 }}>⚡</div>
-                Click codes on the left to add them here
+                Click reference codes on the left to add them here
               </div>
             ) : (
               <div className="icd-selected-list">

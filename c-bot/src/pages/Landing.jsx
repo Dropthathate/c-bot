@@ -163,6 +163,19 @@ const CSS = `
 #soma-root .feature h3, #soma-root .road-card h3 { margin: 0 0 10px; font-family: 'Syne', sans-serif; font-size: .93rem; line-height: 1.2; }
 #soma-root .feature p, #soma-root .road-card li { margin: 0; color: var(--muted); font-size: .79rem; line-height: 1.65; }
 #soma-root .feature-live { position: absolute; bottom: 24px; left: 26px; color: var(--lime); font-family: 'DM Mono', monospace; font-size: .54rem; letter-spacing: .08em; text-transform: uppercase; }
+#soma-root .device-showcase { display:grid; grid-template-columns:minmax(300px,.86fr) minmax(420px,1.14fr); gap:clamp(34px,7vw,90px); align-items:center; border-top:1px solid var(--line); background:linear-gradient(135deg,rgba(97,239,225,.035),rgba(74,156,255,.055),transparent); }
+#soma-root .device-copy .section-heading { font-size:clamp(2.7rem,5vw,5.5rem); }
+#soma-root .device-steps { display:grid; gap:10px; margin-top:30px; }
+#soma-root .device-step { display:grid; grid-template-columns:35px 1fr; gap:12px; align-items:start; padding:14px 0; border-bottom:1px solid var(--line); }
+#soma-root .device-step:last-child { border-bottom:0; }
+#soma-root .device-step-index { color:var(--cyan); font-family:'DM Mono',monospace; font-size:.66rem; padding-top:3px; }
+#soma-root .device-step strong { display:block; margin-bottom:4px; font-size:.87rem; }
+#soma-root .device-step p { margin:0; color:var(--muted); font-size:.78rem; line-height:1.65; }
+#soma-root .device-image-frame { position:relative; overflow:hidden; padding:1px; border-radius:26px; background:linear-gradient(145deg,rgba(97,239,225,.75),rgba(74,156,255,.12) 40%,rgba(74,156,255,.65)); box-shadow:0 28px 80px rgba(0,0,0,.35),0 0 80px rgba(74,156,255,.18); }
+#soma-root .device-image-frame img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:25px; }
+#soma-root .device-caption { position:absolute; right:18px; bottom:18px; max-width:250px; padding:13px 15px; color:#dce7ff; border:1px solid rgba(97,239,225,.28); border-radius:14px; background:rgba(5,10,18,.72); backdrop-filter:blur(12px); font-size:.7rem; line-height:1.55; }
+#soma-root .device-caption b { display:block; margin-bottom:4px; color:var(--cyan); font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:.1em; text-transform:uppercase; }
+#soma-root .device-note { margin-top:20px; color:#77879e; font-size:.68rem; line-height:1.6; }
 #soma-root .workflow { background: linear-gradient(180deg, transparent, rgba(74,156,255,.045), transparent); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 #soma-root .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 58px; }
 #soma-root .step { position: relative; padding: 28px; border: 1px solid var(--line); background: rgba(255,255,255,.025); border-radius: 20px; }
@@ -214,7 +227,7 @@ const CSS = `
 @keyframes somaPulse { 50% { opacity: .35; transform: scale(.75); } }
 @keyframes wave { from { height: 24%; } to { height: 100%; } }
 @media (max-width: 1120px) { #soma-root .feature-grid { grid-template-columns: repeat(3, 1fr); } #soma-root .roadmap-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 900px) { #soma-root .hero-layout, #soma-root .investor-layout { grid-template-columns: 1fr; } #soma-root .product-frame { max-width: 620px; width: 100%; margin: 0 auto; transform: none; } #soma-root .workflow-grid { grid-template-columns: repeat(2, 1fr); } #soma-root .footer-grid { grid-template-columns: 1.7fr 1fr 1fr; } #soma-root .footer-brand { grid-column: 1 / -1; } }
+@media (max-width: 900px) { #soma-root .hero-layout, #soma-root .investor-layout, #soma-root .device-showcase { grid-template-columns: 1fr; } #soma-root .product-frame { max-width: 620px; width: 100%; margin: 0 auto; transform: none; } #soma-root .workflow-grid { grid-template-columns: repeat(2, 1fr); } #soma-root .footer-grid { grid-template-columns: 1.7fr 1fr 1fr; } #soma-root .footer-brand { grid-column: 1 / -1; } }
 @media (max-width: 680px) { #soma-root nav { padding: 17px 20px; } #soma-root .brand img { height: 27px; } #soma-root .nav-links { display: none; } #soma-root .nav-cta { padding: 10px 13px; font-size: .7rem; } #soma-root section { padding: 90px 22px; } #soma-root .hero { padding-top: 125px; } #soma-root .hero-title { font-size: clamp(3.65rem, 16vw, 5.5rem); } #soma-root .stats { gap: 13px; margin-top: 38px; } #soma-root .stat { padding-right: 13px; } #soma-root .stat strong { font-size: 1.55rem; } #soma-root .feature-grid, #soma-root .workflow-grid, #soma-root .roadmap-grid { grid-template-columns: 1fr; } #soma-root .feature { min-height: 215px; } #soma-root .feature-index { margin-bottom: 26px; } #soma-root .screen { padding: 14px; } #soma-root .investor-card { padding: 26px; } #soma-root .signup { flex-direction: column; border-radius: 18px; padding: 11px; } #soma-root .signup input { height: 42px; } #soma-root .signup .button-primary { width: 100%; } #soma-root .footer-grid { grid-template-columns: 1fr 1fr; } #soma-root .footer-bottom { flex-direction: column; } }
 `
 
@@ -250,7 +263,7 @@ const HTML = `
     </div>
   </section>
 
-  <div class="marquee"><span><b>VOICE-FIRST CLINICAL DOCUMENTATION</b> · SOAP NOTES · ICD-10 REFERENCE · SESSION HISTORY · PHI SAFEGUARDS · <b>VOICE-FIRST CLINICAL DOCUMENTATION</b> · SOAP NOTES · ICD-10 REFERENCE · SESSION HISTORY · PHI SAFEGUARDS ·</span></div>
+  <div class="marquee"><span><b>VOICE-FIRST CLINICAL DOCUMENTATION</b> · SOAP NOTES · ICD-10-CM REFERENCE · SESSION HISTORY · PHI SAFEGUARDS · <b>VOICE-FIRST CLINICAL DOCUMENTATION</b> · SOAP NOTES · ICD-10-CM REFERENCE · SESSION HISTORY · PHI SAFEGUARDS ·</span></div>
 
   <section id="features">
     <div class="eyebrow reveal">01 / Core capabilities</div>
@@ -259,15 +272,30 @@ const HTML = `
     <div class="feature-grid">
       <article class="feature reveal"><span class="feature-index">01</span><h3>Hands-Free Voice Capture</h3><p>Talk naturally during a session—no typing, no pausing to take notes.</p><span class="feature-live">Live in beta</span></article>
       <article class="feature reveal"><span class="feature-index">02</span><h3>AI-Structured SOAP Notes</h3><p>Your session is organized into Subjective, Objective, Assessment, and Plan automatically.</p><span class="feature-live">Live in beta</span></article>
-      <article class="feature reveal"><span class="feature-index">03</span><h3>ICD-10 Reference Lookup</h3><p>Search diagnostic codes for reference—always confirmed with the prescribing provider before use.</p></article>
+      <article class="feature reveal"><span class="feature-index">03</span><h3>ICD-10-CM Reference Lookup</h3><p>Search U.S. diagnosis-code references and verify every selection against current official guidance before clinical, billing, or coverage use.</p></article>
       <article class="feature reveal"><span class="feature-index">04</span><h3>Built-In PHI Safeguards</h3><p>Clear on-screen reminders to keep identifying client details out of AI-processed notes.</p></article>
       <article class="feature reveal"><span class="feature-index">05</span><h3>Session History</h3><p>Every note saved, searchable, and editable—review and refine any past documentation.</p></article>
       <article class="feature reveal"><span class="feature-index">06</span><h3>Minutes, Not Hours</h3><p>Confirm a structured note in seconds instead of typing it from scratch after every session.</p></article>
     </div>
   </section>
 
+  <section class="device-showcase" id="device">
+    <div class="device-copy">
+      <div class="eyebrow reveal">02 / Bluetooth capture</div>
+      <h2 class="section-heading reveal">Your hands stay on the work.<br><span class="blue">Bluetooth keeps the note moving.</span></h2>
+      <p class="section-copy reveal">Use a compatible Bluetooth audio device as your selected input, then speak naturally while you work. SomaSyncAI organizes the session into a draft for your review—without asking you to stop and type.</p>
+      <div class="device-steps">
+        <div class="device-step reveal"><span class="device-step-index">01</span><div><strong>Pair and select your input</strong><p>Connect your preferred Bluetooth audio device to the device running SomaSyncAI, then select it as the session audio input.</p></div></div>
+        <div class="device-step reveal"><span class="device-step-index">02</span><div><strong>Work and speak naturally</strong><p>Keep focused on the treatment while your spoken observations are captured as session context.</p></div></div>
+        <div class="device-step reveal"><span class="device-step-index">03</span><div><strong>Review before anything is saved</strong><p>Confirm and edit the structured note with your own clinical judgment before using it in documentation.</p></div></div>
+      </div>
+      <p class="device-note">Bluetooth device shown for illustration. Compatibility and audio quality depend on the connected device, operating system, and browser permissions.</p>
+    </div>
+    <div class="device-image-frame reveal"><img src="/images/somasync-bluetooth-workflow.jpg" alt="Manual therapy practitioner using a discreet Bluetooth audio device while SomaSyncAI organizes a clinical note" /><div class="device-caption"><b>Hands-free capture</b>Bluetooth audio input flows into a reviewable structured documentation draft.</div></div>
+  </section>
+
   <section class="workflow" id="workflow">
-    <div class="eyebrow reveal">02 / Workflow</div>
+    <div class="eyebrow reveal">03 / Workflow</div>
     <h2 class="section-heading reveal">From session<br><span class="outline">to note.</span></h2>
     <p class="section-copy reveal">Four steps. No charting pile-up at the end of the day.</p>
     <div class="workflow-grid">
@@ -279,11 +307,11 @@ const HTML = `
   </section>
 
   <section id="roadmap">
-    <div class="eyebrow reveal">03 / Roadmap</div>
+    <div class="eyebrow reveal">04 / Roadmap</div>
     <h2 class="section-heading reveal">Where we're<br><span class="blue">headed.</span></h2>
     <p class="section-copy reveal">Built with practitioners, in the open.</p>
     <div class="roadmap-grid">
-      <article class="road-card live reveal"><span class="phase">Phase 1 — Beta / Live now</span><h3>Voice-to-SOAP Documentation</h3><ul><li>Hands-free session recording</li><li>AI-structured SOAP notes</li><li>Reference-only ICD-10 lookup</li></ul></article>
+      <article class="road-card live reveal"><span class="phase">Phase 1 — Beta / Live now</span><h3>Voice-to-SOAP Documentation</h3><ul><li>Hands-free session recording</li><li>AI-structured SOAP notes</li><li>Reference-only ICD-10-CM lookup</li></ul></article>
       <article class="road-card reveal"><span class="phase">Phase 2 — Next</span><h3>Analytics & Practice Insights</h3><ul><li>Documentation time savings</li><li>Session trends</li><li>Coding-accuracy tracking</li></ul></article>
       <article class="road-card reveal"><span class="phase">Phase 3 — Planned</span><h3>Technique Library</h3><ul><li>Searchable manual therapy techniques</li><li>Evidence-based references</li></ul></article>
       <article class="road-card reveal"><span class="phase">Phase 4 — Planned</span><h3>Team Accounts</h3><ul><li>Multi-practitioner practices</li><li>Shared client records</li><li>Role-based access</li></ul></article>
@@ -291,7 +319,7 @@ const HTML = `
   </section>
 
   <section id="investors">
-    <div class="eyebrow reveal">04 / Investors</div>
+    <div class="eyebrow reveal">05 / Investors</div>
     <h2 class="section-heading reveal">Built for a market<br><span class="blue">no one's served.</span></h2>
     <div class="investor-layout">
       <div class="thesis">

@@ -237,7 +237,7 @@ body{font-family:'Manrope',sans-serif;background:#080808;color:#f0ede8;min-heigh
 const NAV = [
   { to: "/dashboard",           icon: "◈", label: "Overview"     },
   { to: "/dashboard/soap",      icon: "📋", label: "SOAP Notes"  },
-  { to: "/dashboard/icd",       icon: "⚡", label: "ICD-10"      },
+  { to: "/dashboard/icd",       icon: "⚡", label: "ICD-10-CM Reference" },
   { to: "/dashboard/analytics", icon: "📊", label: "Analytics"   },
   { to: "/dashboard/settings",  icon: "⚙", label: "Settings"    },
 ];

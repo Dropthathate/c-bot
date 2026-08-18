@@ -10,7 +10,7 @@ const PHRASES = [
   "Neuromuscular therapy to the lumbar paraspinals",
   "Ischemic compression to the piriformis trigger point",
   "Upper Crossed Syndrome with forward head posture",
-  "ICD-10 M54.5 — lumbago with sciatica",
+  "ICD-10-CM M54.5 — low back pain",
   "Myofascial release to the thoracolumbar fascia",
 ];
 

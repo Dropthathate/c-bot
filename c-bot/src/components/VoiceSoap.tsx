@@ -238,10 +238,10 @@ export default function VoiceSoap() {
         <div className="voice-soap-topbar">
           <div className="voice-soap-topbar-header">
             <div>
-              <div className="voice-soap-topbar-title">Insurance-Grade Documentation</div>
-              <div className="voice-soap-topbar-subtitle">ICD-10 & CPT Coded • Billable SOAP Notes</div>
+              <div className="voice-soap-topbar-title">Reviewable Documentation Draft</div>
+              <div className="voice-soap-topbar-subtitle">ICD-10-CM & CPT references • practitioner review required</div>
             </div>
-            <div className="voice-soap-topbar-badge">✓ Insurance Ready</div>
+            <div className="voice-soap-topbar-badge">✓ Review Required</div>
           </div>
         </div>
 
@@ -257,8 +257,8 @@ export default function VoiceSoap() {
           {!error && state === 'generating' && (
             <div className="voice-soap-empty">
               <div className="voice-soap-spinner"></div>
-              <div className="voice-soap-empty-title">Generating Insurance Documentation</div>
-              <div className="voice-soap-empty-subtitle">Creating SOAP note with ICD-10 and CPT codes...</div>
+              <div className="voice-soap-empty-title">Generating Documentation Draft</div>
+              <div className="voice-soap-empty-subtitle">Creating a SOAP note with ICD-10-CM and CPT reference suggestions...</div>
             </div>
           )}
 
@@ -266,7 +266,7 @@ export default function VoiceSoap() {
             <div className="voice-soap-empty">
               <div className="voice-soap-empty-icon">📋</div>
               <div className="voice-soap-empty-title">No Documentation Generated</div>
-              <div className="voice-soap-empty-subtitle">Start recording your session to generate billable SOAP notes</div>
+              <div className="voice-soap-empty-subtitle">Start recording your session to generate a reviewable SOAP note draft</div>
             </div>
           )}
 
@@ -307,12 +307,12 @@ export default function VoiceSoap() {
               <div className="voice-soap-card billing">
                 <div className="voice-soap-card-header">
                   <div className="voice-soap-icon billing-icon">💰</div>
-                  <div className="voice-soap-label">Billing Codes</div>
+                  <div className="voice-soap-label">Reference Codes</div>
                 </div>
 
                 {soapNote.icd10 && soapNote.icd10.length > 0 && (
                   <div className="voice-soap-billing-section">
-                    <div className="voice-soap-billing-title">ICD-10 Diagnosis Codes</div>
+                    <div className="voice-soap-billing-title">ICD-10-CM Reference Suggestions</div>
                     <div className="voice-soap-code-chips">
                       {soapNote.icd10.map((code, idx) => (
                         <div key={idx} className="voice-soap-code-chip">
@@ -326,7 +326,7 @@ export default function VoiceSoap() {
 
                 {soapNote.cpt && soapNote.cpt.length > 0 && (
                   <div className="voice-soap-billing-section">
-                    <div className="voice-soap-billing-title">CPT Procedure Codes</div>
+                    <div className="voice-soap-billing-title">CPT Reference Suggestions</div>
                     <div className="voice-soap-code-chips">
                       {soapNote.cpt.map((code, idx) => (
                         <div key={idx} className="voice-soap-code-chip">

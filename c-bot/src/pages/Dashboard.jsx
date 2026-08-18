@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 
 const STATS = [
   { label: "Notes Generated",  value: "—",     unit: "sessions",  color: "var(--grn)",    icon: "📋" },
-  { label: "ICD Codes Mapped", value: "—",     unit: "codes",     color: "var(--blue)",   icon: "⚡" },
+  { label: "ICD-10-CM References", value: "—", unit: "references", color: "var(--blue)", icon: "⚡" },
   { label: "Avg Confidence",   value: "88.5%", unit: "accuracy",  color: "#34c759",       icon: "✓"  },
   { label: "Time Saved",       value: "~3×",   unit: "vs manual", color: "var(--orange)", icon: "⏱"  },
 ];
 
 const QUICK_ACTIONS = [
   { to: "/dashboard/soap",      icon: "📋", label: "New SOAP Note",   desc: "Voice-powered clinical documentation"  },
-  { to: "/dashboard/icd",       icon: "⚡", label: "ICD-10 Lookup",   desc: "Search and map diagnostic codes"       },
+  { to: "/dashboard/icd",       icon: "⚡", label: "ICD-10-CM Reference", desc: "Search references; verify externally" },
   { to: "/dashboard/analytics", icon: "📊", label: "View Analytics",  desc: "Practice performance and trends"       },
   { to: "/dashboard/settings",  icon: "⚙", label: "Settings",        desc: "Account, legal, and preferences"       },
 ];
@@ -58,10 +58,9 @@ export default function Dashboard() {
         <div className="disclaimer-title">🤖 AI Disclaimer</div>
         <p className="disclaimer-text">
           SomaSync AI generates documentation suggestions using artificial intelligence.
-          All SOAP notes, ICD-10 codes, and clinical language produced by this platform
+          All SOAP notes, ICD-10-CM references, and clinical language produced by this platform
           are <strong>AI-generated suggestions only</strong> and must be reviewed, verified,
-          and approved by a licensed clinician before use in any clinical, billing, or
-          legal context. This tool does not constitute medical advice and does not replace
+          and approved by an appropriately licensed clinician or coding professional before use in any clinical, billing, coverage, or legal context. This tool does not constitute medical advice and does not replace
           professional clinical judgment.
         </p>
       </div>

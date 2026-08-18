@@ -82,12 +82,12 @@ export default function SoapGenerator() {
     if (!soap) return;
     const text = [
       "SOAP NOTE — SomaSync AI (AALIYAH.IO)",
-      "⚠ AI-generated draft. Requires licensed clinician review before clinical use.\n",
+      "⚠ AI-generated draft. Requires clinician review and verification before clinical, billing, coverage, or legal use.\n",
       `SUBJECTIVE\n${soap.subjective}`,
       `OBJECTIVE\n${soap.objective}`,
       `ASSESSMENT\n${soap.assessment}`,
       `PLAN\n${soap.plan}`,
-      soap.icd10?.length ? `ICD-10\n${soap.icd10.map(c => `${c.code} — ${c.description}`).join("\n")}` : "",
+      soap.icd10?.length ? `ICD-10-CM REFERENCE SUGGESTIONS — VERIFY AGAINST CURRENT OFFICIAL GUIDANCE\n${soap.icd10.map(c => `${c.code} — ${c.description}`).join("\n")}` : "",
       soap.cpt?.length ? `CPT\n${soap.cpt.map(c => `${c.code} — ${c.description}${c.units ? ` (${c.units}u)` : ""}`).join("\n")}` : "",
       soap.medical_necessity ? `MEDICAL NECESSITY\n${soap.medical_necessity}` : "",
     ].filter(Boolean).join("\n\n");
@@ -112,7 +112,7 @@ export default function SoapGenerator() {
       </div>
 
       <div className="ai-disclaimer-bar">
-        🤖 AI-generated — All outputs are suggestions only. A licensed clinician must review before clinical, billing, or legal use.
+        🤖 AI-generated — All outputs, including ICD-10-CM and CPT references, are suggestions only. Review and verify them against current official guidance, supporting documentation, and payer requirements before clinical, billing, coverage, or legal use.
       </div>
 
       {!browserOk && (
@@ -221,7 +221,7 @@ export default function SoapGenerator() {
 
               {soap.icd10?.length > 0 && (
                 <div className="soap-section">
-                  <span className="soap-section-label soap-icd">ICD-10 Codes</span>
+                  <span className="soap-section-label soap-icd">ICD-10-CM Reference Suggestions</span>
                   <div className="code-list">
                     {soap.icd10.map(c => (
                       <div className="code-row" key={c.code}>
@@ -235,7 +235,7 @@ export default function SoapGenerator() {
 
               {soap.cpt?.length > 0 && (
                 <div className="soap-section">
-                  <span className="soap-section-label soap-cpt">CPT Codes</span>
+                  <span className="soap-section-label soap-cpt">CPT Reference Suggestions</span>
                   <div className="code-list">
                     {soap.cpt.map(c => (
                       <div className="code-row" key={c.code}>

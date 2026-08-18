@@ -2,18 +2,18 @@ import { useEffect, useRef } from 'react'
 
 export default function Landing() {
   const ref = useRef(null)
-    useEffect(() => {
 
-
+  useEffect(() => {
     document.title = 'SomaSyncAI — The Gold Standard Clinical OS for Manual Therapists'
-    window.__SOMA_SUPABASE_URL__ = import.meta.env.VITE_SUPABASE_URL || "https://ucqprtpuuyflnxjmatwo.supabase.co"
-    window.__SOMA_SUPABASE_KEY__ = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjcXBydHB1dXlmbG54am1hdHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NjMzMjYsImV4cCI6MjA4ODEyMzMyNn0.rU855zMtb1ZFQgLx5aBUdWd5R8mjmLCwEmmx6KuJvwk"
+
+    window.__SOMA_SUPABASE_URL__ = import.meta.env.VITE_SUPABASE_URL || 'https://ucqprtpuuyflnxjmatwo.supabase.co'
+    window.__SOMA_SUPABASE_KEY__ = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjcXBydHB1dXlmbG54am1hdHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NjMzMjYsImV4cCI6MjA4ODEyMzMyNn0.rU855zMtb1ZFQgLx5aBUdWd5R8mjmLCwEmmx6KuJvwk'
 
     if (!document.getElementById('soma-fonts')) {
       const link = document.createElement('link')
       link.id = 'soma-fonts'
       link.rel = 'stylesheet'
-      link.href = 'https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@300;400;500;600;700&display=swap'
+      link.href = 'https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap'
       document.head.appendChild(link)
     }
 
@@ -24,38 +24,340 @@ export default function Landing() {
       document.head.appendChild(style)
     }
 
-        let script
+    let script
     if (ref.current) {
       ref.current.innerHTML = HTML
       script = document.createElement('script')
       script.textContent = JS
       document.body.appendChild(script)
     }
+
     return () => {
       script?.remove()
-      const el = document.getElementById('soma-styles')
-      if (el) el.remove()
+      document.getElementById('soma-styles')?.remove()
     }
   }, [])
 
-  return (
-    <div
-      id="soma-root"
-      ref={ref}
-      style={{
-        all: 'initial',
-        display: 'block',
-        fontFamily: 'Manrope, sans-serif',
-        background: '#080808',
-        color: '#f0ede8',
-        minHeight: '100vh'
-      }}
-    />
-  )
+  return <div id="soma-root" ref={ref} />
 }
 
-const CSS = "#soma-root, #soma-root *::before, #soma-root *::after {box-sizing:border-box;margin:0;padding:0}\n#soma-root {--bg:#080808;--ink:#f0ede8;--muted:rgba(240,237,232,0.45);--dim:rgba(240,237,232,0.18);--grn:#00e89a;--blue:#3b9eff;--blue2:#1a7ee0;--blue-glow:rgba(59,158,255,0.25);--r:clamp(24px,5vw,80px)}\n#soma-root {scroll-behavior:smooth}\n#soma-root {background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none}\n#soma-root #cd, #soma-root #cr {position:fixed;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}\n#soma-root #cd {width:8px;height:8px;background:var(--grn)}\n#soma-root #cr {width:34px;height:34px;border:1px solid rgba(0,232,154,0.5);transition:width .2s,height .2s,transform .13s}\n#soma-root body.h #cr {width:52px;height:52px;border-color:var(--grn)}\n#soma-root nav {position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:24px var(--r);transition:background .4s,box-shadow .4s}\n#soma-root nav.stuck {background:rgba(8,8,8,0.9);backdrop-filter:blur(20px);box-shadow:0 1px 0 rgba(255,255,255,0.06)}\n#soma-root .n-logo {font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px}\n#soma-root .n-logo-dot {width:8px;height:8px;background:var(--grn);border-radius:50%;box-shadow:0 0 10px var(--grn)}\n#soma-root .n-pill {background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:4px;display:flex}\n#soma-root .n-pill a {font-size:.74rem;color:var(--muted);text-decoration:none;padding:8px 18px;border-radius:100px;transition:background .2s,color .2s}\n#soma-root .n-pill a:hover {background:rgba(255,255,255,0.08);color:var(--ink)}\n#soma-root .n-cta {font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;background:var(--blue);color:#fff;padding:11px 22px;border-radius:100px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s}\n#soma-root .n-cta:hover {background:var(--blue2);transform:scale(1.04);box-shadow:0 0 24px var(--blue-glow)}\n#soma-root #hero {min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:130px var(--r) 0;position:relative;overflow:hidden}\n#soma-root canvas {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}\n#soma-root .hero-inner {position:relative;z-index:2}\n#soma-root .hero-top-stats {position:absolute;top:130px;right:var(--r);display:flex;flex-direction:column;gap:20px;z-index:2;text-align:right;opacity:0;animation:fadeIn 1s 1s forwards}\n#soma-root .ts-n {font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;letter-spacing:-.03em;line-height:1}\n#soma-root .ts-n span {color:var(--grn)}\n#soma-root .ts-l {font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px}\n#soma-root .hero-badge {display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(59,158,255,0.35);background:rgba(59,158,255,0.07);color:var(--blue);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;border-radius:100px;margin-bottom:32px;opacity:0;animation:fadeUp .7s .3s forwards}\n#soma-root .hero-badge-dot {width:6px;height:6px;background:var(--grn);border-radius:50%;animation:pulse 2s infinite;box-shadow:0 0 6px var(--grn)}\n@keyframes pulse {0%,100%{opacity:1}50%{opacity:.3}}\n#soma-root .hero-h1 {font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(5rem,11vw,12rem);line-height:.85;letter-spacing:-.05em;opacity:0;animation:fadeUp 1s .45s cubic-bezier(.22,1,.36,1) forwards}\n#soma-root .hero-h1 .out {-webkit-text-stroke:clamp(1px,.15vw,2px) rgba(240,237,232,0.3);color:transparent}\n#soma-root .dash-wrap {position:relative;z-index:2;margin-top:52px;opacity:0;animation:fadeUp 1.1s .9s cubic-bezier(.22,1,.36,1) forwards}\n#soma-root .dash-fade {position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to top,var(--bg),transparent);z-index:3;pointer-events:none}\n#soma-root .dash-screen {background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-bottom:none;border-radius:16px 16px 0 0;overflow:hidden}\n#soma-root .dash-bar {background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.06);padding:14px 20px;display:flex;align-items:center;gap:10px}\n#soma-root .dash-dots {display:flex;gap:6px}\n#soma-root .dash-dot {width:10px;height:10px;border-radius:50%}\n#soma-root .dd1 {background:#ff5f57}\n#soma-root .dd2 {background:#ffbd2e}\n#soma-root .dd3 {background:#28c840}\n#soma-root .dash-url {flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 14px;font-size:.72rem;color:var(--muted)}\n#soma-root .dash-body {display:grid;grid-template-columns:220px 1fr;min-height:400px}\n#soma-root .dash-sidebar {border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;display:flex;flex-direction:column;gap:4px}\n#soma-root .dash-logo {font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;color:var(--ink);margin-bottom:16px;padding:0 8px;display:flex;align-items:center;gap:7px}\n#soma-root .dash-logo-dot {width:7px;height:7px;background:var(--grn);border-radius:50%;box-shadow:0 0 8px var(--grn)}\n#soma-root .nav-item {padding:9px 12px;border-radius:8px;font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:10px;cursor:pointer}\n#soma-root .nav-item.on {background:rgba(0,232,154,0.08);color:var(--ink);border:1px solid rgba(0,232,154,0.15)}\n#soma-root .ni-dot {width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15);flex-shrink:0}\n#soma-root .nav-item.on .ni-dot {background:var(--grn);box-shadow:0 0 6px var(--grn)}\n#soma-root .dash-main {padding:28px 32px}\n#soma-root .dash-header {display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}\n#soma-root .dash-title {font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;letter-spacing:-.01em}\n#soma-root .dash-live {background:rgba(0,232,154,0.1);border:1px solid rgba(0,232,154,0.25);color:var(--grn);font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;display:flex;align-items:center;gap:6px}\n#soma-root .dlb-dot {width:5px;height:5px;background:var(--grn);border-radius:50%;animation:pulse 1.5s infinite}\n#soma-root .soap-grid {display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}\n#soma-root .soap-card {background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px}\n#soma-root .soap-l {font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px}\n#soma-root .soap-t {font-size:.75rem;line-height:1.6;color:var(--muted)}\n#soma-root .soap-t b {color:var(--ink);font-weight:500}\n#soma-root .aa-box {background:linear-gradient(135deg,rgba(0,232,154,0.07),rgba(0,232,154,0.02));border:1px solid rgba(0,232,154,0.18);border-radius:10px;padding:16px 20px;display:flex;gap:14px}\n#soma-root .aa-av {width:32px;height:32px;background:linear-gradient(135deg,var(--grn),#00b876);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}\n#soma-root .aa-l {font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn);margin-bottom:5px}\n#soma-root .aa-t {font-size:.76rem;line-height:1.55;color:var(--muted)}\n#soma-root .aa-t b {color:var(--ink);font-weight:500}\n#soma-root .waveform {margin-top:18px;height:40px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:8px;overflow:hidden;display:flex;align-items:center;padding:0 16px;gap:2px}\n#soma-root .wbar {border-radius:2px;background:var(--grn);opacity:.55;flex-shrink:0;width:3px;animation:wv 1.2s ease-in-out infinite alternate}\n@keyframes wv {0%{height:3px}100%{height:28px}}\n#soma-root .mq-wrap {overflow:hidden;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:14px 0;background:rgba(255,255,255,0.015)}\n#soma-root .mq-track {display:flex;width:max-content;animation:march 30s linear infinite}\n#soma-root .mq-item {white-space:nowrap;padding:0 28px;font-family:'Syne',sans-serif;font-size:.67rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(240,237,232,0.22)}\n#soma-root .mq-item .s {color:var(--grn)}\n@keyframes march {from{transform:translateX(0)}to{transform:translateX(-50%)}}\n#soma-root .sec {padding:clamp(80px,10vw,140px) var(--r)}\n#soma-root .sec-tag {display:flex;align-items:center;gap:12px;font-family:'Syne',sans-serif;font-size:.67rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:20px}\n#soma-root .sec-tag::before {content:'';display:block;width:24px;height:1.5px;background:var(--blue);box-shadow:0 0 8px var(--blue-glow)}\n#soma-root .sec-h {font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.6rem,5.5vw,5.5rem);line-height:.88;letter-spacing:-.045em}\n#soma-root .sec-h .out {-webkit-text-stroke:1.5px rgba(240,237,232,0.22);color:transparent}\n#soma-root .sec-h .g {color:var(--blue)}\n#soma-root .sec-sub {font-size:1rem;line-height:1.8;color:var(--muted);max-width:460px;margin-top:20px}\n#soma-root .rv {opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}\n#soma-root .rv.in {opacity:1;transform:none}\n#soma-root .rv.d1 {transition-delay:.1s}\n#soma-root .rv.d2 {transition-delay:.2s}\n#soma-root .rv.d3 {transition-delay:.3s}\n#soma-root .rv.d4 {transition-delay:.4s}\n#soma-root #problem {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .prob-row {display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px}\n#soma-root .prob-card {background:var(--bg);padding:48px 36px;transition:background .3s}\n#soma-root .prob-card:hover {background:rgba(255,255,255,0.025)}\n#soma-root .prob-n {font-family:'Syne',sans-serif;font-weight:800;font-size:4.5rem;color:var(--blue);letter-spacing:-.04em;line-height:1;text-shadow:0 0 60px var(--blue-glow);margin-bottom:12px}\n#soma-root .prob-l {font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}\n#soma-root .prob-d {font-size:.92rem;line-height:1.7;color:rgba(240,237,232,0.5)}\n#soma-root .prob-full {grid-column:1/-1;background:rgba(0,232,154,0.05);border-top:1px solid rgba(0,232,154,0.12);padding:36px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}\n#soma-root .prob-full-t {font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.2rem,2.5vw,2rem);letter-spacing:-.03em}\n#soma-root .ptags {display:flex;gap:10px;flex-wrap:wrap}\n#soma-root .ptag {background:rgba(0,232,154,0.08);border:1px solid rgba(0,232,154,0.18);color:var(--grn);font-size:.67rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:100px}\n#soma-root #features {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .feat-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px}\n#soma-root .feat-card {background:var(--bg);padding:44px 36px;position:relative;overflow:hidden;transition:background .25s}\n#soma-root .feat-card::before {content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,232,154,0.06),transparent);opacity:0;transition:opacity .3s}\n#soma-root .feat-card:hover {background:rgba(255,255,255,0.02)}\n#soma-root .feat-card:hover::before {opacity:1}\n#soma-root .feat-row2 {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .feat-ico {font-size:1.5rem;margin-bottom:20px}\n#soma-root .feat-title {font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;letter-spacing:-.01em;margin-bottom:10px}\n#soma-root .feat-desc {font-size:.86rem;line-height:1.7;color:var(--muted)}\n#soma-root .feat-live {display:inline-flex;align-items:center;gap:6px;background:rgba(0,232,154,0.08);border:1px solid rgba(0,232,154,0.22);color:var(--grn);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;margin-top:16px}\n#soma-root .feat-live-dot {width:5px;height:5px;background:var(--grn);border-radius:50%;animation:pulse 2s infinite}\n#soma-root #ds-sec {border-top:1px solid rgba(255,255,255,0.06);padding:clamp(80px,10vw,140px) var(--r);overflow:hidden}\n#soma-root .ds-hd {display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px;flex-wrap:wrap;gap:24px}\n#soma-root .ds-wrap {position:relative}\n#soma-root .ds-glow {position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70%;height:60%;background:radial-gradient(ellipse,rgba(0,232,154,0.07) 0%,transparent 70%);pointer-events:none}\n#soma-root .ds-screen {position:relative;z-index:1;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.09);border-radius:20px;overflow:hidden}\n#soma-root .ds-bar2 {background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.06);padding:16px 24px;display:flex;align-items:center;gap:10px}\n#soma-root .ds-inner {display:grid;grid-template-columns:240px 1fr 280px;min-height:520px}\n#soma-root .ds-side {border-right:1px solid rgba(255,255,255,0.05);padding:28px 20px}\n#soma-root .ds-side-logo {font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;margin-bottom:28px;display:flex;align-items:center;gap:8px;color:var(--ink)}\n#soma-root .ds-sld {width:8px;height:8px;background:var(--grn);border-radius:50%;box-shadow:0 0 10px var(--grn)}\n#soma-root .ds-ni {display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;font-size:.8rem;color:var(--muted);margin-bottom:2px}\n#soma-root .ds-ni.on {background:rgba(0,232,154,0.08);color:var(--ink);border:1px solid rgba(0,232,154,0.14)}\n#soma-root .ds-ni-ico {font-size:.9rem;width:18px;text-align:center}\n#soma-root .ds-center {padding:32px 36px}\n#soma-root .ds-ct {display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}\n#soma-root .ds-cth {font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:-.01em}\n#soma-root .ds-rec {background:rgba(0,232,154,0.08);border:1px solid rgba(0,232,154,0.22);color:var(--grn);font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:100px;display:flex;align-items:center;gap:7px}\n#soma-root .ds-rec-dot {width:6px;height:6px;background:#ff4040;border-radius:50%;animation:pulse 1s infinite}\n#soma-root .ds-sg {display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}\n#soma-root .ds-sc {background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:18px}\n#soma-root .ds-sl {font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grn);margin-bottom:8px}\n#soma-root .ds-st {font-size:.78rem;line-height:1.6;color:var(--muted)}\n#soma-root .ds-st b {color:var(--ink);font-weight:500}\n#soma-root .ds-aa {background:linear-gradient(135deg,rgba(0,232,154,0.07),rgba(0,232,154,0.02));border:1px solid rgba(0,232,154,0.18);border-radius:12px;padding:18px 22px;display:flex;gap:14px}\n#soma-root .ds-aa-av {width:36px;height:36px;background:linear-gradient(135deg,var(--grn),#00b876);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}\n#soma-root .ds-aa-l {font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn);margin-bottom:5px}\n#soma-root .ds-aa-t {font-size:.78rem;line-height:1.55;color:var(--muted)}\n#soma-root .ds-aa-t b {color:var(--ink);font-weight:500}\n#soma-root .ds-wv {margin-top:18px;height:44px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;overflow:hidden;display:flex;align-items:center;padding:0 18px;gap:3px}\n#soma-root .ds-right {border-left:1px solid rgba(255,255,255,0.05);padding:28px 24px}\n#soma-root .ds-rt {font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:-.01em;margin-bottom:18px;color:var(--muted)}\n#soma-root .ds-pat {background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px;margin-bottom:10px}\n#soma-root .ds-pn {font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;margin-bottom:4px}\n#soma-root .ds-pi {font-size:.7rem;color:var(--muted);line-height:1.5}\n#soma-root .ds-ptag {display:inline-block;background:rgba(0,232,154,0.08);color:var(--grn);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px;margin-top:8px}\n#soma-root .ds-metric {display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}\n#soma-root .ds-metric:last-child {border-bottom:none}\n#soma-root .ds-ml {font-size:.72rem;color:var(--muted)}\n#soma-root .ds-mv {font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;color:var(--grn)}\n#soma-root #how {background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .how-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px}\n#soma-root .how-card {background:rgba(8,8,8,1);padding:44px 32px;transition:background .25s}\n#soma-root .how-card:hover {background:rgba(255,255,255,0.02)}\n#soma-root .how-n {font-family:'Syne',sans-serif;font-weight:800;font-size:4rem;color:rgba(255,255,255,0.04);line-height:1;letter-spacing:-.05em;margin-bottom:20px}\n#soma-root .how-t {font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;margin-bottom:12px}\n#soma-root .how-d {font-size:.86rem;line-height:1.7;color:var(--muted)}\n#soma-root #roadmap {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .road-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:60px}\n#soma-root .road-card {background:var(--bg);padding:44px 32px;position:relative;transition:background .3s}\n#soma-root .road-card:hover {background:rgba(255,255,255,0.02)}\n#soma-root .road-phase {font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}\n#soma-root .road-t {font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;letter-spacing:-.01em;margin-bottom:16px;line-height:1.2}\n#soma-root .road-live {position:absolute;top:18px;right:18px;background:rgba(59,158,255,0.1);border:1px solid rgba(59,158,255,0.3);color:var(--blue);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:100px}\n#soma-root .road-items {list-style:none;display:flex;flex-direction:column;gap:8px}\n#soma-root .road-items li {font-size:.8rem;line-height:1.5;color:rgba(240,237,232,0.4);padding-left:14px;position:relative}\n#soma-root .road-items li::before {content:'\u2192';position:absolute;left:0;color:var(--grn);font-size:.68rem}\n#soma-root .road-date {font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,232,0.16);margin-top:20px}\n#soma-root #investors {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .inv-grid {display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:60px;align-items:start}\n#soma-root .inv-stats {display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06)}\n#soma-root .inv-stat {background:var(--bg);padding:40px 32px;transition:background .25s}\n#soma-root .inv-stat:hover {background:rgba(255,255,255,0.02)}\n#soma-root .inv-n {font-family:'Syne',sans-serif;font-weight:800;font-size:3rem;letter-spacing:-.04em;color:var(--blue);text-shadow:0 0 40px var(--blue-glow);line-height:1}\n#soma-root .inv-l {font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:8px}\n#soma-root .why-list {display:flex;flex-direction:column}\n#soma-root .why-item {display:flex;gap:20px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,0.06)}\n#soma-root .why-item:first-child {border-top:1px solid rgba(255,255,255,0.06)}\n#soma-root .why-n {font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;color:var(--blue);flex-shrink:0;width:28px}\n#soma-root .why-t {font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;margin-bottom:5px}\n#soma-root .why-d {font-size:.84rem;line-height:1.65;color:var(--muted)}\n#soma-root .deck-link {display:inline-flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;background:var(--blue);color:#fff;padding:15px 32px;border-radius:100px;text-decoration:none;margin-top:36px;transition:background .2s,transform .15s,box-shadow .2s}\n#soma-root .deck-link:hover {background:var(--blue2);transform:translateY(-3px);box-shadow:0 12px 40px var(--blue-glow)}\n#soma-root #cta {border-top:1px solid rgba(255,255,255,0.06);text-align:center;padding:clamp(80px,10vw,140px) var(--r)}\n#soma-root .cta-h {font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3.5rem,8vw,8.5rem);line-height:.88;letter-spacing:-.05em;margin:28px 0}\n#soma-root .cta-h .out {-webkit-text-stroke:clamp(1px,.15vw,2px) rgba(240,237,232,0.22);color:transparent}\n#soma-root .cta-h .g {color:var(--blue);text-shadow:0 0 100px var(--blue-glow)}\n#soma-root .cta-sub {font-size:1rem;line-height:1.8;color:var(--muted);max-width:440px;margin:0 auto 44px}\n#soma-root .cta-btns {display:flex;gap:14px;justify-content:center;flex-wrap:wrap}\n#soma-root .cta-b1 {font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;background:var(--blue);color:#fff;padding:17px 38px;border-radius:100px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s}\n#soma-root .cta-b1:hover {background:var(--blue2);transform:translateY(-3px);box-shadow:0 16px 48px var(--blue-glow)}\n#soma-root .cta-b2 {font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;background:transparent;color:var(--ink);padding:16px 34px;border-radius:100px;border:1px solid rgba(255,255,255,0.14);text-decoration:none;transition:border-color .2s,transform .15s}\n#soma-root .cta-b2:hover {border-color:rgba(255,255,255,0.4);transform:translateY(-3px)}\n#soma-root .cta-note {font-size:.76rem;color:var(--dim);margin-top:20px}\n#soma-root footer {background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.06);padding:72px var(--r) 40px}\n#soma-root .foot-top {display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:56px}\n#soma-root .foot-brand {font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;margin-bottom:14px;display:flex;align-items:center;gap:9px}\n#soma-root .foot-brand-dot {display:none}\n#soma-root .foot-tag {font-size:.86rem;line-height:1.75;color:var(--muted);max-width:260px}\n#soma-root .foot-col-h {font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:18px}\n#soma-root .foot-links {list-style:none;display:flex;flex-direction:column;gap:10px}\n#soma-root .foot-links a {font-size:.84rem;color:var(--muted);text-decoration:none;transition:color .2s}\n#soma-root .foot-links a:hover {color:var(--ink)}\n#soma-root .foot-bottom {display:flex;justify-content:space-between;align-items:center;padding-top:28px;border-top:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;gap:12px}\n#soma-root .foot-copy {font-size:.76rem;color:var(--dim)}\n#soma-root .foot-aa {display:flex;align-items:center;gap:8px;font-size:.76rem;color:var(--dim)}\n#soma-root .aa-dot {width:6px;height:6px;background:var(--grn);border-radius:50%;box-shadow:0 0 6px var(--grn)}\n@keyframes fadeIn {from{opacity:0}to{opacity:1}}\n@keyframes fadeUp {from{opacity:0;transform:translateY(44px)}to{opacity:1;transform:translateY(0)}}\n"
+const CSS = `
+#soma-root, #soma-root *, #soma-root *::before, #soma-root *::after { box-sizing: border-box; }
+#soma-root {
+  --obsidian: #06080d;
+  --panel: #0c1018;
+  --panel-2: #101725;
+  --line: rgba(182, 210, 255, 0.13);
+  --line-bright: rgba(118, 175, 255, 0.34);
+  --ink: #f3f6ff;
+  --muted: #9ca9bd;
+  --blue: #4a9cff;
+  --cyan: #61efe1;
+  --lime: #a7ff80;
+  --danger: #ff6e7e;
+  --radius: clamp(22px, 3vw, 34px);
+  min-height: 100vh;
+  color: var(--ink);
+  background: var(--obsidian);
+  font-family: 'Manrope', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+#soma-root .ambient, #soma-root .grid { position: fixed; inset: 0; pointer-events: none; }
+#soma-root .ambient {
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 55% 45% at 50% -8%, rgba(74, 156, 255, .22), transparent 70%),
+    radial-gradient(ellipse 35% 40% at 5% 68%, rgba(97, 239, 225, .09), transparent 75%),
+    radial-gradient(ellipse 45% 35% at 95% 84%, rgba(96, 111, 255, .11), transparent 75%);
+}
+#soma-root .grid {
+  z-index: 0;
+  opacity: .32;
+  background-image: linear-gradient(rgba(130, 178, 255, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(130, 178, 255, .08) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(circle at var(--px, 50%) var(--py, 20%), black 0%, transparent 65%);
+}
+#soma-root a { color: inherit; }
+#soma-root .shell { position: relative; z-index: 1; }
+#soma-root nav {
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 25px clamp(22px, 5vw, 84px);
+  transition: .3s ease;
+}
+#soma-root nav.stuck {
+  padding-top: 13px;
+  padding-bottom: 13px;
+  background: rgba(6, 8, 13, .78);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(18px);
+}
+#soma-root .brand { display: inline-flex; align-items: center; text-decoration: none; }
+#soma-root .brand img { width: auto; height: 34px; filter: drop-shadow(0 0 16px rgba(74,156,255,.45)); }
+#soma-root .nav-links { display: flex; gap: 3px; padding: 4px; border: 1px solid var(--line); background: rgba(13, 18, 28, .66); border-radius: 999px; }
+#soma-root .nav-links a { color: var(--muted); text-decoration: none; font-size: .76rem; font-weight: 700; padding: 9px 15px; border-radius: 999px; transition: .2s ease; }
+#soma-root .nav-links a:hover { color: var(--ink); background: rgba(255,255,255,.08); }
+#soma-root .nav-cta, #soma-root .button-primary { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; border: 0; color: #05101a; background: linear-gradient(135deg, var(--cyan), var(--blue)); font-family: inherit; font-size: .78rem; font-weight: 800; padding: 12px 19px; border-radius: 999px; cursor: pointer; box-shadow: 0 8px 30px rgba(74,156,255,.22); transition: transform .2s ease, box-shadow .2s ease; }
+#soma-root .nav-cta:hover, #soma-root .button-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(74,156,255,.36); }
+#soma-root .button-secondary { display: inline-flex; align-items: center; justify-content: center; padding: 12px 19px; color: var(--ink); border: 1px solid var(--line-bright); background: rgba(255,255,255,.025); border-radius: 999px; text-decoration: none; font-size: .78rem; font-weight: 800; transition: .2s ease; }
+#soma-root .button-secondary:hover { border-color: var(--cyan); background: rgba(97,239,225,.08); }
+#soma-root section { position: relative; z-index: 1; padding: 130px clamp(22px, 7vw, 112px); }
+#soma-root .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--cyan); font-family: 'DM Mono', monospace; font-size: .68rem; font-weight: 500; letter-spacing: .11em; text-transform: uppercase; }
+#soma-root .eyebrow::before { content: ''; width: 26px; height: 1px; background: currentColor; box-shadow: 0 0 12px currentColor; }
+#soma-root .eyebrow.dot::after { content: ''; width: 7px; height: 7px; background: var(--lime); border-radius: 50%; box-shadow: 0 0 12px var(--lime); animation: somaPulse 1.5s infinite; }
+#soma-root .section-heading { max-width: 800px; margin: 20px 0 20px; font-family: 'Syne', sans-serif; font-size: clamp(2.8rem, 6.2vw, 6.4rem); line-height: .91; letter-spacing: -.065em; }
+#soma-root .section-heading .blue { color: var(--blue); text-shadow: 0 0 46px rgba(74,156,255,.3); }
+#soma-root .section-heading .outline { color: transparent; -webkit-text-stroke: 1px rgba(243,246,255,.35); }
+#soma-root .section-copy { max-width: 610px; color: var(--muted); font-size: 1rem; line-height: 1.8; }
+#soma-root .hero { min-height: 100vh; display: grid; align-content: center; padding-top: 155px; overflow: hidden; }
+#soma-root .hero-layout { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(330px, .92fr); gap: clamp(42px, 7vw, 120px); align-items: center; }
+#soma-root .hero-title { margin: 22px 0 24px; max-width: 880px; font-family: 'Syne', sans-serif; font-size: clamp(4.15rem, 8.5vw, 9rem); line-height: .78; letter-spacing: -.085em; }
+#soma-root .hero-title .stroke { display: block; color: transparent; -webkit-text-stroke: 1px rgba(243,246,255,.38); }
+#soma-root .hero-title .electric { display: block; color: var(--blue); text-shadow: 0 0 64px rgba(74,156,255,.42); }
+#soma-root .hero-sub { max-width: 550px; margin: 28px 0; color: var(--muted); font-size: clamp(.96rem, 1.5vw, 1.14rem); line-height: 1.75; }
+#soma-root .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+#soma-root .stats { display: flex; gap: 24px; margin-top: 56px; }
+#soma-root .stat { padding-right: 24px; border-right: 1px solid var(--line); }
+#soma-root .stat:last-child { border: 0; padding: 0; }
+#soma-root .stat strong { display: block; font-family: 'Syne', sans-serif; font-size: 2rem; line-height: 1; letter-spacing: -.07em; }
+#soma-root .stat strong span { color: var(--lime); }
+#soma-root .stat small { display: block; margin-top: 7px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: .58rem; letter-spacing: .13em; text-transform: uppercase; }
+#soma-root .product-frame { position: relative; padding: 1px; background: linear-gradient(140deg, rgba(97,239,225,.62), rgba(74,156,255,.08) 28%, rgba(74,156,255,.54)); border-radius: 28px; box-shadow: 0 35px 100px rgba(0,0,0,.42), 0 0 90px rgba(74,156,255,.16); transform: perspective(1200px) rotateY(-5deg) rotateX(3deg); }
+#soma-root .product-frame::before { content: ''; position: absolute; inset: -35% -20%; z-index: -1; background: radial-gradient(circle, rgba(97,239,225,.16), transparent 65%); filter: blur(20px); }
+#soma-root .product { overflow: hidden; padding: 16px; background: linear-gradient(160deg, #101827, #090d15); border-radius: 27px; }
+#soma-root .window-bar { display: flex; align-items: center; gap: 8px; padding: 3px 4px 16px; }
+#soma-root .window-bar i { width: 8px; height: 8px; border-radius: 50%; background: #ff8b96; }
+#soma-root .window-bar i:nth-child(2) { background: #ffd979; }
+#soma-root .window-bar i:nth-child(3) { background: var(--lime); }
+#soma-root .window-name { margin-left: auto; color: #66758d; font-family: 'DM Mono', monospace; font-size: .56rem; letter-spacing: .09em; }
+#soma-root .screen { padding: 20px; border: 1px solid rgba(151,192,255,.12); background: linear-gradient(155deg, rgba(255,255,255,.045), rgba(255,255,255,.012)); border-radius: 18px; }
+#soma-root .screen-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+#soma-root .screen-brand { display: flex; align-items: center; gap: 8px; color: #f4f7ff; font-family: 'Syne', sans-serif; font-size: .72rem; font-weight: 800; }
+#soma-root .screen-mark { width: 19px; height: 19px; border-radius: 6px; background: linear-gradient(135deg, var(--cyan), var(--blue)); }
+#soma-root .live-tag { display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; color: var(--lime); background: rgba(167,255,128,.08); border: 1px solid rgba(167,255,128,.18); border-radius: 999px; font-family: 'DM Mono', monospace; font-size: .52rem; letter-spacing: .09em; }
+#soma-root .live-tag::before { content: ''; width: 5px; height: 5px; background: var(--lime); border-radius: 50%; box-shadow: 0 0 8px var(--lime); }
+#soma-root .recording { margin: 22px 0 14px; padding: 14px; border: 1px solid rgba(97,239,225,.15); background: linear-gradient(135deg, rgba(97,239,225,.08), rgba(74,156,255,.035)); border-radius: 13px; }
+#soma-root .recording strong { display: block; margin-bottom: 8px; font-size: .68rem; }
+#soma-root .wave { display: flex; height: 27px; align-items: center; gap: 3px; }
+#soma-root .wave b { width: 3px; height: 30%; background: var(--cyan); border-radius: 3px; opacity: .7; animation: wave 1.1s ease-in-out infinite alternate; }
+#soma-root .wave b:nth-child(2n) { animation-delay: .23s; } #soma-root .wave b:nth-child(3n) { animation-delay: .5s; }
+#soma-root .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+#soma-root .note { min-height: 83px; padding: 11px; border: 1px solid rgba(151,192,255,.11); background: rgba(255,255,255,.025); border-radius: 11px; }
+#soma-root .note span { display: block; margin-bottom: 7px; color: var(--cyan); font-family: 'DM Mono', monospace; font-size: .5rem; letter-spacing: .1em; }
+#soma-root .note p { color: #9daac0; font-size: .62rem; line-height: 1.45; }
+#soma-root .marquee { display: flex; gap: 44px; overflow: hidden; padding: 15px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(255,255,255,.018); white-space: nowrap; color: #78879e; font-family: 'DM Mono', monospace; font-size: .61rem; letter-spacing: .15em; text-transform: uppercase; }
+#soma-root .marquee span { display: inline-flex; align-items: center; gap: 44px; }
+#soma-root .marquee b { color: var(--cyan); font-weight: 500; }
+#soma-root .feature-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; margin-top: 62px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+#soma-root .feature { position: relative; min-height: 265px; padding: 31px 26px; background: rgba(8,11,18,.96); transition: background .25s ease; }
+#soma-root .feature:hover { background: #101a2a; }
+#soma-root .feature-index { display: block; margin-bottom: 44px; color: var(--blue); font-family: 'DM Mono', monospace; font-size: .68rem; }
+#soma-root .feature h3, #soma-root .road-card h3 { margin: 0 0 10px; font-family: 'Syne', sans-serif; font-size: .93rem; line-height: 1.2; }
+#soma-root .feature p, #soma-root .road-card li { margin: 0; color: var(--muted); font-size: .79rem; line-height: 1.65; }
+#soma-root .feature-live { position: absolute; bottom: 24px; left: 26px; color: var(--lime); font-family: 'DM Mono', monospace; font-size: .54rem; letter-spacing: .08em; text-transform: uppercase; }
+#soma-root .workflow { background: linear-gradient(180deg, transparent, rgba(74,156,255,.045), transparent); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+#soma-root .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 58px; }
+#soma-root .step { position: relative; padding: 28px; border: 1px solid var(--line); background: rgba(255,255,255,.025); border-radius: 20px; }
+#soma-root .step-number { display: flex; width: 42px; height: 42px; align-items: center; justify-content: center; margin-bottom: 45px; color: var(--cyan); border: 1px solid rgba(97,239,225,.28); border-radius: 50%; font-family: 'DM Mono', monospace; font-size: .65rem; }
+#soma-root .step h3 { font-family: 'Syne', sans-serif; font-size: 1rem; margin: 0 0 10px; }
+#soma-root .step p { margin: 0; color: var(--muted); font-size: .82rem; line-height: 1.7; }
+#soma-root .roadmap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 58px; }
+#soma-root .road-card { position: relative; padding: 32px 25px 27px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.025); }
+#soma-root .road-card.live { border-color: rgba(97,239,225,.35); background: linear-gradient(160deg, rgba(97,239,225,.105), rgba(74,156,255,.03)); }
+#soma-root .phase { display: block; margin-bottom: 15px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: .61rem; letter-spacing: .1em; text-transform: uppercase; }
+#soma-root .road-card.live .phase { color: var(--cyan); }
+#soma-root .road-card ul { padding: 0; margin: 19px 0 0; list-style: none; }
+#soma-root .road-card li { position: relative; padding-left: 12px; margin-bottom: 7px; }
+#soma-root .road-card li::before { content: '—'; position: absolute; left: 0; color: var(--cyan); }
+#soma-root .investor-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(270px, .75fr); gap: clamp(35px, 7vw, 100px); margin-top: 55px; }
+#soma-root .thesis { display: grid; gap: 1px; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+#soma-root .thesis-item { display: grid; grid-template-columns: 48px 1fr; gap: 14px; padding: 27px; background: rgba(255,255,255,.023); }
+#soma-root .thesis-index { color: var(--blue); font-family: 'DM Mono', monospace; font-size: .68rem; }
+#soma-root .thesis h3 { margin: 0 0 7px; font-family: 'Syne', sans-serif; font-size: .98rem; }
+#soma-root .thesis p { margin: 0; color: var(--muted); font-size: .83rem; line-height: 1.65; }
+#soma-root .investor-card { padding: 35px; border: 1px solid var(--line-bright); border-radius: 24px; background: linear-gradient(150deg, rgba(74,156,255,.14), rgba(255,255,255,.025)); }
+#soma-root .investor-card small { color: var(--cyan); font-family: 'DM Mono', monospace; font-size: .6rem; letter-spacing: .13em; text-transform: uppercase; }
+#soma-root .investor-metric { padding: 27px 0; border-bottom: 1px solid var(--line); }
+#soma-root .investor-metric:last-of-type { border: 0; }
+#soma-root .investor-metric strong { display: block; color: var(--blue); font-family: 'Syne', sans-serif; font-size: 3.4rem; line-height: .9; letter-spacing: -.075em; }
+#soma-root .investor-metric span { display: block; margin-top: 8px; color: var(--muted); font-size: .78rem; }
+#soma-root .deck-link { display: inline-flex; gap: 9px; align-items: center; margin-top: 30px; color: var(--ink); font-size: .8rem; font-weight: 800; text-decoration: none; }
+#soma-root .deck-link::after { content: '↗'; color: var(--cyan); font-size: 1rem; }
+#soma-root .cta { text-align: center; }
+#soma-root .cta-box { max-width: 970px; margin: 0 auto; padding: clamp(38px, 7vw, 80px); border: 1px solid var(--line-bright); border-radius: 32px; background: radial-gradient(circle at 50% 0%, rgba(74,156,255,.22), transparent 60%), rgba(255,255,255,.022); }
+#soma-root .cta .section-heading { margin-left: auto; margin-right: auto; }
+#soma-root .cta .section-copy { margin: 0 auto 32px; }
+#soma-root .signup { display: flex; max-width: 510px; gap: 8px; margin: 0 auto; padding: 7px; border: 1px solid var(--line); border-radius: 999px; background: rgba(5,8,13,.7); }
+#soma-root .signup input { min-width: 0; flex: 1; padding: 0 16px; color: var(--ink); border: 0; outline: 0; background: transparent; font: 500 .87rem 'Manrope', sans-serif; }
+#soma-root .signup input::placeholder { color: #78869a; }
+#soma-root #lead-msg { min-height: 22px; margin-top: 16px; color: var(--muted); font-size: .8rem; }
+#soma-root footer { position: relative; z-index: 1; padding: 72px clamp(22px, 7vw, 112px) 35px; border-top: 1px solid var(--line); background: rgba(255,255,255,.015); }
+#soma-root .footer-grid { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 42px; }
+#soma-root .footer-brand img { height: 27px; width: auto; margin-bottom: 16px; }
+#soma-root .footer-brand p { max-width: 270px; color: var(--muted); font-size: .82rem; line-height: 1.7; }
+#soma-root .footer-column h4 { margin: 0 0 16px; color: #6e7d92; font-family: 'DM Mono', monospace; font-size: .61rem; letter-spacing: .12em; text-transform: uppercase; }
+#soma-root .footer-column a { display: block; margin: 9px 0; color: var(--muted); font-size: .8rem; text-decoration: none; }
+#soma-root .footer-column a:hover { color: var(--ink); }
+#soma-root .footer-bottom { display: flex; justify-content: space-between; gap: 16px; margin-top: 55px; padding-top: 23px; border-top: 1px solid var(--line); color: #69778b; font-family: 'DM Mono', monospace; font-size: .61rem; letter-spacing: .04em; }
+#soma-root .footer-status { display: inline-flex; align-items: center; gap: 8px; }
+#soma-root .footer-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 9px var(--lime); }
+#soma-root .reveal { opacity: 0; transform: translateY(24px); transition: opacity .65s ease, transform .65s ease; }
+#soma-root .reveal.show { opacity: 1; transform: none; }
+@keyframes somaPulse { 50% { opacity: .35; transform: scale(.75); } }
+@keyframes wave { from { height: 24%; } to { height: 100%; } }
+@media (max-width: 1120px) { #soma-root .feature-grid { grid-template-columns: repeat(3, 1fr); } #soma-root .roadmap-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) { #soma-root .hero-layout, #soma-root .investor-layout { grid-template-columns: 1fr; } #soma-root .product-frame { max-width: 620px; width: 100%; margin: 0 auto; transform: none; } #soma-root .workflow-grid { grid-template-columns: repeat(2, 1fr); } #soma-root .footer-grid { grid-template-columns: 1.7fr 1fr 1fr; } #soma-root .footer-brand { grid-column: 1 / -1; } }
+@media (max-width: 680px) { #soma-root nav { padding: 17px 20px; } #soma-root .brand img { height: 27px; } #soma-root .nav-links { display: none; } #soma-root .nav-cta { padding: 10px 13px; font-size: .7rem; } #soma-root section { padding: 90px 22px; } #soma-root .hero { padding-top: 125px; } #soma-root .hero-title { font-size: clamp(3.65rem, 16vw, 5.5rem); } #soma-root .stats { gap: 13px; margin-top: 38px; } #soma-root .stat { padding-right: 13px; } #soma-root .stat strong { font-size: 1.55rem; } #soma-root .feature-grid, #soma-root .workflow-grid, #soma-root .roadmap-grid { grid-template-columns: 1fr; } #soma-root .feature { min-height: 215px; } #soma-root .feature-index { margin-bottom: 26px; } #soma-root .screen { padding: 14px; } #soma-root .investor-card { padding: 26px; } #soma-root .signup { flex-direction: column; border-radius: 18px; padding: 11px; } #soma-root .signup input { height: 42px; } #soma-root .signup .button-primary { width: 100%; } #soma-root .footer-grid { grid-template-columns: 1fr 1fr; } #soma-root .footer-bottom { flex-direction: column; } }
+`
 
-const HTML = "<div id=\"cd\"></div><div id=\"cr\"></div>\n<div id=\"cd\"></div><div id=\"cr\"></div>\n<nav id=\"nav\">\n  <a class=\"n-logo\" href=\"#\" style=\"gap:0\"><img src=\"./ss.png\" alt=\"SomaSyncAI\" style=\"height:38px;width:auto;object-fit:contain;filter:drop-shadow(0 0 8px rgba(59,158,255,0.4))\"/></a>\n  <div class=\"n-pill\"><a href=\"#features\">Features</a><a href=\"#roadmap\">Roadmap</a><a href=\"#how\">Workflow</a><a href=\"#investors\">Investors</a></div>\n  <a class=\"n-cta\" href=\"/login\">Join Beta \u2014 Free</a>\n</nav>\n<section id=\"hero\">\n  <canvas id=\"c\"></canvas>\n  <div class=\"hero-top-stats\">\n    <div><div class=\"ts-n\"><span>87</span>%</div><div class=\"ts-l\">Less charting</div></div>\n    <div><div class=\"ts-n\"><span>100</span>%</div><div class=\"ts-l\">Hands-free</div></div>\n  </div>\n  <div class=\"hero-inner\">\n    <div class=\"hero-badge\"><div class=\"hero-badge-dot\"></div>Now in Beta \u2014 Limited Access</div>\n    <h1 class=\"hero-h1\">THE <span class=\"out\">GOLD</span><br><span style=\"color:var(--blue);text-shadow:0 0 80px var(--blue-glow)\">STANDARD</span><br>CLINICAL <span class=\"out\">OS</span></h1>\n    <div style=\"margin-top:24px;font-family:'Syne',sans-serif;font-size:clamp(.9rem,1.5vw,1.2rem);font-weight:700;letter-spacing:.04em;color:var(--muted);opacity:0;animation:fadeUp .8s .7s forwards\">The Intelligence of You.</div>\n  </div>\n</section>\n<section id=\"features\">\n  <div class=\"sec-tag\">Features</div>\n  <h2 class=\"sec-h\">Everything you need,<br><span class=\"g\">nothing you don't</span></h2>\n  <p class=\"sec-sub\">Purpose-built for manual therapy documentation \u2014 not a repurposed generic medical EHR.</p>\n  <div class=\"feat-grid\">\n    <div class=\"feat-card rv d1\"><div class=\"feat-ico\">\ud83c\udf99</div><div class=\"feat-title\">Hands-Free Voice Capture</div><div class=\"feat-desc\">Talk naturally during a session \u2014 no typing, no pausing to take notes.</div><div class=\"feat-live\"><div class=\"feat-live-dot\"></div>Live in Beta</div></div>\n    <div class=\"feat-card rv d2\"><div class=\"feat-ico\">\ud83e\udde0</div><div class=\"feat-title\">AI-Structured SOAP Notes</div><div class=\"feat-desc\">Your session is organized into Subjective, Objective, Assessment, and Plan automatically.</div><div class=\"feat-live\"><div class=\"feat-live-dot\"></div>Live in Beta</div></div>\n    <div class=\"feat-card rv d3\"><div class=\"feat-ico\">\ud83d\udd0e</div><div class=\"feat-title\">ICD-10 Reference Lookup</div><div class=\"feat-desc\">Search diagnostic codes for reference \u2014 always confirmed with the prescribing provider before use.</div></div>\n    <div class=\"feat-card rv d1\"><div class=\"feat-ico\">\ud83d\udd12</div><div class=\"feat-title\">Built-In PHI Safeguards</div><div class=\"feat-desc\">Clear on-screen reminders to keep identifying client details out of AI-processed notes.</div></div>\n    <div class=\"feat-card rv d2\"><div class=\"feat-ico\">\ud83d\udccb</div><div class=\"feat-title\">Session History</div><div class=\"feat-desc\">Every note saved, searchable, and editable \u2014 review and refine any past documentation.</div></div>\n    <div class=\"feat-card rv d3\"><div class=\"feat-ico\">\u26a1</div><div class=\"feat-title\">Minutes, Not Hours</div><div class=\"feat-desc\">Confirm a structured note in seconds instead of typing it from scratch after every session.</div></div>\n  </div>\n</section>\n<section id=\"how\">\n  <div class=\"sec-tag\">How It Works</div>\n  <h2 class=\"sec-h\">From session<br><span class=\"g\">to note</span></h2>\n  <p class=\"sec-sub\">Four steps. No charting pile-up at the end of the day.</p>\n  <div class=\"how-grid\">\n    <div class=\"how-card rv d1\"><div class=\"how-n\">01</div><div class=\"how-t\">Speak</div><div class=\"how-d\">Start a session and talk naturally while you work with your client.</div></div>\n    <div class=\"how-card rv d2\"><div class=\"how-n\">02</div><div class=\"how-t\">AI Structures It</div><div class=\"how-d\">Your session is organized into a standard SOAP note automatically.</div></div>\n    <div class=\"how-card rv d3\"><div class=\"how-n\">03</div><div class=\"how-t\">Review</div><div class=\"how-d\">Every AI draft is reviewed and confirmed by you \u2014 your clinical judgment, always.</div></div>\n    <div class=\"how-card rv d4\"><div class=\"how-n\">04</div><div class=\"how-t\">Done</div><div class=\"how-d\">Your note is saved and ready \u2014 confirmed in seconds, not typed for minutes.</div></div>\n  </div>\n</section>\n<section id=\"roadmap\">\n  <div class=\"sec-tag\">Roadmap</div>\n  <h2 class=\"sec-h\">Where we're<br><span class=\"g\">headed</span></h2>\n  <p class=\"sec-sub\">Built with practitioners, in the open.</p>\n  <div class=\"road-grid\">\n    <div class=\"road-card rv d1\"><div class=\"road-live\">Live Now</div><div class=\"road-phase\">Phase 1 \u2014 Beta</div><div class=\"road-t\">Voice-to-SOAP Documentation</div><ul class=\"road-items\"><li>Hands-free session recording</li><li>AI-structured SOAP notes</li><li>Reference-only ICD-10 lookup</li></ul></div>\n    <div class=\"road-card rv d2\"><div class=\"road-phase\">Phase 2 \u2014 Next</div><div class=\"road-t\">Analytics & Practice Insights</div><ul class=\"road-items\"><li>Documentation time savings</li><li>Session trends</li><li>Coding-accuracy tracking</li></ul></div>\n    <div class=\"road-card rv d3\"><div class=\"road-phase\">Phase 3 \u2014 Planned</div><div class=\"road-t\">Technique Library</div><ul class=\"road-items\"><li>Searchable manual therapy techniques</li><li>Evidence-based references</li></ul></div>\n    <div class=\"road-card rv d4\"><div class=\"road-phase\">Phase 4 \u2014 Planned</div><div class=\"road-t\">Team Accounts</div><ul class=\"road-items\"><li>Multi-practitioner practices</li><li>Shared client records</li><li>Role-based access</li></ul></div>\n  </div>\n</section>\n<section id=\"investors\">\n  <div class=\"sec-tag\">Investors</div>\n  <h2 class=\"sec-h\">Built for a market<br><span class=\"g\">no one's served</span></h2>\n  <div class=\"inv-grid\">\n    <div class=\"why-list\">\n      <div class=\"why-item rv d1\"><div class=\"why-n\">01</div><div><div class=\"why-t\">Underserved by generic EHRs</div><div class=\"why-d\">Manual therapy has been forced into documentation tools built for physicians, not bodyworkers.</div></div></div>\n      <div class=\"why-item rv d2\"><div class=\"why-n\">02</div><div><div class=\"why-t\">Voice-first, not form-first</div><div class=\"why-d\">Practitioners' hands are on clients, not keyboards \u2014 SomaSync AI is built around that reality.</div></div></div>\n      <div class=\"why-item rv d3\"><div class=\"why-n\">03</div><div><div class=\"why-t\">Compliance-aware by design</div><div class=\"why-d\">Reference-only diagnostic coding and PHI safeguards built in from day one, not bolted on later.</div></div></div>\n    </div>\n    <div class=\"inv-stats rv d2\">\n      <div class=\"inv-stat\"><div class=\"inv-n\">Beta</div><div class=\"inv-l\">Currently Live</div></div>\n      <div class=\"inv-stat\"><div class=\"inv-n\">4</div><div class=\"inv-l\">Roadmap Phases</div></div>\n    </div>\n  </div>\n  <a class=\"deck-link\" href=\"/investor-pitch.html\">View Pitch Deck \u2192</a>\n</section>\n<section id=\"cta\">\n  <div class=\"sec-tag\" style=\"justify-content:center\">Join the Beta</div>\n  <h2 class=\"cta-h\">Chart <span class=\"g\">less.</span><br>Practice <span class=\"out\">more.</span></h2>\n  <p class=\"cta-sub\">Limited access beta. Get early updates and an invite when a spot opens up.</p>\n  <form id=\"lead-form\" class=\"cta-btns\" style=\"max-width:440px;margin:0 auto;flex-wrap:nowrap\">\n    <input id=\"lead-hp\" type=\"text\" tabindex=\"-1\" autocomplete=\"off\" style=\"position:absolute;left:-9999px;width:1px;height:1px\" aria-hidden=\"true\" />\n    <input id=\"lead-email\" type=\"email\" required placeholder=\"you@practice.com\" style=\"flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);border-radius:100px;padding:15px 22px;color:var(--ink);font-family:'Manrope',sans-serif;font-size:.9rem;outline:none\" />\n    <button type=\"submit\" class=\"cta-b1\" style=\"border:none;cursor:pointer\">Join Beta \u2014 Free</button>\n  </form>\n  <div id=\"lead-msg\" class=\"cta-note\"></div>\n</section>\n<footer>\n  <div class=\"foot-top\">\n    <div>\n      <div class=\"foot-brand\"><img src=\"./ss.png\" alt=\"SomaSyncAI\" style=\"height:22px;width:auto\"/></div>\n      <div class=\"foot-tag\">Clinical documentation at the speed of conversation, for manual therapy practitioners.</div>\n    </div>\n    <div>\n      <div class=\"foot-col-h\">Product</div>\n      <ul class=\"foot-links\"><li><a href=\"#features\">Features</a></li><li><a href=\"#how\">Workflow</a></li><li><a href=\"#roadmap\">Roadmap</a></li></ul>\n    </div>\n    <div>\n      <div class=\"foot-col-h\">Company</div>\n      <ul class=\"foot-links\"><li><a href=\"#investors\">Investors</a></li><li><a href=\"/about.html\">About</a></li></ul>\n    </div>\n    <div>\n      <div class=\"foot-col-h\">Legal</div>\n      <ul class=\"foot-links\"><li><a href=\"/privacy-policy.html\">Privacy</a></li><li><a href=\"/terms-and-conditions.html\">Terms</a></li></ul>\n    </div>\n  </div>\n  <div class=\"foot-bottom\"><div class=\"foot-copy\">\u00a9 2026 SomaSyncAI. Built for the gold standard practitioner.</div><div class=\"foot-aa\"><div class=\"aa-dot\"></div>Powered by AALIYAH.IO</div></div>\n</footer>"
+const HTML = `
+<div class="ambient"></div>
+<div class="grid"></div>
+<div class="shell">
+  <nav id="nav">
+    <a class="brand" href="#top"><img src="/ss.png" alt="SomaSyncAI" /></a>
+    <div class="nav-links">
+      <a href="#features">Features</a><a href="#roadmap">Roadmap</a><a href="#workflow">Workflow</a><a href="#investors">Investors</a>
+    </div>
+    <a class="nav-cta" href="/login">Join Beta — Free</a>
+  </nav>
 
-const JS = "(() => {\n\nconst cd=document.getElementById('cd'),cr=document.getElementById('cr');\nlet mx=0,my=0,rx=0,ry=0;\ndocument.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cd.style.left=mx+'px';cd.style.top=my+'px'});\n(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(loop)})();\nconst nav=document.getElementById('nav');\nwindow.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>60));\n\n// Scroll-reveal for .rv elements\nconst rvEls = document.querySelectorAll('.rv');\nconst io = new IntersectionObserver((entries) => {\n  entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('in'); });\n}, { threshold: 0.15 });\nrvEls.forEach(el => io.observe(el));\n\n// Lead capture form\nconst leadForm = document.getElementById('lead-form');\nif (leadForm) {\n  leadForm.addEventListener('submit', async (e) => {\n    e.preventDefault();\n    const hp = document.getElementById('lead-hp').value;\n    if (hp) return; // bot honeypot\n    const email = document.getElementById('lead-email').value;\n    const msg = document.getElementById('lead-msg');\n    const btn = leadForm.querySelector('button');\n    if (!/^\\S+@\\S+\\.\\S+$/.test(email)) { msg.textContent = 'Enter a valid email address.'; msg.style.color = '#ff5f57'; return; }\n    btn.disabled = true; btn.textContent = 'Joining...';\n    try {\n      const res = await fetch(window.__SOMA_SUPABASE_URL__ + '/rest/v1/leads', {\n        method: 'POST',\n        headers: {\n          'Content-Type': 'application/json',\n          'apikey': window.__SOMA_SUPABASE_KEY__,\n          'Authorization': 'Bearer ' + window.__SOMA_SUPABASE_KEY__,\n          'Prefer': 'return=minimal'\n        },\n        body: JSON.stringify({ email })\n      });\n      if (!res.ok) throw new Error('request failed');\n      msg.textContent = \"You're on the list — we'll be in touch.\";\n      msg.style.color = 'var(--grn)';\n      leadForm.reset();\n      leadForm.style.display = 'none';\n    } catch (err) {\n      msg.textContent = 'Something went wrong — try again in a moment.';\n      msg.style.color = '#ff5f57';\n      btn.disabled = false; btn.textContent = 'Join Beta — Free';\n    }\n  });\n}\n\n})();"
+  <section class="hero" id="top">
+    <div class="hero-layout">
+      <div>
+        <div class="eyebrow dot reveal">Now in Beta — Limited Access</div>
+        <h1 class="hero-title reveal">THE <span class="stroke">GOLD</span><span class="electric">STANDARD</span> CLINICAL <span class="stroke">OS</span></h1>
+        <p class="hero-sub reveal">The intelligence of you. A voice-first clinical documentation system created specifically for manual therapy practitioners—so your hands remain on the client, not the keyboard.</p>
+        <div class="hero-actions reveal"><a class="button-primary" href="#beta">Request Beta Access</a><a class="button-secondary" href="/investor-pitch.html">View Investor Overview</a></div>
+        <div class="stats reveal"><div class="stat"><strong><span>87</span>%</strong><small>Less charting</small></div><div class="stat"><strong><span>100</span>%</strong><small>Hands-free</small></div></div>
+      </div>
+      <div class="product-frame reveal" aria-label="SomaSyncAI dashboard preview">
+        <div class="product"><div class="window-bar"><i></i><i></i><i></i><span class="window-name">SOMASYNC // CLINICAL SESSION</span></div>
+          <div class="screen"><div class="screen-top"><div class="screen-brand"><span class="screen-mark"></span>SomaSyncAI</div><div class="live-tag">Session live</div></div>
+            <div class="recording"><strong>VOICE CAPTURE ACTIVE</strong><div class="wave"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div></div>
+            <div class="notes"><div class="note"><span>SUBJECTIVE</span><p>Reports improved shoulder mobility after the previous session.</p></div><div class="note"><span>OBJECTIVE</span><p>Reduced upper-trap guarding; range improved with guided movement.</p></div><div class="note"><span>ASSESSMENT</span><p>Positive response to soft-tissue work and movement re-education.</p></div><div class="note"><span>PLAN</span><p>Continue current protocol; reassess range at next visit.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee"><span><b>VOICE-FIRST CLINICAL DOCUMENTATION</b> · SOAP NOTES · ICD-10 REFERENCE · SESSION HISTORY · PHI SAFEGUARDS · <b>VOICE-FIRST CLINICAL DOCUMENTATION</b> · SOAP NOTES · ICD-10 REFERENCE · SESSION HISTORY · PHI SAFEGUARDS ·</span></div>
+
+  <section id="features">
+    <div class="eyebrow reveal">01 / Core capabilities</div>
+    <h2 class="section-heading reveal">Everything you need,<br><span class="blue">nothing you don't.</span></h2>
+    <p class="section-copy reveal">Purpose-built for manual therapy documentation—not a repurposed generic medical EHR.</p>
+    <div class="feature-grid">
+      <article class="feature reveal"><span class="feature-index">01</span><h3>Hands-Free Voice Capture</h3><p>Talk naturally during a session—no typing, no pausing to take notes.</p><span class="feature-live">Live in beta</span></article>
+      <article class="feature reveal"><span class="feature-index">02</span><h3>AI-Structured SOAP Notes</h3><p>Your session is organized into Subjective, Objective, Assessment, and Plan automatically.</p><span class="feature-live">Live in beta</span></article>
+      <article class="feature reveal"><span class="feature-index">03</span><h3>ICD-10 Reference Lookup</h3><p>Search diagnostic codes for reference—always confirmed with the prescribing provider before use.</p></article>
+      <article class="feature reveal"><span class="feature-index">04</span><h3>Built-In PHI Safeguards</h3><p>Clear on-screen reminders to keep identifying client details out of AI-processed notes.</p></article>
+      <article class="feature reveal"><span class="feature-index">05</span><h3>Session History</h3><p>Every note saved, searchable, and editable—review and refine any past documentation.</p></article>
+      <article class="feature reveal"><span class="feature-index">06</span><h3>Minutes, Not Hours</h3><p>Confirm a structured note in seconds instead of typing it from scratch after every session.</p></article>
+    </div>
+  </section>
+
+  <section class="workflow" id="workflow">
+    <div class="eyebrow reveal">02 / Workflow</div>
+    <h2 class="section-heading reveal">From session<br><span class="outline">to note.</span></h2>
+    <p class="section-copy reveal">Four steps. No charting pile-up at the end of the day.</p>
+    <div class="workflow-grid">
+      <article class="step reveal"><span class="step-number">01</span><h3>Speak</h3><p>Start a session and talk naturally while you work with your client.</p></article>
+      <article class="step reveal"><span class="step-number">02</span><h3>AI Structures It</h3><p>Your session is organized into a standard SOAP note automatically.</p></article>
+      <article class="step reveal"><span class="step-number">03</span><h3>Review</h3><p>Every AI draft is reviewed and confirmed by you—your clinical judgment, always.</p></article>
+      <article class="step reveal"><span class="step-number">04</span><h3>Done</h3><p>Your note is saved and ready—confirmed in seconds, not typed for minutes.</p></article>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="eyebrow reveal">03 / Roadmap</div>
+    <h2 class="section-heading reveal">Where we're<br><span class="blue">headed.</span></h2>
+    <p class="section-copy reveal">Built with practitioners, in the open.</p>
+    <div class="roadmap-grid">
+      <article class="road-card live reveal"><span class="phase">Phase 1 — Beta / Live now</span><h3>Voice-to-SOAP Documentation</h3><ul><li>Hands-free session recording</li><li>AI-structured SOAP notes</li><li>Reference-only ICD-10 lookup</li></ul></article>
+      <article class="road-card reveal"><span class="phase">Phase 2 — Next</span><h3>Analytics & Practice Insights</h3><ul><li>Documentation time savings</li><li>Session trends</li><li>Coding-accuracy tracking</li></ul></article>
+      <article class="road-card reveal"><span class="phase">Phase 3 — Planned</span><h3>Technique Library</h3><ul><li>Searchable manual therapy techniques</li><li>Evidence-based references</li></ul></article>
+      <article class="road-card reveal"><span class="phase">Phase 4 — Planned</span><h3>Team Accounts</h3><ul><li>Multi-practitioner practices</li><li>Shared client records</li><li>Role-based access</li></ul></article>
+    </div>
+  </section>
+
+  <section id="investors">
+    <div class="eyebrow reveal">04 / Investors</div>
+    <h2 class="section-heading reveal">Built for a market<br><span class="blue">no one's served.</span></h2>
+    <div class="investor-layout">
+      <div class="thesis">
+        <article class="thesis-item reveal"><span class="thesis-index">01</span><div><h3>Underserved by generic EHRs</h3><p>Manual therapy has been forced into documentation tools built for physicians, not bodyworkers.</p></div></article>
+        <article class="thesis-item reveal"><span class="thesis-index">02</span><div><h3>Voice-first, not form-first</h3><p>Practitioners' hands are on clients, not keyboards—SomaSyncAI is built around that reality.</p></div></article>
+        <article class="thesis-item reveal"><span class="thesis-index">03</span><div><h3>Compliance-aware by design</h3><p>Reference-only diagnostic coding and PHI safeguards built in from day one, not bolted on later.</p></div></article>
+      </div>
+      <aside class="investor-card reveal"><small>At a glance</small><div class="investor-metric"><strong>Beta</strong><span>Currently live</span></div><div class="investor-metric"><strong>4</strong><span>Roadmap phases</span></div><a class="deck-link" href="/investor-pitch.html">View Pitch Deck</a></aside>
+    </div>
+  </section>
+
+  <section class="cta" id="beta">
+    <div class="cta-box reveal"><div class="eyebrow">Join the beta</div><h2 class="section-heading">Chart <span class="blue">less.</span><br>Practice <span class="outline">more.</span></h2><p class="section-copy">Limited access beta. Get early updates and an invite when a spot opens up.</p>
+      <form class="signup" id="lead-form"><input id="lead-hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px" /><input id="lead-email" type="email" required placeholder="you@practice.com" aria-label="Your email address" /><button class="button-primary" type="submit">Join Beta — Free</button></form><div id="lead-msg" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid"><div class="footer-brand"><img src="/ss.png" alt="SomaSyncAI" /><p>Clinical documentation at the speed of conversation, for manual therapy practitioners.</p></div><div class="footer-column"><h4>Product</h4><a href="#features">Features</a><a href="#workflow">Workflow</a><a href="#roadmap">Roadmap</a></div><div class="footer-column"><h4>Company</h4><a href="#investors">Investors</a><a href="/about.html">About</a></div><div class="footer-column"><h4>Legal</h4><a href="/privacy-policy.html">Privacy</a><a href="/terms-and-conditions.html">Terms</a></div></div>
+    <div class="footer-bottom"><span>© 2026 SomaSyncAI. Built for the gold standard practitioner.</span><span class="footer-status">Powered by AALIYAH.IO</span></div>
+  </footer>
+</div>
+`
+
+const JS = `
+(() => {
+  const nav = document.getElementById('nav')
+  window.addEventListener('scroll', () => nav?.classList.toggle('stuck', window.scrollY > 30))
+  document.addEventListener('mousemove', (event) => {
+    document.documentElement.style.setProperty('--px', (event.clientX / window.innerWidth) * 100 + '%')
+    document.documentElement.style.setProperty('--py', (event.clientY / window.innerHeight) * 100 + '%')
+  })
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('show') })
+  }, { threshold: .11 })
+  document.querySelectorAll('#soma-root .reveal').forEach((element) => observer.observe(element))
+
+  const form = document.getElementById('lead-form')
+  if (form) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      if (document.getElementById('lead-hp').value) return
+      const email = document.getElementById('lead-email').value.trim()
+      const message = document.getElementById('lead-msg')
+      const button = form.querySelector('button')
+      button.disabled = true
+      button.textContent = 'Joining...'
+      try {
+        const response = await fetch(window.__SOMA_SUPABASE_URL__ + '/rest/v1/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', apikey: window.__SOMA_SUPABASE_KEY__, Authorization: 'Bearer ' + window.__SOMA_SUPABASE_KEY__, Prefer: 'return=minimal' },
+          body: JSON.stringify({ email })
+        })
+        if (!response.ok) throw new Error('Lead submission failed')
+        message.textContent = "You're on the list — we'll be in touch."
+        message.style.color = '#a7ff80'
+        form.reset()
+      } catch (error) {
+        message.textContent = 'Something went wrong — try again in a moment.'
+        message.style.color = '#ff6e7e'
+      } finally {
+        button.disabled = false
+        button.textContent = 'Join Beta — Free'
+      }
+    })
+  }
+})()
+`

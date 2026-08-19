@@ -20,6 +20,7 @@ export default function SoapGenerator() {
   const [error, setError]           = useState(null);
   const [copied, setCopied]         = useState(false);
   const [browserOk, setBrowserOk]   = useState(true);
+  const [recordingConsent, setRecordingConsent] = useState(false);
 
   useEffect(() => { stateRef.current = state; }, [state]);
 
@@ -51,6 +52,10 @@ export default function SoapGenerator() {
   }
 
   function start() {
+    if (!recordingConsent) {
+      setError("Confirm that all required participants have been informed and consented before starting voice capture.");
+      return;
+    }
     setTranscript([]); setSoap(null); setError(null);
     setState("active"); recognitionRef.current?.start();
   }
@@ -130,8 +135,12 @@ export default function SoapGenerator() {
               <div className="voice-tip">
                 Say <strong>"pause"</strong> to pause · <strong>"end session"</strong> to generate
               </div>
+              <label className="voice-consent">
+                <input type="checkbox" checked={recordingConsent} onChange={e => setRecordingConsent(e.target.checked)} />
+                <span>I confirm that I have provided any required notice and obtained any required consent from all participants before using voice capture. I will not enter identifiable patient information unless my practice’s privacy and vendor safeguards support that use.</span>
+              </label>
               <div className="controls-grid">
-                <button className="ctrl-btn ctrl-start" onClick={start} disabled={state !== "idle"}>
+                <button className="ctrl-btn ctrl-start" onClick={start} disabled={state !== "idle" || !recordingConsent}>
                   <span className="ctrl-icon">🎙</span>Start Session
                 </button>
                 <button className="ctrl-btn ctrl-pause" onClick={pause} disabled={state !== "active"}>

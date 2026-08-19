@@ -7,7 +7,8 @@ export default function Landing() {
     document.title = 'SomaSyncAI — The Gold Standard Clinical OS for Manual Therapists'
 
     window.__SOMA_SUPABASE_URL__ = import.meta.env.VITE_SUPABASE_URL || 'https://ucqprtpuuyflnxjmatwo.supabase.co'
-    window.__SOMA_SUPABASE_KEY__ = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_zzh8YRfrO7--WLmWOw-9Tg_vV878nJB'
+    const configuredSupabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+    window.__SOMA_SUPABASE_KEY__ = configuredSupabaseKey && configuredSupabaseKey !== 'your_anon_key' ? configuredSupabaseKey : 'sb_publishable_zzh8YRfrO7--WLmWOw-9Tg_vV878nJB'
 
     if (!document.getElementById('soma-fonts')) {
       const link = document.createElement('link')
@@ -176,6 +177,31 @@ const CSS = `
 #soma-root .device-caption { position:absolute; right:18px; bottom:18px; max-width:250px; padding:13px 15px; color:#dce7ff; border:1px solid rgba(97,239,225,.28); border-radius:14px; background:rgba(5,10,18,.72); backdrop-filter:blur(12px); font-size:.7rem; line-height:1.55; }
 #soma-root .device-caption b { display:block; margin-bottom:4px; color:var(--cyan); font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:.1em; text-transform:uppercase; }
 #soma-root .device-note { margin-top:20px; color:#77879e; font-size:.68rem; line-height:1.6; }
+#soma-root .impact { overflow:hidden; background:linear-gradient(135deg,rgba(74,156,255,.06),rgba(97,239,225,.035) 46%,transparent); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+#soma-root .impact-grid { display:grid; grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr); gap:20px; margin-top:54px; }
+#soma-root .calculator-card, #soma-root .impact-report { border:1px solid var(--line); border-radius:24px; background:rgba(9,14,23,.7); }
+#soma-root .calculator-card { padding:clamp(24px,3vw,36px); }
+#soma-root .calc-head { display:flex; align-items:start; justify-content:space-between; gap:16px; margin-bottom:28px; }
+#soma-root .calc-head h3 { margin:0 0 6px; font-family:'Syne',sans-serif; font-size:1.25rem; }
+#soma-root .calc-head p { margin:0; color:var(--muted); font-size:.78rem; line-height:1.6; }
+#soma-root .calc-live { display:inline-flex; align-items:center; gap:7px; flex:0 0 auto; padding:7px 9px; color:var(--lime); border:1px solid rgba(167,255,128,.22); border-radius:999px; background:rgba(167,255,128,.055); font-family:'DM Mono',monospace; font-size:.53rem; letter-spacing:.08em; text-transform:uppercase; }
+#soma-root .calc-live::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--lime); box-shadow:0 0 8px var(--lime); }
+#soma-root .calc-control { margin-top:23px; }
+#soma-root .calc-label { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:11px; color:#c8d3e4; font-size:.76rem; font-weight:700; }
+#soma-root .calc-label b { color:var(--cyan); font-family:'DM Mono',monospace; font-size:.72rem; font-weight:500; }
+#soma-root .calc-range { width:100%; accent-color:var(--cyan); cursor:pointer; }
+#soma-root .calc-choice { display:flex; flex-wrap:wrap; gap:7px; }
+#soma-root .calc-choice button, #soma-root .model-tabs button { min-width:43px; padding:8px 10px; color:var(--muted); border:1px solid var(--line); border-radius:9px; background:rgba(255,255,255,.025); font:700 .66rem 'DM Mono',monospace; cursor:pointer; transition:.18s ease; }
+#soma-root .calc-choice button:hover, #soma-root .model-tabs button:hover { color:var(--ink); border-color:rgba(97,239,225,.44); }
+#soma-root .calc-choice button.active, #soma-root .model-tabs button.active { color:#061118; border-color:var(--cyan); background:var(--cyan); }
+#soma-root .impact-report { position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; min-height:330px; padding:clamp(25px,4vw,43px); background:radial-gradient(circle at 78% 10%,rgba(97,239,225,.18),transparent 37%),linear-gradient(145deg,rgba(74,156,255,.15),rgba(255,255,255,.025)); }
+#soma-root .impact-report::after { content:''; position:absolute; right:-90px; bottom:-110px; width:280px; height:280px; border:1px solid rgba(97,239,225,.16); border-radius:50%; box-shadow:0 0 0 26px rgba(97,239,225,.025),0 0 0 54px rgba(97,239,225,.018); }
+#soma-root .report-label { position:relative; z-index:1; color:var(--cyan); font-family:'DM Mono',monospace; font-size:.59rem; letter-spacing:.12em; text-transform:uppercase; }
+#soma-root .report-number { position:relative; z-index:1; margin:19px 0 8px; color:var(--ink); font-family:'Syne',sans-serif; font-size:clamp(4.6rem,8vw,7.2rem); line-height:.8; letter-spacing:-.09em; }
+#soma-root .report-number span { color:var(--lime); }
+#soma-root .report-number em { margin-left:7px; color:var(--ink); font-size:.27em; font-style:normal; letter-spacing:-.04em; }
+#soma-root .report-copy, #soma-root .report-micro { position:relative; z-index:1; max-width:350px; color:var(--muted); font-size:.8rem; line-height:1.7; }
+#soma-root .report-micro { margin-top:auto; padding-top:24px; color:#72829a; font-size:.65rem; }
 #soma-root .workflow { background: linear-gradient(180deg, transparent, rgba(74,156,255,.045), transparent); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 #soma-root .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 58px; }
 #soma-root .step { position: relative; padding: 28px; border: 1px solid var(--line); background: rgba(255,255,255,.025); border-radius: 20px; }
@@ -204,6 +230,42 @@ const CSS = `
 #soma-root .investor-metric span { display: block; margin-top: 8px; color: var(--muted); font-size: .78rem; }
 #soma-root .deck-link { display: inline-flex; gap: 9px; align-items: center; margin-top: 30px; color: var(--ink); font-size: .8rem; font-weight: 800; text-decoration: none; }
 #soma-root .deck-link::after { content: '↗'; color: var(--cyan); font-size: 1rem; }
+#soma-root .safeguards { border-top:1px solid var(--line); background:linear-gradient(180deg,transparent,rgba(97,239,225,.025),transparent); }
+#soma-root .safeguard-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:54px; }
+#soma-root .safeguard-card { display:flex; flex-direction:column; min-height:278px; padding:25px; border:1px solid var(--line); border-radius:19px; background:rgba(255,255,255,.022); transition:transform .2s ease,border-color .2s ease,background .2s ease; }
+#soma-root .safeguard-card:hover { transform:translateY(-3px); border-color:rgba(97,239,225,.35); background:rgba(97,239,225,.04); }
+#soma-root .status-badge { display:inline-flex; align-items:center; width:max-content; gap:6px; padding:6px 8px; color:var(--cyan); border:1px solid rgba(97,239,225,.21); border-radius:999px; background:rgba(97,239,225,.055); font-family:'DM Mono',monospace; font-size:.51rem; letter-spacing:.09em; text-transform:uppercase; }
+#soma-root .status-badge::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; box-shadow:0 0 8px currentColor; }
+#soma-root .safeguard-card h3 { margin:25px 0 10px; font-family:'Syne',sans-serif; font-size:1rem; line-height:1.2; }
+#soma-root .safeguard-card p { margin:0; color:var(--muted); font-size:.76rem; line-height:1.65; }
+#soma-root .status-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; margin-top:auto; padding:17px 0 0; color:var(--ink); border:0; border-top:1px solid var(--line); background:transparent; font:800 .68rem 'Manrope',sans-serif; text-align:left; cursor:pointer; }
+#soma-root .status-toggle span { color:var(--cyan); font-size:1rem; transition:transform .2s ease; }
+#soma-root .status-toggle[aria-expanded="true"] span { transform:rotate(45deg); }
+#soma-root .status-detail { margin-top:15px; padding-top:15px; border-top:1px dashed var(--line); color:#8595ab; font-size:.69rem; line-height:1.65; }
+#soma-root .status-detail a { color:var(--cyan); text-decoration:none; }
+#soma-root .market { overflow:hidden; }
+#soma-root .market-grid { display:grid; grid-template-columns:minmax(0,1.18fr) minmax(295px,.82fr); gap:20px; margin-top:54px; }
+#soma-root .workforce-panel, #soma-root .model-panel { border:1px solid var(--line); border-radius:24px; background:rgba(9,14,23,.7); }
+#soma-root .workforce-panel { padding:clamp(24px,3vw,35px); }
+#soma-root .workforce-top { display:flex; align-items:start; justify-content:space-between; gap:20px; }
+#soma-root .workforce-top h3, #soma-root .model-panel h3 { margin:0; font-family:'Syne',sans-serif; font-size:1.13rem; }
+#soma-root .source-note { max-width:295px; margin:7px 0 0; color:var(--muted); font-size:.72rem; line-height:1.6; }
+#soma-root .source-note a { color:var(--cyan); text-decoration:none; }
+#soma-root .workforce-total { flex:0 0 auto; color:var(--lime); font-family:'Syne',sans-serif; font-size:2.6rem; line-height:.8; letter-spacing:-.075em; text-align:right; }
+#soma-root .workforce-total small { display:block; margin-top:9px; color:#7e8da2; font-family:'DM Mono',monospace; font-size:.52rem; letter-spacing:.09em; text-transform:uppercase; }
+#soma-root .workforce-table { width:100%; margin-top:28px; border-collapse:collapse; }
+#soma-root .workforce-table th { padding:0 0 10px; color:#72829a; border-bottom:1px solid var(--line); font:500 .54rem 'DM Mono',monospace; letter-spacing:.1em; text-align:left; text-transform:uppercase; }
+#soma-root .workforce-table td { padding:14px 0; color:#c7d1e1; border-bottom:1px solid rgba(182,210,255,.08); font-size:.74rem; }
+#soma-root .workforce-table td:nth-child(n+2) { color:var(--cyan); font-family:'DM Mono',monospace; font-size:.69rem; }
+#soma-root .workforce-table tr:last-child td { border-bottom:0; }
+#soma-root .model-panel { position:relative; display:flex; flex-direction:column; justify-content:space-between; padding:clamp(25px,3vw,38px); background:radial-gradient(circle at 82% 16%,rgba(74,156,255,.2),transparent 40%),rgba(255,255,255,.025); }
+#soma-root .model-kicker { margin-bottom:13px; color:var(--blue); font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:.11em; text-transform:uppercase; }
+#soma-root .model-tabs { display:flex; gap:7px; margin:24px 0 21px; }
+#soma-root .model-value { color:var(--ink); font-family:'Syne',sans-serif; font-size:clamp(3.8rem,7vw,6.3rem); line-height:.82; letter-spacing:-.095em; }
+#soma-root .model-value span { color:var(--blue); }
+#soma-root .model-copy { max-width:330px; margin:13px 0 0; color:var(--muted); font-size:.77rem; line-height:1.65; }
+#soma-root .model-disclaimer { margin-top:29px; color:#72829a; font-size:.64rem; line-height:1.65; }
+#soma-root .model-panel .deck-link { margin-top:16px; }
 #soma-root .cta { text-align: center; }
 #soma-root .cta-box { max-width: 970px; margin: 0 auto; padding: clamp(38px, 7vw, 80px); border: 1px solid var(--line-bright); border-radius: 32px; background: radial-gradient(circle at 50% 0%, rgba(74,156,255,.22), transparent 60%), rgba(255,255,255,.022); }
 #soma-root .cta .section-heading { margin-left: auto; margin-right: auto; }
@@ -228,9 +290,10 @@ const CSS = `
 #soma-root .reveal.show { opacity: 1; transform: none; }
 @keyframes somaPulse { 50% { opacity: .35; transform: scale(.75); } }
 @keyframes wave { from { height: 24%; } to { height: 100%; } }
-@media (max-width: 1120px) { #soma-root .feature-grid { grid-template-columns: repeat(3, 1fr); } #soma-root .roadmap-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 1120px) { #soma-root .feature-grid { grid-template-columns: repeat(3, 1fr); } #soma-root .roadmap-grid, #soma-root .safeguard-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) { #soma-root .impact-grid, #soma-root .market-grid { grid-template-columns:1fr; } }
 @media (max-width: 900px) { #soma-root .hero-layout, #soma-root .investor-layout, #soma-root .device-showcase { grid-template-columns: 1fr; } #soma-root .product-frame { max-width: 620px; width: 100%; margin: 0 auto; transform: none; } #soma-root .workflow-grid { grid-template-columns: repeat(2, 1fr); } #soma-root .footer-grid { grid-template-columns: 1.7fr 1fr 1fr; } #soma-root .footer-brand { grid-column: 1 / -1; } }
-@media (max-width: 680px) { #soma-root nav { padding: 17px 20px; } #soma-root .brand img { height: 27px; } #soma-root .nav-links { display: none; } #soma-root .nav-cta { padding: 10px 13px; font-size: .7rem; } #soma-root section { padding: 90px 22px; } #soma-root .hero { padding-top: 125px; } #soma-root .hero-title { font-size: clamp(3.65rem, 16vw, 5.5rem); } #soma-root .stats { gap: 13px; margin-top: 38px; } #soma-root .stat { padding-right: 13px; } #soma-root .stat strong { font-size: 1.55rem; } #soma-root .feature-grid, #soma-root .workflow-grid, #soma-root .roadmap-grid { grid-template-columns: 1fr; } #soma-root .feature { min-height: 215px; } #soma-root .feature-index { margin-bottom: 26px; } #soma-root .screen { padding: 14px; } #soma-root .investor-card { padding: 26px; } #soma-root .signup { flex-direction: column; border-radius: 18px; padding: 11px; } #soma-root .signup input { height: 42px; } #soma-root .signup .button-primary { width: 100%; } #soma-root .footer-grid { grid-template-columns: 1fr 1fr; } #soma-root .footer-bottom { flex-direction: column; } }
+@media (max-width: 680px) { #soma-root nav { padding: 17px 20px; } #soma-root .brand img { height: 27px; } #soma-root .nav-links { display: none; } #soma-root .nav-cta { padding: 10px 13px; font-size: .7rem; } #soma-root section { padding: 90px 22px; } #soma-root .hero { padding-top: 125px; } #soma-root .hero-title { font-size: clamp(3.65rem, 16vw, 5.5rem); } #soma-root .stats { gap: 13px; margin-top: 38px; } #soma-root .stat { padding-right: 13px; } #soma-root .stat strong { font-size: 1.55rem; } #soma-root .feature-grid, #soma-root .workflow-grid, #soma-root .roadmap-grid, #soma-root .safeguard-grid { grid-template-columns: 1fr; } #soma-root .feature { min-height: 215px; } #soma-root .feature-index { margin-bottom: 26px; } #soma-root .screen { padding: 14px; } #soma-root .investor-card { padding: 26px; } #soma-root .signup { flex-direction: column; border-radius: 18px; padding: 11px; } #soma-root .signup input { height: 42px; } #soma-root .signup .button-primary { width: 100%; } #soma-root .footer-grid { grid-template-columns: 1fr 1fr; } #soma-root .footer-bottom { flex-direction: column; } }
 `
 
 const HTML = `
@@ -240,7 +303,7 @@ const HTML = `
   <nav id="nav">
     <a class="brand" href="#top"><img src="/ss.png" alt="SomaSyncAI" /></a>
     <div class="nav-links">
-      <a href="#features">Features</a><a href="#roadmap">Roadmap</a><a href="#workflow">Workflow</a><a href="#investors">Investors</a>
+      <a href="#features">Features</a><a href="#impact">Impact</a><a href="#market">Data</a><a href="#roadmap">Roadmap</a><a href="#investors">Investors</a>
     </div>
     <a class="nav-cta" href="/login">Join Beta — Free</a>
   </nav>
@@ -252,7 +315,7 @@ const HTML = `
         <h1 class="hero-title reveal">THE <span class="stroke">GOLD</span><span class="electric">STANDARD</span> CLINICAL <span class="stroke">OS</span></h1>
         <p class="hero-sub reveal">The intelligence of you. A voice-first clinical documentation system created specifically for manual therapy practitioners—so your hands remain on the client, not the keyboard.</p>
         <div class="hero-actions reveal"><a class="button-primary" href="#beta">Request Beta Access</a><a class="button-secondary" href="/investor-pitch.html">View Investor Overview</a></div>
-        <div class="stats reveal"><div class="stat"><strong><span>87</span>%</strong><small>Less charting</small></div><div class="stat"><strong><span>100</span>%</strong><small>Hands-free</small></div></div>
+        <div class="stats reveal"><div class="stat"><strong><span>87</span>%</strong><small>Beta benchmark · not a guarantee</small></div><div class="stat"><strong><span>100</span>%</strong><small>Voice-first workflow</small></div></div>
       </div>
       <div class="product-frame reveal" aria-label="SomaSyncAI dashboard preview">
         <div class="product"><div class="window-bar"><i></i><i></i><i></i><span class="window-name">SOMASYNC // CLINICAL SESSION</span></div>
@@ -296,8 +359,23 @@ const HTML = `
     <div class="device-image-frame reveal"><img src="/images/somasync-bluetooth-workflow.jpg" alt="Manual therapy practitioner using a discreet Bluetooth audio device while SomaSyncAI organizes a clinical note" /><div class="device-caption"><b>Hands-free capture</b>Bluetooth audio input flows into a reviewable structured documentation draft.</div></div>
   </section>
 
+  <section class="impact" id="impact">
+    <div class="eyebrow reveal">03 / Practice impact</div>
+    <h2 class="section-heading reveal">Turn charting debt<br>into <span class="blue">time back.</span></h2>
+    <p class="section-copy reveal">Use your own session volume and current after-session documentation time to see the administrative time SomaSyncAI is designed to help you reclaim. This is an interactive estimate—not a performance promise.</p>
+    <div class="impact-grid">
+      <div class="calculator-card reveal">
+        <div class="calc-head"><div><h3>Practice-impact estimator</h3><p>Calibrate the estimate to your actual schedule.</p></div><span class="calc-live">Interactive</span></div>
+        <div class="calc-control"><div class="calc-label"><span>Sessions per day</span><b id="sessions-value">22</b></div><input class="calc-range" id="sessions-range" type="range" min="4" max="40" value="22" /></div>
+        <div class="calc-control"><div class="calc-label"><span>Current charting time after each session</span><b id="minutes-value">8 min</b></div><input class="calc-range" id="minutes-range" type="range" min="2" max="30" value="8" /></div>
+        <div class="calc-control"><div class="calc-label"><span>Clinical days per week</span><b id="days-value">4 days</b></div><div class="calc-choice" id="days-choice"><button type="button" data-days="3">3</button><button type="button" data-days="4" class="active">4</button><button type="button" data-days="5">5</button><button type="button" data-days="6">6</button></div></div>
+      </div>
+      <aside class="impact-report reveal"><div><div class="report-label">Estimated weekly documentation time</div><div class="report-number"><span id="hours-value">11.7</span><em>hours</em></div><p class="report-copy">This is your current documentation-time baseline before any change in workflow.</p></div><p class="report-micro">Your estimate updates locally in your browser. It is not stored, shared, or a guarantee of results.</p></aside>
+    </div>
+  </section>
+
   <section class="workflow" id="workflow">
-    <div class="eyebrow reveal">03 / Workflow</div>
+    <div class="eyebrow reveal">04 / Workflow</div>
     <h2 class="section-heading reveal">From session<br><span class="outline">to note.</span></h2>
     <p class="section-copy reveal">Four steps. No charting pile-up at the end of the day.</p>
     <div class="workflow-grid">
@@ -309,7 +387,7 @@ const HTML = `
   </section>
 
   <section id="roadmap">
-    <div class="eyebrow reveal">04 / Roadmap</div>
+    <div class="eyebrow reveal">05 / Roadmap</div>
     <h2 class="section-heading reveal">Where we're<br><span class="blue">headed.</span></h2>
     <p class="section-copy reveal">Built with practitioners, in the open.</p>
     <div class="roadmap-grid">
@@ -320,8 +398,30 @@ const HTML = `
     </div>
   </section>
 
+  <section class="safeguards" id="safeguards">
+    <div class="eyebrow reveal">06 / Product controls</div>
+    <h2 class="section-heading reveal">Signals of care.<br>Not <span class="outline">certification claims.</span></h2>
+    <p class="section-copy reveal">These badges describe implemented product controls and current beta status. They do not represent HIPAA, CMIA, SOC 2, medical-device, or other third-party certification.</p>
+    <div class="safeguard-grid">
+      <article class="safeguard-card reveal"><span class="status-badge">Active product control</span><h3>Voice-consent gate</h3><p>Voice capture requires the practitioner to acknowledge responsibility for required participant notice and consent before starting.</p><button class="status-toggle" type="button" aria-expanded="false" aria-controls="status-consent">What this means <span>+</span></button><div class="status-detail" id="status-consent" hidden>This is an in-app workflow guardrail. Each practice remains responsible for its own lawful consent process and documentation.</div></article>
+      <article class="safeguard-card reveal"><span class="status-badge">Reference-only output</span><h3>ICD-10-CM lookup</h3><p>Suggested code references are clearly presented for professional review rather than billing or coverage determinations.</p><button class="status-toggle" type="button" aria-expanded="false" aria-controls="status-icd">Reference source <span>+</span></button><div class="status-detail" id="status-icd" hidden>Verify every selection against the <a href="https://icd10cmtool.cdc.gov/" target="_blank" rel="noreferrer">official CDC/NCHS browser</a> and current payer requirements.</div></article>
+      <article class="safeguard-card reveal"><span class="status-badge">Beta guidance</span><h3>Minimum-necessary reminder</h3><p>On-screen beta disclosures tell practitioners not to enter identifiable client information without an appropriate basis and safeguards.</p><button class="status-toggle" type="button" aria-expanded="false" aria-controls="status-privacy">Privacy details <span>+</span></button><div class="status-detail" id="status-privacy" hidden>See our <a href="/privacy-policy.html">Privacy Policy</a> for data-use notices and the California privacy-request contact.</div></article>
+      <article class="safeguard-card reveal"><span class="status-badge">Access restriction</span><h3>Protected beta leads</h3><p>Beta-email capture is restricted to submissions; visitors cannot browse or retrieve other registrants’ email addresses.</p><button class="status-toggle" type="button" aria-expanded="false" aria-controls="status-leads">How it works <span>+</span></button><div class="status-detail" id="status-leads" hidden>The beta signup endpoint permits a limited insert action and is configured to block anonymous lead reads.</div></article>
+    </div>
+  </section>
+
+  <section class="market" id="market">
+    <div class="eyebrow reveal">07 / Market signal</div>
+    <h2 class="section-heading reveal">A growing workforce<br>still running on <span class="blue">after-hours notes.</span></h2>
+    <p class="section-copy reveal">The original SomaSyncAI investor narrative focused on an overlooked manual-therapy segment. We restored that story with a clear distinction between official workforce data and the company’s internal opportunity model.</p>
+    <div class="market-grid">
+      <div class="workforce-panel reveal"><div class="workforce-top"><div><h3>U.S. occupational reach</h3><p class="source-note">2024 employment from the U.S. Bureau of Labor Statistics. These occupations are a workforce indicator—not SomaSyncAI customer, user, or revenue counts.</p></div><div class="workforce-total">595.2K<small>Combined 2024 jobs</small></div></div><table class="workforce-table"><thead><tr><th>Occupation</th><th>2024 jobs</th><th>2024–34 growth</th><th>Source</th></tr></thead><tbody><tr><td>Physical therapists</td><td>267.2K</td><td>11%</td><td><a href="https://www.bls.gov/ooh/healthcare/physical-therapists.htm" target="_blank" rel="noreferrer">BLS ↗</a></td></tr><tr><td>Occupational therapists</td><td>160.0K</td><td>14%</td><td><a href="https://www.bls.gov/ooh/healthcare/occupational-therapists.htm" target="_blank" rel="noreferrer">BLS ↗</a></td></tr><tr><td>Massage therapists</td><td>168.0K</td><td>15%</td><td><a href="https://www.bls.gov/ooh/healthcare/massage-therapists.htm" target="_blank" rel="noreferrer">BLS ↗</a></td></tr></tbody></table></div>
+      <aside class="model-panel reveal"><div><div class="model-kicker">Restored investor overview</div><h3>Opportunity model</h3><div class="model-tabs"><button class="active" type="button" data-model="tam">TAM</button><button type="button" data-model="sam">SAM</button><button type="button" data-model="som">SOM</button></div><div class="model-value" id="model-value"><span>$</span>28B</div><p class="model-copy" id="model-copy">Global clinical documentation software market.</p></div><div><p class="model-disclaimer">Internal investor-model figures from the original SomaSyncAI pitch deck. They are planning assumptions, not audited revenue, a market-research citation, or a public investment offer.</p><a class="deck-link" href="/investor-pitch.html">Read the full investor overview</a></div></aside>
+    </div>
+  </section>
+
   <section id="investors">
-    <div class="eyebrow reveal">05 / Investors</div>
+    <div class="eyebrow reveal">08 / Investors</div>
     <h2 class="section-heading reveal">Built for a market<br><span class="blue">no one's served.</span></h2>
     <div class="investor-layout">
       <div class="thesis">
@@ -359,6 +459,53 @@ const JS = `
     entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('show') })
   }, { threshold: .11 })
   document.querySelectorAll('#soma-root .reveal').forEach((element) => observer.observe(element))
+
+  const sessionsRange = document.getElementById('sessions-range')
+  const minutesRange = document.getElementById('minutes-range')
+  const sessionsValue = document.getElementById('sessions-value')
+  const minutesValue = document.getElementById('minutes-value')
+  const daysValue = document.getElementById('days-value')
+  const hoursValue = document.getElementById('hours-value')
+  let clinicalDays = 4
+  const updateImpact = () => {
+    if (!sessionsRange || !minutesRange || !hoursValue) return
+    const sessions = Number(sessionsRange.value)
+    const minutes = Number(minutesRange.value)
+    sessionsValue.textContent = sessions
+    minutesValue.textContent = minutes + ' min'
+    daysValue.textContent = clinicalDays + (clinicalDays === 1 ? ' day' : ' days')
+    hoursValue.textContent = ((sessions * minutes * clinicalDays) / 60).toFixed(1)
+  }
+  sessionsRange?.addEventListener('input', updateImpact)
+  minutesRange?.addEventListener('input', updateImpact)
+  document.querySelectorAll('[data-days]').forEach((button) => button.addEventListener('click', () => {
+    clinicalDays = Number(button.dataset.days)
+    document.querySelectorAll('[data-days]').forEach((choice) => choice.classList.toggle('active', choice === button))
+    updateImpact()
+  }))
+  updateImpact()
+
+  document.querySelectorAll('.status-toggle').forEach((button) => button.addEventListener('click', () => {
+    const detail = document.getElementById(button.getAttribute('aria-controls'))
+    const open = button.getAttribute('aria-expanded') === 'true'
+    button.setAttribute('aria-expanded', String(!open))
+    if (detail) detail.hidden = open
+  }))
+
+  const marketModels = {
+    tam: { value: '$28B', copy: 'Global clinical documentation software market.' },
+    sam: { value: '$4.2B', copy: 'Manual therapy and outpatient rehabilitation documentation in the U.S.' },
+    som: { value: '$420M', copy: 'Original pitch assumption for direct-practitioner reach within 36 months.' }
+  }
+  const modelValue = document.getElementById('model-value')
+  const modelCopy = document.getElementById('model-copy')
+  document.querySelectorAll('[data-model]').forEach((button) => button.addEventListener('click', () => {
+    const model = marketModels[button.dataset.model]
+    if (!model || !modelValue || !modelCopy) return
+    modelValue.innerHTML = '<span>$</span>' + model.value.slice(1)
+    modelCopy.textContent = model.copy
+    document.querySelectorAll('[data-model]').forEach((choice) => choice.classList.toggle('active', choice === button))
+  }))
 
   const form = document.getElementById('lead-form')
   if (form) {

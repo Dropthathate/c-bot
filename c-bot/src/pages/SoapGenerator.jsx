@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? "https://ucqprtpuuyflnxjmatwo.supabase.co";
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? "";
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? "sb_publishable_zzh8YRfrO7--WLmWOw-9Tg_vV878nJB";
 
 const STATE_LABELS = {
   idle:       { label: "Ready",        color: "var(--dim)"    },

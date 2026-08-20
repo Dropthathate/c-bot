@@ -6,7 +6,6 @@ interface SoapNote {
   assessment: string;
   plan: string;
   icd10?: Array<{ code: string; description: string }>;
-  cpt?: Array<{ code: string; description: string; units?: number }>;
   medical_necessity?: string;
 }
 
@@ -139,7 +138,7 @@ export default function VoiceSoap() {
       }
 
       const data = await response.json();
-      setSoapNote({ ...data.soap, icd10: data.icd10, cpt: data.cpt, medical_necessity: data.medical_necessity });
+      setSoapNote({ ...data.soap, icd10: data.icd10, medical_necessity: data.medical_necessity });
       addToTranscript('Documentation generated', 'system');
       setState('idle');
     } catch (err) {
@@ -239,7 +238,7 @@ export default function VoiceSoap() {
           <div className="voice-soap-topbar-header">
             <div>
               <div className="voice-soap-topbar-title">Reviewable Documentation Draft</div>
-              <div className="voice-soap-topbar-subtitle">ICD-10-CM & CPT references • practitioner review required</div>
+              <div className="voice-soap-topbar-subtitle">Reviewable documentation draft · practitioner review required</div>
             </div>
             <div className="voice-soap-topbar-badge">✓ Review Required</div>
           </div>
@@ -258,7 +257,7 @@ export default function VoiceSoap() {
             <div className="voice-soap-empty">
               <div className="voice-soap-spinner"></div>
               <div className="voice-soap-empty-title">Generating Documentation Draft</div>
-              <div className="voice-soap-empty-subtitle">Creating a SOAP note with ICD-10-CM and CPT reference suggestions...</div>
+              <div className="voice-soap-empty-subtitle">Creating a reviewable SOAP note draft...</div>
             </div>
           )}
 
@@ -318,21 +317,6 @@ export default function VoiceSoap() {
                         <div key={idx} className="voice-soap-code-chip">
                           <span className="voice-soap-code-number">{code.code}</span>
                           <span className="voice-soap-code-desc">{code.description}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {soapNote.cpt && soapNote.cpt.length > 0 && (
-                  <div className="voice-soap-billing-section">
-                    <div className="voice-soap-billing-title">CPT Reference Suggestions</div>
-                    <div className="voice-soap-code-chips">
-                      {soapNote.cpt.map((code, idx) => (
-                        <div key={idx} className="voice-soap-code-chip">
-                          <span className="voice-soap-code-number">{code.code}</span>
-                          <span className="voice-soap-code-desc">{code.description}</span>
-                          {code.units && <span className="voice-soap-code-units">({code.units}u)</span>}
                         </div>
                       ))}
                     </div>

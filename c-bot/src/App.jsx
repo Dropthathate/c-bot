@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import DashboardLayout from "./components/DashboardLayout";
+import PrivacyGate from "./components/PrivacyGate";
 import Dashboard from "./pages/Dashboard";
 import SoapGenerator from "./pages/SoapGenerator";
 import IcdCoder from "./pages/IcdCoder";
@@ -44,7 +45,9 @@ export default function App() {
             path="/dashboard"
             element={
               <PrivateRoute>
-                <DashboardLayout />
+                <PrivacyGate>
+                  <DashboardLayout />
+                </PrivacyGate>
               </PrivateRoute>
             }
           >

@@ -31,6 +31,10 @@ body{font-family:'Manrope',sans-serif;background:#080808;color:#f0ede8;min-heigh
 .sidebar-user{padding:8px 12px;font-size:0.72rem;color:var(--dim);display:flex;align-items:center;gap:8px;cursor:pointer;border-radius:10px;transition:background 0.2s;}
 .sidebar-user:hover{background:rgba(255,255,255,0.04);color:var(--muted);}
 .main-content{overflow:auto;min-height:100vh;}
+.privacy-status-bar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:10px clamp(24px,4vw,48px);border-bottom:1px solid rgba(0,232,154,0.15);background:rgba(0,232,154,0.045);color:rgba(240,237,232,0.66);font-size:0.7rem;line-height:1.45;}
+.privacy-status-badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:rgba(0,232,154,0.09);border:1px solid rgba(0,232,154,0.22);color:var(--grn);font-size:0.61rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;}
+.privacy-status-bar strong{color:rgba(240,237,232,0.86);font-weight:700;}
+.privacy-review-link{margin-left:auto;border:0;background:transparent;padding:2px 0;color:var(--grn);font:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
 
 /* ── PAGE ── */
 .page{padding:clamp(24px,4vw,48px);max-width:1100px;}
@@ -180,7 +184,6 @@ body{font-family:'Manrope',sans-serif;background:#080808;color:#f0ede8;min-heigh
 .soap-a{color:rgba(191,90,242,0.9);}
 .soap-p{color:var(--orange);}
 .soap-icd{color:var(--grn);}
-.soap-cpt{color:var(--blue);}
 .soap-mn{color:var(--muted);}
 .soap-section-text{font-size:0.85rem;color:rgba(255,255,255,0.75);line-height:1.75;}
 .code-list{display:flex;flex-direction:column;gap:6px;}
@@ -234,6 +237,8 @@ body{font-family:'Manrope',sans-serif;background:#080808;color:#f0ede8;min-heigh
   .nav-link .nav-icon{font-size:1.1rem;}
   .sidebar-bottom{display:none;}
   .main-content{padding-bottom:80px;}
+  .privacy-status-bar{padding:9px 16px;font-size:0.65rem;}
+  .privacy-review-link{margin-left:0;}
 }
 `;
 
@@ -283,7 +288,16 @@ export default function DashboardLayout({ children }) {
             </div>
           </div>
         </aside>
-        <main className="main-content"><Outlet /></main>
+        <main className="main-content">
+          <div className="privacy-status-bar" role="note">
+            <span className="privacy-status-badge">Beta · no PHI</span>
+            <span>Do not enter client-identifying information.</span>
+            <span aria-hidden="true">·</span>
+            <strong>AI drafts require clinician review.</strong>
+            <button className="privacy-review-link" type="button" onClick={() => window.dispatchEvent(new Event("somasync:review-privacy"))}>Review privacy notice</button>
+          </div>
+          <Outlet />
+        </main>
       </div>
     </>
   );

@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import SoapGenerator from "./pages/SoapGenerator";
 import IcdCoder from "./pages/IcdCoder";
 import Analytics from "./pages/Analytics";
+import Compliance from "./pages/Compliance";
 import Settings from "./pages/Settings";
 import "./App.css";
 
@@ -55,6 +56,7 @@ export default function App() {
             <Route path="soap" element={<SoapGenerator />} />
             <Route path="icd" element={<IcdCoder />} />
             <Route path="analytics" element={<Analytics />} />
+            <Route path="compliance" element={<Compliance />} />
             <Route path="settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -63,4 +65,3 @@ export default function App() {
     </AuthProvider>
   );
 }
-

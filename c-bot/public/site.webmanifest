@@ -1,0 +1,10 @@
+{
+  "name": "SomaSync AI",
+  "short_name": "SomaSync",
+  "description": "Voice documentation workspace for manual therapy practitioners.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "icons": [{ "src": "/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }]
+}

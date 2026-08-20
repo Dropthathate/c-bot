@@ -247,6 +247,7 @@ const NAV = [
   { to: "/dashboard/soap",      icon: "📋", label: "SOAP Notes"  },
   { to: "/dashboard/icd",       icon: "⚡", label: "ICD-10-CM Reference" },
   { to: "/dashboard/analytics", icon: "📊", label: "Analytics"   },
+  { to: "/dashboard/compliance", icon: "◌", label: "Compliance" },
   { to: "/dashboard/settings",  icon: "⚙", label: "Settings"    },
 ];
 
@@ -290,11 +291,11 @@ export default function DashboardLayout({ children }) {
         </aside>
         <main className="main-content">
           <div className="privacy-status-bar" role="note">
-            <span className="privacy-status-badge">Beta · no PHI</span>
+            <span className="privacy-status-badge">Beta · PHI not authorized</span>
             <span>Do not enter client-identifying information.</span>
             <span aria-hidden="true">·</span>
             <strong>AI drafts require clinician review.</strong>
-            <button className="privacy-review-link" type="button" onClick={() => window.dispatchEvent(new Event("somasync:review-privacy"))}>Review privacy notice</button>
+            <Link className="privacy-review-link" to="/dashboard/compliance">Review readiness</Link>
           </div>
           <Outlet />
         </main>

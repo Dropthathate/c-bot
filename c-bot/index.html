@@ -3,98 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SomaSync AI: Clinical Documentation at the Speed of Conversation</title>
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="SomaSync AI delivers AI-powered clinical documentation for neuromuscular therapists and manual therapy practitioners in Modesto, California. SOAP notes, ICD-10 coding, and postural assessment at the speed of conversation. Founded by Nate Dropthehate Santos." />
-    <meta name="keywords" content="neuromuscular therapy, clinical documentation, SOAP notes, ICD-10 coding, postural assessment, massage therapy, manual therapy, Modesto California, therapeutic AI" />
+    <title>SomaSync AI — Voice Documentation for Manual Therapy</title>
+    <meta name="description" content="SomaSync AI is a voice documentation workspace for manual therapy practitioners, with clinician-reviewed SOAP note drafts and implementation-focused privacy safeguards." />
+    <meta name="keywords" content="manual therapy documentation, massage therapy SOAP notes, neuromuscular therapy documentation, clinician-reviewed AI drafts, voice documentation workspace" />
     <meta name="author" content="Nate Dropthehate Santos" />
     <meta name="creator" content="Nate Dropthehate Santos" />
     <meta name="publisher" content="SomaSync AI" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#080808" />
     <meta name="language" content="English" />
     <meta name="revisit-after" content="7 days" />
     
-    <!-- Geo Targeting -->
-    <meta name="geo.position" content="37.7597;-120.9723" />
-    <meta name="geo.placename" content="Modesto, California" />
-    <meta name="geo.region" content="US-CA" />
-    <meta name="ICBM" content="37.7597, -120.9723" />
-    
-    <!-- Open Graph (Social Media) -->
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="SomaSync AI: Clinical Documentation at the Speed of Conversation" />
-    <meta property="og:description" content="AI-powered clinical documentation for neuromuscular and manual therapy practitioners." />
-    <meta property="og:url" content="https://www.somasyncai.com" />
+    <meta property="og:title" content="SomaSync AI — Voice Documentation for Manual Therapy" />
+    <meta property="og:description" content="A voice documentation workspace for manual therapy practitioners, with clinician-reviewed SOAP note drafts." />
+    <meta property="og:url" content="https://www.somasyncai.com/" />
     <meta property="og:site_name" content="SomaSync AI" />
     <meta property="og:locale" content="en_US" />
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="SomaSync AI: Clinical Documentation" />
-    <meta name="twitter:description" content="AI-powered SOAP notes, ICD-10 coding, and postural assessment for therapists." />
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://www.somasyncai.com" />
-    
-    <!-- JSON-LD Structured Data -->
+    <meta property="og:image" content="https://www.somasyncai.com/favicon.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="SomaSync AI — Voice Documentation for Manual Therapy" />
+    <meta name="twitter:description" content="A voice documentation workspace for manual therapy practitioners, with clinician-reviewed SOAP note drafts." />
+    <meta name="twitter:image" content="https://www.somasyncai.com/favicon.png" />
+    <link rel="canonical" href="https://www.somasyncai.com/" />
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "SomaSync AI",
-      "description": "AI-powered clinical documentation platform for neuromuscular and manual therapy practitioners",
-      "applicationCategory": "MedicalApplication",
-      "creator": {
-        "@type": "Person",
-        "name": "Nate Dropthehate Santos",
-        "jobTitle": "Founder & Creator",
-        "location": {
-          "@type": "Place",
-          "name": "Modesto, California",
-          "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "37.7597",
-            "longitude": "-120.9723"
-          }
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.somasyncai.com/#organization",
+          "name": "SomaSync AI",
+          "url": "https://www.somasyncai.com/",
+          "logo": "https://www.somasyncai.com/favicon.png",
+          "description": "Voice documentation workspace for manual therapy practitioners.",
+          "founder": { "@id": "https://www.somasyncai.com/#founder" }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://www.somasyncai.com/#founder",
+          "name": "Nate Dropthehate Santos",
+          "jobTitle": "Founder and Developer",
+          "alumniOf": {
+            "@type": "EducationalOrganization",
+            "name": "National Holistic Institute",
+            "address": { "@type": "PostalAddress", "addressLocality": "Modesto", "addressRegion": "CA", "addressCountry": "US" }
+          },
+          "description": "Graduated from the Massage Core Program and Advanced Neuromuscular Therapy Program (1,250 hours) at National Holistic Institute in Modesto, California."
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "SomaSync AI",
+          "applicationCategory": "HealthApplication",
+          "operatingSystem": "Web",
+          "url": "https://www.somasyncai.com/",
+          "provider": { "@id": "https://www.somasyncai.com/#organization" },
+          "description": "Voice documentation workspace with clinician-reviewed SOAP note drafts for manual therapy practitioners."
         }
-      },
-      "areaServed": {
-        "@type": "Place",
-        "name": "United States",
-        "geo": {
-          "@type": "State",
-          "name": "California"
-        }
-      },
-      "url": "https://www.somasyncai.com",
-      "offers": {
-        "@type": "Offer",
-        "url": "https://www.somasyncai.com"
-      }
-    }
-    </script>
-    
-    <!-- Additional Local Business Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "SomaSync AI",
-      "description": "Clinical AI platform for neuromuscular therapy and manual therapy practitioners",
-      "founder": "Nate Dropthehate Santos",
-      "foundingLocation": {
-        "@type": "Place",
-        "name": "Modesto, California",
-        "address": {
-          "@type": "PostalAddress",
-          "addressRegion": "CA",
-          "addressCountry": "US"
-        }
-      },
-      "areaServed": ["CA", "US"],
-      "url": "https://www.somasyncai.com"
+      ]
     }
     </script>
   </head>

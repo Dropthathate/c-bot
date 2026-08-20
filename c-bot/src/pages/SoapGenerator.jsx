@@ -377,6 +377,16 @@ export default function SoapGenerator() {
     setCommandStatus("Hands-free controls are off");
   };
 
+  const testSpokenCue = () => {
+    if (!("speechSynthesis" in window)) {
+      setError("This browser cannot play spoken SomaSync cues. Use a current version of Chrome, Edge, or Safari.");
+      return;
+    }
+    setError("");
+    setCommandStatus("Playing a spoken audio test through the active system output…");
+    announce("SomaSync audio test. If you can hear this, spoken cues are working.", true);
+  };
+
   const handleCopy = async () => {
     if (!soap) return;
     const text = [
@@ -504,6 +514,8 @@ export default function SoapGenerator() {
             <div style={{ display: "flex", alignItems: "center", gap: 8, color: voiceCommandsEnabled ? "var(--grn)" : "var(--muted)", fontSize: ".74rem", marginBottom: 12 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: voiceCommandsEnabled ? "var(--grn)" : "var(--dim)", boxShadow: voiceCommandsEnabled ? "0 0 8px var(--grn)" : "none" }} />{commandStatus}</div>
             <div className="voice-tip" style={{ marginBottom: 10 }}>Say <strong>“SomaSync start”</strong>, <strong>“pause”</strong>, <strong>“resume”</strong>, <strong>“time remaining”</strong>, <strong>“body check”</strong>, <strong>“recall last note”</strong>, or <strong>“end session.”</strong></div>
             <label style={{ display: "flex", alignItems: "center", gap: 9, color: "var(--muted)", fontSize: ".7rem", cursor: "pointer" }}><input type="checkbox" checked={spokenCuesEnabled} onChange={(event) => setSpokenCuesEnabled(event.target.checked)} style={{ accentColor: "var(--grn)" }} />Use spoken time and body-mechanics cues through the active system audio output.</label>
+            <button className="btn-ghost" type="button" onClick={testSpokenCue} style={{ width: "100%", marginTop: 10, padding: "9px 12px" }}>Play spoken-audio test</button>
+            <div style={{ marginTop: 9, color: "var(--dim)", fontSize: ".67rem", lineHeight: 1.55 }}>This test plays through the computer’s current output device. If you use a Bluetooth headset, select that headset as the computer’s output or speakers device in system sound settings; selecting it above only chooses the microphone.</div>
             {showLastVoiceNote && <div style={{ marginTop: 14, padding: "11px 12px", borderRadius: 10, background: "rgba(0,232,154,.055)", border: "1px solid rgba(0,232,154,.16)" }}><div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, color: "var(--grn)", fontSize: ".67rem", fontWeight: 800, letterSpacing: ".08em", textTransform: "uppercase" }}>Most recent dictated phrase<button onClick={() => setShowLastVoiceNote(false)} style={{ border: 0, padding: 0, background: "transparent", color: "var(--muted)", cursor: "pointer", fontSize: ".7rem" }}>Hide</button></div><div style={{ marginTop: 7, color: "var(--muted)", fontSize: ".78rem", lineHeight: 1.55 }}>{lastVoiceNote}</div></div>}
           </div>
 

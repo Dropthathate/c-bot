@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { supabase } from "../integrations/supabase/client";
+import { createSoapDraft, transcribeAudio } from "../lib/clinicalApi";
 import AudioDeviceSetup from "../components/AudioDeviceSetup";
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? "https://ucqprtpuuyflnxjmatwo.supabase.co";
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? "sb_publishable_zzh8YRfrO7--WLmWOw-9Tg_vV878nJB";
 const DEVICE_ID_KEY = "somasync_audio_input_id";
 const DEVICE_LABEL_KEY = "somasync_audio_input_label";
 const SESSION_LENGTHS = [30, 45, 60, 90];
@@ -144,14 +142,8 @@ export default function SoapGenerator() {
 
   const generateSoap = async (rawNotes) => {
     setState("generating");
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/generate-soap`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
-      body: JSON.stringify({ rawNotes }),
-    });
-    if (!res.ok) throw new Error(`Unable to create the SOAP note (HTTP ${res.status}).`);
-    const data = await res.json();
-    setSoap(data.soap);
+    const data = await createSoapDraft(rawNotes);
+    setSoap(data.note);
     setState("idle");
   };
 
@@ -167,11 +159,7 @@ export default function SoapGenerator() {
     try {
       setState("transcribing");
       setSessionCue("Audio captured. Transcribing your session now.");
-      const form = new FormData();
-      form.append("audio", audio, "somasync-session.webm");
-      form.append("language", "en");
-      const { data, error: transcriptionError } = await supabase.functions.invoke("transcribe", { body: form });
-      if (transcriptionError) throw new Error("SomaSync could not transcribe this session. Check your connection and try again.");
+      const data = await transcribeAudio(audio);
       const text = data?.transcript?.trim();
       if (!text) throw new Error("No speech was detected. Speak closer to the microphone and try again.");
       setTranscript(text);

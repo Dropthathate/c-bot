@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { transcribeAudio } from '@/lib/clinicalApi';
 
 interface VoiceCalibrationProps {
   onComplete: () => void;
@@ -52,10 +52,7 @@ export default function VoiceCalibration({ onComplete, onSkip }: VoiceCalibratio
 
   const sendToWhisper = async (blob: Blob) => {
     try {
-      const form = new FormData();
-      form.append('audio', blob, 'calibration.webm');
-      form.append('prompt', PHRASES[phraseIndex]);
-      const { data } = await supabase.functions.invoke('transcribe', { body: form });
+      const data = await transcribeAudio(blob);
       const transcript = data?.transcript || '';
       const newTranscripts = [...transcripts];
       newTranscripts[phraseIndex] = transcript;

@@ -1,0 +1,6 @@
+vendor,service_or_component,can_handle_phi,agreement_status,region_and_residency,retention_and_deletion,subprocessors,security_contact,approval_owner,status
+Supabase,Authentication and existing beta data flow,Unknown,Review required,Document before PHI,Document before PHI,Document before PHI,Add contact,Founder,Open
+Deepgram,Speech-to-text,Planned only,BAA and account review required,Document before PHI,Confirm no_store and account terms,Document before PHI,Add contact,Founder,Open
+Amazon Web Services,API hosting Bedrock and RDS,Planned only,BAA and service eligibility review required,Select documented AWS region,Configure and document,Document AWS service chain,Add contact,Engineering lead,Open
+Hosting provider,Static frontend delivery,No PHI intended,Review required,Document deployment region,No PHI in edge logs,Document provider,Add contact,Engineering lead,Open
+Error monitoring and analytics,Operational telemetry,No PHI intended,Review required,Document deployment region,Disable PHI capture and document,Document provider,Add contact,Engineering lead,Open

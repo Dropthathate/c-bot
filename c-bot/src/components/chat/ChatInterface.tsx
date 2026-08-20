@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { supabase } from "@/integrations/supabase/client";
+import { createSoapDraft } from "@/lib/clinicalApi";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Mic, MicOff } from "lucide-react";
 
@@ -339,21 +339,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const generateSOAPNote = async (userInput: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke('generate-soap', {
-        body: { rawNotes: userInput, conversationHistory: messages }
-      });
-      if (error) throw error;
-      const soapData = data.soap;
-      if (soapNoteId) {
-        const { error: updateError } = await supabase.from('soap_notes').update({
-          subjective: soapData.subjective, objective: soapData.objective,
-          assessment: soapData.assessment, plan: soapData.plan,
-        }).eq('id', soapNoteId);
-        if (updateError) throw updateError;
-        if (onSoapGenerated) onSoapGenerated(soapData);
-        toast({ title: "SOAP Note Generated", description: "Your note has been saved." });
-      }
-      return data.response;
+      const data = await createSoapDraft(userInput);
+      if (onSoapGenerated) onSoapGenerated(data.note);
+      toast({ title: "SOAP Draft Generated", description: "Review the draft before any clinical use." });
+      return "A structured SOAP draft is ready for your review.";
     } catch (error: any) {
       toast({ title: "Generation Failed", description: error.message || "Could not generate SOAP note.", variant: "destructive" });
       return "I encountered an error generating the SOAP note. Please try again.";
@@ -362,11 +351,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const sendChatMessage = async (userInput: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke('chat', {
-        body: { messages: [...messages, { role: 'user', content: userInput }] }
-      });
-      if (error) throw error;
-      return data.response;
+      return "General chat is not enabled in this beta. Use SOAP Draft mode for clinician-reviewed documentation drafts.";
     } catch (error: any) {
       toast({ title: "Error", description: error.message || "Could not send message.", variant: "destructive" });
       return "I encountered an error. Please try again.";

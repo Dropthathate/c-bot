@@ -73,3 +73,7 @@ The current beta is **not authorized for PHI or client-identifying information**
 | [`public/robots.txt`](public/robots.txt), [`public/sitemap.xml`](public/sitemap.xml), and [`public/site.webmanifest`](public/site.webmanifest) | Portable SEO/GEO discovery and official-brand favicon assets. |
 
 The public landing page uses plain-language, non-certification trust indicators. It does **not** display AMTA, NHI, HHS, HIPAA, or other third-party logos without verified permission and an accurate basis for use. The c-bot dashboard includes a protected **Compliance** route that summarizes these operational boundaries for signed-in users.
+
+## Clinical API boundary
+
+The static frontend now sends speech and note-draft requests through the sibling [`../api`](../api) Express service. The browser uses its authenticated session only; transcription, model, database, and encryption credentials remain server-side. The API supports a container deployment path for AWS, a private encrypted PostgreSQL schema, Deepgram requests with `no_store=true`, and an Amazon Bedrock Claude 3 SOAP generator. See [`../api/README.md`](../api/README.md) and [`../api/deploy/AWS_DEPLOYMENT.md`](../api/deploy/AWS_DEPLOYMENT.md) before configuring any production environment.

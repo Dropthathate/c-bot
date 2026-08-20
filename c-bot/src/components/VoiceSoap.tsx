@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createSoapDraft } from "@/lib/clinicalApi";
 
 interface SoapNote {
   subjective: string;
@@ -121,24 +122,8 @@ export default function VoiceSoap() {
 
   const generateSOAP = async (rawNotes: string) => {
     try {
-      const response = await fetch(
-        'https://ucqprtpuuyflnxjmatwo.supabase.co/functions/v1/generate-soap',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer YOUR_SUPABASE_ANON_KEY_HERE`
-          },
-          body: JSON.stringify({ rawNotes, conversationHistory: [] })
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const data = await response.json();
-      setSoapNote({ ...data.soap, icd10: data.icd10, medical_necessity: data.medical_necessity });
+      const data = await createSoapDraft(rawNotes);
+      setSoapNote({ ...data.note, icd10: [], medical_necessity: '' });
       addToTranscript('Documentation generated', 'system');
       setState('idle');
     } catch (err) {

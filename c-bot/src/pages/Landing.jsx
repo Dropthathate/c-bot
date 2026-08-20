@@ -6,9 +6,7 @@ export default function Landing() {
   useEffect(() => {
     document.title = 'SomaSyncAI — The Gold Standard Clinical OS for Manual Therapists'
 
-    window.__SOMA_SUPABASE_URL__ = import.meta.env.VITE_SUPABASE_URL || 'https://ucqprtpuuyflnxjmatwo.supabase.co'
-    const configuredSupabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-    window.__SOMA_SUPABASE_KEY__ = configuredSupabaseKey && configuredSupabaseKey !== 'your_anon_key' ? configuredSupabaseKey : 'sb_publishable_zzh8YRfrO7--WLmWOw-9Tg_vV878nJB'
+    window.__SOMA_API_BASE_URL__ = import.meta.env.VITE_CLINICAL_API_URL || 'http://localhost:4000/api/v1'
 
     if (!document.getElementById('soma-fonts')) {
       const link = document.createElement('link')
@@ -527,13 +525,13 @@ const JS = `
       button.disabled = true
       button.textContent = 'Joining...'
       try {
-        const response = await fetch(window.__SOMA_SUPABASE_URL__ + '/rest/v1/leads', {
+        const response = await fetch(window.__SOMA_API_BASE_URL__ + '/public/beta-leads', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', apikey: window.__SOMA_SUPABASE_KEY__, Authorization: 'Bearer ' + window.__SOMA_SUPABASE_KEY__, 'Content-Profile': 'api', Prefer: 'return=minimal' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
         })
-        if (!response.ok && response.status !== 409) throw new Error('Lead submission failed')
-        message.textContent = response.status === 409 ? "You're already on the beta list — taking you to login." : "You're on the beta list — taking you to login."
+        if (!response.ok) throw new Error('Lead submission failed')
+        message.textContent = "You're on the beta list — taking you to login."
         message.style.color = '#a7ff80'
         form.reset()
         window.setTimeout(() => window.location.assign('/login'), 900)

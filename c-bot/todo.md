@@ -17,3 +17,9 @@
 - [x] Correct the privacy-policy Notice at Collection table to preserve the current no-PHI beta boundary.
 - [x] Create a dedicated 1200×630 SomaSync Open Graph preview image and add portable metadata references.
 - [x] Build and verify the updated privacy and social-preview implementation.
+- [x] Check live c-bot domain resolution, Vercel deployment health, and project protection settings.
+- [x] Identify the cause of the public outage and apply the least-risk recovery action.
+- [x] Verify public availability after recovery and document the root cause.
+- [ ] Trace the startup path that throws when Supabase environment variables are absent.
+- [ ] Replace the crash with a safe no-PHI beta fallback and unavailable-auth handling.
+- [ ] Build, deploy, and verify that the public site no longer crashes without Supabase variables.

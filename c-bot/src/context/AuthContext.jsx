@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../integrations/supabase/client";
+import { isSupabaseConfigured, supabase, supabaseConfigurationMessage } from "../integrations/supabase/client";
 
 const AuthContext = createContext(null);
 
@@ -8,6 +8,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      setLoading(false);
+      return undefined;
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -26,12 +31,14 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
+    if (!isSupabaseConfigured) return { success: false, error: supabaseConfigurationMessage };
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { success: false, error: error.message };
     return { success: true };
   };
 
   const logout = async () => {
+    if (!isSupabaseConfigured) return;
     await supabase.auth.signOut();
   };
 

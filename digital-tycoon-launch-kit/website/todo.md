@@ -1,7 +1,0 @@
-- [x] Reframe the page voice around hustle, ownership, leverage, and independent creator ambition.
-- [x] Replace restrained editorial copy with sharper, money-forward hooks that remain non-degrading and non-coercive.
-- [x] Add more immediate, high-energy interaction cues while retaining clear price, access, and delivery terms.
-- [x] Add non-exploitative, nightlife-adjacent creator artwork and editorial visual moments to the high-energy page revision.
-- [x] Check every mechanics row, inclusion list, price block, and mobile section for stable alignment, readable wrapping, and intentional spacing.
-- [x] Confirm all assets preserve contrast and that the responsive layout does not create clipped text or horizontal overflow.
-- [x] Recheck the revised page across desktop and mobile before delivery.

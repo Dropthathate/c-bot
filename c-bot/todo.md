@@ -20,6 +20,10 @@
 - [x] Check live c-bot domain resolution, Vercel deployment health, and project protection settings.
 - [x] Identify the cause of the public outage and apply the least-risk recovery action.
 - [x] Verify public availability after recovery and document the root cause.
-- [ ] Trace the startup path that throws when Supabase environment variables are absent.
-- [ ] Replace the crash with a safe no-PHI beta fallback and unavailable-auth handling.
-- [ ] Build, deploy, and verify that the public site no longer crashes without Supabase variables.
+- [x] Trace the startup path that throws when Supabase environment variables are absent.
+- [x] Replace the crash with a safe no-PHI beta fallback and unavailable-auth handling.
+- [x] Build, deploy, and verify that the public site no longer crashes without Supabase variables.
+- [x] Select the production therapist-account provider and define its invitation-only, role, and audit-control rollout.
+- [x] Clarify the BAA execution gate for no-PHI beta accounts versus PHI-enabled therapist workflows.
+- [x] Create and validate a project-specific completion runbook covering configuration, deployment, access, vendor, and launch gates.
+- [x] Include a consolidated original SomaSync AI change record and clearly identify which work has and has not been migrated into c-bot.

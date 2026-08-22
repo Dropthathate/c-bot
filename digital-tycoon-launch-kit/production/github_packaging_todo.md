@@ -1,0 +1,5 @@
+- [ ] Copy the finalized ebooks, cover, calendar, and TikTok monetization package into the repository launch-kit folder.
+- [ ] Copy the full responsive sales-page source and its project design notes into the launch-kit website folder.
+- [ ] Add a root README with the Payhip checkout link, asset map, and local website run instructions.
+- [ ] Commit and push the complete launch kit to the selected GitHub repository.
+- [ ] Verify the final repository tree and latest commit URL.

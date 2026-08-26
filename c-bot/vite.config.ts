@@ -15,9 +15,10 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   if (mode === "production") {
-    const supabaseKey = env.VITE_SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_ANON_KEY;
+    const supabaseUrl = env.VITE_SUPABASE_PROJECT_URL || env.VITE_SUPABASE_URL;
+    const supabaseKey = env.VITE_SUPABASE_ANON_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
     const required = [
-      ["VITE_SUPABASE_URL", env.VITE_SUPABASE_URL],
+      ["VITE_SUPABASE_URL", supabaseUrl],
       ["VITE_SUPABASE_PUBLISHABLE_KEY", supabaseKey],
     ].filter(([, value]) => !value?.trim()).map(([name]) => name);
 
@@ -29,8 +30,8 @@ export default defineConfig(({ mode }) => {
       throw new Error("Production build blocked: VITE_CLINICAL_API_URL must be a deployed HTTPS API endpoint, not localhost.");
     }
 
-    if (isLocalUrl(env.VITE_SUPABASE_URL)) {
-      throw new Error("Production build blocked: VITE_SUPABASE_URL must be a deployed HTTPS Supabase project URL.");
+    if (isLocalUrl(supabaseUrl)) {
+      throw new Error("Production build blocked: the configured Supabase project URL must be a deployed HTTPS endpoint.");
     }
   }
 

@@ -17,7 +17,6 @@ export default defineConfig(({ mode }) => {
   if (mode === "production") {
     const supabaseKey = env.VITE_SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_ANON_KEY;
     const required = [
-      ["VITE_CLINICAL_API_URL", env.VITE_CLINICAL_API_URL],
       ["VITE_SUPABASE_URL", env.VITE_SUPABASE_URL],
       ["VITE_SUPABASE_PUBLISHABLE_KEY", supabaseKey],
     ].filter(([, value]) => !value?.trim()).map(([name]) => name);
@@ -26,7 +25,7 @@ export default defineConfig(({ mode }) => {
       throw new Error(`Production build blocked: set ${required.join(", ")} in the deployment environment.`);
     }
 
-    if (isLocalUrl(env.VITE_CLINICAL_API_URL)) {
+    if (env.VITE_CLINICAL_API_URL?.trim() && isLocalUrl(env.VITE_CLINICAL_API_URL)) {
       throw new Error("Production build blocked: VITE_CLINICAL_API_URL must be a deployed HTTPS API endpoint, not localhost.");
     }
 

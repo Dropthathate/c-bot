@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { clinicalApiBaseUrl, clinicalApiConfigurationMessage } from '../lib/runtimeConfig'
+import { isSupabaseConfigured, supabase } from '../integrations/supabase/client'
 
 export default function Landing() {
   const ref = useRef(null)
@@ -9,6 +10,8 @@ export default function Landing() {
 
     window.__SOMA_API_BASE_URL__ = clinicalApiBaseUrl || ''
     window.__SOMA_API_CONFIGURATION_MESSAGE__ = clinicalApiConfigurationMessage
+    window.__SOMA_SUPABASE__ = supabase
+    window.__SOMA_SUPABASE_CONFIGURED__ = isSupabaseConfigured
 
     if (!document.getElementById('soma-fonts')) {
       const link = document.createElement('link')
@@ -530,19 +533,14 @@ const JS = `
       button.disabled = true
       button.textContent = 'Joining...'
       try {
-        if (!window.__SOMA_API_BASE_URL__) {
-          message.textContent = window.__SOMA_API_CONFIGURATION_MESSAGE__ || 'The beta service is temporarily unavailable. Please try again later.'
+        if (!window.__SOMA_SUPABASE_CONFIGURED__) {
+          message.textContent = 'The beta service is temporarily unavailable. Please try again later.'
           message.style.color = '#ff6e7e'
           return
         }
-        const response = await fetch(window.__SOMA_API_BASE_URL__ + '/public/beta-leads', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
-        })
-        const payload = await response.json().catch(() => ({}))
-        if (!response.ok) {
-          message.textContent = payload?.error?.message || 'The beta request could not be submitted. Please try again later.'
+        const { error } = await window.__SOMA_SUPABASE__.from('beta_leads').insert({ email })
+        if (error && error.code !== '23505') {
+          message.textContent = 'The beta request could not be submitted. Please try again later.'
           message.style.color = '#ff6e7e'
           return
         }

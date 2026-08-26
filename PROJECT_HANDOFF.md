@@ -69,3 +69,10 @@ The API should be deployed only behind HTTPS through AWS API Gateway or an Appli
 ## Completion status and next action
 
 The codebase is structured for a controlled pilot and has explicit no-PHI boundaries. The next appropriate action is a **synthetic-data pilot**: deploy the static frontend and API in a non-PHI environment, test sign-in, consent, audio flow, note drafts, error handling, and audit logging, then use the readiness documents to decide whether a regulated production program should proceed.
+
+
+## Beta-access repair verification — August 26, 2026
+
+The frontend now requires a deployed HTTPS API URL and valid public Supabase configuration for production builds. A local production-preview test confirmed that a direct `/#beta` URL scrolls to the beta-access form, including on initial page load after the landing markup is injected. The beta form no longer redirects a requester to the inaccessible login screen after lead capture; it confirms that the request was received and that approved access instructions will be sent separately.
+
+Before deploying, set `VITE_CLINICAL_API_URL` to the deployed Express API origin plus `/api/v1`, along with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in the frontend host’s production environment. The build deliberately fails if these are missing or use non-HTTPS/localhost URLs. The API must separately be deployed behind HTTPS, supplied with its required server-side environment settings, and configured to allow the exact public frontend origin.

@@ -40,19 +40,19 @@ export default function Login() {
           <span className="notice-icon">🔒</span>
           <span>
             Access is restricted to approved beta testers.{" "}
-            <Link to="/#access" className="notice-link">Request access →</Link>
+            <Link to="/#beta" className="notice-link">Request access →</Link>
           </span>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="field">
-            <label className="field-label">Email</label>
-            <input className="field-input" type="email" placeholder="you@practice.com"
+            <label className="field-label" htmlFor="login-email">Email</label>
+            <input id="login-email" name="email" className="field-input" type="email" autoComplete="username" placeholder="you@practice.com"
               value={email} onChange={e => setEmail(e.target.value)} required autoFocus />
           </div>
           <div className="field">
-            <label className="field-label">Password</label>
-            <input className="field-input" type="password" placeholder="••••••••"
+            <label className="field-label" htmlFor="login-password">Password</label>
+            <input id="login-password" name="password" className="field-input" type="password" autoComplete="current-password" placeholder="••••••••"
               value={password} onChange={e => setPassword(e.target.value)} required />
           </div>
           {error && <div className="login-error">{error}</div>}

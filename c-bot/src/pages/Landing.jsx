@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { clinicalApiBaseUrl, clinicalApiConfigurationMessage } from '../lib/runtimeConfig'
 
 export default function Landing() {
   const ref = useRef(null)
@@ -6,7 +7,8 @@ export default function Landing() {
   useEffect(() => {
     document.title = 'SomaSyncAI — The Gold Standard Clinical OS for Manual Therapists'
 
-    window.__SOMA_API_BASE_URL__ = import.meta.env.VITE_CLINICAL_API_URL || 'http://localhost:4000/api/v1'
+    window.__SOMA_API_BASE_URL__ = clinicalApiBaseUrl || ''
+    window.__SOMA_API_CONFIGURATION_MESSAGE__ = clinicalApiConfigurationMessage
 
     if (!document.getElementById('soma-fonts')) {
       const link = document.createElement('link')
@@ -29,6 +31,9 @@ export default function Landing() {
       script = document.createElement('script')
       script.textContent = JS
       document.body.appendChild(script)
+      if (window.location.hash === '#beta') {
+        window.requestAnimationFrame(() => document.getElementById('beta')?.scrollIntoView())
+      }
     }
 
     return () => {
@@ -304,7 +309,7 @@ const HTML = `
     <div class="nav-links">
       <a href="#features">Features</a><a href="#impact">Impact</a><a href="#market">Data</a><a href="#roadmap">Roadmap</a><a href="#investors">Investors</a>
     </div>
-    <a class="nav-cta" href="/login">Join Beta — Free</a>
+    <a class="nav-cta" href="#beta">Join Beta — Free</a>
   </nav>
 
   <section class="hero" id="top">
@@ -442,7 +447,7 @@ const HTML = `
 
   <section class="cta" id="beta">
     <div class="cta-box reveal"><div class="eyebrow">Join the beta</div><h2 class="section-heading">Chart <span class="blue">less.</span><br>Practice <span class="outline">more.</span></h2><p class="section-copy">Limited access beta. Get early updates and an invite when a spot opens up.</p>
-      <form class="signup" id="lead-form"><input id="lead-hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px" /><input id="lead-email" type="email" required placeholder="you@practice.com" aria-label="Your email address" /><button class="button-primary" type="submit">Join Beta — Free</button></form><p class="signup-notice">California Notice at Collection: we collect this email only to administer beta interest and access updates. We do not sell or share it for cross-context behavioral advertising. <a href="/privacy-policy.html">Privacy Policy</a>. Do not submit client or patient information in this form.</p><div id="lead-msg" aria-live="polite"></div>
+      <form class="signup" id="lead-form"><input id="lead-hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px" /><input id="lead-email" name="email" type="email" required autocomplete="email" placeholder="you@practice.com" aria-label="Your email address" /><button class="button-primary" type="submit">Join Beta — Free</button></form><p class="signup-notice">California Notice at Collection: we collect this email only to administer beta interest and access updates. We do not sell or share it for cross-context behavioral advertising. <a href="/privacy-policy.html">Privacy Policy</a>. Do not submit client or patient information in this form.</p><div id="lead-msg" aria-live="polite"></div>
     </div>
   </section>
 
@@ -525,18 +530,27 @@ const JS = `
       button.disabled = true
       button.textContent = 'Joining...'
       try {
+        if (!window.__SOMA_API_BASE_URL__) {
+          message.textContent = window.__SOMA_API_CONFIGURATION_MESSAGE__ || 'The beta service is temporarily unavailable. Please try again later.'
+          message.style.color = '#ff6e7e'
+          return
+        }
         const response = await fetch(window.__SOMA_API_BASE_URL__ + '/public/beta-leads', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
         })
-        if (!response.ok) throw new Error('Lead submission failed')
-        message.textContent = "You're on the beta list — taking you to login."
+        const payload = await response.json().catch(() => ({}))
+        if (!response.ok) {
+          message.textContent = payload?.error?.message || 'The beta request could not be submitted. Please try again later.'
+          message.style.color = '#ff6e7e'
+          return
+        }
+        message.textContent = "Thanks — your beta request was received. If approved, we'll send access instructions by email."
         message.style.color = '#a7ff80'
         form.reset()
-        window.setTimeout(() => window.location.assign('/login'), 900)
-      } catch (error) {
-        message.textContent = 'Something went wrong — try again in a moment.'
+      } catch (_error) {
+        message.textContent = 'The beta request could not be submitted. Please try again later.'
         message.style.color = '#ff6e7e'
       } finally {
         button.disabled = false

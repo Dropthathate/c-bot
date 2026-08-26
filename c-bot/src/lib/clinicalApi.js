@@ -3,10 +3,16 @@
  * but it must never contain Deepgram, AWS, Bedrock, database, or encryption credentials.
  */
 import { isSupabaseConfigured, supabase, supabaseConfigurationMessage } from "../integrations/supabase/client";
+import { clinicalApiConfigurationMessage, getClinicalApiBaseUrl, isClinicalApiConfigured } from "./runtimeConfig";
 
-const apiBaseUrl = import.meta.env.VITE_CLINICAL_API_URL ?? "http://localhost:4000/api/v1";
+function apiUrl(path) {
+  return `${getClinicalApiBaseUrl()}${path}`;
+}
 
 async function authorizationHeader() {
+  if (!isClinicalApiConfigured) {
+    throw new Error(clinicalApiConfigurationMessage);
+  }
   if (!isSupabaseConfigured) {
     throw new Error(`${supabaseConfigurationMessage} Clinical voice and documentation processing remains disabled in this public beta.`);
   }
@@ -24,16 +30,16 @@ async function unwrap(response) {
 export async function transcribeAudio(audio) {
   const form = new FormData();
   form.append("audio", audio, `somasync-${Date.now()}.webm`);
-  const response = await fetch(`${apiBaseUrl}/voice/transcribe`, { method: "POST", headers: await authorizationHeader(), body: form });
+  const response = await fetch(apiUrl("/voice/transcribe"), { method: "POST", headers: await authorizationHeader(), body: form });
   return unwrap(response);
 }
 
 export async function createSoapDraft(transcript) {
-  const response = await fetch(`${apiBaseUrl}/voice/generate-soap`, { method: "POST", headers: { "Content-Type": "application/json", ...(await authorizationHeader()) }, body: JSON.stringify({ transcript }) });
+  const response = await fetch(apiUrl("/voice/generate-soap"), { method: "POST", headers: { "Content-Type": "application/json", ...(await authorizationHeader()) }, body: JSON.stringify({ transcript }) });
   return unwrap(response);
 }
 
 export async function registerBetaLead(email) {
-  const response = await fetch(`${apiBaseUrl}/public/beta-leads`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
+  const response = await fetch(apiUrl("/public/beta-leads"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
   return unwrap(response);
 }

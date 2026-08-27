@@ -28,6 +28,31 @@
 
     <section class="notice" aria-label="Clinical documentation safeguard"><strong>Clinician review required.</strong> SomaSync AI does not diagnose, make treatment decisions, or finalize documentation automatically.</section>
 
+    <section class="command-deck" aria-labelledby="commandDeckTitle">
+      <div class="command-deck-heading">
+        <div><p class="eyebrow">LIVE SESSION INSTRUMENTS</p><h2 id="commandDeckTitle">See the stream—not patient data.</h2></div>
+        <p class="instrument-disclosure">Instruments populate only during an active secure session. Values are operational signals; audio and clinical content are not stored here.</p>
+      </div>
+      <div class="instrument-grid">
+        <section class="instrument signal-instrument" aria-labelledby="signalTitle">
+          <div class="instrument-title-row"><div><span class="instrument-kicker">INPUT SIGNAL</span><h3 id="signalTitle">Microphone activity</h3></div><span id="signalStatus" class="instrument-state">OFFLINE</span></div>
+          <div class="signal-canvas-wrap"><canvas id="signalCanvas" aria-label="Live microphone signal visualization"></canvas><div class="signal-baseline" aria-hidden="true"></div></div>
+          <div class="instrument-metrics"><span><b id="audioLevel">0</b><small>INPUT LEVEL</small></span><span><b id="audioFrames">0</b><small>PCM FRAMES</small></span><span><b id="sampleRate">16 kHz</b><small>SAMPLE RATE</small></span></div>
+        </section>
+
+        <section class="instrument stream-instrument" aria-labelledby="streamTitle">
+          <div class="instrument-title-row"><div><span class="instrument-kicker">SECURE STREAM</span><h3 id="streamTitle">Session posture</h3></div><span id="streamIntegrity" class="instrument-state">AWAITING SESSION</span></div>
+          <div class="stream-path" aria-label="Audio stream architecture"><span class="path-node">MIC</span><span class="path-link" aria-hidden="true"></span><span class="path-node">PCM</span><span class="path-link" aria-hidden="true"></span><span class="path-node path-node-locked">WSS</span><span class="path-link" aria-hidden="true"></span><span class="path-node">STT</span></div>
+          <div class="stream-counters"><div><span>STREAM SEGMENT</span><strong id="streamSegment">—</strong></div><div><span>FINAL EVENTS</span><strong id="finalEventCount">0</strong></div><div><span>RECONNECT GAPS</span><strong id="reconnectGapCount">0</strong></div></div>
+        </section>
+
+        <section class="instrument audit-instrument" aria-labelledby="auditTitle">
+          <div class="instrument-title-row"><div><span class="instrument-kicker">PRIVACY-SCOPED EVENTS</span><h3 id="auditTitle">Session event trail</h3></div><span id="auditCount" class="instrument-state">0 EVENTS</span></div>
+          <ol id="eventTrail" class="event-trail" aria-live="polite"><li class="event-empty">No active session events. When a session begins, this trail records operational states only—not audio, transcript, or SOAP content.</li></ol>
+        </section>
+      </div>
+    </section>
+
     <div class="workspace-grid">
       <section class="panel session-panel" aria-labelledby="captureTitle">
         <div class="panel-heading"><div><p class="eyebrow">CAPTURE</p><h2 id="captureTitle">Hands-free connection</h2></div><span id="streamPill" class="pill pill-idle">NOT RECORDING</span></div>

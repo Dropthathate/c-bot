@@ -8,7 +8,10 @@
     sourceNode: null,
     workletNode: null,
     silentGain: null,
+    audioAnalyser: null,
     audioSampleRate: null,
+    audioFrameCount: 0,
+    signalAnimationFrame: null,
     audioBufferLimit: 96000,
     bluetoothDevice: null,
     batteryCharacteristic: null,
@@ -17,12 +20,16 @@
     socketReady: false,
     reconnectAttempt: 0,
     reconnectTimer: null,
+    reconnectGapPending: false,
+    reconnectGapCount: 0,
+    streamSegment: 0,
     sessionStartedAt: null,
     timer: null,
     streamId: null,
     audioBuffer: [],
     audioBufferBytes: 0,
     finalTranscriptCount: 0,
+    eventCount: 0,
     socketClosedByUser: false
   };
 
@@ -30,7 +37,9 @@
     "workspace", "authRequired", "sessionDot", "sessionStatus", "connectDevice", "deviceName", "deviceDetail",
     "batteryLevel", "deviceState", "selectMicrophone", "audioState", "startSession", "stopSession", "captureError",
     "streamPill", "socketState", "transcript", "transcriptMeta", "clearTranscript", "generateSoap", "soapStatus",
-    "soapSubjective", "soapObjective", "soapAssessment", "soapPlan", "clinicianReviewed", "exportDraft", "sessionTimer"
+    "soapSubjective", "soapObjective", "soapAssessment", "soapPlan", "clinicianReviewed", "exportDraft", "sessionTimer",
+    "signalCanvas", "signalStatus", "audioLevel", "audioFrames", "sampleRate", "streamIntegrity", "streamSegment",
+    "finalEventCount", "reconnectGapCount", "eventTrail", "auditCount"
   ].map((id) => [id, document.getElementById(id)]));
 
   function getCookie(name) {
@@ -57,6 +66,68 @@
     els.socketState.className = `connection-label ${kind}`;
   }
 
+  function setInstrumentState(element, message, kind = "") {
+    if (!element) return;
+    element.textContent = message;
+    element.className = `instrument-state${kind ? ` ${kind}` : ""}`;
+  }
+
+  function elapsedLabel() {
+    if (!state.sessionStartedAt) return "00:00:00";
+    const total = Math.floor((Date.now() - state.sessionStartedAt) / 1000);
+    const h = String(Math.floor(total / 3600)).padStart(2, "0");
+    const m = String(Math.floor((total % 3600) / 60)).padStart(2, "0");
+    const s = String(total % 60).padStart(2, "0");
+    return `${h}:${m}:${s}`;
+  }
+
+  function setTimer() { els.sessionTimer.textContent = elapsedLabel(); }
+
+  // This only renders fixed operational event labels in the browser. It never includes audio,
+  // transcript, SOAP fields, device identifiers, credentials, cookies, or other clinical content.
+  function recordOperationalEvent(code, description, kind = "") {
+    if (!els.eventTrail) return;
+    const empty = els.eventTrail.querySelector(".event-empty");
+    if (empty) empty.remove();
+    const item = document.createElement("li");
+    if (kind) item.classList.add(`event-${kind}`);
+    const timestamp = document.createElement("span");
+    timestamp.className = "event-time";
+    timestamp.textContent = elapsedLabel();
+    const label = document.createElement("span");
+    label.className = "event-code";
+    label.textContent = code;
+    item.append(timestamp, label, document.createTextNode(` — ${description}`));
+    els.eventTrail.prepend(item);
+    while (els.eventTrail.children.length > 12) els.eventTrail.lastElementChild?.remove();
+    state.eventCount += 1;
+    setInstrumentState(els.auditCount, `${state.eventCount} EVENT${state.eventCount === 1 ? "" : "S"}`, "live");
+  }
+
+  function resetSessionInstruments() {
+    state.audioFrameCount = 0;
+    state.reconnectGapCount = 0;
+    state.streamSegment = 0;
+    state.eventCount = 0;
+    state.reconnectGapPending = false;
+    els.audioLevel.textContent = "0";
+    els.audioFrames.textContent = "0";
+    els.sampleRate.textContent = `${Math.round(config.audio.sampleRate / 1000)} kHz`;
+    els.streamSegment.textContent = "—";
+    els.finalEventCount.textContent = "0";
+    els.reconnectGapCount.textContent = "0";
+    setInstrumentState(els.signalStatus, "ARMED", "warn");
+    setInstrumentState(els.streamIntegrity, "AWAITING WSS", "warn");
+    setInstrumentState(els.auditCount, "0 EVENTS");
+    if (els.eventTrail) {
+      els.eventTrail.replaceChildren();
+      const empty = document.createElement("li");
+      empty.className = "event-empty";
+      empty.textContent = "Operational session events will render here. This browser view does not retain audio, transcript, or SOAP content.";
+      els.eventTrail.append(empty);
+    }
+  }
+
   function setStreaming(active, warning = false) {
     els.streamPill.textContent = active ? (warning ? "RECONNECTING" : "RECORDING") : "NOT RECORDING";
     els.streamPill.className = `pill ${active ? (warning ? "pill-warning" : "pill-live") : "pill-idle"}`;
@@ -64,6 +135,9 @@
     els.stopSession.disabled = !active;
     els.selectMicrophone.disabled = active;
     els.connectDevice.disabled = active;
+    if (!active) setInstrumentState(els.signalStatus, "OFFLINE");
+    else if (warning) setInstrumentState(els.signalStatus, "BUFFERING", "warn");
+    else setInstrumentState(els.signalStatus, "LIVE", "live");
   }
 
   function setSoapStatus(message, kind = "") {
@@ -71,13 +145,64 @@
     els.soapStatus.className = `soap-status ${kind}`;
   }
 
-  function setTimer() {
-    if (!state.sessionStartedAt) return;
-    const total = Math.floor((Date.now() - state.sessionStartedAt) / 1000);
-    const h = String(Math.floor(total / 3600)).padStart(2, "0");
-    const m = String(Math.floor((total % 3600) / 60)).padStart(2, "0");
-    const s = String(total % 60).padStart(2, "0");
-    els.sessionTimer.textContent = `${h}:${m}:${s}`;
+  function resizeSignalCanvas() {
+    const canvas = els.signalCanvas;
+    if (!canvas) return null;
+    const bounds = canvas.getBoundingClientRect();
+    const pixelRatio = window.devicePixelRatio || 1;
+    const width = Math.max(1, Math.round(bounds.width * pixelRatio));
+    const height = Math.max(1, Math.round(bounds.height * pixelRatio));
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+    const context = canvas.getContext("2d");
+    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    return { context, width: bounds.width, height: bounds.height };
+  }
+
+  function drawSignalFrame() {
+    const canvasData = resizeSignalCanvas();
+    if (!canvasData) return;
+    const { context, width, height } = canvasData;
+    context.clearRect(0, 0, width, height);
+    if (!state.active || !state.audioAnalyser) {
+      state.signalAnimationFrame = null;
+      return;
+    }
+    const samples = new Uint8Array(state.audioAnalyser.fftSize);
+    state.audioAnalyser.getByteTimeDomainData(samples);
+    let peak = 0;
+    context.beginPath();
+    for (let i = 0; i < samples.length; i += 1) {
+      const normalized = (samples[i] - 128) / 128;
+      peak = Math.max(peak, Math.abs(normalized));
+      const x = (i / (samples.length - 1)) * width;
+      const y = height / 2 + normalized * height * 0.4;
+      if (i === 0) context.moveTo(x, y);
+      else context.lineTo(x, y);
+    }
+    const gradient = context.createLinearGradient(0, 0, width, 0);
+    gradient.addColorStop(0, "#62e6da");
+    gradient.addColorStop(1, "#8db8ff");
+    context.strokeStyle = gradient;
+    context.lineWidth = 1.8;
+    context.stroke();
+    els.audioLevel.textContent = String(Math.min(100, Math.round(peak * 170)));
+    state.signalAnimationFrame = window.requestAnimationFrame(drawSignalFrame);
+  }
+
+  function startSignalVisualization() {
+    if (state.signalAnimationFrame) window.cancelAnimationFrame(state.signalAnimationFrame);
+    state.signalAnimationFrame = window.requestAnimationFrame(drawSignalFrame);
+  }
+
+  function stopSignalVisualization() {
+    if (state.signalAnimationFrame) window.cancelAnimationFrame(state.signalAnimationFrame);
+    state.signalAnimationFrame = null;
+    const canvasData = resizeSignalCanvas();
+    canvasData?.context.clearRect(0, 0, canvasData.width, canvasData.height);
+    els.audioLevel.textContent = "0";
   }
 
   function addTranscript(text, isFinal) {
@@ -89,14 +214,32 @@
     if (existingInterim) existingInterim.remove();
     const paragraph = document.createElement("p");
     paragraph.textContent = clean;
-    if (!isFinal) paragraph.className = "interim";
-    else state.finalTranscriptCount += 1;
+    paragraph.className = `transcript-entry${isFinal ? " final-entry" : " interim"}`;
+    if (!isFinal) paragraph.classList.add("interim");
+    else {
+      state.finalTranscriptCount += 1;
+      els.finalEventCount.textContent = String(state.finalTranscriptCount);
+      recordOperationalEvent("FINAL_TRANSCRIPT_EVENT", "A final transcript event is available for clinician review.");
+    }
     els.transcript.append(paragraph);
     els.transcript.scrollTop = els.transcript.scrollHeight;
     els.transcriptMeta.textContent = `${state.finalTranscriptCount} final segment${state.finalTranscriptCount === 1 ? "" : "s"} received. Raw audio is not stored in the browser.`;
     els.generateSoap.disabled = state.finalTranscriptCount === 0 || !state.active;
     els.clearTranscript.disabled = state.finalTranscriptCount === 0;
     if (isFinal) setSoapStatus("Final transcript context is available. Generate a draft only when you are ready to review it.", "ready");
+  }
+
+  function addReconnectMarker() {
+    const empty = els.transcript.querySelector(".empty-state");
+    if (empty) empty.remove();
+    const marker = document.createElement("p");
+    marker.className = "gap-entry transcript-entry";
+    marker.textContent = "Secure stream recovered. Review the surrounding transcript for a possible reconnection gap.";
+    els.transcript.append(marker);
+    els.transcript.scrollTop = els.transcript.scrollHeight;
+    state.reconnectGapCount += 1;
+    els.reconnectGapCount.textContent = String(state.reconnectGapCount);
+    recordOperationalEvent("STREAM_RECONNECTED", "The browser marked a potential transcript gap for clinician review.", "warn");
   }
 
   function clearTranscriptDisplay() {
@@ -150,6 +293,7 @@
     els.deviceName.textContent = device.name || "SomaSync companion device";
     els.deviceDetail.textContent = "Companion connected. Battery updates are shown when the device exposes the standard Battery Service.";
     els.deviceState.textContent = "Connected";
+    recordOperationalEvent("BLE_CONNECTED", "Companion control and telemetry channel available.");
     try {
       const batteryService = await server.getPrimaryService("battery_service");
       const battery = await batteryService.getCharacteristic("battery_level");
@@ -168,6 +312,7 @@
     els.deviceState.textContent = "Disconnected";
     els.deviceDetail.textContent = "The companion connection ended. Reconnect when it is safe to do so; browser audio capture is controlled separately.";
     els.batteryLevel.textContent = "—";
+    recordOperationalEvent("BLE_DISCONNECTED", "Companion control channel ended; browser audio remains separately controlled.", "warn");
   }
 
   async function selectMicrophone() {
@@ -188,6 +333,8 @@
       });
       els.audioState.textContent = track.label || "Approved audio input selected";
       els.startSession.disabled = false;
+      setInstrumentState(els.signalStatus, "ARMED", "warn");
+      recordOperationalEvent("MICROPHONE_GRANTED", "Browser microphone permission is active; no audio has been sent yet.");
     } catch {
       setCaptureError("Microphone access is required for a real-time documentation session. No audio was captured.");
     }
@@ -224,14 +371,20 @@
     state.audioBufferLimit = Math.round(context.sampleRate * 2 * config.audio.reconnectBufferSeconds);
     await context.audioWorklet.addModule("/clinical-workspace/assets/audio-worklet.js");
     const source = context.createMediaStreamSource(state.microphoneStream);
+    const analyser = context.createAnalyser();
+    analyser.fftSize = 1024;
+    analyser.smoothingTimeConstant = 0.72;
     const worklet = new AudioWorkletNode(context, "somasync-pcm-processor", { numberOfInputs: 1, numberOfOutputs: 1, channelCount: 1 });
     worklet.port.onmessage = ({ data }) => {
       if (!state.active || !(data instanceof ArrayBuffer)) return;
+      state.audioFrameCount += 1;
+      if (state.audioFrameCount % 8 === 0) els.audioFrames.textContent = String(state.audioFrameCount);
       if (state.socketReady && state.socket?.readyState === WebSocket.OPEN && state.socket.bufferedAmount < config.audio.maxBrowserBufferedBytes) state.socket.send(data);
       else enqueueAudio(data);
     };
     const silentGain = context.createGain();
     silentGain.gain.value = 0;
+    source.connect(analyser);
     source.connect(worklet);
     worklet.connect(silentGain);
     silentGain.connect(context.destination);
@@ -239,17 +392,23 @@
     state.sourceNode = source;
     state.workletNode = worklet;
     state.silentGain = silentGain;
+    state.audioAnalyser = analyser;
+    els.sampleRate.textContent = `${Math.round(context.sampleRate / 1000)} kHz`;
     await context.resume();
+    startSignalVisualization();
   }
 
   async function stopAudioPipeline() {
+    stopSignalVisualization();
     state.workletNode?.port.close();
     state.workletNode?.disconnect();
     state.sourceNode?.disconnect();
+    state.audioAnalyser?.disconnect();
     state.silentGain?.disconnect();
     state.workletNode = null;
     state.sourceNode = null;
     state.silentGain = null;
+    state.audioAnalyser = null;
     if (state.audioContext && state.audioContext.state !== "closed") await state.audioContext.close();
     state.audioContext = null;
     state.audioSampleRate = null;
@@ -266,6 +425,7 @@
     socket.binaryType = "arraybuffer";
     state.socket = socket;
     setSocketState(state.reconnectAttempt ? "Reconnecting…" : "Connecting…", "reconnecting");
+    setInstrumentState(els.streamIntegrity, state.reconnectAttempt ? "RECONNECTING" : "NEGOTIATING WSS", "warn");
 
     socket.addEventListener("open", () => {
       if (state.socket !== socket || !state.active) return socket.close(1000, "inactive_session");
@@ -279,7 +439,10 @@
         state.socket = null;
       }
       if (state.active && !state.socketClosedByUser) scheduleReconnect();
-      else setSocketState("Disconnected");
+      else {
+        setSocketState("Disconnected");
+        if (!state.active) setInstrumentState(els.streamIntegrity, "SESSION CLOSED");
+      }
     });
   }
 
@@ -289,21 +452,34 @@
     if (socket !== state.socket) return;
     if (message.type === "ready") {
       state.socketReady = true;
+      state.streamSegment += 1;
+      els.streamSegment.textContent = String(state.streamSegment).padStart(2, "0");
+      const recovered = state.reconnectGapPending;
       state.reconnectAttempt = 0;
       setSocketState("Secure stream connected", "connected");
+      setInstrumentState(els.streamIntegrity, "LIVE / WSS", "live");
       setStreaming(true);
       flushAudioBuffer();
+      if (recovered) {
+        state.reconnectGapPending = false;
+        addReconnectMarker();
+      } else {
+        recordOperationalEvent("WSS_CONNECTED", "Secure transcription stream established.");
+      }
       return;
     }
     if (message.type === "transcript") return addTranscript(message.text, Boolean(message.isFinal));
     if (message.type === "flow_control") {
       setSocketState("Stream catching up", "reconnecting");
+      setInstrumentState(els.streamIntegrity, "FLOW CONTROL", "warn");
+      recordOperationalEvent("FLOW_CONTROL", "Gateway requested a controlled stream catch-up.", "warn");
       return;
     }
     if (message.type === "soap") return populateSoap(message.note);
     if (message.type === "soap_error") return setSoapStatus(message.message || "The SOAP draft could not be generated.", "error");
     if (message.type === "error") {
       setCaptureError(message.code === "STT_CONNECTION" ? "Live transcription connection was interrupted. SomaSync will retry without storing audio beyond the short in-memory recovery buffer." : "The secure session received an invalid response.");
+      recordOperationalEvent("STREAM_ERROR", "Secure stream reported an operational error; recovery is controlled and visible.", "danger");
     }
   }
 
@@ -312,13 +488,18 @@
       if (state.reconnectAttempt >= config.realtime.maxReconnectAttempts) {
         setCaptureError("The real-time stream could not reconnect. Stop the session and restart when your connection is stable.");
         setSocketState("Reconnect unavailable", "reconnecting");
+        setInstrumentState(els.streamIntegrity, "RECOVERY STOPPED", "error");
+        recordOperationalEvent("RECONNECT_EXHAUSTED", "Maximum secure reconnection attempts reached; clinician action is required.", "danger");
       }
       return;
     }
     const delay = Math.min(1000 * (2 ** state.reconnectAttempt), 8_000);
     state.reconnectAttempt += 1;
+    state.reconnectGapPending = true;
     setStreaming(true, true);
     setSocketState(`Reconnecting in ${Math.round(delay / 1000)}s…`, "reconnecting");
+    setInstrumentState(els.streamIntegrity, "RECONNECTING", "warn");
+    recordOperationalEvent("RECONNECT_SCHEDULED", "Bounded in-memory recovery buffer is active; no audio is persisted.", "warn");
     state.reconnectTimer = window.setTimeout(() => {
       state.reconnectTimer = null;
       if (state.active) connectRealtimeSocket();
@@ -338,10 +519,12 @@
       state.audioBuffer = [];
       state.audioBufferBytes = 0;
       state.reconnectAttempt = 0;
+      resetSessionInstruments();
       setTimer();
       state.timer = window.setInterval(setTimer, 1000);
       setStreaming(true, true);
       setSoapStatus("Waiting for final transcript context before drafting.");
+      recordOperationalEvent("SESSION_STARTED", "Clinician initiated a secure documentation session.");
       await startAudioPipeline();
       connectRealtimeSocket();
     } catch (error) {
@@ -351,6 +534,7 @@
   }
 
   async function stopSession() {
+    const wasActive = state.active;
     state.active = false;
     state.socketClosedByUser = true;
     window.clearInterval(state.timer);
@@ -367,19 +551,25 @@
     els.sessionTimer.textContent = "00:00:00";
     setStreaming(false);
     setSocketState("Disconnected");
+    setInstrumentState(els.streamIntegrity, "SESSION CLOSED");
     els.generateSoap.disabled = true;
     setSoapStatus("Session stopped. Final transcript context and in-memory audio recovery buffers have been cleared.");
+    if (wasActive) recordOperationalEvent("SESSION_STOPPED", "Clinician stopped the secure session; in-memory recovery audio was cleared.");
   }
 
   function populateSoap(note) {
     const valid = note && ["subjective", "objective", "assessment", "plan"].every((key) => typeof note[key] === "string") && Object.keys(note).length === 4;
-    if (!valid) return setSoapStatus("The received draft did not meet the required SOAP schema and was rejected.", "error");
+    if (!valid) {
+      recordOperationalEvent("SOAP_REJECTED", "A draft response did not meet the exact four-field schema.", "danger");
+      return setSoapStatus("The received draft did not meet the required SOAP schema and was rejected.", "error");
+    }
     els.soapSubjective.value = note.subjective;
     els.soapObjective.value = note.objective;
     els.soapAssessment.value = note.assessment;
     els.soapPlan.value = note.plan;
     els.clinicianReviewed.checked = false;
     els.exportDraft.disabled = true;
+    recordOperationalEvent("SOAP_DRAFT_READY", "A strict four-field draft is ready for clinician review.");
     setSoapStatus("Strict SOAP draft received. Review and edit every section before exporting.", "ready");
   }
 
@@ -393,6 +583,7 @@
     anchor.download = `somasync-clinician-reviewed-draft-${new Date().toISOString().slice(0, 10)}.txt`;
     anchor.click();
     URL.revokeObjectURL(anchor.href);
+    recordOperationalEvent("DRAFT_EXPORTED", "Clinician-confirmed draft exported from this browser session.");
   }
 
   async function verifySession() {
@@ -401,6 +592,7 @@
       if (!response.ok) throw new Error("missing_session");
       els.workspace.hidden = false;
       setSessionState("Secure session ready", "ready");
+      stopSignalVisualization();
     } catch {
       els.authRequired.hidden = false;
       setSessionState("Sign-in required", "problem");
@@ -415,11 +607,13 @@
   els.generateSoap.addEventListener("click", () => {
     if (state.socketReady && state.socket?.readyState === WebSocket.OPEN) {
       setSoapStatus("Generating strict SOAP draft…");
+      recordOperationalEvent("SOAP_REQUESTED", "Strict SOAP draft requested from the active final transcript context.");
       state.socket.send(JSON.stringify({ type: "generate_soap" }));
     }
   });
   els.clinicianReviewed.addEventListener("change", () => { els.exportDraft.disabled = !els.clinicianReviewed.checked || !els.soapSubjective.value; });
   els.exportDraft.addEventListener("click", exportDraft);
+  window.addEventListener("resize", () => { if (state.active) resizeSignalCanvas(); });
   window.addEventListener("beforeunload", () => { if (state.active) state.socket?.close(1000, "page_unload"); });
 
   verifySession();

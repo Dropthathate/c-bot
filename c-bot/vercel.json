@@ -6,5 +6,15 @@
   "rewrites": [
     { "source": "/login", "destination": "/index.html" },
     { "source": "/dashboard/:path*", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/clinical-workspace/:path*",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "Permissions-Policy", "value": "bluetooth=(self), microphone=(self), camera=(), geolocation=(), payment=()" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; connect-src 'self' https://api.somasyncai.com wss://api.somasyncai.com; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self' blob:; worker-src 'self' blob:; base-uri 'none'; frame-ancestors 'none'; form-action 'self'" }
+      ]
+    }
   ]
 }

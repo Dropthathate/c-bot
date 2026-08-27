@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>SomaSync AI — Documentation Calendar</title>
+  <link rel="stylesheet" href="/assets/calendar.css" />
+</head>
+<body>
+  <header class="topbar"><a href="https://www.somasyncai.com/" class="brand">SomaSync<span>AI</span><small>DOCUMENTATION CALENDAR</small></a><span id="sessionState">Checking secure session…</span></header>
+  <main id="calendarApp" class="calendar" hidden>
+    <section class="hero"><p class="eyebrow">CLINICIAN SCHEDULING</p><h1>Protect time for documentation.</h1><p>These are clinician-owned work blocks. Do not enter patient names, session notes, or clinical details.</p></section>
+    <section class="panel" aria-labelledby="blockTitle"><div class="panel-head"><h2 id="blockTitle">Today’s blocks</h2><span id="todayDate"></span></div><div id="blocks" class="blocks" aria-live="polite"><p class="empty">Loading today’s schedule…</p></div></section>
+    <section class="panel form-panel" aria-labelledby="newBlockTitle"><h2 id="newBlockTitle">Add a documentation block</h2><form id="blockForm"><label>Label<input id="blockLabel" maxlength="80" required placeholder="Documentation review" /></label><div class="date-grid"><label>Start<input id="startsAt" type="datetime-local" required /></label><label>End<input id="endsAt" type="datetime-local" required /></label></div><button type="submit">Add protected time block</button><p id="formError" role="alert" hidden></p></form></section>
+  </main>
+  <main id="authRequired" class="auth-required" hidden><p class="eyebrow">SECURE ACCESS REQUIRED</p><h1>Sign in through SomaSync AI.</h1><p>This calendar uses the same secure clinical session as the main application. A second password is not required.</p><a href="https://www.somasyncai.com/login?next=https%3A%2F%2Fcalendar.somasyncai.com%2F">Open access portal</a></main>
+  <script src="/assets/calendar-config.js"></script><script src="/assets/calendar.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+window.SomaSyncCalendarConfig = Object.freeze({
+  apiBaseUrl: "https://api.somasyncai.com/api/v1",
+  csrfCookieName: "somasync_csrf",
+  accessPortalUrl: "https://www.somasyncai.com/login?next=https%3A%2F%2Fcalendar.somasyncai.com%2F"
+});

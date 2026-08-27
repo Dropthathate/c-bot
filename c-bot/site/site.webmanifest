@@ -1,0 +1,12 @@
+{
+  "name": "SomaSync AI",
+  "short_name": "SomaSync",
+  "description": "Hands-free clinical documentation for manual therapists and neuromuscular therapists.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#061019",
+  "theme_color": "#07131f",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

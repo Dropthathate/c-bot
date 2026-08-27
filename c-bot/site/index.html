@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07131f">
+  <meta name="description" content="SomaSync AI is a hands-free clinical documentation workspace for manual therapists and neuromuscular therapists.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://www.somasyncai.com/">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/assets/app.css">
+  <title>SomaSync AI | Hands-Free Clinical Documentation</title>
+</head>
+<body>
+  <a class="skip-link" href="#voice-workspace">Skip to voice workspace</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="SomaSync AI home"><img src="/images/ss.png" alt="SomaSync AI"></a>
+    <nav aria-label="Primary navigation">
+      <a href="#workflow">Workflow</a>
+      <a href="#device">Hardware</a>
+      <a href="#security">Privacy</a>
+    </nav>
+    <a class="header-action" id="calendar-link" href="https://calendar.somasyncai.com/" rel="noopener">Calendar</a>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Purpose-built for manual therapy</p>
+        <h1 id="hero-title">Hands on the client. <span>Documentation in motion.</span></h1>
+        <p>SomaSync AI pairs a compatible hands-free device with real-time transcription and a clinician-reviewable SOAP draft. It is designed specifically for manual therapists and neuromuscular therapists—not generic dictation.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#voice-workspace">Open voice workspace</a>
+          <a class="button button-secondary" href="#device">Device compatibility</a>
+        </div>
+      </div>
+      <aside class="hero-status" aria-label="Clinical workflow status">
+        <p class="status-label">Session flow</p>
+        <ol>
+          <li><b>01</b> Connect device</li>
+          <li><b>02</b> Stream audio</li>
+          <li><b>03</b> Review SOAP draft</li>
+          <li><b>04</b> Confirm documentation</li>
+        </ol>
+        <p class="status-note">Drafts require clinician review and approval before use.</p>
+      </aside>
+    </section>
+
+    <section class="voice-workspace" id="voice-workspace" aria-labelledby="workspace-title">
+      <div class="section-intro">
+        <p class="eyebrow">Live clinical workspace</p>
+        <h2 id="workspace-title">Capture, structure, review.</h2>
+        <p>Audio is streamed while the session is active. The system displays a draft only; it does not make clinical decisions or submit records automatically.</p>
+      </div>
+
+      <div class="clinical-notice" role="note">
+        <strong>Privacy reminder:</strong> Use only with an approved privacy workflow. Do not include patient identifiers in transmitted audio unless your organization has completed the appropriate vendor, security, and contractual review.
+      </div>
+
+      <div class="workspace-grid">
+        <section class="card device-card" id="device" aria-labelledby="device-title">
+          <div class="card-heading">
+            <div>
+              <p class="overline">Hardware connection</p>
+              <h3 id="device-title">Hands-free device</h3>
+            </div>
+            <span class="connection-chip" id="bluetooth-state" data-state="idle">Not connected</span>
+          </div>
+          <p class="card-copy">Connect the SomaSync companion over Web Bluetooth for device telemetry and controls. Select the paired Bluetooth audio input below for microphone capture.</p>
+          <div class="device-actions">
+            <button class="button button-primary" id="connect-device" type="button">Connect companion</button>
+            <button class="button button-quiet" id="disconnect-device" type="button" disabled>Disconnect</button>
+          </div>
+          <dl class="device-metrics">
+            <div><dt>Device</dt><dd id="device-name">Not selected</dd></div>
+            <div><dt>Battery</dt><dd id="battery-level">Unavailable</dd></div>
+            <div><dt>Link</dt><dd id="device-link">Idle</dd></div>
+          </dl>
+          <div class="field-group">
+            <label for="audio-input">Audio input</label>
+            <select id="audio-input" disabled><option value="">Select an audio input</option></select>
+            <p class="field-help">Bluetooth headset audio is selected through the browser’s microphone permission. The companion device connection supplies Bluetooth control and telemetry when supported.</p>
+          </div>
+        </section>
+
+        <section class="card session-card" aria-labelledby="session-title">
+          <div class="card-heading">
+            <div>
+              <p class="overline">Persistent stream</p>
+              <h3 id="session-title">Session control</h3>
+            </div>
+            <span class="connection-chip" id="socket-state" data-state="idle">Offline</span>
+          </div>
+          <div class="session-timer" id="session-timer" aria-live="polite">00:00</div>
+          <p class="stream-detail" id="stream-detail">Choose an input device, then start a session.</p>
+          <div class="session-actions">
+            <button class="button button-primary" id="start-session" type="button" disabled>Start streaming</button>
+            <button class="button button-danger" id="stop-session" type="button" disabled>Stop session</button>
+          </div>
+          <div class="meter-wrap" aria-label="Input signal level"><div class="meter"><span id="audio-meter"></span></div><span id="meter-label">Input quiet</span></div>
+          <div class="field-group compact">
+            <label for="session-label">Session reference <span>(optional, non-identifying)</span></label>
+            <input id="session-label" name="session-label" type="text" maxlength="64" autocomplete="off" placeholder="e.g., AM-session-03">
+          </div>
+        </section>
+
+        <section class="card transcript-card" aria-labelledby="transcript-title">
+          <div class="card-heading">
+            <div>
+              <p class="overline">Real-time transcript</p>
+              <h3 id="transcript-title">Live context</h3>
+            </div>
+            <button class="text-button" id="clear-transcript" type="button">Clear</button>
+          </div>
+          <div class="transcript" id="transcript" role="log" aria-live="polite" aria-relevant="additions text">
+            <p class="empty-state">Interim and final transcription will appear here while a session is active.</p>
+          </div>
+        </section>
+
+        <section class="card soap-card" aria-labelledby="soap-title">
+          <div class="card-heading">
+            <div>
+              <p class="overline">Strict JSON SOAP draft</p>
+              <h3 id="soap-title">Clinician review</h3>
+            </div>
+            <span class="connection-chip" id="soap-state" data-state="idle">Awaiting transcript</span>
+          </div>
+          <p class="card-copy">The response is constrained to the four SOAP fields. Review and edit each field before any clinical use.</p>
+          <div class="soap-grid">
+            <label>Subjective<textarea id="soap-subjective" rows="4" spellcheck="true" placeholder="No draft yet"></textarea></label>
+            <label>Objective<textarea id="soap-objective" rows="4" spellcheck="true" placeholder="No draft yet"></textarea></label>
+            <label>Assessment<textarea id="soap-assessment" rows="4" spellcheck="true" placeholder="No draft yet"></textarea></label>
+            <label>Plan<textarea id="soap-plan" rows="4" spellcheck="true" placeholder="No draft yet"></textarea></label>
+          </div>
+          <div class="soap-actions">
+            <button class="button button-secondary" id="refresh-soap" type="button" disabled>Generate draft</button>
+            <button class="button button-quiet" id="copy-soap-json" type="button" disabled>Copy JSON</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="workflow-section" id="workflow" aria-labelledby="workflow-title">
+      <div class="section-intro"><p class="eyebrow">Clinician-led workflow</p><h2 id="workflow-title">Built for work that cannot pause.</h2></div>
+      <div class="workflow-grid">
+        <article><span>01</span><h3>Stay in treatment</h3><p>Use compatible device controls and a selected Bluetooth microphone without stepping away from the table.</p></article>
+        <article><span>02</span><h3>Keep context live</h3><p>Small audio chunks move over one persistent encrypted WebSocket rather than repeated audio-file uploads.</p></article>
+        <article><span>03</span><h3>Review structured output</h3><p>Final transcript text is processed into a strict SOAP object with no Markdown wrapper or conversational filler.</p></article>
+        <article><span>04</span><h3>Plan on your calendar</h3><p>The scheduling workspace runs at the calendar subdomain and recognizes the same root-domain session.</p></article>
+      </div>
+    </section>
+
+    <section class="beta-section" id="beta" aria-labelledby="beta-title">
+      <div>
+        <p class="eyebrow">Limited beta access</p>
+        <h2 id="beta-title">Request access to the SomaSync AI beta.</h2>
+        <p>Leave an email address to request access. This does not create a clinical account or grant access to protected documentation tools.</p>
+      </div>
+      <form id="beta-form" class="beta-form">
+        <label for="beta-email">Email address</label>
+        <div><input id="beta-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"><button class="button button-primary" type="submit">Request access</button></div>
+        <p id="beta-message" aria-live="polite">We will send access instructions if your request is approved.</p>
+      </form>
+    </section>
+
+    <section class="security-section" id="security" aria-labelledby="security-title">
+      <div class="security-copy"><p class="eyebrow">Technical safeguards</p><h2 id="security-title">The browser never owns the session token.</h2><p>Authenticated requests include secure cookies automatically. The application does not put JWTs in local storage, URL fragments, or browser-readable JavaScript state.</p></div>
+      <ul class="security-list">
+        <li><b>Root-domain session</b><span>Secure, HttpOnly, SameSite=Lax cookie scoped to <code>.somasyncai.com</code>.</span></li>
+        <li><b>Same-site calendar calls</b><span>Credentialed HTTPS requests to the calendar subdomain use the same browser session.</span></li>
+        <li><b>Fail closed</b><span>Production configuration rejects insecure HTTP WebSocket or API endpoints.</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>SomaSync AI</strong> · Hands-free clinical documentation for manual therapy.</p>
+    <p><a href="/privacy-policy.html">Privacy</a><a href="/terms-and-conditions.html">Terms</a><a href="/sitemap.xml">Sitemap</a></p>
+  </footer>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script src="/assets/runtime-config.js"></script>
+  <script type="module" src="/assets/app.js"></script>
+</body>
+</html>

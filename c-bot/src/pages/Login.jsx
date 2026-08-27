@@ -1,0 +1,73 @@
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+export default function Login() {
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) navigate("/dashboard");
+  }, [user, navigate]);
+
+  if (user) return null;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    const result = await login(email, password);
+    setLoading(false);
+    if (result.success) navigate("/dashboard");
+    else setError(result.error ?? "Login failed.");
+  };
+
+  return (
+    <div className="login-page">
+      <div className="login-mesh" />
+      <div className="login-card">
+        <div className="login-header">
+          <img className="login-logo-image" src="/favicon.png" alt="SomaSync AI" />
+          <h1 className="login-title">SomaSync AI</h1>
+          <p className="login-sub">AALIYAH.IO · Clinical Documentation Dashboard</p>
+        </div>
+
+        <div className="login-notice">
+          <span className="notice-icon">🔒</span>
+          <span>
+            Access is restricted to approved beta testers.{" "}
+            <Link to="/#beta" className="notice-link">Request access →</Link>
+          </span>
+        </div>
+
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="field">
+            <label className="field-label" htmlFor="login-email">Email</label>
+            <input id="login-email" name="email" className="field-input" type="email" autoComplete="username" placeholder="you@practice.com"
+              value={email} onChange={e => setEmail(e.target.value)} required autoFocus />
+          </div>
+          <div className="field">
+            <label className="field-label" htmlFor="login-password">Password</label>
+            <input id="login-password" name="password" className="field-input" type="password" autoComplete="current-password" placeholder="••••••••"
+              value={password} onChange={e => setPassword(e.target.value)} required />
+          </div>
+          {error && <div className="login-error">{error}</div>}
+          <button className="login-btn" type="submit" disabled={loading}>
+            {loading ? "Signing in..." : "Sign In →"}
+          </button>
+        </form>
+
+        <div className="login-footer">
+          <Link to="/" className="back-link">← Back to homepage</Link>
+          <p className="login-disclaimer">
+            ⚠ AI outputs are for demonstration only and require clinician review before clinical use.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

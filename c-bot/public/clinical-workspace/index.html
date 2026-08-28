@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#07131d" />
+  <title>SomaSyncAI — Clinical Workspace</title>
+  <link rel="stylesheet" href="/clinical-workspace/assets/workspace.css" />
+</head>
+<body>
+  <a class="skip-link" href="#clinicalWorkspace">Skip to clinical workspace</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="SomaSyncAI home"><img src="/ss.png" alt="" /><span>SomaSync<span>AI</span><small>CLINICAL WORKSPACE</small></span></a>
+    <div class="auth-status" aria-live="polite"><i id="authDot"></i><span id="authStatus">Checking secure session…</span></div>
+    <a class="calendar-link" href="https://calendar.somasyncai.com/">Calendar</a>
+  </header>
+
+  <main id="clinicalWorkspace" class="workspace" hidden>
+    <section class="hero">
+      <div><p class="eyebrow">REAL-TIME CLINICAL DOCUMENTATION</p><h1>Keep your hands in the treatment room.</h1><p class="intro">SomaSyncAI streams clinician-selected audio into a reviewable documentation draft. It does not diagnose, make treatment decisions, or finalize a record.</p></div>
+      <div class="session-clock"><span>SESSION</span><b id="sessionClock">00:00:00</b></div>
+    </section>
+
+    <section class="review-notice"><b>Clinician review required.</b> Every SOAP field remains editable. Unsupported findings, assessments, and plans must be completed or corrected by the clinician.</section>
+
+    <section class="instrument-deck" aria-labelledby="instrumentTitle">
+      <div class="section-heading"><div><p class="eyebrow">LIVE INSTRUMENTS</p><h2 id="instrumentTitle">The session state is visible.</h2></div><p>Operational status only. This interface does not persist raw audio, transcript, or note text in browser storage.</p></div>
+      <div class="instrument-grid">
+        <section class="instrument signal-instrument" aria-labelledby="signalTitle"><div class="instrument-top"><div><span>INPUT SIGNAL</span><h3 id="signalTitle">Selected microphone</h3></div><b id="signalState" class="instrument-state">OFFLINE</b></div><div class="signal-wrap"><canvas id="signalCanvas" aria-label="Live audio signal"></canvas></div><div class="instrument-metrics"><span><b id="inputLevel">0</b><small>INPUT LEVEL</small></span><span><b id="pcmFrames">0</b><small>PCM FRAMES</small></span><span><b id="sampleRate">16 kHz</b><small>FORMAT</small></span></div></section>
+        <section class="instrument stream-instrument" aria-labelledby="streamTitle"><div class="instrument-top"><div><span>SECURE STREAM</span><h3 id="streamTitle">Persistent transcription path</h3></div><b id="streamState" class="instrument-state">WAITING</b></div><div class="pathway" aria-label="Microphone to secure transcription gateway"><b>MIC</b><i></i><b>PCM</b><i></i><b class="secure-node">WSS</b><i></i><b>STT</b></div><div class="stream-metrics"><span><small>SEGMENT</small><b id="streamSegment">—</b></span><span><small>FINAL EVENTS</small><b id="finalEvents">0</b></span><span><small>RECONNECT GAPS</small><b id="reconnectGaps">0</b></span></div></section>
+        <section class="instrument event-instrument" aria-labelledby="eventTitle"><div class="instrument-top"><div><span>PRIVACY-SCOPED EVENT TRAIL</span><h3 id="eventTitle">Operational evidence</h3></div><b id="eventCount" class="instrument-state">0 EVENTS</b></div><ol id="eventTrail" class="event-trail"><li class="empty-event">Session events appear here. They contain state codes only—never audio, transcript, SOAP content, credentials, or device identifiers.</li></ol></section>
+      </div>
+    </section>
+
+    <div class="clinical-grid">
+      <section class="panel capture-panel" aria-labelledby="captureTitle"><div class="panel-heading"><div><p class="eyebrow">HANDS-FREE CAPTURE</p><h2 id="captureTitle">Connect and start</h2></div><b id="recordingPill" class="recording-pill">NOT RECORDING</b></div>
+        <div class="connection-card"><div class="device-glyph" aria-hidden="true">⌁</div><div><b id="deviceName">No BLE companion connected</b><p id="deviceDetail">Connect the approved SomaSync BLE companion for supported control and battery telemetry.</p></div><button id="connectDevice" class="button quiet" type="button">Connect device</button></div>
+        <div class="connection-metrics"><span><small>BATTERY</small><b id="batteryLevel">—</b></span><span><small>DEVICE STATE</small><b id="deviceState">Not connected</b></span></div>
+        <div class="connection-card microphone-card"><div><b id="microphoneName">No microphone selected</b><p>Select the approved Bluetooth microphone or another browser input. Microphone sound is never sent to speakers.</p></div><button id="selectMicrophone" class="button quiet" type="button">Select microphone</button></div>
+        <div class="actions"><button id="startSession" class="button primary" type="button" disabled>Start secure session</button><button id="stopSession" class="button danger" type="button" disabled>Stop session</button></div>
+        <p id="captureError" class="form-error" role="alert" hidden></p>
+      </section>
+
+      <section class="panel transcript-panel" aria-labelledby="transcriptTitle"><div class="panel-heading"><div><p class="eyebrow">REAL-TIME TRANSCRIPT</p><h2 id="transcriptTitle">Clinician-visible context</h2></div><b id="socketLabel" class="socket-label">Disconnected</b></div><div id="transcript" class="transcript" aria-live="polite"><p class="empty-transcript">Final and interim transcript events appear only during the active session.</p></div><div class="transcript-footer"><span id="transcriptMeta">No raw audio is stored in this browser.</span><button id="clearTranscript" class="text-button" type="button" disabled>Clear display</button></div></section>
+
+      <section class="panel soap-panel" aria-labelledby="soapTitle"><div class="panel-heading"><div><p class="eyebrow">CLINICIAN-REVIEWABLE DRAFT</p><h2 id="soapTitle">Strict SOAP fields</h2></div><button id="generateSoap" class="button primary small" type="button" disabled>Generate draft</button></div><p class="soap-guidance">SomaSyncAI accepts only the four required fields below. The server rejects Markdown, prose outside the schema, and fields that are not part of SOAP.</p><p id="soapStatus" class="soap-status">A completed final transcript is required before a draft can be requested.</p><div class="soap-grid"><label><span>Subjective</span><textarea id="soapSubjective" rows="5" maxlength="6000" placeholder="No draft generated."></textarea></label><label><span>Objective</span><textarea id="soapObjective" rows="5" maxlength="6000" placeholder="No draft generated."></textarea></label><label><span>Assessment</span><textarea id="soapAssessment" rows="5" maxlength="6000" placeholder="No draft generated."></textarea></label><label><span>Plan</span><textarea id="soapPlan" rows="5" maxlength="6000" placeholder="No draft generated."></textarea></label></div><div class="review-row"><label><input id="clinicianReviewed" type="checkbox" /> I reviewed and edited this draft before export.</label><button id="exportDraft" class="button quiet" type="button" disabled>Export reviewed draft</button></div></section>
+    </div>
+  </main>
+
+  <main id="signInRequired" class="access-card" hidden><p class="eyebrow">SECURE SESSION REQUIRED</p><h1>Sign in through the SomaSyncAI access portal.</h1><p>The clinical workspace is deliberately unavailable unless the API verifies a short-lived secure session.</p><a class="button primary" href="/login?next=%2Fclinical-workspace%2F">Open access portal</a></main>
+
+  <script src="/clinical-workspace/assets/config.js"></script>
+  <script src="/clinical-workspace/assets/workspace.js" defer></script>
+</body>
+</html>

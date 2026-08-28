@@ -119,16 +119,19 @@ export async function requireAuthenticatedUser(request: AuthenticatedRequest, re
   }
 }
 
+export async function establishCookieSessionFromToken(token: string, response: Response) {
+  await verifySessionToken(token);
+  response.cookie(config.SESSION_COOKIE_NAME, token, sessionCookieOptions);
+  response.cookie(config.CSRF_COOKIE_NAME, signedCsrfToken(token), csrfCookieOptions);
+}
+
 export async function establishCookieSession(request: Request, response: Response) {
   const authorization = request.header("authorization");
   if (!authorization?.startsWith("Bearer ")) {
     return response.status(401).json({ error: { code: "TOKEN_REQUIRED", message: "A verified identity token is required to establish a session." } });
   }
   try {
-    const token = authorization.slice("Bearer ".length);
-    await verifySessionToken(token);
-    response.cookie(config.SESSION_COOKIE_NAME, token, sessionCookieOptions);
-    response.cookie(config.CSRF_COOKIE_NAME, signedCsrfToken(token), csrfCookieOptions);
+    await establishCookieSessionFromToken(authorization.slice("Bearer ".length), response);
     return response.status(204).end();
   } catch {
     return response.status(401).json({ error: { code: "INVALID_TOKEN", message: "The identity token could not be verified." } });

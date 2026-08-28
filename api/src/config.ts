@@ -17,6 +17,7 @@ const environment = z.object({
   WS_MAX_MESSAGES_PER_MINUTE: z.coerce.number().int().min(60).max(3_600).default(600),
   WS_MAX_SESSION_SECONDS: z.coerce.number().int().min(300).max(43_200).default(10_800),
   SUPABASE_URL: z.string().url(),
+  SUPABASE_ANON_KEY: z.string().min(1),
   SUPABASE_JWKS_URL: z.string().url(),
   SUPABASE_JWT_ISSUER: z.string().url(),
   SUPABASE_JWT_AUDIENCE: z.string().min(1),

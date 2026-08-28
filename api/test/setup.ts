@@ -13,6 +13,7 @@ process.env.WS_MAX_CONNECTIONS_PER_USER = "2";
 process.env.WS_MAX_MESSAGES_PER_MINUTE = "600";
 process.env.WS_MAX_SESSION_SECONDS = "3600";
 process.env.SUPABASE_URL = "https://identity.test";
+process.env.SUPABASE_ANON_KEY = "synthetic-public-anon-key";
 process.env.SUPABASE_JWKS_URL = "https://identity.test/.well-known/jwks.json";
 process.env.SUPABASE_JWT_ISSUER = "https://identity.test";
 process.env.SUPABASE_JWT_AUDIENCE = "authenticated";

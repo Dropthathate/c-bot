@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#07131d" />
+  <title>SomaSyncAI — Clinical Access</title>
+  <link rel="stylesheet" href="/clinical-workspace/assets/workspace.css" />
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/" aria-label="SomaSyncAI home"><img src="/ss.png" alt="" /><span>SomaSync<span>AI</span><small>CLINICAL ACCESS</small></span></a></header>
+  <main class="access-card">
+    <p class="eyebrow">SECURE CLINICAL SESSION</p>
+    <h1>Sign in to start a protected documentation session.</h1>
+    <p>Your sign-in details are sent only to the server-side identity exchange. The clinical workspace receives a Secure, HttpOnly session cookie; no access token is returned to this page.</p>
+    <form id="accessForm" novalidate>
+      <label>Email <input id="email" type="email" autocomplete="email" maxlength="320" required /></label>
+      <label>Password <input id="password" type="password" autocomplete="current-password" minlength="8" maxlength="256" required /></label>
+      <button id="accessSubmit" class="button primary" type="submit">Open clinical workspace</button>
+      <p id="accessMessage" class="form-error" role="alert" hidden></p>
+    </form>
+  </main>
+  <script src="/clinical-workspace/assets/config.js"></script>
+  <script src="/clinical-workspace/access/access.js" defer></script>
+</body>
+</html>

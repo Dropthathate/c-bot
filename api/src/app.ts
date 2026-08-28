@@ -10,6 +10,7 @@ import { assertCsrf, assertTrustedBrowserRequest, clearCookieSession, establishC
 import { config } from "./config.js";
 import { calendarRouter } from "./routes/calendar.js";
 import { publicLeadRouter } from "./routes/leads.js";
+import { sessionRouter } from "./routes/session.js";
 
 export const app = express();
 const logger = pino({
@@ -43,6 +44,7 @@ app.use((request, response, next) => {
 
 app.get("/healthz", (_request, response) => response.status(200).json({ status: "ok" }));
 app.post("/api/v1/auth/session/exchange", assertTrustedBrowserRequest, establishCookieSession);
+app.use("/api/v1/auth/session", sessionRouter);
 app.get("/api/v1/auth/session", requireAuthenticatedUser, (request: AuthenticatedRequest, response) => response.status(200).json(sessionSummary(request)));
 app.delete("/api/v1/auth/session", assertTrustedBrowserRequest, requireAuthenticatedUser, assertCsrf, clearCookieSession);
 app.use("/api/v1/public", publicLeadRouter);

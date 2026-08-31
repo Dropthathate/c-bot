@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#07131d" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
   <link rel="stylesheet" href="/assets/calendar.css" />
   <title>SomaSyncAI — Documentation Calendar</title>
 </head>
@@ -14,7 +16,7 @@
     <section class="hero"><div><p class="eyebrow">CLINICIAN-OWNED TIME BLOCKS</p><h1>Protect time for documentation review.</h1><p>Calendar blocks are operational scheduling entries. Do not enter patient identifiers, transcripts, SOAP notes, or clinical content here.</p></div><a href="https://www.somasyncai.com/clinical-workspace/">Clinical workspace</a></section>
     <section class="calendar-grid"><form id="blockForm" class="panel" novalidate><p class="eyebrow">ADD BLOCK</p><h2>Documentation block</h2><label>Start <input id="startAt" type="datetime-local" required /></label><label>End <input id="endAt" type="datetime-local" required /></label><label>Operational label <input id="label" type="text" maxlength="120" value="Documentation review" required /></label><p class="hint">Use generic operational labels only. Time blocks are created under your authenticated clinician identity.</p><button class="button" type="submit">Create time block</button><p id="formMessage" role="alert" hidden></p></form><section class="panel"><div class="list-header"><div><p class="eyebrow">UPCOMING</p><h2>Your documentation time</h2></div><button id="refresh" class="text-button" type="button">Refresh</button></div><ol id="blockList" class="block-list"><li class="empty">No documentation blocks loaded.</li></ol></section></section>
   </main>
-  <main id="calendarSignIn" class="access" hidden><p class="eyebrow">SECURE SESSION REQUIRED</p><h1>Sign in through SomaSyncAI.</h1><p>This calendar shares the root-domain secure session but is unavailable without a verified clinician session.</p><a class="button" href="https://www.somasyncai.com/login?next=https%3A%2F%2Fcalendar.somasyncai.com%2F">Open access portal</a></main>
+  <main id="calendarSignIn" class="access" hidden><p class="eyebrow">SECURE SESSION REQUIRED</p><h1>Sign in through SomaSyncAI.</h1><p>This calendar shares the root-domain secure session but is unavailable without a verified clinician session.</p><a class="button" href="https://workspace-staging.somasyncai.com/clinical-workspace/access/">Open access portal</a></main>
   <script src="/assets/calendar-config.js"></script><script src="/assets/calendar.js" defer></script>
 </body>
 </html>

@@ -37,10 +37,10 @@ export default function Login() {
         </div>
 
         <div className="login-notice">
-          <span className="notice-icon">🔒</span>
+          <span className="notice-icon">◉</span>
           <span>
-            Access is restricted to approved beta testers.{" "}
-            <Link to="/#beta" className="notice-link">Request access →</Link>
+            SomaSyncAI is open for anyone to try during the public beta. No application or invite is required.{" "}
+            <Link to="/dashboard" className="notice-link">Open the beta →</Link>
           </span>
         </div>
 

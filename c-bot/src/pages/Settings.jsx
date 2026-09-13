@@ -19,12 +19,12 @@ export default function Settings() {
         <div className="settings-section-title">Account</div>
         <div className="settings-row">
           <div className="settings-label">Email</div>
-          <div className="settings-value">{user?.email}</div>
+          <div className="settings-value">{user?.email ?? "Public beta guest"}</div>
         </div>
         <div className="settings-row">
           <div className="settings-label">Access Level</div>
           <div className="settings-value">
-            <span className="badge-pill green">Approved Beta</span>
+            <span className="badge-pill green">Public Beta</span>
           </div>
         </div>
         <div className="settings-row">
@@ -40,9 +40,9 @@ export default function Settings() {
       <div className="card settings-card" style={{ borderLeft: "3px solid var(--orange)" }}>
         <div className="settings-section-title">⚠ Beta Testing Notice</div>
         <p className="settings-body-text">
-          SomaSync AI is currently in a closed beta testing phase. You have been granted
-          access as an approved beta tester. Features may change, break, or be removed
-          without notice. Your feedback is valuable — please report any issues directly.
+          SomaSync AI is currently in a public beta testing phase. No application or invite is
+          required. Features may change, break, or be removed without notice. Use the product
+          only with de-identified, minimum-necessary information and report issues directly.
         </p>
       </div>
 

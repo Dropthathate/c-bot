@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#06101b" />
+  <title>SomaSync AI — Synthetic Clinical Workspace Tour</title>
+  <link rel="stylesheet" href="/clinical-workspace/tour/tour.css" />
+</head>
+<body>
+  <header class="tour-topbar">
+    <a class="brand" href="/" aria-label="SomaSync AI home"><img src="/ss.png" alt="" /><span>SomaSync<span class="brand-accent">AI</span></span><small>CLINICAL WORKSPACE</small></a>
+    <div class="tour-badge"><span class="badge-dot" aria-hidden="true"></span>PREVIEW TOUR · SYNTHETIC WORKFLOW ONLY</div>
+    <a class="back-link" href="/clinical-workspace/">Secure workspace</a>
+  </header>
+
+  <main class="tour-shell">
+    <section class="tour-hero" aria-labelledby="heroTitle">
+      <div>
+        <p class="eyebrow">HANDS-FREE DOCUMENTATION SYSTEM</p>
+        <h1 id="heroTitle">The dashboard should show <em>what is happening</em>—not just a button.</h1>
+      </div>
+      <p>This is a non-clinical visual walkthrough. It does not access a microphone, Bluetooth device, account, transcript, SOAP endpoint, or patient data.</p>
+    </section>
+
+    <section class="clinical-console" aria-label="Synthetic clinical workspace visual walkthrough">
+      <div class="console-topline">
+        <div class="console-session"><span class="live-dot" aria-hidden="true"></span><span>SESSION SIGNAL</span><strong>00:08:42</strong></div>
+        <div class="console-label">SYNTHETIC DEMONSTRATION · NO LIVE CLINICAL RECORD</div>
+        <div class="console-session secure"><span>WSS</span><strong>SESSION VERIFIED</strong></div>
+      </div>
+
+      <div class="instrument-strip">
+        <div class="instrument signal-card">
+          <div class="instrument-title"><span>INPUT SIGNAL</span><b>MICROPHONE ACTIVITY</b></div>
+          <div class="wavefield" aria-label="Illustrative synthetic signal only"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="metric-row"><span><b>42</b><small>INPUT LEVEL</small></span><span><b>16 kHz</b><small>PCM FORMAT</small></span><span><b>0</b><small>RETAINED AUDIO</small></span></div>
+        </div>
+        <div class="instrument path-card">
+          <div class="instrument-title"><span>SECURE STREAM</span><b>ONE LIVE PATH · NO UPLOAD LOOP</b></div>
+          <div class="pathway"><span>MIC</span><i></i><span>PCM</span><i></i><span class="locked">WSS</span><i></i><span>STT</span></div>
+          <div class="path-caption">Browser-selected input → AudioWorklet → authenticated gateway → streaming transcription</div>
+        </div>
+        <div class="instrument audit-card">
+          <div class="instrument-title"><span>PRIVACY-SCOPED EVENTS</span><b>SESSION EVENT TRAIL</b></div>
+          <ol>
+            <li><time>00:00:00</time><b>SESSION_STARTED</b> Clinician initiated a secure session.</li>
+            <li><time>00:00:03</time><b>WSS_CONNECTED</b> Secure streaming pathway confirmed.</li>
+            <li><time>00:00:08</time><b>FINAL_EVENT</b> Context ready for review.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="work-grid">
+        <section class="capture-lane" aria-labelledby="captureTitle">
+          <div class="lane-heading"><div><p class="eyebrow">HANDS-FREE CAPTURE</p><h2 id="captureTitle">Device and session posture</h2></div><span class="status-chip live">READY</span></div>
+          <div class="device-panel"><div class="device-mark">⌁</div><div><b>SomaSync companion</b><p>Controls and battery telemetry operate independently from browser audio.</p></div><span class="battery">82%</span></div>
+          <div class="control-grid"><div><span>BLE COMPANION</span><b>CONNECTED</b></div><div><span>AUDIO INPUT</span><b>APPROVED MIC</b></div><div><span>STREAM SEGMENT</span><b>01</b></div><div><span>RECONNECT GAPS</span><b>0</b></div></div>
+          <div class="safety-line"><span>✓</span> Microphone audio is not routed to browser speakers.</div>
+        </section>
+
+        <section class="transcript-lane" aria-labelledby="transcriptTitle">
+          <div class="lane-heading"><div><p class="eyebrow">REAL-TIME TRANSCRIPT</p><h2 id="transcriptTitle">A visible, moving clinical-context stream</h2></div><span class="status-chip streaming">STREAMING</span></div>
+          <div class="stream-stage">
+            <div class="stream-legend"><span><i class="legend-dot voice"></i> SYNTHETIC SPOKEN CONTEXT</span><span><i class="legend-dot extract"></i> STRUCTURED EXTRACTION</span></div>
+            <div class="transcript-track" aria-label="Animated synthetic transcript to SOAP explanation">
+              <div class="script-window"><p class="script-line">“The ache started after I lifted a box Saturday. It gets worse reaching overhead. I have been using heat. Today it is a four out of ten.”</p><span class="voice-cursor" aria-hidden="true"></span></div>
+              <div class="extract-orbit" aria-hidden="true"><span class="extract-token token-1">onset</span><span class="extract-token token-2">trigger</span><span class="extract-token token-3">aggravator</span><span class="extract-token token-4">self-care</span><span class="extract-token token-5">4/10</span></div>
+              <div class="verify-rail"><span>UNSUPPORTED / INFERRED CONTENT</span><b>ROUTE TO CLINICIAN VERIFICATION</b></div>
+            </div>
+            <div class="transcript-foot"><span><b>01</b> FINAL SEGMENT</span><span>Sequence and segment identifiers prevent hidden reconnect ambiguity.</span></div>
+          </div>
+        </section>
+
+        <section class="soap-lane" aria-labelledby="soapTitle">
+          <div class="lane-heading"><div><p class="eyebrow">CLINICIAN DRAFT</p><h2 id="soapTitle">Strict SOAP review</h2></div><span class="status-chip review">REVIEW REQUIRED</span></div>
+          <div class="soap-grid">
+            <article class="soap-card subjective"><span>SUBJECTIVE</span><p>Reports shoulder ache after lifting a box Saturday; worse with overhead reach; using heat; rates discomfort 4/10.</p></article>
+            <article class="soap-card verify"><span>OBJECTIVE</span><p>No examination finding stated in the transcript.</p><b>VERIFY WITH CLINICIAN</b></article>
+            <article class="soap-card verify"><span>ASSESSMENT</span><p>Clinician assessment required; no conclusion inferred from audio alone.</p><b>VERIFY WITH CLINICIAN</b></article>
+            <article class="soap-card verify"><span>PLAN</span><p>Clinician enters a treatment plan after review.</p><b>VERIFY WITH CLINICIAN</b></article>
+          </div>
+          <div class="review-lock"><span class="checkbox" aria-hidden="true"></span><span><b>Clinician review is the final control plane.</b> Export remains locked until reviewed and edited.</span><button type="button" disabled>EXPORT REVIEWED DRAFT</button></div>
+        </section>
+      </div>
+
+      <footer class="console-footer"><span>NO RAW AUDIO RETENTION</span><span>NO BROWSER-READABLE VENDOR SECRET</span><span>NO AUTOMATIC CLINICAL DECISION</span><span>NO AUTO-FINALIZATION</span></footer>
+    </section>
+
+    <section class="tour-notes" aria-labelledby="notesTitle">
+      <div><p class="eyebrow">WHAT BECOMES LIVE IN STAGING</p><h2 id="notesTitle">This becomes operational only after the secure service is connected.</h2></div>
+      <div class="note-list"><p><b>Live source:</b> the waveform and PCM counter take their values from the clinician-approved microphone in memory.</p><p><b>Live stream:</b> session segment, final events, flow control, and reconnect gaps are emitted by the authenticated WSS gateway.</p><p><b>Live draft:</b> exact four-field JSON arrives only after the strict server schema accepts it; all content still requires clinician review.</p></div>
+    </section>
+  </main>
+</body>
+</html>

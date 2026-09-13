@@ -278,6 +278,11 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; back
   border-radius: 8px; padding: 10px 14px;
   font-size: 13px; color: var(--red);
 }
+.login-success {
+  background: rgba(48,217,192,0.08); border: 1px solid rgba(48,217,192,0.24);
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 13px; color: var(--teal-deep); line-height: 1.5;
+}
 .login-btn {
   background: var(--ink); color: #fff; border: none; cursor: pointer;
   padding: 14px; border-radius: 12px;
@@ -601,4 +606,17 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; back
 
 @media (max-width: 900px) {
   .soap-layout { grid-template-columns: 1fr; }
+}
+
+@media print {
+  body { background: #fff !important; color: #111 !important; }
+  .sidebar, .privacy-status-bar, .page-header, .ai-disclaimer-bar, .soap-controls-col,
+  .soap-output-col > .soap-generating, .soap-output-col > .soap-empty-state,
+  .soap-result .card-header button { display: none !important; }
+  .app-shell { display: block !important; min-height: 0 !important; }
+  .main-content, .page, .soap-output-col { max-width: none !important; min-height: 0 !important; padding: 0 !important; overflow: visible !important; }
+  .soap-layout { display: block !important; }
+  .soap-result { border: 0 !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important; }
+  .soap-result::before { content: "SomaSync AI — Structured SOAP Note\\A Clinician-reviewed draft — verify before clinical, billing, or legal use"; white-space: pre-wrap; display: block; margin-bottom: 24px; font: 700 16px/1.5 Arial, sans-serif; color: #111; }
+  .soap-section-text, .code-desc { color: #111 !important; }
 }

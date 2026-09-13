@@ -13,13 +13,11 @@ export function AuthProvider({ children }) {
       return undefined;
     }
 
-    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    // Listen for auth state changes (login, logout, token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null);
@@ -29,6 +27,17 @@ export function AuthProvider({ children }) {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const sendMagicLink = async (email, nextPath = "/dashboard") => {
+    if (!isSupabaseConfigured) return { success: false, error: supabaseConfigurationMessage };
+    const redirectTo = `${window.location.origin}${nextPath}`;
+    const { error } = await supabase.auth.signInWithOtp({
+      email: email.trim().toLowerCase(),
+      options: { emailRedirectTo: redirectTo, shouldCreateUser: true },
+    });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  };
 
   const login = async (email, password) => {
     if (!isSupabaseConfigured) return { success: false, error: supabaseConfigurationMessage };
@@ -43,7 +52,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, sendMagicLink, logout }}>
       {children}
     </AuthContext.Provider>
   );

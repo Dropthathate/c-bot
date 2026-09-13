@@ -1,29 +1,32 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
-  const { login, user } = useAuth();
+  const { sendMagicLink, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const nextPath = new URLSearchParams(location.search).get("next") || "/dashboard";
 
   useEffect(() => {
-    if (user) navigate("/dashboard");
-  }, [user, navigate]);
+    if (user) navigate(nextPath, { replace: true });
+  }, [user, navigate, nextPath]);
 
   if (user) return null;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setError("");
+    setSent(false);
     setLoading(true);
-    const result = await login(email, password);
+    const result = await sendMagicLink(email, nextPath);
     setLoading(false);
-    if (result.success) navigate("/dashboard");
-    else setError(result.error ?? "Login failed.");
+    if (result.success) setSent(true);
+    else setError(result.error ?? "Could not send the sign-in email.");
   };
 
   return (
@@ -33,38 +36,31 @@ export default function Login() {
         <div className="login-header">
           <img className="login-logo-image" src="/favicon.png" alt="SomaSync AI" />
           <h1 className="login-title">SomaSync AI</h1>
-          <p className="login-sub">AALIYAH.IO · Clinical Documentation Dashboard</p>
+          <p className="login-sub">One-time clinical documentation session</p>
         </div>
 
         <div className="login-notice">
-          <span className="notice-icon">◉</span>
-          <span>
-            SomaSyncAI is open for anyone to try during the public beta. No application or invite is required.{" "}
-            <Link to="/dashboard" className="notice-link">Open the beta →</Link>
-          </span>
+          <span className="notice-icon">✉</span>
+          <span>Enter your email and we’ll send a secure sign-in link. The link verifies the email and creates an account when needed.</span>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="field">
-            <label className="field-label" htmlFor="login-email">Email</label>
-            <input id="login-email" name="email" className="field-input" type="email" autoComplete="username" placeholder="you@practice.com"
-              value={email} onChange={e => setEmail(e.target.value)} required autoFocus />
+            <label className="field-label" htmlFor="login-email">Email address</label>
+            <input id="login-email" name="email" className="field-input" type="email" autoComplete="email" placeholder="you@practice.com"
+              value={email} onChange={(event) => setEmail(event.target.value)} required autoFocus />
           </div>
-          <div className="field">
-            <label className="field-label" htmlFor="login-password">Password</label>
-            <input id="login-password" name="password" className="field-input" type="password" autoComplete="current-password" placeholder="••••••••"
-              value={password} onChange={e => setPassword(e.target.value)} required />
-          </div>
+          {sent && <div className="login-success">Check your inbox. Open the SomaSync link to verify your email and continue.</div>}
           {error && <div className="login-error">{error}</div>}
           <button className="login-btn" type="submit" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In →"}
+            {loading ? "Sending secure link…" : "Email me a sign-in link →"}
           </button>
         </form>
 
         <div className="login-footer">
           <Link to="/" className="back-link">← Back to homepage</Link>
           <p className="login-disclaimer">
-            ⚠ AI outputs are for demonstration only and require clinician review before clinical use.
+            One-time sessions are designed for temporary, clinician-reviewed drafts. Do not enter patient identifiers unless your practice has approved the applicable privacy safeguards. AI output is not a diagnosis and must be reviewed before use.
           </p>
         </div>
       </div>

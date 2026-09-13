@@ -149,6 +149,7 @@ export default function SoapGenerator() {
 
   const transcribeAndGenerate = async () => {
     const audio = new Blob(chunksRef.current, { type: "audio/webm" });
+    chunksRef.current = [];
     releaseMicrophone();
     if (!audio.size) {
       setError("No audio was captured. Check that your headset microphone is connected, then try again.");
@@ -392,6 +393,14 @@ export default function SoapGenerator() {
     window.setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleSavePdf = () => {
+    if (!soap) return;
+    const previousTitle = document.title;
+    document.title = `SomaSync-SOAP-${new Date().toISOString().slice(0, 10)}`;
+    window.print();
+    window.setTimeout(() => { document.title = previousTitle; }, 1500);
+  };
+
   const completeDeviceSetup = () => {
     setDeviceLabel(localStorage.getItem(DEVICE_LABEL_KEY) || "System default microphone");
     setShowDeviceSetup(false);
@@ -520,7 +529,7 @@ export default function SoapGenerator() {
           {isBusy && <div className="soap-generating"><div className="gen-spinner" /><div className="gen-text">{state === "transcribing" ? "Turning your session into text…" : "Structuring your SOAP note…"}</div><div className="gen-sub">This may take a moment after you end the session.</div></div>}
           {soap && !isBusy && (
             <div className="card soap-result">
-              <div className="card-header"><span className="card-title">Generated SOAP note</span><button className="btn-copy" onClick={handleCopy}>{copied ? "✓ Copied" : "Copy note"}</button></div>
+              <div className="card-header"><span className="card-title">Generated SOAP note</span><div style={{ display: "flex", gap: 8 }}><button className="btn-copy" onClick={handleCopy}>{copied ? "✓ Copied" : "Copy note"}</button><button className="btn-copy" onClick={handleSavePdf}>Save PDF</button></div></div>
               <div className="draft-badge">AI DRAFT — Clinician review required before clinical or billing use</div>
               {[{ key: "subjective", label: "S — Subjective", cls: "soap-s" }, { key: "objective", label: "O — Objective", cls: "soap-o" }, { key: "assessment", label: "A — Assessment", cls: "soap-a" }, { key: "plan", label: "P — Plan", cls: "soap-p" }].map(({ key, label, cls }) => soap[key] ? <div className="soap-section" key={key}><span className={`soap-section-label ${cls}`}>{label}</span><p className="soap-section-text">{soap[key]}</p></div> : null)}
               {soap.icd10?.length ? <div className="soap-section"><span className="soap-section-label soap-icd">ICD-10-CM — Reference only</span><div style={{ fontSize: ".72rem", color: "var(--orange)", marginBottom: 8 }}>Confirm against current official guidance before use on any claim.</div><div className="code-list">{soap.icd10.map((code) => <div className="code-row" key={code.code}><span className="code-badge code-teal">{code.code}</span><span className="code-desc">{code.description}</span></div>)}</div></div> : null}

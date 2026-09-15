@@ -30,7 +30,11 @@ export function AuthProvider({ children }) {
 
   const sendMagicLink = async (email, nextPath = "/dashboard") => {
     if (!isSupabaseConfigured) return { success: false, error: supabaseConfigurationMessage };
-    const redirectTo = `${window.location.origin}${nextPath}`;
+    // The legacy static waveform page uses a separate cookie session and would
+    // send a verified Supabase user straight back into an auth loop. Until its
+    // websocket auth is unified, land those users in the Supabase dashboard.
+    const safeNextPath = nextPath.startsWith("/clinical-workspace") ? "/dashboard/soap" : nextPath;
+    const redirectTo = `${window.location.origin}${safeNextPath}`;
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim().toLowerCase(),
       options: { emailRedirectTo: redirectTo, shouldCreateUser: true },

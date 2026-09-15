@@ -53,7 +53,7 @@ const HeroSection = () => {
               </Link>
             </Button>
             <Button variant="hero-outline" size="xl" asChild>
-              <a href="/clinical-workspace/">Open Clinical Workspace</a>
+              <a href="/login?next=%2Fdashboard%2Fsoap">Open Clinical Workspace</a>
             </Button>
             <Button variant="hero-outline" size="xl" asChild>
               <a href="#pricing">

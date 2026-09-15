@@ -11,6 +11,7 @@ import IcdCoder from "./pages/IcdCoder";
 import Analytics from "./pages/Analytics";
 import Compliance from "./pages/Compliance";
 import Settings from "./pages/Settings";
+import SecureSpace from "./pages/SecureSpace";
 import "./App.css";
 
 
@@ -42,6 +43,16 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
+          <Route
+            path="/clinical-workspace"
+            element={
+              <PrivateRoute>
+                <PrivacyGate>
+                  <SecureSpace />
+                </PrivacyGate>
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/dashboard"
             element={

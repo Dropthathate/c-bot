@@ -4,7 +4,8 @@
   "installCommand": "npm install",
   "framework": "vite",
   "rewrites": [
-    { "source": "/clinical-workspace", "destination": "/clinical-workspace/index.html" },
+    { "source": "/clinical-workspace", "destination": "/index.html" },
+    { "source": "/clinical-workspace/", "destination": "/index.html" },
     { "source": "/login", "destination": "/index.html" },
     { "source": "/dashboard/:path*", "destination": "/index.html" }
   ]

@@ -30,7 +30,7 @@ export function AuthProvider({ children }) {
 
   const sendMagicLink = async (email, nextPath = "/dashboard") => {
     if (!isSupabaseConfigured) return { success: false, error: supabaseConfigurationMessage };
-    const safeNextPath = nextPath.startsWith("/clinical-workspace") ? "/clinical-workspace" : nextPath;
+    const safeNextPath = nextPath.startsWith("/clinical-workspace") ? "/clinical-workspace/" : nextPath;
     const redirectTo = `${window.location.origin}${safeNextPath}`;
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim().toLowerCase(),

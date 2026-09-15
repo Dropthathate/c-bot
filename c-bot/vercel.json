@@ -3,10 +3,21 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": "vite",
+  "redirects": [
+    { "source": "/clinical-workspace", "destination": "/clinical-workspace/", "permanent": false }
+  ],
   "rewrites": [
-    { "source": "/clinical-workspace", "destination": "/index.html" },
-    { "source": "/clinical-workspace/", "destination": "/index.html" },
     { "source": "/login", "destination": "/index.html" },
     { "source": "/dashboard/:path*", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/clinical-workspace/:path*",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "Permissions-Policy", "value": "microphone=(self), bluetooth=(self), camera=(), geolocation=()" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://*.somasyncai.com wss://*.somasyncai.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'" }
+      ]
+    }
   ]
 }

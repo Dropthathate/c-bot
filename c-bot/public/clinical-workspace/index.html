@@ -18,6 +18,10 @@
     <a class="calendar-link" href="https://calendar.somasyncai.com/">Calendar</a>
   </header>
 
+    <div id="assistantBar" class="assistant-bar" hidden>
+      <span id="assistantStatus" class="assistant-status">Voice assistant active</span>
+      <span id="logPill" class="log-pill" data-active="false">● NOT LOGGING</span>
+    </div>
   <main id="clinicalWorkspace" class="workspace" hidden>
     <section class="hero">
       <div><p class="eyebrow">REAL-TIME CLINICAL DOCUMENTATION</p><h1>Keep your hands in the treatment room.</h1><p class="intro">SomaSyncAI streams clinician-selected audio into a reviewable documentation draft. It does not diagnose, make treatment decisions, or finalize a record.</p></div>
@@ -40,6 +44,16 @@
         <div class="connection-card"><div class="device-glyph" aria-hidden="true">⌁</div><div><b id="deviceName">No BLE companion connected</b><p id="deviceDetail">Connect the approved SomaSync BLE companion for supported control and battery telemetry.</p></div><button id="connectDevice" class="button quiet" type="button">Connect device</button></div>
         <div class="connection-metrics"><span><small>BATTERY</small><b id="batteryLevel">—</b></span><span><small>DEVICE STATE</small><b id="deviceState">Not connected</b></span></div>
         <div class="connection-card microphone-card"><div><b id="microphoneName">No microphone selected</b><p>Select the approved Bluetooth microphone or another browser input. Microphone sound is never sent to speakers.</p></div><button id="selectMicrophone" class="button quiet" type="button">Select microphone</button></div>
+        <div class="connection-card duration-card">
+          <div><b>Session duration</b><p>Select the planned session length before starting. Reminders and area checks will be timed proportionally.</p></div>
+          <select id="sessionDuration" class="button quiet">
+            <option value="30">30 minutes</option>
+            <option value="45">45 minutes</option>
+            <option value="60" selected>60 minutes</option>
+            <option value="90">90 minutes</option>
+            <option value="120">120 minutes</option>
+          </select>
+        </div>
         <div class="actions"><button id="startSession" class="button primary" type="button" disabled>Start secure session</button><button id="stopSession" class="button danger" type="button" disabled>Stop session</button></div>
         <p id="captureError" class="form-error" role="alert" hidden></p>
       </section>

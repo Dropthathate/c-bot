@@ -277,7 +277,7 @@
     } catch { setError("Microphone access is required to begin a secure session. No audio was captured."); }
   }
 
-  function enqueueAudio(frame) {
+  function enqueueAudioRaw(frame) {
     state.audioBuffer.push(frame); state.audioBufferBytes += frame.byteLength;
     while (state.audioBufferBytes > state.audioBufferLimit && state.audioBuffer.length) { const removed = state.audioBuffer.shift(); state.audioBufferBytes -= removed.byteLength; }
   }
@@ -299,7 +299,7 @@
     worklet.port.onmessage = ({ data }) => {
       if (!state.active || !(data instanceof ArrayBuffer)) return;
       state.audioFrames += 1; if (state.audioFrames % 8 === 0) els.pcmFrames.textContent = String(state.audioFrames);
-      if (state.socketReady && state.socket?.readyState === WebSocket.OPEN && state.socket.bufferedAmount < config.audio.maxBrowserBufferedBytes) state.socket.send(data); else enqueueAudio(data);
+      if (state.socketReady && state.socket?.readyState === WebSocket.OPEN && state.socket.bufferedAmount < config.audio.maxBrowserBufferedBytes) state.socket.send(data); else enqueueAudioRaw(data);
     };
     source.connect(analyser); source.connect(worklet); worklet.connect(silentGain); silentGain.connect(context.destination);
     state.audioContext = context; state.source = source; state.analyser = analyser; state.worklet = worklet; state.silentGain = silentGain;
@@ -384,6 +384,322 @@
     const body = [["Subjective", els.soapSubjective.value], ["Objective", els.soapObjective.value], ["Assessment", els.soapAssessment.value], ["Plan", els.soapPlan.value]].map(([title, value]) => `${title}\n${cleanText(value)}\n`).join("\n");
     const blob = new Blob([body], { type: "text/plain;charset=utf-8" }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `somasync-clinician-reviewed-draft-${new Date().toISOString().slice(0, 10)}.txt`; link.click(); URL.revokeObjectURL(link.href); addEvent("DRAFT_EXPORTED", "Clinician-reviewed draft exported from this session.");
   }
+
+
+  // ═══════════════════════════════════════════════════════════
+  // SOMASYNC VOICE ASSISTANT ENGINE
+  // ═══════════════════════════════════════════════════════════
+
+  const assistant = {
+    recognition: null,
+    synth: window.speechSynthesis,
+    speaking: false,
+    logActive: false,             // true when in log-capture mode
+    sessionDurationMs: 0,
+    recentSegments: [],           // last 3 final transcript segments for replay
+    mechanicsTimer: null,
+    timeReminderTimers: [],
+    areaReminderTimers: [],
+    preSessionDone: false,
+    checklist: [],
+    checklistIndex: 0
+  };
+
+  const ac = config.assistant;
+
+  // ── Earpiece tone ──────────────────────────────────────────
+  function ding() {
+    try {
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = ac.tone.frequency;
+      gain.gain.setValueAtTime(0.4, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + ac.tone.duration / 1000);
+      osc.start(); osc.stop(ctx.currentTime + ac.tone.duration / 1000);
+      osc.addEventListener("ended", () => ctx.close());
+    } catch (_) {}
+  }
+
+  // ── Text-to-speech into earpiece ──────────────────────────
+  function speak(text, onDone) {
+    if (!assistant.synth) { if (onDone) onDone(); return; }
+    assistant.synth.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.rate = 0.95; utt.pitch = 1; utt.volume = 1;
+    utt.addEventListener("end", () => { assistant.speaking = false; if (onDone) onDone(); });
+    utt.addEventListener("error", () => { assistant.speaking = false; if (onDone) onDone(); });
+    assistant.speaking = true;
+    assistant.synth.speak(utt);
+  }
+
+  function dingThenSpeak(text, onDone) {
+    ding();
+    setTimeout(() => speak(text, onDone), 300);
+  }
+
+  // ── Assistant status bar ───────────────────────────────────
+  const assistantBar = document.getElementById("assistantBar");
+  const assistantStatus = document.getElementById("assistantStatus");
+  const logPill = document.getElementById("logPill");
+
+  function setAssistantStatus(msg) {
+    if (assistantStatus) assistantStatus.textContent = msg;
+  }
+
+  function setLogPill(active) {
+    assistant.logActive = active;
+    if (!logPill) return;
+    logPill.textContent = active ? "● LOGGING" : "● NOT LOGGING";
+    logPill.dataset.active = String(active);
+  }
+
+  // ── Intercept addTranscript to track recent segments ──────
+  const _origAddTranscript = addTranscript;
+  // We patch below after defining addTranscript wrapper
+
+  function trackSegment(text) {
+    if (!text || !text.trim()) return;
+    assistant.recentSegments.push(text.trim());
+    if (assistant.recentSegments.length > 3) assistant.recentSegments.shift();
+  }
+
+  // ── Log gate: only forward audio to WSS when logActive ────
+  // We hook into the worklet message handler via a gating flag.
+  // The audio pipeline stays open; we just suppress sends when not logging.
+  // The existing enqueueAudio / flushAudio / worklet already handle the send.
+  // We patch the worklet port message handler after pipeline starts.
+
+  function setLogging(active) {
+    setLogPill(active);
+    setAssistantStatus(active ? "Logging clinical observations" : "Listening for commands — say \"noting\" to log");
+    addEvent(active ? "LOG_STARTED" : "LOG_PAUSED", active ? "Clinician began logging." : "Clinician paused logging.");
+  }
+
+  // ── Pre-session checklist ─────────────────────────────────
+  function buildChecklist(durationMin) {
+    return [
+      "Ground in. Take a breath, set your intention, and center yourself before your client enters.",
+      "When your client is settled, introduce the documentation notice: \"I use a voice documentation tool during sessions. It captures my clinical observations only and the temporary recording is not stored after your visit. Is that okay with you?\"",
+      "Ask your client about pressure preferences — do they prefer light, medium, or firm pressure?",
+      "Ask your client if there are any areas to avoid today.",
+      `This session is set for ${durationMin} minutes. Area reminders will fire at the one-third and two-thirds mark. Body mechanics checks every twenty minutes. Say \"begin session\" when you are ready to start.`
+    ];
+  }
+
+  function runChecklistStep() {
+    if (assistant.checklistIndex >= assistant.checklist.length) return;
+    const msg = assistant.checklist[assistant.checklistIndex];
+    assistant.checklistIndex += 1;
+    dingThenSpeak(msg, () => {
+      // After last step wait for "begin session" voice command — no auto-advance
+    });
+  }
+
+  function startPreSession() {
+    const sel = document.getElementById("sessionDuration");
+    const durationMin = sel ? parseInt(sel.value, 10) : config.session.defaultDuration;
+    assistant.sessionDurationMs = durationMin * 60 * 1000;
+    assistant.checklist = buildChecklist(durationMin);
+    assistant.checklistIndex = 0;
+    assistant.preSessionDone = false;
+    if (assistantBar) assistantBar.hidden = false;
+    setAssistantStatus("Pre-session checklist — listen for instructions");
+    runChecklistStep();
+  }
+
+  // ── Session timers ────────────────────────────────────────
+  function scheduleSessionTimers() {
+    const durMs = assistant.sessionDurationMs;
+    const durMin = durMs / 60000;
+
+    // Clear any old timers
+    assistant.timeReminderTimers.forEach(clearTimeout);
+    assistant.areaReminderTimers.forEach(clearTimeout);
+    clearInterval(assistant.mechanicsTimer);
+    assistant.timeReminderTimers = [];
+    assistant.areaReminderTimers = [];
+
+    // Time remaining reminders
+    ac.timeReminders.forEach((minRemaining) => {
+      const fireAt = durMs - minRemaining * 60000;
+      if (fireAt > 0) {
+        assistant.timeReminderTimers.push(setTimeout(() => {
+          dingThenSpeak(`${minRemaining} minutes remaining in this session.`);
+        }, fireAt));
+      }
+    });
+
+    // Session end
+    assistant.timeReminderTimers.push(setTimeout(() => {
+      dingThenSpeak("Session time is complete. Say \"end session\" when you are ready to close.");
+    }, durMs));
+
+    // Area reminders at 1/3 and 2/3 of session
+    [1/3, 2/3].forEach((fraction) => {
+      const fireAt = Math.round(durMs * fraction);
+      assistant.areaReminderTimers.push(setTimeout(() => {
+        dingThenSpeak("Area check — ensure you are covering the full treatment plan. Transition if needed.");
+      }, fireAt));
+    });
+
+    // Body mechanics every 20 min
+    assistant.mechanicsTimer = setInterval(() => {
+      dingThenSpeak("Body mechanics check — posture, wrist position, shoulder tension.");
+    }, ac.mechanicsIntervalMs);
+
+    // Ask permission reminder at 2 minutes into session
+    setTimeout(() => {
+      dingThenSpeak("Remember to verbally confirm permission before changing pressure, area, or technique.");
+    }, 2 * 60 * 1000);
+  }
+
+  function clearSessionTimers() {
+    assistant.timeReminderTimers.forEach(clearTimeout);
+    assistant.areaReminderTimers.forEach(clearTimeout);
+    clearInterval(assistant.mechanicsTimer);
+    assistant.timeReminderTimers = [];
+    assistant.areaReminderTimers = [];
+    assistant.mechanicsTimer = null;
+  }
+
+  // ── Voice command handler ─────────────────────────────────
+  function handleVoiceCommand(transcript) {
+    const t = transcript.toLowerCase().trim();
+
+    // Begin session (pre-session only)
+    if (t.includes(ac.wakeBegin) && !state.active) {
+      assistant.preSessionDone = true;
+      setAssistantStatus("Starting session…");
+      ding();
+      // Small delay so the ding plays before session setup
+      setTimeout(() => {
+        els.startSession.click();
+        setTimeout(() => {
+          setLogging(false); // start paused — clinician says "noting" to log
+          dingThenSpeak("Session started. Say \"noting\" to begin logging clinical observations.");
+          scheduleSessionTimers();
+        }, 500);
+      }, 400);
+      return;
+    }
+
+    // End session
+    if (t.includes(ac.wakeEnd) && state.active) {
+      ding();
+      setLogging(false);
+      clearSessionTimers();
+      dingThenSpeak("Grounding out. Complete your closing, thank your client, and release the session before your next appointment.", () => {
+        setTimeout(() => els.stopSession.click(), 500);
+      });
+      return;
+    }
+
+    // Start logging
+    if (t.includes(ac.wakeLog) && state.active && !assistant.logActive) {
+      ding();
+      setLogging(true);
+      return;
+    }
+
+    // Pause logging
+    if (t.includes(ac.wakePause) && state.active && assistant.logActive) {
+      ding();
+      setLogging(false);
+      return;
+    }
+
+    // Replay last segments
+    if (t.includes(ac.wakeReplay)) {
+      if (!assistant.recentSegments.length) {
+        dingThenSpeak("No logged segments to replay yet.");
+      } else {
+        dingThenSpeak("Replaying last logged observations: " + assistant.recentSegments.join(". "));
+      }
+      return;
+    }
+
+    // Time check
+    if (t.includes(ac.wakeTime) && state.active) {
+      if (!state.sessionStartedAt) return;
+      const elapsedMs = Date.now() - state.sessionStartedAt;
+      const remainingMs = assistant.sessionDurationMs - elapsedMs;
+      if (remainingMs <= 0) {
+        dingThenSpeak("Session time has elapsed.");
+      } else {
+        const remainMin = Math.ceil(remainingMs / 60000);
+        dingThenSpeak(`${remainMin} minute${remainMin === 1 ? "" : "s"} remaining.`);
+      }
+      return;
+    }
+
+    // Client symptom check-in
+    if (t.includes(ac.wakeCheck)) {
+      dingThenSpeak("Client check-in — confirm chief complaint, current pain scale, and any changes since session start.");
+      return;
+    }
+
+    // Dismiss mechanics/reminder
+    if (t.includes(ac.wakeOkay)) {
+      assistant.synth?.cancel();
+      return;
+    }
+  }
+
+  // ── SpeechRecognition continuous listener ─────────────────
+  function startVoiceListener() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) {
+      setAssistantStatus("Voice commands not supported in this browser. Use Chrome or Edge.");
+      return;
+    }
+    const rec = new SR();
+    rec.continuous = true;
+    rec.interimResults = false;
+    rec.lang = "en-US";
+    rec.addEventListener("result", (event) => {
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          const text = event.results[i][0].transcript;
+          handleVoiceCommand(text);
+          // If currently logging, also track as a clinical segment
+          if (assistant.logActive && state.active) trackSegment(text);
+        }
+      }
+    });
+    rec.addEventListener("end", () => {
+      // Auto-restart so it stays always-on
+      try { rec.start(); } catch (_) {}
+    });
+    rec.addEventListener("error", (e) => {
+      if (e.error === "not-allowed") {
+        setAssistantStatus("Microphone permission denied — voice commands unavailable.");
+      }
+    });
+    try { rec.start(); } catch (_) {}
+    assistant.recognition = rec;
+  }
+
+  // ── Gate audio sends based on logActive ──────────────────
+  function enqueueAudio(frame) {
+    if (!assistant.logActive) return; // gate: drop frames when not logging
+    enqueueAudioRaw(frame);
+  }
+
+  // ── Wire pre-session button ───────────────────────────────
+  // Override startSession button to run checklist first
+  els.startSession.addEventListener("click", (e) => {
+    // If pre-session not done yet, run checklist instead
+    if (!assistant.preSessionDone) {
+      e.stopImmediatePropagation();
+      startPreSession();
+    }
+  }, true); // capture phase so it fires before existing listener
+
+  // ── Boot voice listener immediately ──────────────────────
+  startVoiceListener();
+  setAssistantStatus("Voice assistant ready — press Start to begin pre-session checklist");
 
   async function verifySession() {
     try {

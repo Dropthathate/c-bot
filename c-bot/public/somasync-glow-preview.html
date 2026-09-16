@@ -132,6 +132,33 @@
     }
     .collab-lockup .plus { color: #c8a84b; font-size: .8em; text-shadow: 0 0 12px rgba(200, 168, 75, .8); }
     .collab-lockup .soma { color: #b9c8d6; font-size: .72em; letter-spacing: .11em; }
+    .voice-label {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      bottom: 1.5%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      color: #8beee8;
+      font-family: 'Syne', ui-sans-serif, sans-serif;
+      font-size: clamp(9px, 1.5vw, 12px);
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(0, 210, 200, .68);
+    }
+    .voice-label::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #00e5d8;
+      box-shadow: 0 0 0 4px rgba(0, 229, 216, .12), 0 0 15px #00e5d8;
+      animation: voice-live 1.4s ease-in-out infinite;
+    }
     .topbar, .controls, .hint {
       position: absolute;
       z-index: 3;
@@ -149,6 +176,7 @@
     @keyframes breathe { 0%,100% { transform: scale(.985); opacity: .87; } 50% { transform: scale(1.01); opacity: 1; } }
     @keyframes ends { 0%,100% { transform: scale(.75); opacity: .2; } 50% { transform: scale(1.25); opacity: .75; } }
     @keyframes spark { 0%,100% { transform: scale(.85); opacity: .75; } 50% { transform: scale(1.35); opacity: 1; } }
+    @keyframes voice-live { 0%,100% { opacity: .45; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.15); } }
     @media (max-width: 620px) {
       .panel { min-height: 76vh; border-radius: 24px; }
       .topbar { left: 18px; right: 18px; top: 18px; }
@@ -170,6 +198,7 @@
         <div class="collab-lockup" aria-label="AALIYAH plus SomaSync AI">
           <span>ΛΛLIYΛH</span><span class="plus">+</span><span class="soma">SOMΛSYNC AI</span>
         </div>
+        <div class="voice-label" aria-label="Voice transcribing">VOICE TRANSCRIBING</div>
       </div>
       <div class="controls">
         <label>Glow <input id="intensity" type="range" min="0.35" max="1.6" step="0.01" value="1"></label>

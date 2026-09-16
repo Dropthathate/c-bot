@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SomaSync AI — OLED Glow Preview</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&display=swap');
     :root {
       --oled: #010204;
       --cyan: #00e5d8;
@@ -111,6 +112,26 @@
       animation: spark 3.2s ease-in-out infinite;
       pointer-events: none;
     }
+    .collab-lockup {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      bottom: 9%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      font-family: 'Syne', ui-sans-serif, sans-serif;
+      font-size: clamp(14px, 2.4vw, 22px);
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: #00d2c8;
+      text-shadow: 0 0 12px rgba(0, 210, 200, .58), 0 0 30px rgba(0, 116, 255, .25);
+    }
+    .collab-lockup .plus { color: #c8a84b; font-size: .8em; text-shadow: 0 0 12px rgba(200, 168, 75, .8); }
+    .collab-lockup .soma { color: #b9c8d6; font-size: .72em; letter-spacing: .11em; }
     .topbar, .controls, .hint {
       position: absolute;
       z-index: 3;
@@ -146,6 +167,9 @@
       <div class="logo-wrap" id="logoWrap">
         <img class="logo" src="somasync.png" alt="SomaSync AI original logo with OLED glow">
         <span class="spark" aria-hidden="true"></span>
+        <div class="collab-lockup" aria-label="AALIYAH plus SomaSync AI">
+          <span>ΛΛLIYΛH</span><span class="plus">+</span><span class="soma">SOMΛSYNC AI</span>
+        </div>
       </div>
       <div class="controls">
         <label>Glow <input id="intensity" type="range" min="0.35" max="1.6" step="0.01" value="1"></label>

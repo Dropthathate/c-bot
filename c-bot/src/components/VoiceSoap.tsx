@@ -15,45 +15,60 @@ type SessionState = 'idle' | 'active' | 'paused' | 'generating';
 export default function VoiceSoap() {
   const [state, setState] = useState<SessionState>('idle');
   const [transcript, setTranscript] = useState<Array<{ text: string; type: string; time: string }>>([]);
+  const [interimTranscript, setInterimTranscript] = useState('');
   const [soapNote, setSoapNote] = useState<SoapNote | null>(null);
   const [error, setError] = useState<string | null>(null);
   
   const recognitionRef = useRef<any>(null);
   const rawTranscriptRef = useRef<string[]>([]);
+  const shouldRecognizeRef = useRef(false);
 
   useEffect(() => {
-    if ('webkitSpeechRecognition' in window) {
-      const SpeechRecognition = (window as any).webkitSpeechRecognition;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = 'en-US';
 
       recognitionRef.current.onresult = (event: any) => {
-        const result = event.results[event.results.length - 1];
-        if (result.isFinal) {
-          handleSpeech(result[0].transcript.trim());
+        let interim = '';
+        for (let i = event.resultIndex; i < event.results.length; i += 1) {
+          const result = event.results[i];
+          const text = result[0].transcript.trim();
+          if (result.isFinal && text) handleSpeech(text);
+          else interim += `${text} `;
         }
+        setInterimTranscript(interim.trim());
       };
 
       recognitionRef.current.onerror = (event: any) => {
-        console.error('Speech recognition error:', event.error);
+        if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+          setError('Microphone permission was blocked. Allow microphone access and try again.');
+          shouldRecognizeRef.current = false;
+          setState('idle');
+        } else if (event.error !== 'aborted') {
+          setError(`Speech recognition error: ${event.error}`);
+        }
       };
 
       recognitionRef.current.onend = () => {
-        if (state === 'active') {
+        if (shouldRecognizeRef.current) {
           try {
             recognitionRef.current.start();
           } catch (e) {
-            console.error('Failed to restart recognition:', e);
+            window.setTimeout(() => {
+              if (shouldRecognizeRef.current) recognitionRef.current.start();
+            }, 250);
           }
         }
       };
     } else {
-      setError('Speech recognition not supported. Please use Chrome.');
+      setError('Speech recognition is not supported in this browser. Please use Chrome or Edge.');
     }
 
     return () => {
+      shouldRecognizeRef.current = false;
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
@@ -78,18 +93,26 @@ export default function VoiceSoap() {
   const startSession = () => {
     setState('active');
     setTranscript([]);
+    setInterimTranscript('');
     setSoapNote(null);
     setError(null);
     rawTranscriptRef.current = [];
     
     if (recognitionRef.current) {
-      recognitionRef.current.start();
+      shouldRecognizeRef.current = true;
+      try {
+        recognitionRef.current.start();
+      } catch (e) {
+        setError('Microphone is already starting. Try again in a moment.');
+      }
       addToTranscript('Session started', 'system');
     }
   };
 
   const pauseSession = () => {
     setState('paused');
+    shouldRecognizeRef.current = false;
+    setInterimTranscript('');
     if (recognitionRef.current) {
       recognitionRef.current.stop();
       addToTranscript('Session paused', 'system');
@@ -98,14 +121,17 @@ export default function VoiceSoap() {
 
   const resumeSession = () => {
     setState('active');
+    shouldRecognizeRef.current = true;
     if (recognitionRef.current) {
-      recognitionRef.current.start();
+      try { recognitionRef.current.start(); } catch (e) { /* onend will retry */ }
       addToTranscript('Session resumed', 'system');
     }
   };
 
   const endSession = async () => {
     setState('generating');
+    shouldRecognizeRef.current = false;
+    setInterimTranscript('');
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
@@ -213,6 +239,12 @@ export default function VoiceSoap() {
                   <div className="voice-soap-transcript-text">{item.text}</div>
                 </div>
               ))
+            )}
+            {interimTranscript && (
+              <div className="voice-soap-transcript-item interim">
+                <div className="voice-soap-transcript-meta">Listening · live speech</div>
+                <div className="voice-soap-transcript-text">{interimTranscript}</div>
+              </div>
             )}
           </div>
         </div>
@@ -530,6 +562,11 @@ export default function VoiceSoap() {
         .voice-soap-transcript-item:hover {
           border-color: rgba(59, 130, 246, 0.3);
           background: rgba(59, 130, 246, 0.05);
+        }
+
+        .voice-soap-transcript-item.interim {
+          border-left: 2px solid #22d3ee;
+          background: rgba(34, 211, 238, 0.06);
         }
 
         .voice-soap-transcript-meta {

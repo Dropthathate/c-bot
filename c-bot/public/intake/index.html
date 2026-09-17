@@ -37,8 +37,8 @@
     .token-badge strong{color:var(--teal);font-family:'Syne',sans-serif;letter-spacing:.04em}
     .body-map-container{display:flex;gap:24px;flex-wrap:wrap}
     .body-view{flex:1;min-width:160px;position:relative}
-    .body-view>label{display:block;font-size:.68rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-align:center;margin-bottom:10px}
-    .body-svg-wrap{position:relative;cursor:crosshair;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+    .body-view>label{display:block;font-size:.95rem;font-weight:800;color:var(--teal);letter-spacing:.1em;text-align:center;margin-bottom:10px;font-family:'Syne',sans-serif}
+    .body-svg-wrap{position:relative;cursor:crosshair;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:border-color .2s}.body-svg-wrap.active-view{border-color:var(--teal);box-shadow:0 0 0 2px rgba(0,201,167,.2)}
     .body-svg-wrap svg{width:100%;height:auto;display:block;pointer-events:none}
     .hit-layer{position:absolute;inset:0;cursor:crosshair}
     .pain-dot{position:absolute;width:20px;height:20px;border-radius:50%;transform:translate(-50%,-50%);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#050d14;animation:pop .2s ease;z-index:5}
@@ -166,6 +166,16 @@
             <ellipse cx="82" cy="412" rx="20" ry="8" stroke="#1a4a60" stroke-width="1.5" fill="#0e2030"/>
             <ellipse cx="118" cy="412" rx="20" ry="8" stroke="#1a4a60" stroke-width="1.5" fill="#0e2030"/>
             <line x1="100" y1="85" x2="100" y2="220" stroke="#1a4a60" stroke-width=".5" stroke-dasharray="4 4" opacity=".4"/>
+            <!-- Region labels -->
+            <text x="100" y="36" text-anchor="middle" font-size="7" fill="#2a6a7a" font-family="sans-serif">HEAD</text>
+            <text x="100" y="115" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">CHEST</text>
+            <text x="100" y="170" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">ABDOMEN</text>
+            <text x="39" y="145" text-anchor="middle" font-size="5.5" fill="#2a6a7a" font-family="sans-serif">L.ARM</text>
+            <text x="161" y="145" text-anchor="middle" font-size="5.5" fill="#2a6a7a" font-family="sans-serif">R.ARM</text>
+            <text x="82" y="310" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">L.THIGH</text>
+            <text x="118" y="310" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">R.THIGH</text>
+            <text x="82" y="385" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">L.SHIN</text>
+            <text x="118" y="385" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">R.SHIN</text>
           </svg>
           <div class="hit-layer" id="hitFront"></div>
         </div>
@@ -195,6 +205,19 @@
             <rect x="102" y="360" width="32" height="48" rx="12" stroke="#1a4a60" stroke-width="1.5" fill="#0e2030"/>
             <ellipse cx="82" cy="412" rx="20" ry="8" stroke="#1a4a60" stroke-width="1.5" fill="#0e2030"/>
             <ellipse cx="118" cy="412" rx="20" ry="8" stroke="#1a4a60" stroke-width="1.5" fill="#0e2030"/>
+            <!-- Region labels -->
+            <text x="100" y="36" text-anchor="middle" font-size="7" fill="#2a6a7a" font-family="sans-serif">HEAD</text>
+            <text x="100" y="108" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">UPPER BACK</text>
+            <text x="100" y="168" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">MID BACK</text>
+            <text x="100" y="210" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">LOW BACK</text>
+            <text x="39" y="145" text-anchor="middle" font-size="5.5" fill="#2a6a7a" font-family="sans-serif">L.ARM</text>
+            <text x="161" y="145" text-anchor="middle" font-size="5.5" fill="#2a6a7a" font-family="sans-serif">R.ARM</text>
+            <text x="82" y="250" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">L.GLUTE</text>
+            <text x="118" y="250" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">R.GLUTE</text>
+            <text x="82" y="310" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">L.HAMSTRING</text>
+            <text x="118" y="310" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">R.HAMSTRING</text>
+            <text x="82" y="385" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">L.CALF</text>
+            <text x="118" y="385" text-anchor="middle" font-size="6" fill="#2a6a7a" font-family="sans-serif">R.CALF</text>
           </svg>
           <div class="hit-layer" id="hitBack"></div>
         </div>
@@ -388,6 +411,9 @@ function setMapMode(m) {
 }
 function addHit(el, side) {
   el.addEventListener('click', e => {
+    // Highlight active view
+    document.querySelectorAll('.body-svg-wrap').forEach(w => w.classList.remove('active-view'))
+    el.closest('.body-svg-wrap').classList.add('active-view')
     const r = el.getBoundingClientRect()
     const x = ((e.clientX-r.left)/r.width*100).toFixed(1)
     const y = ((e.clientY-r.top)/r.height*100).toFixed(1)

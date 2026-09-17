@@ -31,6 +31,26 @@
 
     <section class="review-notice"><b>Clinician review required.</b> Every SOAP field remains editable. Unsupported findings, assessments, and plans must be completed or corrected by the clinician.</section>
 
+    <section class="posture-panel" aria-labelledby="postureTitle">
+      <div class="section-heading posture-heading"><div><p class="eyebrow">STEP 1 · POSTURAL ASSESSMENT</p><h2 id="postureTitle">Record observed alignment findings.</h2></div><span id="postureSaved" class="posture-saved">Not saved</span></div>
+      <p class="posture-guidance">Select only what you directly observe. This tool organizes findings; it does not diagnose, interpret, or prescribe treatment.</p>
+      <div class="posture-toolbar"><span class="posture-label">VIEW</span><button type="button" class="posture-view active" data-posture-view="front">FRONT</button><button type="button" class="posture-view" data-posture-view="back">BACK</button><span id="postureCount" class="posture-count">0 findings selected</span></div>
+      <div class="posture-finding-grid" id="postureFindingGrid">
+        <label class="posture-finding"><input type="checkbox" value="head-forward" data-region="Head / cervical"><span><b>Head forward</b><small>Head translated anteriorly</small></span></label>
+        <label class="posture-finding"><input type="checkbox" value="shoulder-elevation" data-region="Shoulders"><span><b>Shoulder elevation</b><small>Left, right, or bilateral</small></span></label>
+        <label class="posture-finding"><input type="checkbox" value="shoulder-protraction" data-region="Shoulders"><span><b>Shoulder protraction</b><small>Anterior shoulder position</small></span></label>
+        <label class="posture-finding"><input type="checkbox" value="scapular-winging" data-region="Scapulae"><span><b>Scapular asymmetry</b><small>Winging or altered resting position</small></span></label>
+        <label class="posture-finding"><input type="checkbox" value="thoracic-kyphosis" data-region="Thoracic spine"><span><b>Thoracic curve</b><small>Increased or decreased kyphosis</small></span></label>
+        <label class="posture-finding"><input type="checkbox" value="lumbar-curve" data-region="Lumbar spine"><span><b>Lumbar curve</b><small>Increased or decreased lordosis</small></span></label>
+        <label class="posture-finding"><input type="checkbox" value="pelvic-tilt" data-region="Pelvis"><span><b>Pelvic tilt / rotation</b><small>Anterior, posterior, or lateral</small></span></label>
+        <label class="posture-finding"><input type="checkbox" value="knee-alignment" data-region="Knees"><span><b>Knee alignment</b><small>Valgus, varus, or hyperextension</small></span></label>
+        <label class="posture-finding"><input type="checkbox" value="foot-ankle" data-region="Feet / ankles"><span><b>Foot / ankle position</b><small>Pronation, supination, or asymmetry</small></span></label>
+      </div>
+      <div class="posture-detail-grid"><label><span>Side / pattern</span><select id="postureSide"><option value="bilateral">Bilateral / central</option><option value="left">Left</option><option value="right">Right</option><option value="alternating">Alternating / dynamic</option></select></label><label><span>Clinician observations</span><textarea id="postureNotes" rows="3" maxlength="4000" placeholder="Describe only directly observed alignment, movement, or asymmetry findings."></textarea></label></div>
+      <div class="posture-actions"><button type="button" id="savePosture" class="button primary small">Save assessment to this session</button><button type="button" id="clearPosture" class="button quiet small">Clear findings</button></div>
+      <p id="postureSummary" class="posture-summary" hidden></p>
+    </section>
+
     <section class="instrument-deck" aria-labelledby="instrumentTitle">
       <div class="section-heading"><div><p class="eyebrow">LIVE INSTRUMENTS</p><h2 id="instrumentTitle">The session state is visible.</h2></div><p>Operational status only. This interface does not persist raw audio, transcript, or note text in browser storage.</p></div>
       <div class="instrument-grid">

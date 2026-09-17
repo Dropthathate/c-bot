@@ -701,6 +701,52 @@
   startVoiceListener();
   setAssistantStatus("Voice assistant ready — press Start to begin pre-session checklist");
 
+  // ── Structured postural assessment ────────────────────────
+  const postureState = { view: "front", saved: false };
+  const postureCount = document.getElementById("postureCount");
+  const postureSaved = document.getElementById("postureSaved");
+  const postureSummary = document.getElementById("postureSummary");
+  const postureNotes = document.getElementById("postureNotes");
+  const postureSide = document.getElementById("postureSide");
+  const postureFindings = () => [...document.querySelectorAll("#postureFindingGrid input:checked")];
+  function updatePostureCount() {
+    const count = postureFindings().length;
+    if (postureCount) postureCount.textContent = `${count} finding${count === 1 ? "" : "s"} selected`;
+    postureState.saved = false;
+    if (postureSaved) { postureSaved.textContent = "Not saved"; postureSaved.classList.remove("ready"); }
+  }
+  function savePostureAssessment() {
+    const findings = postureFindings();
+    const side = postureSide?.value || "bilateral";
+    const rawNotes = postureNotes?.value.trim() || "";
+    const notes = rawNotes || "No additional observations recorded.";
+    if (!findings.length && !rawNotes) {
+      if (postureSummary) { postureSummary.hidden = false; postureSummary.textContent = "Select at least one observed finding or enter a direct observation before saving."; }
+      return;
+    }
+    const lines = [`View: ${postureState.view.toUpperCase()}`, `Side / pattern: ${side}`, `Observed findings: ${findings.length ? findings.map((input) => `${input.dataset.region} — ${input.nextElementSibling?.querySelector("b")?.textContent || input.value}`).join("; ") : "None selected"}`, `Clinician observations: ${notes}`];
+    if (postureSummary) { postureSummary.hidden = false; postureSummary.textContent = lines.join("\n"); }
+    postureState.saved = true;
+    if (postureSaved) { postureSaved.textContent = "Saved to session"; postureSaved.classList.add("ready"); }
+    if (typeof addEvent === "function") addEvent("POSTURE_ASSESSMENT_SAVED", "Directly observed alignment findings saved for clinician review.");
+  }
+  function clearPostureAssessment() {
+    document.querySelectorAll("#postureFindingGrid input").forEach((input) => { input.checked = false; });
+    if (postureNotes) postureNotes.value = "";
+    if (postureSummary) postureSummary.hidden = true;
+    updatePostureCount();
+  }
+  document.querySelectorAll("#postureFindingGrid input").forEach((input) => input.addEventListener("change", updatePostureCount));
+  document.querySelectorAll("[data-posture-view]").forEach((button) => button.addEventListener("click", () => {
+    postureState.view = button.dataset.postureView;
+    document.querySelectorAll("[data-posture-view]").forEach((item) => item.classList.toggle("active", item === button));
+    document.querySelectorAll("#postureFindingGrid input").forEach((input) => { input.checked = false; });
+    updatePostureCount();
+  }));
+  document.getElementById("savePosture")?.addEventListener("click", savePostureAssessment);
+  document.getElementById("clearPosture")?.addEventListener("click", clearPostureAssessment);
+  updatePostureCount();
+
   async function verifySession() {
     try {
       let accessToken = "";

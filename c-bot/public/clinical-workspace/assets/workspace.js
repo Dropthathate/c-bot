@@ -770,7 +770,14 @@
       const response = await fetch(apiUrl("/auth/session"), { credentials: "include", cache: "no-store", headers: { Accept: "application/json" } });
       if (!response.ok) throw new Error("missing_session");
       els.clinicalWorkspace.hidden = false; setAuth("Secure session ready", "ready");
-    } catch { els.signInRequired.hidden = false; setAuth("Sign-in required", "problem"); }
+    } catch {
+      // Postural assessment is a browser-only first step. Keep it usable while
+      // the optional realtime API is being provisioned; live audio/transcription
+      // controls remain hidden until the secure API session is available.
+      els.clinicalWorkspace.hidden = false;
+      els.clinicalWorkspace.classList.add("posture-only");
+      setAuth("Postural assessment mode", "ready");
+    }
   }
 
   els.connectDevice.addEventListener("click", connectDevice); els.selectMicrophone.addEventListener("click", selectMicrophone); els.startSession.addEventListener("click", startSession); els.stopSession.addEventListener("click", stopSession); els.clearTranscript.addEventListener("click", clearTranscript); els.generateSoap.addEventListener("click", requestSoap); els.clinicianReviewed.addEventListener("change", () => { els.exportDraft.disabled = !els.clinicianReviewed.checked || !els.soapSubjective.value; }); els.exportDraft.addEventListener("click", exportDraft); window.addEventListener("resize", () => { if (state.active) resizeCanvas(); }); window.addEventListener("beforeunload", () => { if (state.active) state.socket?.close(1000, "page_unload"); });

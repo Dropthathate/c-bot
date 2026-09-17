@@ -1,4 +1,4 @@
-name: Deploy c-bot static site to GitHub Pages
+name: Deploy c-bot static site to GitHub Pages (refresh)
 
 on:
   push:

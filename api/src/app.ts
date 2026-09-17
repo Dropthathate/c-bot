@@ -20,6 +20,7 @@ import { config } from "./config.js";
 import { publicLeadRouter } from "./routes/leads.js";
 import { sessionRouter } from "./routes/session.js";
 import { voiceRouter } from "./routes/voice.js";
+import { intakeRouter } from "./routes/intake.js";
 
 export const app = express();
 
@@ -75,6 +76,7 @@ app.delete("/api/v1/auth/session", assertTrustedBrowserRequest, requireAuthentic
 // Existing routes — preserved from main
 app.use("/api/v1/public", publicLeadRouter);
 app.use("/api/v1/voice", voiceRouter);
+app.use("/api/v1/intake", intakeRouter);
 
 app.use((error: unknown, request: express.Request, response: express.Response, _next: express.NextFunction) => {
   request.log.error({ err: error instanceof Error ? error.message : "unknown_error" }, "request_failed");

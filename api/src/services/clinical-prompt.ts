@@ -66,3 +66,73 @@ export function normalizeSoapNote(value: unknown): SoapNote {
     plan: note.plan.replace(/\s+/g, " ").trim()
   };
 }
+
+// ── PRE-SESSION INTAKE BRIEF ─────────────────────────────────────────────────
+
+export const intakeBriefToolName = "emit_presession_brief";
+
+export const intakeBriefToolSchema = {
+  type: "object",
+  properties: {
+    postural_assessment_priorities: {
+      type: "string",
+      description: "Anatomically specific postural landmarks and distortion patterns the therapist should assess before making contact, based on intake data. Reference specific muscles, joint positions, and observable landmarks. Do not diagnose."
+    },
+    likely_involved_structures: {
+      type: "string",
+      description: "Muscles, fascia, nerves, and trigger point locations most likely involved based on symptom location, quality, referral pattern, and duration. Reference Travell and Simons referral maps where applicable. Use language like 'consider' and 'consistent with' — never 'diagnosis is'."
+    },
+    clinical_reasoning: {
+      type: "string",
+      description: "Step-by-step NMT clinical reasoning connecting intake findings to likely myofascial or postural etiology. Include biopsychosocial factors that may influence tissue response or pain perception."
+    },
+    session_priorities: {
+      type: "string",
+      description: "Ordered treatment focus areas based on functional impact scores and symptom severity. What to address first and why, based solely on the intake data."
+    },
+    therapist_prompts: {
+      type: "string",
+      description: "Specific questions or observations for the therapist to gather during the session to complete the clinical picture. What data is still missing from the intake."
+    },
+    biopsychosocial_flags: {
+      type: "string",
+      description: "Stress, sleep, lifestyle, and coinciding life event factors from intake that may affect tissue response, pain threshold, or session pacing. No psychological diagnosis — clinical context only."
+    }
+  },
+  required: [
+    "postural_assessment_priorities",
+    "likely_involved_structures",
+    "clinical_reasoning",
+    "session_priorities",
+    "therapist_prompts",
+    "biopsychosocial_flags"
+  ],
+  additionalProperties: false
+} as const;
+
+export const intakeBriefSystemPrompt = `You are SomaSync AI — a clinical reasoning assistant for licensed Neuromuscular Therapists (NMT) and manual therapy practitioners.
+
+Your role is to analyze a client's anonymous pre-session intake assessment and generate a precise, anatomically-informed pre-session brief for the treating therapist. This brief is delivered through the therapist's earpiece before they make contact with the client.
+
+CLINICAL KNOWLEDGE BASE:
+- Advanced anatomy: muscle origins, insertions, actions, innervation, and fascial relationships
+- Travell and Simons myofascial trigger point referral patterns and their clinical presentations
+- NMT postural distortion patterns: upper crossed syndrome, lower crossed syndrome, layered syndrome, and their associated muscle imbalances
+- Biopsychosocial model: how stress, sleep, occupational posture, and psychosocial factors modulate pain perception and tissue response
+- Central sensitization indicators and how they modify treatment approach
+- Functional movement assessment landmarks observable before and during treatment
+
+STRICT RULES:
+- Never diagnose. Use language like "consistent with", "consider", "likely involved", "warrants assessment"
+- Never invent findings not present in the intake data
+- Always distinguish between what the client reported and what the therapist should look for
+- Flag missing clinical data explicitly so the therapist knows what to gather during the session
+- If intake data is insufficient for a structure, say so — do not fill gaps with assumptions
+- Biopsychosocial factors inform approach and pacing, never diagnosis
+- ICD-10 codes are never generated — reference only anatomical and functional terminology
+
+OUTPUT: Call exactly one tool named ${intakeBriefToolName}. No text, markdown, or commentary outside the tool fields.`;
+
+export function intakeBriefUserMessage(intakeSummary: string): string {
+  return `Generate the pre-session clinical brief for the following anonymous client intake assessment:\n\n${intakeSummary}`;
+}

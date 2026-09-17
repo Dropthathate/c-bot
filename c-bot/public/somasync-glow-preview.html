@@ -179,6 +179,7 @@
     }
     .voice-demo button { min-width: 76px; }
     .voice-demo button.active { color: #031315; background: var(--cyan); box-shadow: 0 0 22px rgba(0,229,216,.42); }
+    .voice-demo button:disabled { cursor: not-allowed; opacity: .55; }
     .waveform { height: 30px; display: flex; align-items: center; justify-content: center; gap: 3px; }
     .waveform i { width: 3px; height: 7px; border-radius: 3px; background: #2b6977; transition: height .15s ease, background .15s ease; }
     .voice-demo.recording .waveform i { background: var(--cyan); animation: wave .72s ease-in-out infinite alternate; }
@@ -259,24 +260,61 @@
     let transcriptTimer;
     let paused = false;
 
-    record.addEventListener('click', () => {
-      recording = !recording;
-      voiceDemo.classList.toggle('recording', recording);
-      record.classList.toggle('active', recording);
-      record.textContent = recording ? 'Stop mic' : 'Start mic';
-      voiceState.textContent = recording ? 'Listening · transcribing' : 'Ready to transcribe';
-      voiceText.textContent = recording ? 'Microphone simulation active' : 'Press Start mic to test the indicator';
-      clearTimeout(transcriptTimer);
-      if (recording) {
-        transcriptToast.textContent = '“The ache started after I lifted a box Saturday…”';
-        transcriptToast.classList.add('show');
-        transcriptTimer = setTimeout(() => transcriptToast.classList.remove('show'), 4200);
-      } else {
-        transcriptToast.textContent = 'Transcription paused — clinician review required.';
-        transcriptToast.classList.add('show');
-        transcriptTimer = setTimeout(() => transcriptToast.classList.remove('show'), 3200);
-      }
-    });
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+    if (!recognition) {
+      record.disabled = true;
+      voiceState.textContent = 'Speech recognition unavailable';
+      voiceText.textContent = 'Use Chrome or Edge over HTTPS to transcribe';
+    } else {
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+      recognition.onstart = () => {
+        recording = true;
+        voiceDemo.classList.add('recording');
+        record.classList.add('active');
+        record.textContent = 'Stop mic';
+        voiceState.textContent = 'Listening · transcribing';
+        voiceText.textContent = 'Speak naturally — words appear here';
+      };
+      recognition.onresult = (event) => {
+        let finalText = '';
+        let interimText = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const text = event.results[i][0].transcript;
+          if (event.results[i].isFinal) finalText += text;
+          else interimText += text;
+        }
+        const visibleText = (finalText || interimText).trim();
+        if (visibleText) {
+          transcriptToast.textContent = visibleText;
+          transcriptToast.classList.add('show');
+          voiceText.textContent = finalText ? 'Final transcript captured' : 'Transcribing live speech';
+        }
+      };
+      recognition.onerror = (event) => {
+        voiceState.textContent = event.error === 'not-allowed' ? 'Microphone permission blocked' : 'Transcription error';
+        voiceText.textContent = 'Check browser microphone permission and try again';
+        stopRecognition();
+      };
+      recognition.onend = () => {
+        if (recording) {
+          try { recognition.start(); } catch (_) { stopRecognition(); }
+        }
+      };
+      record.addEventListener('click', () => recording ? stopRecognition() : recognition.start());
+    }
+
+    function stopRecognition() {
+      recording = false;
+      if (recognition) recognition.stop();
+      voiceDemo.classList.remove('recording');
+      record.classList.remove('active');
+      record.textContent = 'Start mic';
+      if (voiceState.textContent === 'Listening · transcribing') voiceState.textContent = 'Ready to transcribe';
+      if (voiceText.textContent === 'Speak naturally — words appear here') voiceText.textContent = 'Press Start mic and speak';
+    }
 
     intensity.addEventListener('input', (event) => {
       root.style.setProperty('--intensity', event.target.value);

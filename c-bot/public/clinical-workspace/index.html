@@ -65,6 +65,19 @@
         <div class="connection-card"><div class="device-glyph" aria-hidden="true">⌁</div><div><b id="deviceName">No BLE companion connected</b><p id="deviceDetail">Connect the approved SomaSync BLE companion for supported control and battery telemetry.</p></div><button id="connectDevice" class="button quiet" type="button">Connect device</button></div>
         <div class="connection-metrics"><span><small>BATTERY</small><b id="batteryLevel">—</b></span><span><small>DEVICE STATE</small><b id="deviceState">Not connected</b></span></div>
         <div class="connection-card microphone-card"><div><b id="microphoneName">No microphone selected</b><p>Select the approved Bluetooth microphone or another browser input. Microphone sound is never sent to speakers.</p></div><button id="selectMicrophone" class="button quiet" type="button">Select microphone</button></div>
+        <div class="connection-card token-card">
+          <div><b>Client intake token</b><p>Enter the session code from the client's intake form. SomaSyncAI will brief you before the session starts.</p></div>
+          <div style="flex:1">
+            <div class="token-input-wrap">
+              <input id="intakeToken" type="text" maxlength="9" placeholder="ss-XXXXXX" autocomplete="off" spellcheck="false" />
+              <button id="loadIntake" class="button quiet" type="button">Load intake</button>
+            </div>
+            <div class="brief-loaded" id="briefLoaded">
+              <strong>INTAKE LOADED</strong>
+              <span id="briefPreview">Pre-session brief ready — earpiece will brief you when you begin.</span>
+            </div>
+          </div>
+        </div>
         <div class="connection-card duration-card">
           <div><b>Session duration</b><p>Select the planned session length before starting. Reminders and area checks will be timed proportionally.</p></div>
           <select id="sessionDuration" class="button quiet">

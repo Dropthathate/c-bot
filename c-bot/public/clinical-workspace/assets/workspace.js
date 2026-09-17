@@ -478,6 +478,114 @@
   }
 
   // ── Pre-session checklist ─────────────────────────────────
+
+  // ═══════════════════════════════════════════════════════════
+  // INTAKE TOKEN + PRE-SESSION BRIEF ENGINE
+  // ═══════════════════════════════════════════════════════════
+
+  let intakeBrief = null; // holds the loaded brief object
+
+  function buildBriefChecklist(brief) {
+    // Convert brief fields into spoken earpiece steps
+    return [
+      "Pre-session clinical brief loaded.",
+      "Postural assessment priorities: " + brief.postural_assessment_priorities,
+      "Likely involved structures: " + brief.likely_involved_structures,
+      "Clinical reasoning: " + brief.clinical_reasoning,
+      "Session priorities: " + brief.session_priorities,
+      "Biopsychosocial context: " + brief.biopsychosocial_flags,
+      "During the session, gather: " + brief.therapist_prompts
+    ];
+  }
+
+  async function loadIntakeByToken(token) {
+    const btn = document.getElementById("loadIntake");
+    const loaded = document.getElementById("briefLoaded");
+    const preview = document.getElementById("briefPreview");
+    if (btn) btn.disabled = true;
+
+    try {
+      // 1. Try sessionStorage first (same device as client)
+      const stored = sessionStorage.getItem("somasync_intake_" + token);
+      let summary = null;
+
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        summary = buildSummaryFromPayload(parsed);
+      }
+
+      if (!summary) {
+        if (preview) preview.textContent = "Intake not found for that token on this device.";
+        if (loaded) loaded.classList.add("show");
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      // 2. POST to /api/v1/intake/brief
+      const csrf = csrfCookie();
+      const resp = await fetch(apiUrl("/intake/brief"), {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrf ? { "X-CSRF-Token": csrf } : {})
+        },
+        body: JSON.stringify({ summary })
+      });
+
+      if (!resp.ok) throw new Error("Brief API returned " + resp.status);
+      const data = await resp.json();
+      intakeBrief = data.brief;
+
+      // 3. Show confirmation
+      if (loaded) loaded.classList.add("show");
+      if (preview) preview.textContent = "Pre-session brief ready — earpiece will walk you through the clinical picture when you begin.";
+      addEvent("INTAKE_LOADED", "Pre-session clinical brief generated from intake token.");
+
+    } catch (err) {
+      if (preview) preview.textContent = "Could not load brief — check token and try again.";
+      if (loaded) loaded.classList.add("show");
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function buildSummaryFromPayload(p) {
+    if (!p) return null;
+    const primary = (p.mapDots || []).filter(d => d.mode === "primary").map(d => d.side + " (" + d.x + "%," + d.y + "%)").join(", ");
+    const high = Object.entries(p.funcScores || {}).filter(([,v]) => v >= 3).map(([k,v]) => k + ":" + v + "/5").join(", ");
+    return [
+      "TOKEN: " + (p.token || ""),
+      "PRIMARY BODY AREAS: " + (primary || "none marked"),
+      "SECONDARY: " + (p.mapDots || []).filter(d => d.mode === "secondary").length + " markers",
+      "RADIATION: " + (p.mapDots || []).filter(d => d.mode === "radiation").length + " markers",
+      "QUALITIES: " + ((p.qualities || []).join(", ") || "none"),
+      "DURATION: " + (p.duration || "not stated"),
+      "COINCIDE: " + ((p.coincide || []).join(", ") || "none"),
+      "HIGH-IMPACT ACTIVITIES: " + (high || "none"),
+      "STRESS: " + (p.stress || 0) + "/10",
+      "SLEEP: " + (p.sleep || 0) + "/10",
+      "POSTURE: " + (Array.isArray(p.posture) ? p.posture.join(", ") : (p.posture || "none")),
+      "PRESSURE PREF: " + (p.pressure || "not set"),
+      "AVOID: " + (p.avoidAreas || "none"),
+      "GOALS: " + (Array.isArray(p.goals) ? p.goals.join(", ") : (p.goals || "none")),
+      "NOTES: " + (p.notes || "none")
+    ].join("\n");
+  }
+
+  // Wire token input button
+  const loadIntakeBtn = document.getElementById("loadIntake");
+  const intakeTokenInput = document.getElementById("intakeToken");
+  if (loadIntakeBtn && intakeTokenInput) {
+    loadIntakeBtn.addEventListener("click", () => {
+      const token = intakeTokenInput.value.trim().toUpperCase();
+      if (!token || token.length < 6) return;
+      loadIntakeByToken(token.startsWith("SS-") ? token : "ss-" + token.replace(/^SS-?/i, ""));
+    });
+    intakeTokenInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") loadIntakeBtn.click();
+    });
+  }
+
   function buildChecklist(durationMin) {
     return [
       "Ground in. Take a breath, set your intention, and center yourself before your client enters.",
@@ -501,7 +609,10 @@
     const sel = document.getElementById("sessionDuration");
     const durationMin = sel ? parseInt(sel.value, 10) : config.session.defaultDuration;
     assistant.sessionDurationMs = durationMin * 60 * 1000;
-    assistant.checklist = buildChecklist(durationMin);
+    const baseChecklist = buildChecklist(durationMin);
+    assistant.checklist = intakeBrief
+      ? [...buildBriefChecklist(intakeBrief), ...baseChecklist]
+      : baseChecklist;
     assistant.checklistIndex = 0;
     assistant.preSessionDone = false;
     if (assistantBar) assistantBar.hidden = false;

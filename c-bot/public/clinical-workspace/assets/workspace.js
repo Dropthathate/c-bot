@@ -703,6 +703,24 @@
 
   async function verifySession() {
     try {
+      let accessToken = "";
+      for (let index = 0; index < localStorage.length; index += 1) {
+        const key = localStorage.key(index) || "";
+        if (!key.startsWith("sb-") || !key.endsWith("-auth-token")) continue;
+        try {
+          const candidate = JSON.parse(localStorage.getItem(key) || "{}");
+          if (candidate.access_token) { accessToken = candidate.access_token; break; }
+        } catch { /* Ignore unrelated storage entries. */ }
+      }
+      if (accessToken) {
+        const exchange = await fetch(apiUrl("/auth/session/exchange"), {
+          method: "POST",
+          credentials: "include",
+          cache: "no-store",
+          headers: { Accept: "application/json", Authorization: `Bearer ${accessToken}` }
+        });
+        if (!exchange.ok) throw new Error("session_exchange_failed");
+      }
       const response = await fetch(apiUrl("/auth/session"), { credentials: "include", cache: "no-store", headers: { Accept: "application/json" } });
       if (!response.ok) throw new Error("missing_session");
       els.clinicalWorkspace.hidden = false; setAuth("Secure session ready", "ready");

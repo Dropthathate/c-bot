@@ -159,6 +159,36 @@
       box-shadow: 0 0 0 4px rgba(0, 229, 216, .12), 0 0 15px #00e5d8;
       animation: voice-live 1.4s ease-in-out infinite;
     }
+    .voice-demo {
+      position: absolute;
+      z-index: 4;
+      left: 50%;
+      bottom: 22px;
+      width: min(470px, calc(100% - 42px));
+      transform: translateX(-50%);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(0, 225, 213, .18);
+      border-radius: 16px;
+      background: rgba(2, 10, 16, .72);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 12px 36px rgba(0,0,0,.32);
+    }
+    .voice-demo button { min-width: 76px; }
+    .voice-demo button.active { color: #031315; background: var(--cyan); box-shadow: 0 0 22px rgba(0,229,216,.42); }
+    .waveform { height: 30px; display: flex; align-items: center; justify-content: center; gap: 3px; }
+    .waveform i { width: 3px; height: 7px; border-radius: 3px; background: #2b6977; transition: height .15s ease, background .15s ease; }
+    .voice-demo.recording .waveform i { background: var(--cyan); animation: wave .72s ease-in-out infinite alternate; }
+    .waveform i:nth-child(2n) { animation-delay: -.22s; }
+    .waveform i:nth-child(3n) { animation-delay: -.46s; }
+    .voice-status { min-width: 0; }
+    .voice-status strong { display: block; color: #d7f8f5; font: 700 10px 'Syne', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+    .voice-status span { display: block; overflow: hidden; margin-top: 3px; color: #78929f; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+    .transcript-toast { position: absolute; z-index: 4; left: 50%; bottom: 105px; width: min(430px, calc(100% - 50px)); transform: translateX(-50%) translateY(8px); padding: 8px 12px; border-left: 2px solid var(--cyan); border-radius: 8px; opacity: 0; background: rgba(3, 15, 22, .78); color: #afd7dc; font-size: 11px; line-height: 1.4; transition: opacity .25s, transform .25s; pointer-events: none; }
+    .transcript-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .topbar, .controls, .hint {
       position: absolute;
       z-index: 3;
@@ -177,6 +207,7 @@
     @keyframes ends { 0%,100% { transform: scale(.75); opacity: .2; } 50% { transform: scale(1.25); opacity: .75; } }
     @keyframes spark { 0%,100% { transform: scale(.85); opacity: .75; } 50% { transform: scale(1.35); opacity: 1; } }
     @keyframes voice-live { 0%,100% { opacity: .45; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.15); } }
+    @keyframes wave { from { height: 5px; } to { height: 27px; } }
     @media (max-width: 620px) {
       .panel { min-height: 76vh; border-radius: 24px; }
       .topbar { left: 18px; right: 18px; top: 18px; }
@@ -198,7 +229,13 @@
         <div class="collab-lockup" aria-label="AALIYAH plus SomaSync AI">
           <span>ΛΛLIYΛH</span><span class="plus">+</span><span class="soma">SOMΛSYNC AI</span>
         </div>
-        <div class="voice-label" aria-label="Voice transcribing">VOICE TRANSCRIBING</div>
+      <div class="voice-label" aria-label="Voice transcribing">VOICE TRANSCRIBING</div>
+      </div>
+      <div class="transcript-toast" id="transcriptToast" role="status" aria-live="polite"></div>
+      <div class="voice-demo" id="voiceDemo" aria-label="Voice transcription demo controls">
+        <button id="record" type="button">Start mic</button>
+        <div class="voice-status"><strong id="voiceState">Ready to transcribe</strong><span id="voiceText">Press Start mic to test the indicator</span></div>
+        <div class="waveform" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </div>
       <div class="controls">
         <label>Glow <input id="intensity" type="range" min="0.35" max="1.6" step="0.01" value="1"></label>
@@ -213,7 +250,33 @@
     const intensity = document.querySelector('#intensity');
     const toggle = document.querySelector('#toggle');
     const logoWrap = document.querySelector('#logoWrap');
+    const voiceDemo = document.querySelector('#voiceDemo');
+    const record = document.querySelector('#record');
+    const voiceState = document.querySelector('#voiceState');
+    const voiceText = document.querySelector('#voiceText');
+    const transcriptToast = document.querySelector('#transcriptToast');
+    let recording = false;
+    let transcriptTimer;
     let paused = false;
+
+    record.addEventListener('click', () => {
+      recording = !recording;
+      voiceDemo.classList.toggle('recording', recording);
+      record.classList.toggle('active', recording);
+      record.textContent = recording ? 'Stop mic' : 'Start mic';
+      voiceState.textContent = recording ? 'Listening · transcribing' : 'Ready to transcribe';
+      voiceText.textContent = recording ? 'Microphone simulation active' : 'Press Start mic to test the indicator';
+      clearTimeout(transcriptTimer);
+      if (recording) {
+        transcriptToast.textContent = '“The ache started after I lifted a box Saturday…”';
+        transcriptToast.classList.add('show');
+        transcriptTimer = setTimeout(() => transcriptToast.classList.remove('show'), 4200);
+      } else {
+        transcriptToast.textContent = 'Transcription paused — clinician review required.';
+        transcriptToast.classList.add('show');
+        transcriptTimer = setTimeout(() => transcriptToast.classList.remove('show'), 3200);
+      }
+    });
 
     intensity.addEventListener('input', (event) => {
       root.style.setProperty('--intensity', event.target.value);

@@ -503,7 +503,7 @@ function submitIntake(){
 
   // Email via Apps Script (no-cors fire-and-forget)
   const summary=buildSummary(payload)
-  const url='https://script.google.com/macros/s/AKfycbwwP1aPjVjxXg17Pd-y3PXcB29LhoBwRqrp3j1FVn6eMPmjZ5hlOIm9V8RFcsTTcceC/exec'
+  const url='https://script.google.com/macros/s/AKfycbx4UEtWIfzW63X3DNj7f19ROw4GgQoDufOqjTZdIZlTY6JWuVTURtrDGQSVKOAN7MUxzw/exec'
     +'?action=intake&token='+encodeURIComponent(TOKEN)
     +'&summary='+encodeURIComponent(summary)
   fetch(url,{method:'GET',mode:'no-cors'}).catch(()=>{})

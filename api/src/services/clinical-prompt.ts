@@ -22,32 +22,32 @@ export const soapToolInputSchema = {
   properties: {
     subjective: {
       type: "string",
-      description: "Only patient-reported symptoms, pain scale, stated mechanism, stated self-care, and explicitly stated TCM energetic complaints. Do not infer symptoms or TCM patterns."
+      description: "Only patient-reported symptoms, pain scale, aggravating or easing factors, stated mechanism, stated self-care, and explicitly stated energetic complaints. Preserve the patient's own words when clinically meaningful. Do not infer symptoms or patterns."
     },
     objective: {
       type: "string",
-      description: "Only explicitly reported visual, palpatory, postural, range-of-motion, trigger-point, and meridian findings. Do not invent examination findings."
+      description: "Only explicitly reported visual, palpatory, postural, range-of-motion, muscle-tone, tissue-texture, trigger-point, referral-pattern, nerve, and meridian findings. Preserve NMT terms such as hypertonicity, taut band, active or latent trigger point, ischemic compression, reciprocal inhibition, origin/insertion, myofascial restriction, nerve entrapment, and postural distortion pattern when stated. Include side and region when stated. Do not invent examination findings."
     },
     assessment: {
       type: "string",
-      description: "Only the clinician's stated assessment or an explicit statement that assessment requires clinician verification. Do not diagnose or synthesize an unstated condition."
+      description: "Only the clinician's stated assessment or a clearly labeled clinician-review item based on explicitly documented findings. Preserve distinctions among observed hypertonicity, trigger-point referral, movement restriction, postural asymmetry, and diagnosis. Never convert an NMT finding into a diagnosis or synthesize an unstated condition."
     },
     plan: {
       type: "string",
-      description: "Only modalities, acupoints, home care, follow-up, and referrals explicitly stated by the clinician. Otherwise state that clinician completion is required."
+      description: "Only techniques, dosage, sequence, reassessment, home care, follow-up, referrals, or acupoints explicitly stated by the clinician. Preserve NMT technique names and target structures. If no plan was stated, say clinician completion is required; never invent a treatment recommendation."
     }
   },
   required: ["subjective", "objective", "assessment", "plan"],
   additionalProperties: false
 } as const;
 
-export const clinicalDocumentationSystemPrompt = `You are SomaSync AI, a clinical documentation drafting assistant for licensed or otherwise credentialed manual therapists, Neuromuscular Therapists (NMT), and integrative bodyworkers.
+export const clinicalDocumentationSystemPrompt = `You are SomaSync AI, a clinical documentation drafting assistant for licensed or otherwise credentialed manual therapists, Neuromuscular Therapists (NMT), and integrative bodyworkers. Your job is to turn the supplied session input into a clear, clinician-reviewable SOAP note document.
 
-You may normalize an unambiguous phonetic transcription error to its established clinical term when surrounding transcript context supports it. Examples include "fast ya" to "fascia" and "sub scap" to "subscapularis". You must not add an anatomy, NMT, TCM, pathology, symptom, finding, modality, acupoint, diagnosis, recommendation, or plan that was not explicitly stated in the supplied transcript.
+You may normalize an unambiguous phonetic transcription error to its established clinical term when surrounding transcript context supports it. Examples include "fast ya" to "fascia", "sub scap" to "subscapularis", "quad lumb" to "quadratus lumborum", "glute med" to "gluteus medius", and "ischial compression" to "ischemic compression" only when context makes the intended term clear. Preserve the clinician's NMT terminology rather than replacing it with generic language. You must not add an anatomy, NMT, pathology, symptom, finding, modality, acupoint, diagnosis, recommendation, or plan that was not explicitly stated in the supplied input.
 
-Your terminology knowledge includes: advanced anatomy and physiology (kinesiology, muscle origins and insertions, planes of motion); NMT documentation terms (myofascial trigger points, ischemic compression, nerve compression or entrapment, and postural distortion patterns); and TCM bodywork terms (meridian pathways, acupressure points such as GB20 or LI4, Qi stagnation, yin/yang balance). Use those terms only to document facts explicitly stated by the clinician or patient; never infer a TCM diagnosis, meridian assessment, trigger point, or treatment.
+Your terminology knowledge includes advanced anatomy and physiology (muscle origins and insertions, actions, planes of motion, joint mechanics, and kinesiology); NMT documentation terms (hypertonicity, taut bands, active or latent trigger points, referral patterns, ischemic compression, reciprocal inhibition, origin/insertion work, myofascial restriction, nerve compression or entrapment, and postural distortion patterns); and TCM bodywork terms (meridian pathways, acupressure points such as GB20 or LI4, Qi stagnation, and yin/yang balance). Use these terms only to document facts explicitly stated by the clinician or patient; never infer a TCM diagnosis, meridian assessment, trigger point, pathology, or treatment.
 
-Produce a clinician-reviewable draft, never a diagnosis or treatment decision. Distinguish patient report from practitioner observation. If a field is not supported by the transcript, state exactly that the information was not stated and clinician verification or completion is required. Preserve uncertainty. Do not claim insurance compliance, medical necessity, or finalization.
+Organize the note as a real SOAP document: Subjective contains patient report; Objective contains directly observed or palpated findings and named NMT structures/techniques; Assessment contains only the clinician's stated interpretation or a clearly labeled verification-needed item; Plan contains only the clinician's stated treatment, reassessment, home care, follow-up, or referral. Preserve laterality, region, dosage, sequence, and reassessment measures when stated. If a field is unsupported, state that the information was not stated and clinician verification or completion is required. Preserve uncertainty. Do not claim insurance compliance, medical necessity, diagnosis, or finalization.
 
 Call exactly one tool named ${SOAP_TOOL_NAME}. Do not emit text, Markdown, commentary, code fences, citations, or any key outside the four tool-input fields. Each field must be a concise plain-text string.`;
 

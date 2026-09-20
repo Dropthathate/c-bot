@@ -381,8 +381,13 @@
 
   function exportDraft() {
     if (!els.clinicianReviewed.checked) return;
-    const body = [["Subjective", els.soapSubjective.value], ["Objective", els.soapObjective.value], ["Assessment", els.soapAssessment.value], ["Plan", els.soapPlan.value]].map(([title, value]) => `${title}\n${cleanText(value)}\n`).join("\n");
-    const blob = new Blob([body], { type: "text/plain;charset=utf-8" }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `somasync-clinician-reviewed-draft-${new Date().toISOString().slice(0, 10)}.txt`; link.click(); URL.revokeObjectURL(link.href); addEvent("DRAFT_EXPORTED", "Clinician-reviewed draft exported from this session.");
+    const escapeHtml = (value) => cleanText(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#039;" })[character]);
+    const sections = [["Subjective", els.soapSubjective.value], ["Objective", els.soapObjective.value], ["Assessment", els.soapAssessment.value], ["Plan", els.soapPlan.value]];
+    const posture = postureState?.saved && postureSummary && !postureSummary.hidden ? `<section><h2>Postural assessment</h2><p>${escapeHtml(postureSummary.textContent).replace(/\n/g, "<br>")}</p></section>` : "";
+    const documentWindow = window.open("", "_blank", "noopener,noreferrer");
+    if (!documentWindow) { setSoapStatus("Allow pop-ups to create the printable SOAP document.", "error"); return; }
+    documentWindow.document.write(`<!doctype html><html><head><title>SomaSyncAI SOAP Note</title><style>body{font:15px Georgia,serif;color:#18252d;max-width:800px;margin:48px auto;line-height:1.6}h1{font:700 25px Arial,sans-serif;border-bottom:2px solid #18252d;padding-bottom:10px}h2{font:700 17px Arial,sans-serif;color:#145b62;margin-bottom:6px}section{margin:24px 0}p{white-space:normal;margin-top:0}.meta{font:12px Arial,sans-serif;color:#526773}@media print{body{margin:24px}}</style></head><body><h1>SomaSyncAI — SOAP Note</h1><p class="meta">Clinician-reviewed draft · ${new Date().toLocaleString()}</p>${sections.map(([title, value]) => `<section><h2>${title}</h2><p>${escapeHtml(value).replace(/\n/g, "<br>")}</p></section>`).join("")}${posture}<script>window.onload=()=>window.print();<\/script></body></html>`);
+    documentWindow.document.close(); addEvent("DRAFT_EXPORTED", "Clinician-reviewed SOAP document opened for print or PDF save.");
   }
 
 

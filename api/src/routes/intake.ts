@@ -10,6 +10,7 @@ import type { AuthenticatedRequest } from "../auth.js";
 import { BedrockRuntimeClient, InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
 import { config } from "../config.js";
 import { z } from "zod";
+import { buildIntakeSummary, findActiveIntake, intakeTokenSchema } from "../services/intake-store.js";
 
 export const intakeRouter = Router();
 
@@ -24,6 +25,12 @@ const intakeBriefSchema = z.object({
   biopsychosocial_flags:          z.string().min(1)
 });
 
+const intakeBriefRequestSchema = z.union([
+  z.object({ token: intakeTokenSchema }).strict(),
+  // Temporary compatibility path for already-open same-device beta sessions.
+  z.object({ summary: z.string().trim().min(1).max(20_000) }).strict()
+]);
+
 // POST /api/v1/intake/brief
 intakeRouter.post(
   "/brief",
@@ -31,11 +38,14 @@ intakeRouter.post(
   assertCsrf,
   async (req: AuthenticatedRequest, res, next) => {
     try {
-      const { summary } = req.body;
-      if (!summary || typeof summary !== "string" || !summary.trim()) {
-        return res.status(400).json({
-          error: { code: "INTAKE_REQUIRED", message: "An intake summary is required." }
-        });
+      const requestBody = intakeBriefRequestSchema.parse(req.body);
+      let summary: string;
+      if ("token" in requestBody) {
+        const payload = await findActiveIntake(requestBody.token);
+        if (!payload) return res.status(404).json({ error: { code: "INTAKE_NOT_FOUND", message: "That intake token is invalid or expired." } });
+        summary = buildIntakeSummary(payload, requestBody.token);
+      } else {
+        summary = requestBody.summary;
       }
 
       const payload = {

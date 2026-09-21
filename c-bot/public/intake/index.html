@@ -355,6 +355,7 @@
       <button class="btn-back" onclick="prevStep()">Back</button>
       <button class="btn-next" id="submitBtn" disabled onclick="submitIntake()">Submit assessment</button>
     </div>
+    <p class="hint" id="submitError" role="alert" style="color:var(--red);display:none"></p>
   </div>
 
 </div>
@@ -369,11 +370,7 @@
 </div>
 
 <script>
-const TOKEN = (() => {
-  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-  return 'ss-' + Array.from({length:6}, () => c[Math.floor(Math.random()*c.length)]).join('')
-})()
-document.getElementById('tokenDisplay').textContent = TOKEN
+document.getElementById('tokenDisplay').textContent = 'assigned when you submit'
 
 const S = {
   mapDots:[], qualities:[], duration:'3 months', coincide:[],
@@ -518,26 +515,45 @@ function togglePref(el,key,v){
 }
 
 // Submit
-function submitIntake(){
+async function submitIntake(){
+  const submitBtn=document.getElementById('submitBtn')
+  const submitError=document.getElementById('submitError')
+  submitBtn.disabled=true
+  submitBtn.textContent='Saving securely…'
+  submitError.style.display='none'
   S.stress=parseInt(document.getElementById('stressSlider').value)
   S.sleep=parseInt(document.getElementById('sleepSlider').value)
   S.notes=document.getElementById('additionalNotes').value
   S.avoidAreas=document.getElementById('avoidAreas').value
 
-  const payload={token:TOKEN,ts:new Date().toISOString(),...S}
-  try{ sessionStorage.setItem('somasync_intake_'+TOKEN, JSON.stringify(payload)) }catch(_){}
+  const payload={...S}
+  let token=''
+  try {
+    const response=await fetch('https://api.somasyncai.com/api/v1/public/intakes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({payload})})
+    const data=await response.json().catch(()=>({}))
+    if(!response.ok || !data.token) throw new Error(data?.error?.message||'The intake could not be saved.')
+    token=data.token
+    const localPayload={token,ts:new Date().toISOString(),...payload}
+    try{ sessionStorage.setItem('somasync_intake_'+token, JSON.stringify(localPayload)) }catch(_){}
+  } catch(error) {
+    submitBtn.disabled=false
+    submitBtn.textContent='Submit assessment'
+    submitError.textContent=error instanceof Error ? error.message+' Please try again.' : 'The intake could not be saved. Please try again.'
+    submitError.style.display='block'
+    return
+  }
 
   // Email via Apps Script (no-cors fire-and-forget)
-  const summary=buildSummary(payload)
+  const summary=buildSummary({token,...payload})
   const url='https://script.google.com/macros/s/AKfycbx4UEtWIfzW63X3DNj7f19ROw4GgQoDufOqjTZdIZlTY6JWuVTURtrDGQSVKOAN7MUxzw/exec'
-    +'?action=intake&token='+encodeURIComponent(TOKEN)
+    +'?action=intake&token='+encodeURIComponent(token)
     +'&summary='+encodeURIComponent(summary)
   fetch(url,{method:'GET',mode:'no-cors'}).catch(()=>{})
 
   document.getElementById('stepsWrapper').style.display='none'
   document.querySelector('.progress-bar').style.display='none'
   document.getElementById('successScreen').classList.add('show')
-  document.getElementById('successToken').textContent=TOKEN
+  document.getElementById('successToken').textContent=token
   window.scrollTo({top:0,behavior:'smooth'})
 }
 

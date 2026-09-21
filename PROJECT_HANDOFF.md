@@ -76,3 +76,7 @@ The codebase is structured for a controlled pilot and has explicit no-PHI bounda
 The public beta form now writes normalized email addresses directly to the restricted `public.beta_leads` Supabase table. This avoids coupling beta-interest collection to the separate clinical API, which must remain independently deployed and secured before any authenticated clinical tools are enabled. The beta table migration grants anonymous and authenticated users **insert only**; it does not grant browser reads, updates, or deletes.
 
 Before activating the beta form, apply `c-bot/supabase/migrations/20260826000000_create_public_beta_leads.sql` to the existing Supabase project. The static frontend requires `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in its production environment. `VITE_CLINICAL_API_URL` is optional while clinical tools are inactive; if it is set in production, it must point to the separately deployed HTTPS Express API.
+
+## Cross-device intake persistence — September 21, 2026
+
+The public intake form and practitioner workspace now include server-backed intake-token wiring. Apply `api/db/migrations/20260921000000_create_intake_submissions.sql` to the private API database before cross-device testing. The API generates tokens, stores only a SHA-256 token hash with the synthetic/de-identified payload, expires submissions after seven days, and requires an authenticated practitioner session for brief lookup. See `docs/INTAKE_PERSISTENCE_ROLLOUT.md` for the deployment and acceptance sequence.

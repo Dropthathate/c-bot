@@ -510,7 +510,27 @@
     if (btn) btn.disabled = true;
 
     try {
-      // 1. Try sessionStorage first (same device as client)
+      // 1. Prefer the API so a practitioner can retrieve a client's intake from another device.
+      const csrf = csrfCookie();
+      const response = await fetch(apiUrl("/intake/brief"), {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrf ? { "X-SomaSync-CSRF": csrf } : {})
+        },
+        body: JSON.stringify({ token })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.ok && data.brief) {
+        intakeBrief = data.brief;
+        if (loaded) loaded.classList.add("show");
+        if (preview) preview.textContent = "Pre-session brief ready — earpiece will walk you through the clinical picture when you begin.";
+        addEvent("INTAKE_LOADED", "Pre-session clinical brief retrieved from the secure intake service.");
+        return;
+      }
+
+      // 2. Temporary compatibility fallback for same-device sessions created before persistence.
       const stored = sessionStorage.getItem("somasync_intake_" + token);
       let summary = null;
 
@@ -526,26 +546,24 @@
         return;
       }
 
-      // 2. POST to /api/v1/intake/brief
-      const csrf = csrfCookie();
-      const resp = await fetch(apiUrl("/intake/brief"), {
+      const fallbackResponse = await fetch(apiUrl("/intake/brief"), {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          ...(csrf ? { "X-CSRF-Token": csrf } : {})
+          ...(csrf ? { "X-SomaSync-CSRF": csrf } : {})
         },
         body: JSON.stringify({ summary })
       });
 
-      if (!resp.ok) throw new Error("Brief API returned " + resp.status);
-      const data = await resp.json();
-      intakeBrief = data.brief;
+      if (!fallbackResponse.ok) throw new Error(data?.error?.message || "Brief API returned " + fallbackResponse.status);
+      const fallbackData = await fallbackResponse.json();
+      intakeBrief = fallbackData.brief;
 
       // 3. Show confirmation
       if (loaded) loaded.classList.add("show");
       if (preview) preview.textContent = "Pre-session brief ready — earpiece will walk you through the clinical picture when you begin.";
-      addEvent("INTAKE_LOADED", "Pre-session clinical brief generated from intake token.");
+      addEvent("INTAKE_LOADED", "Pre-session clinical brief generated from same-device intake data.");
 
     } catch (err) {
       if (preview) preview.textContent = "Could not load brief — check token and try again.";
@@ -584,7 +602,7 @@
     loadIntakeBtn.addEventListener("click", () => {
       const token = intakeTokenInput.value.trim().toUpperCase();
       if (!token || token.length < 6) return;
-      loadIntakeByToken(token.startsWith("SS-") ? token : "ss-" + token.replace(/^SS-?/i, ""));
+      loadIntakeByToken("ss-" + token.replace(/^SS-?/i, ""));
     });
     intakeTokenInput.addEventListener("keydown", e => {
       if (e.key === "Enter") loadIntakeBtn.click();

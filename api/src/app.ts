@@ -18,6 +18,7 @@ import {
 } from "./auth.js";
 import { config } from "./config.js";
 import { publicLeadRouter } from "./routes/leads.js";
+import { publicIntakeRouter } from "./routes/intakes.js";
 import { sessionRouter } from "./routes/session.js";
 import { voiceRouter } from "./routes/voice.js";
 import { intakeRouter } from "./routes/intake.js";
@@ -75,6 +76,7 @@ app.delete("/api/v1/auth/session", assertTrustedBrowserRequest, requireAuthentic
 
 // Existing routes — preserved from main
 app.use("/api/v1/public", publicLeadRouter);
+app.use("/api/v1/public", publicIntakeRouter);
 app.use("/api/v1/voice", voiceRouter);
 app.use("/api/v1/intake", intakeRouter);
 

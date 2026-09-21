@@ -69,9 +69,9 @@ In **Vercel → c-bot Project → Settings → Environment Variables**, add the 
 | --- | --- | --- |
 | `VITE_SUPABASE_URL` | `https://<your-project-ref>.supabase.co` | Public browser configuration |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | The Supabase publishable/anon key | Public browser configuration |
-| `VITE_CLINICAL_API_URL` | `https://api.somasyncai.com/api/v1` after the API is deployed | Public endpoint URL only |
+| `VITE_CLINICAL_API_URL` | `https://api.somasyncai.com/api/v1` after the API is deployed | Public endpoint URL only; the public `somasyncai.com` production hosts have this same value as a safe runtime fallback. |
 
-Never enter `SUPABASE_SERVICE_ROLE_KEY`, Deepgram credentials, AWS credentials, database URLs, signing secrets, or encryption keys in Vercel frontend variables. After setting variables, redeploy `main`. The current frontend fallback means the public site remains available if these variables are missing; account and clinical functions remain unavailable by design.
+Never enter `SUPABASE_SERVICE_ROLE_KEY`, Deepgram credentials, AWS credentials, database URLs, signing secrets, or encryption keys in Vercel frontend variables. After setting variables, redeploy `main`. The public production API fallback prevents an omitted clinical-endpoint variable from disabling SOAP drafting on the approved domains, but an explicit variable remains required for previews and nonstandard hosts. Account functions still require their configured Supabase public identifiers.
 
 ### 4.3 Complete the Missing Role and Invitation Code
 

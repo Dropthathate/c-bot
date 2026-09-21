@@ -1,15 +1,23 @@
 const configuredClinicalApiUrl = import.meta.env.VITE_CLINICAL_API_URL?.trim();
 const developmentClinicalApiUrl = "http://localhost:4000/api/v1";
+const deployedClinicalApiUrl = "https://api.somasyncai.com/api/v1";
+const trustedProductionHosts = new Set(["somasyncai.com", "www.somasyncai.com"]);
 
 function removeTrailingSlashes(value) {
   return value.replace(/\/+$/, "");
+}
+
+function isTrustedProductionHost() {
+  return typeof window !== "undefined" && trustedProductionHosts.has(window.location.hostname);
 }
 
 export const clinicalApiBaseUrl = configuredClinicalApiUrl
   ? removeTrailingSlashes(configuredClinicalApiUrl)
   : import.meta.env.DEV
     ? developmentClinicalApiUrl
-    : undefined;
+    : isTrustedProductionHost()
+      ? deployedClinicalApiUrl
+      : undefined;
 
 export const isClinicalApiConfigured = Boolean(clinicalApiBaseUrl);
 

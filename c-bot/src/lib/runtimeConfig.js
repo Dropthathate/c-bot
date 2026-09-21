@@ -1,5 +1,6 @@
 const configuredClinicalApiUrl = import.meta.env.VITE_CLINICAL_API_URL?.trim();
 const developmentClinicalApiUrl = "http://localhost:4000/api/v1";
+// Keep the frontend build in sync with public static route corrections.
 const deployedClinicalApiUrl = "https://api.somasyncai.com/api/v1";
 const trustedProductionHosts = new Set(["somasyncai.com", "www.somasyncai.com"]);
 

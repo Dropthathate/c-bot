@@ -37,6 +37,24 @@ export const intakePayloadSchema = z.object({
 
 export type IntakePayload = z.infer<typeof intakePayloadSchema>;
 
+export async function ensureIntakeSchema() {
+  await database.query(`
+    CREATE TABLE IF NOT EXISTS intake_submissions (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      token_hash CHAR(64) UNIQUE NOT NULL,
+      payload JSONB NOT NULL,
+      status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'expired', 'consumed')),
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      expires_at TIMESTAMPTZ NOT NULL DEFAULT now() + interval '7 days',
+      accessed_at TIMESTAMPTZ
+    );
+    CREATE INDEX IF NOT EXISTS intake_submissions_active_lookup_idx
+      ON intake_submissions (token_hash, expires_at) WHERE status = 'active';
+    CREATE INDEX IF NOT EXISTS intake_submissions_expiry_idx
+      ON intake_submissions (expires_at);
+  `);
+}
+
 export function hashIntakeToken(token: string) {
   return crypto.createHash("sha256").update(token).digest("hex");
 }

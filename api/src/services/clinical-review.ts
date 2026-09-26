@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { medicineLayerReviewSchema, separateMedicineLayers, type MedicineLayerReview } from "./medicine-layers.js";
 
 export const safetyReviewSchema = z.object({
   status: z.enum(["no_flags_detected", "therapist_review_required", "urgent_follow_up_review"]),
@@ -68,6 +69,7 @@ export const sessionReviewSchema = z.object({
     reassess: z.string()
   }).strict()),
   terminology_review: terminologyReviewSchema,
+  medicine_layers: medicineLayerReviewSchema,
   safety_note: z.string()
 }).strict();
 export type SessionReview = z.infer<typeof sessionReviewSchema>;
@@ -85,6 +87,7 @@ export function reviewSessionTranscript(transcript: string): SessionReview {
   return {
     recognized_techniques,
     terminology_review: reviewIntakeText(source).terminologyReview,
+    medicine_layers: separateMedicineLayers(source),
     safety_note: "Evidence-informed review prompts are for therapist verification only; they are not treatment instructions, diagnoses, or a substitute for scope and referral judgment."
   };
 }

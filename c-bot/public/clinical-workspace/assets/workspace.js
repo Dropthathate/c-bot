@@ -122,6 +122,16 @@
       review.recognized_techniques.forEach((item) => { const li = document.createElement("li"); li.innerHTML = `<strong>${reviewText(item.technique)}</strong><br>${reviewText(item.review_prompt)}<br><span class="review-muted">Reassess: ${reviewText(item.reassess)}</span>`; list.append(li); });
       els.sessionReview.append(list);
     } else { const p = document.createElement("p"); p.className = "review-muted"; p.textContent = "No recognized technique prompts. Continue with therapist review of the SOAP fields."; els.sessionReview.append(p); }
+    if (review.medicine_layers) {
+      const heading = document.createElement("p"); heading.innerHTML = "<strong>Eastern / Western knowledge separation:</strong>"; els.sessionReview.append(heading);
+      const layer = document.createElement("p"); layer.className = review.medicine_layers.detected ? "review-alert" : "review-muted"; layer.textContent = review.medicine_layers.separation_notice; els.sessionReview.append(layer);
+      if (review.medicine_layers.eastern_context?.length) {
+        const list = document.createElement("ul");
+        review.medicine_layers.eastern_context.forEach((item) => { const li = document.createElement("li"); li.innerHTML = `<strong>${reviewText(item.phrase)}</strong> <span class="review-muted">(${reviewText(item.category.replaceAll("_", " "))})</span><br>${reviewText(item.soap_handling)}`; list.append(li); });
+        els.sessionReview.append(list);
+      }
+      const scope = document.createElement("p"); scope.className = "review-muted"; scope.textContent = review.medicine_layers.western_soap_scope; els.sessionReview.append(scope);
+    }
     const note = document.createElement("p"); note.className = "review-muted"; note.textContent = review.safety_note || "Therapist verification required."; els.sessionReview.append(note);
     els.sessionReview.hidden = false;
   }

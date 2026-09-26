@@ -7,6 +7,7 @@ import { authenticateWebSocketRequest, verifySessionToken } from "./auth.js";
 import { config } from "./config.js";
 import { DeepgramLiveStream } from "./services/deepgram-live.js";
 import { generateSoapNote } from "./services/bedrock.js";
+import { reviewSessionTranscript } from "./services/clinical-review.js";
 
 const startMessage = z.object({
   type: z.literal("start"),
@@ -174,7 +175,7 @@ export function attachVoiceRealtimeServer(server: http.Server) {
       if (message.type === "stop") return closeSession(socket, session, 1000, "clinician_stopped_session");
       if (message.type === "generate_soap") {
         if (!session.isStreaming || session.finalTranscript.length === 0) return send(socket, { type: "soap_error", message: "A final transcript is required before a draft can be generated." });
-        try { send(socket, { type: "soap", note: await generateSoapNote(session.finalTranscript.join("\n")) }); }
+        try { const transcript = session.finalTranscript.join("\n"); send(socket, { type: "soap", note: await generateSoapNote(transcript), review: reviewSessionTranscript(transcript) }); }
         catch { send(socket, { type: "soap_error", message: "The strict SOAP draft could not be generated." }); }
       }
     });

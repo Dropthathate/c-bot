@@ -37,7 +37,7 @@
     "pcmFrames", "sampleRate", "streamState", "streamSegment", "finalEvents", "reconnectGaps", "eventTrail", "eventCount",
     "recordingPill", "deviceName", "deviceDetail", "deviceState", "batteryLevel", "connectDevice", "microphoneName", "selectMicrophone",
     "startSession", "stopSession", "captureError", "socketLabel", "transcript", "transcriptMeta", "clearTranscript", "generateSoap", "soapStatus",
-    "soapSubjective", "soapObjective", "soapAssessment", "soapPlan", "clinicianReviewed", "exportDraft"
+    "soapSubjective", "soapObjective", "soapAssessment", "soapPlan", "clinicianReviewed", "exportDraft", "intakeReview", "sessionReview"
   ].map((id) => [id, document.getElementById(id)]));
 
   const cleanText = (value) => String(value || "").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, " ").trim();
@@ -88,6 +88,42 @@
   function setSoapStatus(message, kind = "") {
     els.soapStatus.textContent = message;
     els.soapStatus.className = `soap-status${kind ? ` ${kind}` : ""}`;
+  }
+
+  function reviewText(value) { return cleanText(value); }
+
+  function renderIntakeReview(data) {
+    if (!els.intakeReview) return;
+    const safety = data.safetyReview || { status: "no_flags_detected", flags: [], disclaimer: "Therapist review is required." };
+    const terminology = data.terminologyReview || [];
+    const statusLabel = safety.status === "urgent_follow_up_review" ? "Urgent follow-up review" : safety.status === "therapist_review_required" ? "Therapist review required" : "No text flags detected";
+    const statusClass = safety.status === "urgent_follow_up_review" ? "review-danger" : safety.status === "therapist_review_required" ? "review-alert" : "review-muted";
+    els.intakeReview.innerHTML = `<h3>Step 2 · Safety and terminology review</h3><p class="${statusClass}"><strong>${statusLabel}</strong> — not a diagnosis or clearance.</p>`;
+    if (safety.flags.length) {
+      const list = document.createElement("ul");
+      safety.flags.forEach((flag) => { const item = document.createElement("li"); item.innerHTML = `<strong>${reviewText(flag.category.replaceAll("_", " "))}:</strong> ${reviewText(flag.reason)}<br><span class="review-muted">Therapist action: ${reviewText(flag.therapist_action)}</span>`; list.append(item); });
+      els.intakeReview.append(list);
+    }
+    if (terminology.length) {
+      const heading = document.createElement("p"); heading.innerHTML = "<strong>Terminology suggestions — confirm before using:</strong>"; els.intakeReview.append(heading);
+      const list = document.createElement("ul");
+      terminology.forEach((item) => { const li = document.createElement("li"); li.textContent = `${item.spoken_phrase} → ${item.suggested_term}`; list.append(li); });
+      els.intakeReview.append(list);
+    }
+    const note = document.createElement("p"); note.className = "review-muted"; note.textContent = safety.disclaimer; els.intakeReview.append(note);
+    els.intakeReview.hidden = false;
+  }
+
+  function renderSessionReview(review) {
+    if (!els.sessionReview || !review) return;
+    els.sessionReview.innerHTML = "<h3>Step 5 · End-session review prompts</h3><p class=\"review-muted\">Review these separately from the SOAP note. Accept, edit, or dismiss each item based on your assessment.</p>";
+    if (review.recognized_techniques?.length) {
+      const list = document.createElement("ul");
+      review.recognized_techniques.forEach((item) => { const li = document.createElement("li"); li.innerHTML = `<strong>${reviewText(item.technique)}</strong><br>${reviewText(item.review_prompt)}<br><span class="review-muted">Reassess: ${reviewText(item.reassess)}</span>`; list.append(li); });
+      els.sessionReview.append(list);
+    } else { const p = document.createElement("p"); p.className = "review-muted"; p.textContent = "No recognized technique prompts. Continue with therapist review of the SOAP fields."; els.sessionReview.append(p); }
+    const note = document.createElement("p"); note.className = "review-muted"; note.textContent = review.safety_note || "Therapist verification required."; els.sessionReview.append(note);
+    els.sessionReview.hidden = false;
   }
 
   // Browser-only display of fixed operational labels; never add clinical content or identifiers here.
@@ -335,7 +371,7 @@
       if (recovered) { state.reconnectGapPending = false; markReconnectGap(); } else addEvent("WSS_CONNECTED", "Secure transcription stream established.");
     } else if (message.type === "transcript") addTranscript(message.text, Boolean(message.isFinal));
     else if (message.type === "flow_control") { setSocketLabel("Stream catching up", "warn"); setInstrumentState(els.streamState, "FLOW CONTROL", "warn"); addEvent("FLOW_CONTROL", "Gateway requested controlled stream catch-up.", "warn"); }
-    else if (message.type === "soap") populateSoap(message.note);
+    else if (message.type === "soap") populateSoap(message.note, message.review);
     else if (message.type === "soap_error") setSoapStatus(message.message || "The strict SOAP draft could not be generated.", "error");
     else if (message.type === "error") { setError("The secure session received an invalid response or interrupted transcription stream."); addEvent("STREAM_ERROR", "Gateway reported an operational error.", "error"); }
   }
@@ -350,10 +386,11 @@
     state.reconnectTimer = setTimeout(() => { state.reconnectTimer = null; if (state.active) openSocket(); }, delay);
   }
 
-  function populateSoap(note) {
+  function populateSoap(note, review) {
     const keys = ["subjective", "objective", "assessment", "plan"];
     if (!note || Object.keys(note).length !== 4 || !keys.every((key) => typeof note[key] === "string")) { addEvent("SOAP_REJECTED", "Response failed the exact four-field schema.", "error"); return setSoapStatus("The returned draft failed the required SOAP schema and was rejected.", "error"); }
     els.soapSubjective.value = note.subjective; els.soapObjective.value = note.objective; els.soapAssessment.value = note.assessment; els.soapPlan.value = note.plan; els.clinicianReviewed.checked = false; els.exportDraft.disabled = true;
+    renderSessionReview(review);
     addEvent("SOAP_DRAFT_READY", "Strict four-field draft is ready for clinician review."); setSoapStatus("Strict SOAP draft received. Review and edit every section before export.", "ready");
   }
 
@@ -526,6 +563,7 @@
         intakeBrief = data.brief;
         if (loaded) loaded.classList.add("show");
         if (preview) preview.textContent = "Pre-session brief ready — earpiece will walk you through the clinical picture when you begin.";
+        renderIntakeReview(data);
         addEvent("INTAKE_LOADED", "Pre-session clinical brief retrieved from the secure intake service.");
         return;
       }
@@ -563,6 +601,7 @@
       // 3. Show confirmation
       if (loaded) loaded.classList.add("show");
       if (preview) preview.textContent = "Pre-session brief ready — earpiece will walk you through the clinical picture when you begin.";
+      renderIntakeReview(fallbackData);
       addEvent("INTAKE_LOADED", "Pre-session clinical brief generated from same-device intake data.");
 
     } catch (err) {

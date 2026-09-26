@@ -11,6 +11,7 @@ import { BedrockRuntimeClient, InvokeModelCommand } from "@aws-sdk/client-bedroc
 import { config } from "../config.js";
 import { z } from "zod";
 import { buildIntakeSummary, findActiveIntake, intakeTokenSchema } from "../services/intake-store.js";
+import { reviewIntakeText } from "../services/clinical-review.js";
 
 export const intakeRouter = Router();
 
@@ -89,7 +90,8 @@ intakeRouter.post(
         });
       }
 
-      return res.status(200).json({ brief: result.data });
+      const review = reviewIntakeText(summary);
+      return res.status(200).json({ brief: result.data, safetyReview: review.safetyReview, terminologyReview: review.terminologyReview });
     } catch (err) {
       return next(err);
     }

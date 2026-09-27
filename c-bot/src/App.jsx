@@ -56,9 +56,11 @@ export default function App() {
           <Route
             path="/dashboard"
             element={
-              <PrivacyGate>
-                <DashboardLayout />
-              </PrivacyGate>
+              <PrivateRoute>
+                <PrivacyGate>
+                  <DashboardLayout />
+                </PrivacyGate>
+              </PrivateRoute>
             }
           >
             <Route index element={<Dashboard />} />

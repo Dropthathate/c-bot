@@ -31,6 +31,8 @@ export function AuthProvider({ children }) {
   const sendMagicLink = async (email, nextPath = "/dashboard") => {
     if (!isSupabaseConfigured) return { success: false, error: supabaseConfigurationMessage };
     const safeNextPath = nextPath.startsWith("/clinical-workspace") ? "/clinical-workspace/" : nextPath;
+    // The deployed callback path is kept allowlisted in Supabase. Its static
+    // bridge forwards the token to React before the legacy workspace loads.
     const redirectTo = `${window.location.origin}${safeNextPath}`;
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim().toLowerCase(),

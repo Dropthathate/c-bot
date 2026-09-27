@@ -45,5 +45,8 @@ export default defineConfig(({ mode }) => {
     build: {
       target: "esnext",
     },
+    preview: {
+      allowedHosts: true,
+    },
   };
 });

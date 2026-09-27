@@ -94,16 +94,16 @@ export default function AudioDeviceSetup({ onComplete, onSkip }) {
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 1000, overflowY: "auto", padding: 24, background: "#080808", color: "#f0ede8", fontFamily: "Manrope, ui-sans-serif, system-ui, sans-serif" }}>
       <main style={{ maxWidth: 620, margin: "38px auto" }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, border: "1px solid rgba(0,232,154,.28)", borderRadius: 999, padding: "7px 12px", color: "#00e89a", fontSize: 12, fontWeight: 700 }}>Audio setup · one time</div>
-        <h1 style={{ fontFamily: "Syne, ui-sans-serif, system-ui, sans-serif", margin: "18px 0 10px", fontSize: "clamp(30px, 6vw, 44px)", letterSpacing: "-.045em", lineHeight: 1.05 }}>Connect. Confirm. Start.</h1>
-        <p style={{ margin: 0, color: "rgba(240,237,232,.62)", fontSize: 16, lineHeight: 1.65 }}>Pair your Bluetooth headset in this device’s system settings. SomaSync will use the microphone you select below for every session.</p>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, border: "1px solid rgba(0,232,154,.28)", borderRadius: 999, padding: "7px 12px", color: "#00e89a", fontSize: 12, fontWeight: 700 }}>Therapist audio setup · one time</div>
+        <h1 style={{ fontFamily: "Syne, ui-sans-serif, system-ui, sans-serif", margin: "18px 0 10px", fontSize: "clamp(30px, 6vw, 44px)", letterSpacing: "-.045em", lineHeight: 1.05 }}>Connect your therapist microphone.</h1>
+        <p style={{ margin: 0, color: "rgba(240,237,232,.62)", fontSize: 16, lineHeight: 1.65 }}>Pair your Bluetooth headset in this device’s system settings. SomaSync will use the microphone you select below for your therapist-led documentation sessions.</p>
 
         <section style={{ marginTop: 28, border: "1px solid rgba(255,255,255,.11)", borderRadius: 18, overflow: "hidden", background: "rgba(255,255,255,.025)" }}>
           <div style={{ padding: "20px 22px", borderBottom: "1px solid rgba(255,255,255,.08)", color: "#00e89a", fontSize: 12, fontWeight: 800, letterSpacing: ".08em", textTransform: "uppercase" }}>Three quick steps</div>
           <ol style={{ margin: 0, padding: "8px 22px 16px 46px", color: "rgba(240,237,232,.72)", lineHeight: 1.65 }}>
             <li style={{ padding: "10px 0" }}>Pair your Bluetooth headset in your device’s Bluetooth settings.</li>
-            <li style={{ padding: "10px 0" }}>Enable your microphone below and allow browser access.</li>
-            <li style={{ padding: "10px 0" }}>Choose the headset microphone, confirm the meter moves, and start charting.</li>
+            <li style={{ padding: "10px 0" }}>Enable your microphone below and allow browser access when you are ready.</li>
+            <li style={{ padding: "10px 0" }}>Choose the headset microphone, confirm the meter moves, and start your therapist-led session.</li>
           </ol>
         </section>
 

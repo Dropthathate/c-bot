@@ -36,12 +36,12 @@ export default function Login() {
         <div className="login-header">
           <img className="login-logo-image" src="/favicon.png" alt="SomaSync AI" />
           <h1 className="login-title">SomaSync AI</h1>
-          <p className="login-sub">One-time clinical documentation session</p>
+          <p className="login-sub">Secure sign-in for manual-therapy therapists</p>
         </div>
 
         <div className="login-notice">
           <span className="notice-icon">✉</span>
-          <span>Enter your email and we’ll send a secure sign-in link. The link verifies the email and creates an account when needed.</span>
+          <span>Enter your email and we’ll send a secure therapist sign-in link. The link verifies your access and opens the therapist workspace when needed.</span>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
@@ -60,7 +60,7 @@ export default function Login() {
         <div className="login-footer">
           <Link to="/" className="back-link">← Back to homepage</Link>
           <p className="login-disclaimer">
-            One-time sessions are designed for temporary, clinician-reviewed drafts. Do not enter patient identifiers unless your practice has approved the applicable privacy safeguards. AI output is not a diagnosis and must be reviewed before use.
+            Sessions are designed for therapist-reviewed drafts. Do not enter client identifiers unless your practice has approved the applicable privacy safeguards. AI output is not a diagnosis and must be reviewed by you before use.
           </p>
         </div>
       </div>

@@ -445,8 +445,8 @@ export default function SoapGenerator() {
     <div className="page">
       <div className="page-header">
         <div>
-          <h1 className="page-title">SOAP Live</h1>
-          <p className="page-sub">Connect once. Start your session. End and review.</p>
+          <h1 className="page-title">Therapist SOAP Live</h1>
+          <p className="page-sub">Therapist workflow: connect once, start your session, then review every draft.</p>
         </div>
         <div className="status-pill" style={{ background: `${stateInfo.color}18`, color: stateInfo.color, border: `1px solid ${stateInfo.color}30` }}>
           <span className="status-dot" style={{ background: stateInfo.color, boxShadow: `0 0 6px ${stateInfo.color}` }} />

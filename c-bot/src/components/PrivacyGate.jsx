@@ -87,10 +87,10 @@ export default function PrivacyGate({ children }) {
             <header style={{ padding: "28px 30px 22px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "15px" }}>
                 <div aria-hidden="true" style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#00e89a", boxShadow: "0 0 14px #00e89a" }} />
-                <span style={{ color: "#72f0bd", fontSize: "11px", fontWeight: 800, letterSpacing: "0.13em" }}>SOMASYNC BETA · PRIVACY &amp; AI-USE NOTICE</span>
+                <span style={{ color: "#72f0bd", fontSize: "11px", fontWeight: 800, letterSpacing: "0.13em" }}>SOMASYNC BETA · THERAPIST PRIVACY &amp; AI-USE NOTICE</span>
               </div>
               <h1 id="privacy-gate-title" style={{ margin: 0, fontFamily: "Syne, Manrope, sans-serif", fontSize: "clamp(24px, 4vw, 34px)", letterSpacing: "-0.045em", lineHeight: 1.05 }}>
-                Before you start: protect client privacy.
+                Before you start: protect client privacy as the therapist.
               </h1>
               <p style={{ maxWidth: "590px", margin: "13px 0 0", color: "rgba(240,237,232,0.68)", fontSize: "14px", lineHeight: 1.7 }}>
                 SomaSync is a beta documentation-assistance tool. It is not configured for protected health information or client-identifying information. Use only de-identified, minimum-necessary information.
@@ -101,8 +101,8 @@ export default function PrivacyGate({ children }) {
               <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "20px" }}>
                 <span style={badgeStyle}>Beta software</span>
                 <span style={badgeStyle}>No PHI in beta</span>
-                <span style={badgeStyle}>Human review required</span>
-                <span style={badgeStyle}>Audio: notice &amp; consent</span>
+                <span style={badgeStyle}>Therapist review required</span>
+                <span style={badgeStyle}>Therapist audio consent</span>
               </div>
 
               <div style={{ padding: "16px 17px", borderRadius: "13px", border: "1px solid rgba(255,159,10,0.32)", background: "rgba(255,159,10,0.08)" }}>
@@ -135,7 +135,7 @@ export default function PrivacyGate({ children }) {
                   style={{ width: "16px", height: "16px", marginTop: "2px", accentColor: "#00e89a", flexShrink: 0 }}
                 />
                 <span style={{ color: "rgba(240,237,232,0.8)", fontSize: "12px", lineHeight: 1.65 }}>
-                  I understand that I must not enter or dictate client-identifying information, must obtain any required recording consent, and must review every AI-generated output before use.
+                  I understand that I must not enter or dictate client-identifying information, must obtain any required recording consent, and must review every AI-generated output as the treating therapist before use.
                 </span>
               </label>
 

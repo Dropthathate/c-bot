@@ -70,7 +70,7 @@ export default function IcdCoder() {
       </div>
 
       <div className="ai-disclaimer-bar">
-        ⚠ <strong>ICD-10-CM reference only.</strong> Verify every code against current official guidelines, supporting documentation, payer requirements, and the appropriate licensed clinician or coding professional before any clinical, billing, or coverage use.
+        ⚠ <strong>ICD-10-CM reference only.</strong> The treating therapist or qualified coding professional must verify every code against current official guidelines, supporting documentation, and payer requirements before any clinical, billing, or coverage use.
       </div>
 
       <p className="settings-body-text" style={{ margin: "0 0 18px", maxWidth: 900 }}>

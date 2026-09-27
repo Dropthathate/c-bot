@@ -264,7 +264,7 @@ export default function DashboardLayout({ children }) {
         <aside className="sidebar">
           <div className="sidebar-logo">
             <div className="sidebar-logo-dot" />
-            <div className="sidebar-logo-text">Soma<span>Sync</span></div>
+            <div className="sidebar-logo-text">Soma<span>Sync</span><small style={{ display: "block", marginTop: 3, color: "var(--muted)", fontSize: "0.5rem", letterSpacing: "0.12em" }}>THERAPIST WORKSPACE</small></div>
           </div>
           <nav className="nav-links">
             {NAV.map((n) => (
@@ -292,9 +292,9 @@ export default function DashboardLayout({ children }) {
         <main className="main-content">
           <div className="privacy-status-bar" role="note">
             <span className="privacy-status-badge">Beta · PHI not authorized</span>
-            <span>Do not enter client-identifying information.</span>
+            <span>Therapist workspace · Do not enter client-identifying information.</span>
             <span aria-hidden="true">·</span>
-            <strong>AI drafts require clinician review.</strong>
+            <strong>Therapist review required for every AI draft.</strong>
             <Link className="privacy-review-link" to="/dashboard/compliance">Review readiness</Link>
           </div>
           <Outlet />

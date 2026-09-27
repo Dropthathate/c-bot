@@ -116,7 +116,7 @@ function Tag({ label, color = '#00c9a7' }) {
 // ── Main dashboard ────────────────────────────────────────────
 export default function Dashboard() {
   const { user } = useAuth()
-  const name     = user?.email?.split('@')[0] ?? 'Practitioner'
+  const name     = user?.email?.split('@')[0] ?? 'Therapist'
   const hour     = new Date().getHours()
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
   const tip      = TIPS[new Date().getDate() % TIPS.length]
@@ -159,11 +159,11 @@ export default function Dashboard() {
         <div style={S.heroLeft}>
           <div style={S.heroEyebrow}>
             <span style={S.heroDot} />
-            SOMASYNC // SIGNAL MONITOR
+            SOMASYNC // THERAPIST COMMAND CENTER
           </div>
-          <div style={S.heroTitle}>No active session.</div>
+            <div style={S.heroTitle}>Your therapist workspace is ready.</div>
           <div style={S.heroSub}>
-            Enter a client's intake token, open the workspace, and say{' '}
+            Enter a client’s intake token, review the safety brief, then open the therapist workspace and say{' '}
             <code style={S.inlineCode}>"begin session"</code> — your earpiece
             handles the rest.
           </div>
@@ -190,7 +190,7 @@ export default function Dashboard() {
         {[
           { label: 'Sessions this month', value: sessionCount || '—', sub: 'Beta period' },
           { label: 'Intakes received', value: intakeCount || '—', sub: 'Via email notification' },
-          { label: 'SOAP notes exported', value: '—', sub: 'Clinician-reviewed only' },
+          { label: 'SOAP notes exported', value: '—', sub: 'Therapist-reviewed only' },
           { label: 'Platform status', value: '✓ Live', sub: 'All systems operational', teal: true },
         ].map(s => (
           <div key={s.label} style={S.statCard}>
@@ -271,7 +271,7 @@ export default function Dashboard() {
         {/* Clinical tip */}
         <div style={S.panel}>
           <div style={S.panelHead}>
-            <span style={S.panelTitle}>Clinical insight</span>
+            <span style={S.panelTitle}>Therapist insight</span>
             <Tag label={tip.tag} />
           </div>
           <div style={S.tipTitle}>{tip.title}</div>
@@ -357,7 +357,7 @@ export default function Dashboard() {
 
       {/* ════ DISCLAIMER ════ */}
       <div style={S.disclaimer}>
-        <strong>AI Disclaimer —</strong> SomaSyncAI generates documentation suggestions and clinical orientation only. All SOAP notes, pre-session briefs, and ICD-10 references must be reviewed and verified by a licensed clinician before use in any clinical, billing, or legal context. This platform does not diagnose, prescribe, or replace professional clinical judgment. ICD-10 codes are for reference only and require clinician verification.
+        <strong>Therapist review required —</strong> SomaSyncAI generates documentation suggestions and clinical orientation only. All SOAP notes, pre-session briefs, and ICD-10 references must be reviewed and verified by the treating therapist before use in any clinical, billing, or legal context. This platform does not diagnose, prescribe, or replace professional clinical judgment. ICD-10 codes are for reference only and require therapist verification.
       </div>
 
     </div>

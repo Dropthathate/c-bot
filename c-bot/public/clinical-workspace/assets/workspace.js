@@ -78,7 +78,7 @@
   function setRecording(active, warning = false) {
     els.recordingPill.textContent = active ? (warning ? "RECONNECTING" : "RECORDING") : "NOT RECORDING";
     els.recordingPill.className = `recording-pill${active ? (warning ? " warn" : " live") : ""}`;
-    els.startSession.disabled = active || !state.microphoneStream;
+    els.startSession.disabled = active || !state.microphoneStream || !intakeBrief;
     els.stopSession.disabled = !active;
     els.connectDevice.disabled = active;
     els.selectMicrophone.disabled = active;
@@ -317,7 +317,7 @@
       const track = stream.getAudioTracks()[0];
       track.addEventListener("ended", () => { if (state.active) stopSession(); state.microphoneStream = null; els.microphoneName.textContent = "Microphone permission ended"; setRecording(false); });
       els.microphoneName.textContent = track.label || "Approved microphone selected";
-      els.startSession.disabled = false;
+      els.startSession.disabled = !intakeBrief;
       setInstrumentState(els.signalState, "ARMED", "warn");
       addEvent("MICROPHONE_GRANTED", "Microphone permission is active; no audio has been sent.");
     } catch { setError("Microphone access is required to begin a secure session. No audio was captured."); }
@@ -571,6 +571,10 @@
       const data = await response.json().catch(() => ({}));
       if (response.ok && data.brief) {
         intakeBrief = data.brief;
+        // Unlock start session now that intake is loaded
+        if (els.startSession && state.microphoneStream) els.startSession.disabled = false;
+        // Advance workflow rail to step 2
+        advanceWorkflowRail(2);
         if (loaded) loaded.classList.add("show");
         if (preview) preview.textContent = "Pre-session brief ready — earpiece will walk you through the clinical picture when you begin.";
         renderIntakeReview(data);
@@ -929,6 +933,16 @@
   document.getElementById("savePosture")?.addEventListener("click", savePostureAssessment);
   document.getElementById("clearPosture")?.addEventListener("click", clearPostureAssessment);
   updatePostureCount();
+
+
+  // ── Workflow rail advancement ──────────────────────────────
+  function advanceWorkflowRail(stepNum) {
+    document.querySelectorAll('.workflow-step').forEach((el, i) => {
+      el.classList.remove('active', 'complete')
+      if (i + 1 < stepNum) el.classList.add('complete')
+      else if (i + 1 === stepNum) el.classList.add('active')
+    })
+  }
 
   async function verifySession() {
     try {

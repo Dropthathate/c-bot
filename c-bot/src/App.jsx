@@ -71,6 +71,8 @@ export default function App() {
             <Route path="analytics" element={<Analytics />} />
             <Route path="compliance" element={<Compliance />} />
             <Route path="settings" element={<Settings />} />
+            {/* Keep unknown dashboard paths inside the authenticated tree. */}
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

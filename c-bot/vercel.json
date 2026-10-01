@@ -4,7 +4,12 @@
   "installCommand": "npm install",
   "framework": "vite",
   "redirects": [
-    { "source": "/clinical-workspace", "destination": "/clinical-workspace/", "permanent": false }
+    { "source": "/clinical-workspace", "destination": "/clinical-workspace/", "permanent": false },
+    { "source": "/about", "destination": "/about.html", "permanent": false },
+    { "source": "/faq", "destination": "/somasync_faq.html", "permanent": false },
+    { "source": "/privacy-policy", "destination": "/privacy-policy.html", "permanent": false },
+    { "source": "/terms-and-conditions", "destination": "/terms-and-conditions.html", "permanent": false },
+    { "source": "/ai-disclaimer", "destination": "/ai-disclaimer.html", "permanent": false }
   ],
   "rewrites": [
     { "source": "/login", "destination": "/index.html" },

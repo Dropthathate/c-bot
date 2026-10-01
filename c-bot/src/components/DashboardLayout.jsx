@@ -27,6 +27,8 @@ body{font-family:'Manrope',sans-serif;background:#080808;color:#f0ede8;min-heigh
 .nav-link .nav-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.15);flex-shrink:0;}
 .nav-link.active .nav-dot{background:var(--grn);box-shadow:0 0 6px var(--grn);}
 .nav-link .nav-icon{font-size:0.9rem;width:16px;text-align:center;flex-shrink:0;}
+.sidebar-session{display:flex;align-items:center;gap:8px;margin:0 10px 14px;padding:10px 12px;border:1px solid rgba(59,158,255,0.28);border-radius:10px;background:rgba(59,158,255,0.08);color:#dcecff;text-decoration:none;font-size:0.72rem;font-weight:700;line-height:1.25;transition:all 0.2s;}
+.sidebar-session:hover{background:rgba(59,158,255,0.15);border-color:rgba(59,158,255,0.45);transform:translateY(-1px);}
 .sidebar-bottom{padding:16px 10px 0;border-top:1px solid var(--border);margin-top:auto;}
 .sidebar-user{padding:8px 12px;font-size:0.72rem;color:var(--dim);display:flex;align-items:center;gap:8px;cursor:pointer;border-radius:10px;transition:background 0.2s;}
 .sidebar-user:hover{background:rgba(255,255,255,0.04);color:var(--muted);}
@@ -236,6 +238,7 @@ body{font-family:'Manrope',sans-serif;background:#080808;color:#f0ede8;min-heigh
   .nav-link{flex-direction:column;padding:6px 10px;font-size:0.6rem;gap:4px;}
   .nav-link .nav-icon{font-size:1.1rem;}
   .sidebar-bottom{display:none;}
+  .sidebar-session{margin:0 4px 0 0;min-width:116px;justify-content:center;}
   .main-content{padding-bottom:80px;}
   .privacy-status-bar{padding:9px 16px;font-size:0.65rem;}
   .privacy-review-link{margin-left:0;}
@@ -243,11 +246,11 @@ body{font-family:'Manrope',sans-serif;background:#080808;color:#f0ede8;min-heigh
 `;
 
 const NAV = [
-  { to: "/dashboard",           icon: "◈", label: "Overview"     },
-  { to: "/dashboard/soap",      icon: "📋", label: "SOAP Notes"  },
-  { to: "/dashboard/icd",       icon: "⚡", label: "ICD-10-CM Reference" },
-  { to: "/dashboard/analytics", icon: "📊", label: "Analytics"   },
-  { to: "/dashboard/compliance", icon: "◌", label: "Compliance" },
+  { to: "/dashboard",           icon: "◈", label: "1 · Overview"     },
+  { to: "/dashboard/soap",      icon: "📋", label: "2 · SOAP workflow"  },
+  { to: "/dashboard/icd",       icon: "⚡", label: "3 · ICD-10 reference" },
+  { to: "/dashboard/analytics", icon: "📊", label: "4 · Practice analytics"   },
+  { to: "/dashboard/compliance", icon: "◌", label: "5 · Readiness" },
   { to: "/dashboard/settings",  icon: "⚙", label: "Settings"    },
 ];
 
@@ -279,6 +282,7 @@ export default function DashboardLayout({ children }) {
               </Link>
             ))}
           </nav>
+          <Link className="sidebar-session" to="/clinical-workspace/">🎙️ <span>Start therapist session →</span></Link>
           <div className="sidebar-bottom">
             <div
               className="sidebar-user"

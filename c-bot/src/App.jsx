@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -17,6 +17,7 @@ import "./App.css";
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
+  const location = useLocation();
   if (loading) {
     return (
       <div style={{
@@ -28,7 +29,8 @@ function PrivateRoute({ children }) {
       </div>
     );
   }
-  return user ? children : <Navigate to="/login" replace />;
+  const next = `${location.pathname}${location.search}${location.hash}`;
+  return user ? children : <Navigate to={`/login?next=${encodeURIComponent(next)}`} replace />;
 }
 
 export default function App() {

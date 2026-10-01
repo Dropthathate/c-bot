@@ -189,7 +189,7 @@ export default function Dashboard() {
       <div style={S.statsRow}>
         {[
           { label: 'Sessions this month', value: sessionCount || '—', sub: 'Beta period' },
-          { label: 'Intakes received', value: intakeCount || '—', sub: 'Via email notification' },
+          { label: 'Intakes received', value: intakeCount || '—', sub: 'Via practice notification' },
           { label: 'SOAP notes exported', value: '—', sub: 'Therapist-reviewed only' },
           { label: 'Platform status', value: '✓ Live', sub: 'All systems operational', teal: true },
         ].map(s => (
@@ -286,11 +286,12 @@ export default function Dashboard() {
             <Tag label="How to use" color="#3d8bff" />
           </div>
           {[
-            ['01', 'Send intake link', 'Copy and send to client before their appointment — they fill it out on their phone'],
-            ['02', 'Client completes SIP', '5-step Somatic Intake Protocol: body map, symptoms, functional impact, biopsychosocial, preferences'],
-            ['03', 'You receive the token', 'Email arrives at nate@somasyncai.com with session code and full summary'],
-            ['04', 'Enter token in workspace', 'SomaSyncAI generates a pre-session NMT clinical brief for your earpiece'],
-            ['05', 'Begin session', 'Say "begin session" — earpiece walks you through the brief then grounds you in'],
+            ['01', 'Send intake link', 'Copy and send the client link before the appointment.'],
+            ['02', 'Client completes intake', 'The client completes the five-step synthetic/de-identified pre-session form.'],
+            ['03', 'Receive the session token', 'Your practice receives the notification and session code.'],
+            ['04', 'Review safety and intake', 'Enter the token in the clinical workspace and review the safety context before bodywork.'],
+            ['05', 'Capture with consent', 'Select the microphone, provide required notice/consent, and begin only when ready.'],
+            ['06', 'Review and export', 'Generate the SOAP draft, edit and verify every field, then export only after review.'],
           ].map(([n, t, d]) => (
             <div key={n} style={S.flowRow}>
               <div style={S.flowNum}>{n}</div>

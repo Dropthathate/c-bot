@@ -19,6 +19,8 @@ export default function SecureSpace() {
   const [transcript, setTranscript] = useState("");
   const [soap, setSoap] = useState(null);
   const [reviewed, setReviewed] = useState(false);
+  const [consentAcknowledged, setConsentAcknowledged] = useState(false);
+  const [consentErrors, setConsentErrors] = useState([]);
 
   useEffect(() => {
     if (status !== "active") return undefined;
@@ -70,7 +72,41 @@ export default function SecureSpace() {
 
   useEffect(() => () => cleanup(), []);
 
+  const handleConsentSubmit = (e) => {
+    e.preventDefault();
+    const errors = [];
+    
+    if (!document.getElementById("consent-ai-draft").checked) {
+      errors.push("AI-generated content disclaimer");
+    }
+    if (!document.getElementById("consent-clinician-review").checked) {
+      errors.push("Clinician review requirement");
+    }
+    if (!document.getElementById("consent-no-identifiers").checked) {
+      errors.push("No patient identifiers policy");
+    }
+    if (!document.getElementById("consent-beta").checked) {
+      errors.push("Beta testing notice");
+    }
+    if (!document.getElementById("consent-liability").checked) {
+      errors.push("Limitation of liability");
+    }
+
+    if (errors.length > 0) {
+      setConsentErrors(errors);
+      return;
+    }
+
+    setConsentAcknowledged(true);
+    setConsentErrors([]);
+  };
+
   const start = async () => {
+    if (!consentAcknowledged) {
+      setError("You must acknowledge all consent agreements before starting a session.");
+      return;
+    }
+    
     setError("");
     setSoap(null);
     setTranscript("");
@@ -141,6 +177,7 @@ export default function SecureSpace() {
   };
 
   const time = `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+  
   return (
     <div className="secure-space-page">
       <header className="secure-space-header">
@@ -148,18 +185,81 @@ export default function SecureSpace() {
         <div className={`secure-status ${status}`}><span />{status === "active" ? "LIVE SESSION" : status === "processing" ? "PROCESSING" : status === "complete" ? "REVIEW READY" : "READY"}</div>
       </header>
       <div className="secure-privacy">Do not enter names, dates of birth, contact details, medical-record numbers, or other identifying information. Review every AI draft before use.</div>
-      <section className="secure-grid">
-        <div className="secure-main-card">
-          <div className="secure-card-top"><div><span className="secure-label">SIGNAL MONITOR</span><strong>{status === "active" ? "Microphone input is live" : "Awaiting secure session"}</strong></div><div className="secure-timer">{time}</div></div>
-          <canvas ref={canvasRef} className="secure-wave-canvas" aria-label="Animated microphone waveform" />
-          <div className="secure-meter"><span>INPUT LEVEL</span><div><i style={{ width: `${level}%` }} /></div><b>{level}%</b></div>
-          <div className="secure-actions"><button className="secure-button primary" onClick={start} disabled={status !== "ready"}>Start one-time session</button><button className="secure-button danger" onClick={stop} disabled={status !== "active"}>End & create SOAP</button></div>
-          {error && <div className="secure-error">{error}</div>}
-        </div>
-        <aside className="secure-side-card"><span className="secure-label">LIVE SESSION EVENTS</span><div className="secure-event"><b>●</b><span>{status === "active" ? "Microphone connected" : "Workspace ready"}<small>Operational state only</small></span></div><div className="secure-event"><b>◌</b><span>{status === "complete" ? "SOAP draft prepared" : "Waiting for session"}<small>No raw audio shown here</small></span></div><div className="secure-event"><b>✓</b><span>Human review required<small>Before clinical or billing use</small></span></div></aside>
-      </section>
-      {transcript && <section className="secure-output-card"><div className="secure-card-top"><div><span className="secure-label">FINAL TRANSCRIPT</span><strong>Private review context</strong></div></div><p className="secure-transcript">{transcript}</p></section>}
-      {soap && <section className="secure-output-card secure-soap-output"><div className="secure-card-top"><div><span className="secure-label">STRUCTURED SOAP NOTE</span><strong>AI draft · clinician review required</strong></div><button className="secure-button small" onClick={savePdf} disabled={!reviewed}>Save PDF</button></div>{[["S", "Subjective", soap.subjective], ["O", "Objective", soap.objective], ["A", "Assessment", soap.assessment], ["P", "Plan", soap.plan]].map(([letter, label, value]) => value && <div className="secure-soap-row" key={label}><b>{letter}</b><div><span>{label}</span><p>{value}</p></div></div>)}{soap.icd10?.length > 0 && <div className="secure-soap-row"><b>ICD</b><div><span>ICD-10-CM references · verify officially</span><p>{soap.icd10.map((code) => `${code.code} — ${code.description}`).join("\n")}</p></div></div>}<label className="secure-review"><input type="checkbox" checked={reviewed} onChange={(event) => setReviewed(event.target.checked)} /> I reviewed and edited this draft before saving.</label></section>}
+      
+      {!consentAcknowledged && (
+        <section className="consent-modal">
+          <div className="consent-panel">
+            <h2>Consent & Acknowledgment</h2>
+            <p className="consent-intro">Before beginning a clinical documentation session, you must acknowledge and agree to the following:</p>
+            
+            <form onSubmit={handleConsentSubmit} className="consent-form">
+              {consentErrors.length > 0 && (
+                <div className="consent-errors" role="alert">
+                  <strong>Please acknowledge the following:</strong>
+                  <ul>
+                    {consentErrors.map((err, i) => <li key={i}>• {err}</li>)}
+                  </ul>
+                </div>
+              )}
+
+              <div className="consent-item">
+                <label>
+                  <input type="checkbox" id="consent-ai-draft" />
+                  <span><strong>AI-Generated Content Disclaimer</strong><br/>I understand that all SOAP note content is generated by artificial intelligence and may contain errors, omissions, or clinically inaccurate information. I will review, verify, and make clinical judgment corrections before use.</span>
+                </label>
+              </div>
+
+              <div className="consent-item">
+                <label>
+                  <input type="checkbox" id="consent-clinician-review" />
+                  <span><strong>Clinician Review Required</strong><br/>I acknowledge that every AI-generated note remains editable and must be reviewed and approved by a licensed clinician before clinical, billing, or legal use. This tool does not replace clinical judgment.</span>
+                </label>
+              </div>
+
+              <div className="consent-item">
+                <label>
+                  <input type="checkbox" id="consent-no-identifiers" />
+                  <span><strong>No Patient Identifiers</strong><br/>I will not enter or allow the system to process patient names, dates of birth, medical record numbers, contact information, or other personally identifiable information (PII) in this session.</span>
+                </label>
+              </div>
+
+              <div className="consent-item">
+                <label>
+                  <input type="checkbox" id="consent-beta" />
+                  <span><strong>Beta Testing Notice</strong><br/>SomaSync AI is currently in beta testing. Features, accuracy, and outputs may change without notice. This tool is not approved for regulated clinical use and should not be relied upon for medical decision-making.</span>
+                </label>
+              </div>
+
+              <div className="consent-item">
+                <label>
+                  <input type="checkbox" id="consent-liability" />
+                  <span><strong>Limitation of Liability</strong><br/>I acknowledge that SomaSync AI and its developers are not liable for damages arising from use of or reliance on AI-generated content. Full responsibility for clinical outcomes rests with the licensed practitioner.</span>
+                </label>
+              </div>
+
+              <div className="consent-actions">
+                <button type="submit" className="secure-button primary">I Acknowledge All Terms</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      )}
+
+      {consentAcknowledged && (
+        <section className="secure-grid">
+          <div className="secure-main-card">
+            <div className="secure-card-top"><div><span className="secure-label">SIGNAL MONITOR</span><strong>{status === "active" ? "Microphone input is live" : "Awaiting secure session"}</strong></div></div>
+            <canvas ref={canvasRef} className="secure-wave-canvas" aria-label="Animated microphone waveform" />
+            <div className="secure-meter"><span>INPUT LEVEL</span><div><i style={{ width: `${level}%` }} /></div><b>{level}%</b></div>
+            <div className="secure-actions"><button className="secure-button primary" onClick={start} disabled={status !== "ready"}>Start one-time session</button><button className="secure-button danger" onClick={stop} disabled={status !== "active"}>Stop recording</button></div>
+            {error && <div className="secure-error">{error}</div>}
+          </div>
+          <aside className="secure-side-card"><span className="secure-label">LIVE SESSION EVENTS</span><div className="secure-event"><b>●</b><span>{status === "active" ? "Microphone connected" : "Workspace ready"}<small>Operational state only</small></span></div><div className="secure-event"><b>◌</b><span>{status === "complete" ? "SOAP draft prepared" : "Waiting for session"}<small>No raw audio shown here</small></span></div><div className="secure-event"><b>✓</b><span>Human review required<small>Before clinical or billing use</small></span></div></aside>
+        </section>
+      )}
+      
+      {consentAcknowledged && transcript && <section className="secure-output-card"><div className="secure-card-top"><div><span className="secure-label">FINAL TRANSCRIPT</span><strong>Private review context</strong></div></div><p className="secure-transcript">{transcript}</p></section>}
+      {consentAcknowledged && soap && <section className="secure-output-card secure-soap-output"><div className="secure-card-top"><div><span className="secure-label">STRUCTURED SOAP NOTE</span><strong>AI draft · clinician review required</strong></div><button className="secure-button small" onClick={savePdf} disabled={!reviewed}>Save PDF</button></div>{[["S", "Subjective", soap.subjective], ["O", "Objective", soap.objective], ["A", "Assessment", soap.assessment], ["P", "Plan", soap.plan]].map(([letter, label, value]) => value && <div className="secure-soap-row" key={label}><b>{letter}</b><div><span>{label}</span><p>{value}</p></div></div>)}{soap.icd10?.length > 0 && <div className="secure-soap-row"><b>ICD</b><div><span>ICD-10-CM references · verify officially</span><p>{soap.icd10.map((code, i) => <span key={i} className="secure-code-badge">{code.code}</span>)}</p></div></div>}<div className="secure-soap-row"><label><input type="checkbox" checked={reviewed} onChange={(e) => setReviewed(e.target.checked)} /> <span>I have reviewed this note and accept clinical responsibility for its content</span></label></div></section>}
     </div>
   );
 }

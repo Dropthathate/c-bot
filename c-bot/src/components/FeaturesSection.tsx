@@ -55,8 +55,7 @@ const FeaturesSection = () => {
             <span className="gradient-text">Built for Clinical Excellence</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            SomaSync AI is trained on datasets from the NIH, Stanford Medicine, Mayo Clinic, and Johns Hopkins—combining 
-            Oxford Orthopaedics & Travell's Trigger Point methodology for insurance-compliant, medically accurate documentation.
+            SomaSync AI is designed around therapist-selected observations, NMT vocabulary, and review-gated documentation. It does not claim insurance compliance or medical accuracy; the treating professional must verify every output.
           </p>
         </div>
 

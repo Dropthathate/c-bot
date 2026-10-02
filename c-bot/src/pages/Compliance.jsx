@@ -38,7 +38,7 @@ export default function Compliance() {
 
       <section className="card settings-card">
         <div className="settings-section-title">Downstream Business Associate Agreement</div>
-        <p className="settings-body-text">The repository includes a working BAA template based on standard HIPAA contract concepts. It defines SomaSync AI as the Business Associate and a subscribing therapist or clinic as the Covered Entity. The template needs counsel review, completed party details, and execution before reliance.</p>
+        <p className="settings-body-text">The platform operator reports that an OpenAI Business Associate Agreement is in place for applicable OpenAI account services. That agreement covers only the applicable OpenAI relationship; it does not by itself make SomaSyncAI HIPAA-compliant or create a BAA with a subscribing practice. The repository also includes a working downstream BAA template based on standard HIPAA contract concepts. It needs counsel review, completed party details, and execution before PHI reliance.</p>
         <div className="compliance-actions">
           <a className="compliance-link" href="https://github.com/Dropthathate/c-bot/blob/main/c-bot/docs/BAA_TEMPLATE.md" target="_blank" rel="noreferrer">Open BAA template ↗</a>
           <a className="compliance-link" href="https://github.com/Dropthathate/c-bot/blob/main/c-bot/docs/HIPAA_READINESS.md" target="_blank" rel="noreferrer">Read readiness guide ↗</a>

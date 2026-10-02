@@ -109,10 +109,10 @@ const TrustedBySection = () => {
             Trusted By & Trained On
           </Badge>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-            Backed by World-Class Medical Research
+            Built around therapist-selected observations
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto text-sm md:text-base">
-            Our AI is trained on datasets from leading healthcare institutions and research centers
+            Our workflow is designed for therapist-selected, review-gated documentation — not a medical-accuracy or compliance guarantee.
           </p>
         </div>
       </div>
@@ -145,8 +145,8 @@ const TrustedBySection = () => {
       {/* Bottom Text */}
       <div className="container mx-auto px-4 mt-10">
         <p className="text-center text-sm text-muted-foreground">
-          <span className="text-primary font-medium">Insurance-compliant</span> and 
-          <span className="text-primary font-medium"> medically accurate</span> documentation powered by peer-reviewed research
+          Clinician-reviewable documentation support ·
+          <span className="text-primary font-medium"> not a compliance certification</span>
         </p>
       </div>
     </section>

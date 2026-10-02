@@ -81,13 +81,11 @@ const StatsSection = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">
-                    Trained on Leading Clinical Research
+                    NMT-aware, review-gated workflow
                   </h3>
                   <p className="text-muted-foreground text-sm md:text-base">
-                    ΛΛLIYΛH.IO is trained on datasets from the <strong>NIH (National Institutes of Health)</strong>, 
-                    <strong> Stanford Medicine</strong>, <strong>Mayo Clinic</strong>, <strong>Johns Hopkins</strong>, 
-                    and other leading clinical research institutions—ensuring <span className="text-primary font-medium">insurance-compliant</span> and 
-                    <span className="text-primary font-medium"> medically accurate</span> documentation.
+                    SomaSyncAI is designed around therapist-selected observations, NMT vocabulary, and review-gated documentation.
+                    It does not claim insurance compliance or medical accuracy; the treating professional must verify every output.
                   </p>
                 </div>
               </div>

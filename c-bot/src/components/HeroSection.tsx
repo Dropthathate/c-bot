@@ -74,7 +74,7 @@ const HeroSection = () => {
             </div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-full glass-card hover-lift cursor-default">
               <FileText className="w-4 h-4 text-soma-green" />
-              <span className="text-sm font-medium">HIPAA Compliant</span>
+              <span className="text-sm font-medium">Privacy-scoped beta</span>
             </div>
           </div>
 

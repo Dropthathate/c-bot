@@ -16,6 +16,8 @@
     header .brand{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700}
     header .sep{color:var(--muted);margin:0 4px}
     header .sub{color:var(--muted);font-size:.8rem}
+    .route-nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}.route-nav a{color:var(--muted);border:1px solid var(--line);border-radius:7px;padding:8px 10px;text-decoration:none;font-size:.7rem;font-weight:700}.route-nav a:hover{color:var(--ink);border-color:var(--teal)}
+    @media(max-width:650px){header{flex-wrap:wrap}.route-nav{width:100%;margin-left:40px}}
     .progress-bar{height:2px;background:var(--panel2);margin:24px 0 0}
     .progress-fill{height:100%;background:var(--teal);transition:width .5s ease;width:0%}
     .steps-wrapper{max-width:740px;margin:0 auto;padding:60px 6vw 120px}
@@ -120,6 +122,7 @@
   <span class="brand">SomaSyncAI</span>
   <span class="sep">/</span>
   <span class="sub">Pre-Session Assessment</span>
+  <nav class="route-nav" aria-label="Workspace navigation"><a href="/">⌂ Home</a><a href="/dashboard">◈ Therapist workspace</a><a href="/clinical-workspace/">🎙️ Clinical workspace</a></nav>
 </header>
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 

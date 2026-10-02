@@ -5,6 +5,9 @@
   "framework": "vite",
   "redirects": [
     { "source": "/clinical-workspace", "destination": "/clinical-workspace/", "permanent": false },
+    { "source": "/clinical", "destination": "/clinical-workspace/", "permanent": false },
+    { "source": "/therapist", "destination": "/dashboard", "permanent": false },
+    { "source": "/therapist-workspace", "destination": "/dashboard", "permanent": false },
     { "source": "/about", "destination": "/about.html", "permanent": false },
     { "source": "/faq", "destination": "/somasync_faq.html", "permanent": false },
     { "source": "/privacy-policy", "destination": "/privacy-policy.html", "permanent": false },

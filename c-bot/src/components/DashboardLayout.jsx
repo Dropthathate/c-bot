@@ -33,6 +33,10 @@ body{font-family:'Manrope',sans-serif;background:#080808;color:#f0ede8;min-heigh
 .sidebar-user{padding:8px 12px;font-size:0.72rem;color:var(--dim);display:flex;align-items:center;gap:8px;cursor:pointer;border-radius:10px;transition:background 0.2s;}
 .sidebar-user:hover{background:rgba(255,255,255,0.04);color:var(--muted);}
 .main-content{overflow:auto;min-height:100vh;}
+.workspace-switcher{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px clamp(24px,4vw,48px);border-bottom:1px solid var(--border);background:rgba(255,255,255,0.018);}
+.workspace-switcher a{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:.68rem;font-weight:700;text-decoration:none;transition:all .2s;}
+.workspace-switcher a:hover,.workspace-switcher a.active{color:var(--ink);border-color:rgba(0,232,154,.28);background:rgba(0,232,154,.07);}
+.workspace-switcher a.active{color:var(--grn);}
 .privacy-status-bar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:10px clamp(24px,4vw,48px);border-bottom:1px solid rgba(0,232,154,0.15);background:rgba(0,232,154,0.045);color:rgba(240,237,232,0.66);font-size:0.7rem;line-height:1.45;}
 .privacy-status-badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:rgba(0,232,154,0.09);border:1px solid rgba(0,232,154,0.22);color:var(--grn);font-size:0.61rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;}
 .privacy-status-bar strong{color:rgba(240,237,232,0.86);font-weight:700;}
@@ -240,6 +244,8 @@ body{font-family:'Manrope',sans-serif;background:#080808;color:#f0ede8;min-heigh
   .sidebar-bottom{display:none;}
   .sidebar-session{margin:0 4px 0 0;min-width:116px;justify-content:center;}
   .main-content{padding-bottom:80px;}
+  .workspace-switcher{padding:8px 16px;gap:5px;}
+  .workspace-switcher a{font-size:.61rem;padding:6px 8px;}
   .privacy-status-bar{padding:9px 16px;font-size:0.65rem;}
   .privacy-review-link{margin-left:0;}
 }
@@ -294,6 +300,12 @@ export default function DashboardLayout({ children }) {
           </div>
         </aside>
         <main className="main-content">
+          <nav className="workspace-switcher" aria-label="Workspace navigation">
+            <Link to="/" aria-label="Return to SomaSyncAI home">⌂ Home</Link>
+            <Link to="/dashboard" className={location.pathname.startsWith("/dashboard") ? "active" : ""}>◈ Therapist command center</Link>
+            <Link to="/clinical-workspace/">🎙️ Clinical workspace</Link>
+            <a href="https://calendar.somasyncai.com/">▦ Calendar</a>
+          </nav>
           <div className="privacy-status-bar" role="note">
             <span className="privacy-status-badge">Beta · PHI not authorized</span>
             <span>Therapist workspace · Do not enter client-identifying information.</span>

@@ -660,6 +660,21 @@
     intakeTokenInput.addEventListener("keydown", e => {
       if (e.key === "Enter") loadIntakeBtn.click();
     });
+
+    // The therapist command center passes the intake code forward so the
+    // clinical workspace can load the brief immediately instead of silently
+    // dropping the code during navigation.
+    const queryToken = new URLSearchParams(window.location.search).get("token");
+    const pendingToken = sessionStorage.getItem("somasync_pending_intake_token");
+    const forwardedToken = queryToken || pendingToken;
+    if (forwardedToken) {
+      const token = forwardedToken.trim().toUpperCase();
+      sessionStorage.removeItem("somasync_pending_intake_token");
+      if (token.length >= 6) {
+        intakeTokenInput.value = token;
+        loadIntakeByToken("ss-" + token.replace(/^SS-?/i, ""));
+      }
+    }
   }
 
   function buildChecklist(durationMin) {

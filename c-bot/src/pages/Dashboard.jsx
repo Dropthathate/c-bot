@@ -132,6 +132,11 @@ export default function Dashboard() {
     setTimeout(() => setCopied(false), 2400)
   }, [])
 
+  const openIntakeWorkspace = useCallback(() => {
+    const token = tokenInput.trim().toUpperCase()
+    if (token) sessionStorage.setItem('somasync_pending_intake_token', token)
+  }, [tokenInput])
+
   return (
     <div style={S.page}>
 
@@ -253,9 +258,10 @@ export default function Dashboard() {
             />
             <Link
               to="/clinical-workspace/"
+              onClick={openIntakeWorkspace}
               style={{ ...S.primaryBtn, fontSize: '.78rem', padding: '9px 14px', whiteSpace: 'nowrap' }}
             >
-              Open →
+              Open clinical workspace →
             </Link>
           </div>
           <p style={{ fontSize: '.7rem', color: '#2a5a6a' }}>

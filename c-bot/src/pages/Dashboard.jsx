@@ -17,11 +17,11 @@ const TIPS = [
 ]
 
 const NEWS = [
-  { tag: 'Research', title: 'Myofascial release shows significant reduction in chronic low back pain', src: 'Journal of Bodywork & Movement Therapies', time: '3 days ago' },
-  { tag: 'Pain Science', title: 'Biopsychosocial model outperforms structural-only approach in outcome prediction', src: 'Pain Medicine', time: '1 week ago' },
-  { tag: 'Clinical', title: 'Deepgram live transcription latency improvements benefit real-time documentation', src: 'Deepgram Blog', time: '2 weeks ago' },
-  { tag: 'NMT', title: 'Trigger point dry needling vs ischemic compression — comparable outcomes at 6 weeks', src: 'Manual Therapy Journal', time: '3 weeks ago' },
-  { tag: 'Practice', title: 'CAMTC updates continuing education requirements for 2026 renewal cycle', src: 'CAMTC', time: '1 month ago' },
+  { tag: 'Session craft', title: 'Say the laterality out loud before you move to the next observation.', src: 'Therapist idea · cleaner SOAP drafts', time: 'Try today' },
+  { tag: 'Client trust', title: 'Explain the voice gate before the first touch and name exactly what is captured.', src: 'Therapist idea · consent clarity', time: 'Before each session' },
+  { tag: 'Reassessment', title: 'Pair every technique note with one movement or symptom response you can re-check.', src: 'Therapist idea · measurable change', time: 'At session close' },
+  { tag: 'Boundaries', title: 'Keep referral-pattern language separate from diagnosis and document what you directly observed.', src: 'Therapist idea · scope-aware notes', time: 'Review before export' },
+  { tag: 'Practice growth', title: 'Turn one repeat client question into a short educational post for your next availability window.', src: 'Therapist idea · useful content', time: 'Weekly' },
 ]
 
 const VOICE_COMMANDS = [
@@ -193,9 +193,9 @@ export default function Dashboard() {
       {/* ════ STATS ROW ════ */}
       <div style={S.statsRow}>
         {[
-          { label: 'Sessions this month', value: sessionCount || '—', sub: 'Beta period' },
-          { label: 'Intakes received', value: intakeCount || '—', sub: 'Via practice notification' },
-          { label: 'SOAP notes exported', value: '—', sub: 'Therapist-reviewed only' },
+          { label: 'Sessions this month', value: sessionCount ? String(sessionCount) : 'Not connected', sub: sessionCount ? 'Live practice metric' : 'Connect practice data to track' },
+          { label: 'Intakes received', value: intakeCount ? String(intakeCount) : 'Not connected', sub: intakeCount ? 'Live intake metric' : 'Connect intake service to track' },
+          { label: 'SOAP notes exported', value: 'Not connected', sub: 'Available after backend connection' },
           { label: 'Platform status', value: '✓ Live', sub: 'All systems operational', teal: true },
         ].map(s => (
           <div key={s.label} style={S.statCard}>
@@ -282,7 +282,7 @@ export default function Dashboard() {
           </div>
           <div style={S.tipTitle}>{tip.title}</div>
           <div style={S.tipBody}>{tip.body}</div>
-          <div style={S.tipFooter}>NMT clinical knowledge base · Reference only · Rotates daily</div>
+          <div style={S.tipFooter}>Therapist ideas · Educational prompts only · Rotates daily</div>
         </div>
 
         {/* Session flow */}
@@ -317,7 +317,7 @@ export default function Dashboard() {
         {/* News feed */}
         <div style={S.panel}>
           <div style={S.panelHead}>
-            <span style={S.panelTitle}>Clinical news & research</span>
+            <span style={S.panelTitle}>Therapist ideas</span>
             <Tag label="Feed" color="#a78bfa" />
           </div>
           {NEWS.map(n => (

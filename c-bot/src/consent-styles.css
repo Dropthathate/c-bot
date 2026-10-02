@@ -1,0 +1,175 @@
+/* ── CONSENT MODAL ──────────────────────────────── */
+.consent-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  padding: 20px;
+}
+
+.consent-panel {
+  background: rgba(18, 30, 27, 0.98);
+  border: 1px solid rgba(0, 232, 154, 0.2);
+  border-radius: 18px;
+  padding: 40px;
+  max-width: 580px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4);
+  color: rgba(240, 237, 232, 0.9);
+}
+
+.consent-panel h2 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #f0ede8;
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+.consent-intro {
+  font-size: 13px;
+  color: rgba(240, 237, 232, 0.56);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.consent-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.consent-errors {
+  background: rgba(255, 69, 58, 0.12);
+  border: 1px solid rgba(255, 69, 58, 0.25);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 12px;
+  color: #ff9e96;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.consent-errors ul {
+  list-style: none;
+  margin-top: 8px;
+  padding-left: 0;
+}
+
+.consent-errors li {
+  padding: 3px 0;
+}
+
+.consent-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.consent-item label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(240, 237, 232, 0.75);
+}
+
+.consent-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: #00e89a;
+}
+
+.consent-item strong {
+  display: block;
+  color: #72f0bd;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.consent-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.consent-actions button {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-family: inherit;
+}
+
+.consent-actions .secure-button.primary {
+  background: linear-gradient(135deg, #00e89a, #00f2fe);
+  color: #070b0a;
+}
+
+.consent-actions .secure-button.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(0, 232, 154, 0.2);
+}
+
+/* Scrollbar styling for consent panel */
+.consent-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.consent-panel::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.consent-panel::-webkit-scrollbar-thumb {
+  background: rgba(0, 232, 154, 0.3);
+  border-radius: 3px;
+}
+
+.consent-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 232, 154, 0.5);
+}
+
+@media (max-width: 600px) {
+  .consent-modal {
+    padding: 16px;
+  }
+  
+  .consent-panel {
+    padding: 24px;
+    border-radius: 14px;
+  }
+  
+  .consent-panel h2 {
+    font-size: 18px;
+  }
+  
+  .consent-intro {
+    font-size: 12px;
+  }
+  
+  .consent-item {
+    gap: 10px;
+  }
+  
+  .consent-item label {
+    font-size: 11px;
+  }
+}

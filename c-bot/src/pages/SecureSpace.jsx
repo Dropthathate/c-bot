@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createSoapDraft, transcribeAudio } from "../lib/clinicalApi";
+import "../consent-styles.css";
 
 const bars = Array.from({ length: 48 }, (_, index) => 0.25 + ((index * 17) % 70) / 100);
 
@@ -75,7 +76,7 @@ export default function SecureSpace() {
   const handleConsentSubmit = (e) => {
     e.preventDefault();
     const errors = [];
-    
+
     if (!document.getElementById("consent-ai-draft").checked) {
       errors.push("AI-generated content disclaimer");
     }
@@ -106,7 +107,7 @@ export default function SecureSpace() {
       setError("You must acknowledge all consent agreements before starting a session.");
       return;
     }
-    
+
     setError("");
     setSoap(null);
     setTranscript("");
@@ -177,7 +178,7 @@ export default function SecureSpace() {
   };
 
   const time = `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
-  
+
   return (
     <div className="secure-space-page">
       <header className="secure-space-header">
@@ -185,13 +186,13 @@ export default function SecureSpace() {
         <div className={`secure-status ${status}`}><span />{status === "active" ? "LIVE SESSION" : status === "processing" ? "PROCESSING" : status === "complete" ? "REVIEW READY" : "READY"}</div>
       </header>
       <div className="secure-privacy">Do not enter names, dates of birth, contact details, medical-record numbers, or other identifying information. Review every AI draft before use.</div>
-      
+
       {!consentAcknowledged && (
         <section className="consent-modal">
           <div className="consent-panel">
             <h2>Consent & Acknowledgment</h2>
             <p className="consent-intro">Before beginning a clinical documentation session, you must acknowledge and agree to the following:</p>
-            
+
             <form onSubmit={handleConsentSubmit} className="consent-form">
               {consentErrors.length > 0 && (
                 <div className="consent-errors" role="alert">
@@ -248,7 +249,7 @@ export default function SecureSpace() {
       {consentAcknowledged && (
         <section className="secure-grid">
           <div className="secure-main-card">
-            <div className="secure-card-top"><div><span className="secure-label">SIGNAL MONITOR</span><strong>{status === "active" ? "Microphone input is live" : "Awaiting secure session"}</strong></div></div>
+            <div className="secure-card-top"><div><span className="secure-label">SIGNAL MONITOR</span><strong>{status === "active" ? "Microphone input is live" : "Awaiting secure session"}</strong></div><div className="secure-timer">{time}</div></div>
             <canvas ref={canvasRef} className="secure-wave-canvas" aria-label="Animated microphone waveform" />
             <div className="secure-meter"><span>INPUT LEVEL</span><div><i style={{ width: `${level}%` }} /></div><b>{level}%</b></div>
             <div className="secure-actions"><button className="secure-button primary" onClick={start} disabled={status !== "ready"}>Start one-time session</button><button className="secure-button danger" onClick={stop} disabled={status !== "active"}>Stop recording</button></div>
@@ -257,9 +258,9 @@ export default function SecureSpace() {
           <aside className="secure-side-card"><span className="secure-label">LIVE SESSION EVENTS</span><div className="secure-event"><b>●</b><span>{status === "active" ? "Microphone connected" : "Workspace ready"}<small>Operational state only</small></span></div><div className="secure-event"><b>◌</b><span>{status === "complete" ? "SOAP draft prepared" : "Waiting for session"}<small>No raw audio shown here</small></span></div><div className="secure-event"><b>✓</b><span>Human review required<small>Before clinical or billing use</small></span></div></aside>
         </section>
       )}
-      
+
       {consentAcknowledged && transcript && <section className="secure-output-card"><div className="secure-card-top"><div><span className="secure-label">FINAL TRANSCRIPT</span><strong>Private review context</strong></div></div><p className="secure-transcript">{transcript}</p></section>}
-      {consentAcknowledged && soap && <section className="secure-output-card secure-soap-output"><div className="secure-card-top"><div><span className="secure-label">STRUCTURED SOAP NOTE</span><strong>AI draft · clinician review required</strong></div><button className="secure-button small" onClick={savePdf} disabled={!reviewed}>Save PDF</button></div>{[["S", "Subjective", soap.subjective], ["O", "Objective", soap.objective], ["A", "Assessment", soap.assessment], ["P", "Plan", soap.plan]].map(([letter, label, value]) => value && <div className="secure-soap-row" key={label}><b>{letter}</b><div><span>{label}</span><p>{value}</p></div></div>)}{soap.icd10?.length > 0 && <div className="secure-soap-row"><b>ICD</b><div><span>ICD-10-CM references · verify officially</span><p>{soap.icd10.map((code, i) => <span key={i} className="secure-code-badge">{code.code}</span>)}</p></div></div>}<div className="secure-soap-row"><label><input type="checkbox" checked={reviewed} onChange={(e) => setReviewed(e.target.checked)} /> <span>I have reviewed this note and accept clinical responsibility for its content</span></label></div></section>}
+      {consentAcknowledged && soap && <section className="secure-output-card secure-soap-output"><div className="secure-card-top"><div><span className="secure-label">STRUCTURED SOAP NOTE</span><strong>AI draft · clinician review required</strong></div><button className="secure-button small" onClick={savePdf} disabled={!reviewed}>Save PDF</button></div>{[["S", "Subjective", soap.subjective], ["O", "Objective", soap.objective], ["A", "Assessment", soap.assessment], ["P", "Plan", soap.plan]].map(([letter, label, value]) => value && <div className="secure-soap-row" key={label}><b>{letter}</b><div><span>{label}</span><p>{value}</p></div></div>)}{soap.icd10?.length > 0 && <div className="secure-soap-row"><b>ICD</b><div><span>ICD-10-CM references · verify officially</span><p>{soap.icd10.map((code) => `${code.code} — ${code.description}`).join("\n")}</p></div></div>}<label className="secure-review"><input type="checkbox" checked={reviewed} onChange={(event) => setReviewed(event.target.checked)} /> I reviewed and edited this draft before saving.</label></section>}
     </div>
   );
 }

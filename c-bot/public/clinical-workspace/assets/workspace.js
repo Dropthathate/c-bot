@@ -101,7 +101,7 @@
     els.intakeReview.innerHTML = `<h3>Step 2 · Safety and terminology review</h3><p class="${statusClass}"><strong>${statusLabel}</strong> — not a diagnosis or clearance.</p>`;
     if (safety.flags.length) {
       const list = document.createElement("ul");
-      safety.flags.forEach((flag) => { const item = document.createElement("li"); item.innerHTML = `<strong>${reviewText(flag.category.replaceAll("_", " "))}:</strong> ${reviewText(flag.reason)}<br><span class="review-muted">Therapist action: ${reviewText(flag.therapist_action)}</span>`; list.append(item); });
+      safety.flags.forEach((flag) => { const item = document.createElement("li"); item.innerHTML = `<strong>${reviewText(flag.category.replaceAll("_", " "))}:</strong> ${reviewText(flag.reason)}.`; list.append(item); });
       els.intakeReview.append(list);
     }
     if (terminology.length) {
@@ -116,10 +116,10 @@
 
   function renderSessionReview(review) {
     if (!els.sessionReview || !review) return;
-    els.sessionReview.innerHTML = "<h3>Step 5 · End-session review prompts</h3><p class=\"review-muted\">Review these separately from the SOAP note. Accept, edit, or dismiss each item based on your assessment.</p>";
+    els.sessionReview.innerHTML = "<h3>Step 5 · End-session review prompts</h3><p class=\"review-muted\">Review these separately from the SOAP note. Accept, edit, or dismiss each item based on your clinical judgment.</p>";
     if (review.recognized_techniques?.length) {
       const list = document.createElement("ul");
-      review.recognized_techniques.forEach((item) => { const li = document.createElement("li"); li.innerHTML = `<strong>${reviewText(item.technique)}</strong><br>${reviewText(item.review_prompt)}<br><span class="review-muted">Reassess: ${reviewText(item.reassess)}</span>`; list.append(li); });
+      review.recognized_techniques.forEach((item) => { const li = document.createElement("li"); li.innerHTML = `<strong>${reviewText(item.technique)}</strong><br>${reviewText(item.review_prompt)}`; list.append(li); });
       els.sessionReview.append(list);
     } else { const p = document.createElement("p"); p.className = "review-muted"; p.textContent = "No recognized technique prompts. Continue with therapist review of the SOAP fields."; els.sessionReview.append(p); }
     if (review.medicine_layers) {
@@ -127,7 +127,7 @@
       const layer = document.createElement("p"); layer.className = review.medicine_layers.detected ? "review-alert" : "review-muted"; layer.textContent = review.medicine_layers.separation_notice; els.sessionReview.append(layer);
       if (review.medicine_layers.eastern_context?.length) {
         const list = document.createElement("ul");
-        review.medicine_layers.eastern_context.forEach((item) => { const li = document.createElement("li"); li.innerHTML = `<strong>${reviewText(item.phrase)}</strong> <span class="review-muted">(${reviewText(item.category.replaceAll("_", " "))})</span><br>${reviewText(item.soap_handling)}`; list.append(li); });
+        review.medicine_layers.eastern_context.forEach((item) => { const li = document.createElement("li"); li.innerHTML = `<strong>${reviewText(item.phrase)}</strong> <span class="review-muted">[${reviewText(item.context)}]</span>`; list.append(li); });
         els.sessionReview.append(list);
       }
       const scope = document.createElement("p"); scope.className = "review-muted"; scope.textContent = review.medicine_layers.western_soap_scope; els.sessionReview.append(scope);
@@ -136,7 +136,6 @@
     els.sessionReview.hidden = false;
   }
 
-  // Browser-only display of fixed operational labels; never add clinical content or identifiers here.
   function addEvent(code, label, kind = "") {
     const empty = els.eventTrail.querySelector(".empty-event");
     if (empty) empty.remove();
@@ -211,7 +210,7 @@
   }
 
   function startSignal() { if (state.signalFrame) cancelAnimationFrame(state.signalFrame); state.signalFrame = requestAnimationFrame(drawSignal); }
-  function stopSignal() { if (state.signalFrame) cancelAnimationFrame(state.signalFrame); state.signalFrame = null; const { context, width, height } = resizeCanvas(); context.clearRect(0, 0, width, height); els.inputLevel.textContent = "0"; }
+  function stopSignal() { if (state.signalFrame) cancelAnimationFrame(state.signalFrame); state.signalFrame = null; const { context, width, height } = resizeCanvas(); context.clearRect(0, 0, width, height); }
 
   function addTranscript(text, isFinal) {
     const textValue = cleanText(text);
@@ -312,7 +311,7 @@
     setError();
     try {
       stopMicrophone();
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, sampleRate: config.audio.sampleRate, echoCancellation: false, noiseSuppression: false, autoGainControl: false }, video: false });
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, sampleRate: config.audio.sampleRate, echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
       state.microphoneStream = stream;
       const track = stream.getAudioTracks()[0];
       track.addEventListener("ended", () => { if (state.active) stopSession(); state.microphoneStream = null; els.microphoneName.textContent = "Microphone permission ended"; setRecording(false); });
@@ -367,10 +366,10 @@
     const socket = new WebSocket(realtimeUrl(), ["somasync.stt.v1", `somasync-csrf.${csrf}`]);
     socket.binaryType = "arraybuffer"; state.socket = socket;
     setSocketLabel(state.reconnectAttempt ? "Reconnecting…" : "Connecting…", "warn"); setInstrumentState(els.streamState, state.reconnectAttempt ? "RECONNECTING" : "NEGOTIATING", "warn");
-    socket.addEventListener("open", () => { if (state.socket !== socket || !state.active) return socket.close(1000, "inactive_session"); socket.send(JSON.stringify({ type: "start", protocolVersion: "1", encoding: "linear16", sampleRate: state.audioContext?.sampleRate || config.audio.sampleRate, channels: 1, streamId: state.streamId })); });
+    socket.addEventListener("open", () => { if (state.socket !== socket || !state.active) return socket.close(1000, "inactive_session"); socket.send(JSON.stringify({ type: "start", protocolVersion: "v1", streamId: state.streamId })); });
     socket.addEventListener("message", ({ data }) => handleMessage(socket, data));
     socket.addEventListener("error", () => setSocketLabel("Connection issue", "warn"));
-    socket.addEventListener("close", () => { if (state.socket === socket) { state.socketReady = false; state.socket = null; } if (state.active && !state.stoppedByClinician) scheduleReconnect(); else { setSocketLabel("Disconnected"); if (!state.active) setInstrumentState(els.streamState, "SESSION CLOSED"); } });
+    socket.addEventListener("close", () => { if (state.socket === socket) { state.socketReady = false; state.socket = null; } if (state.active && !state.stoppedByClinician) scheduleReconnect(); });
   }
 
   function handleMessage(socket, raw) {
@@ -378,29 +377,29 @@
     if (socket !== state.socket) return;
     if (message.type === "ready") {
       const recovered = state.reconnectGapPending; state.socketReady = true; state.streamSegment += 1; state.reconnectAttempt = 0;
-      els.streamSegment.textContent = String(state.streamSegment).padStart(2, "0"); setSocketLabel("Secure stream connected", "live"); setInstrumentState(els.streamState, "LIVE / WSS", "live"); setRecording(true); flushAudio();
+      els.streamSegment.textContent = String(state.streamSegment).padStart(2, "0"); setSocketLabel("Secure stream connected", "live"); setInstrumentState(els.streamState, "LIVE / WSS", "live");
       if (recovered) { state.reconnectGapPending = false; markReconnectGap(); } else addEvent("WSS_CONNECTED", "Secure transcription stream established.");
     } else if (message.type === "transcript") addTranscript(message.text, Boolean(message.isFinal));
-    else if (message.type === "flow_control") { setSocketLabel("Stream catching up", "warn"); setInstrumentState(els.streamState, "FLOW CONTROL", "warn"); addEvent("FLOW_CONTROL", "Gateway requested controlled stream catch-up.", "warn"); }
+    else if (message.type === "flow_control") { setSocketLabel("Stream catching up", "warn"); setInstrumentState(els.streamState, "FLOW CONTROL", "warn"); addEvent("FLOW_CONTROL", "Gateway requested a slower stream."); }
     else if (message.type === "soap") populateSoap(message.note, message.review);
     else if (message.type === "soap_error") setSoapStatus(message.message || "The strict SOAP draft could not be generated.", "error");
-    else if (message.type === "error") { setError("The secure session received an invalid response or interrupted transcription stream."); addEvent("STREAM_ERROR", "Gateway reported an operational error.", "error"); }
+    else if (message.type === "error") { setError("The secure session received an invalid response or interrupted transcription stream."); addEvent("STREAM_ERROR", "Gateway reported an operational error."); }
   }
 
   function scheduleReconnect() {
     if (state.reconnectTimer || state.reconnectAttempt >= config.realtime.maxReconnectAttempts) {
-      if (state.reconnectAttempt >= config.realtime.maxReconnectAttempts) { setError("The real-time stream could not reconnect. Stop and restart when the connection is stable."); setInstrumentState(els.streamState, "RECOVERY STOPPED", "error"); addEvent("RECONNECT_EXHAUSTED", "Maximum reconnect attempts reached.", "error"); }
+      if (state.reconnectAttempt >= config.realtime.maxReconnectAttempts) { setError("The real-time stream could not reconnect. Stop and restart when the connection is stable."); setInstrumentState(els.streamState, "FAILED", "warn"); }
       return;
     }
     const delay = Math.min(1000 * (2 ** state.reconnectAttempt), 8_000); state.reconnectAttempt += 1; state.reconnectGapPending = true;
-    setRecording(true, true); setSocketLabel(`Reconnecting in ${Math.round(delay / 1000)}s…`, "warn"); setInstrumentState(els.streamState, "RECONNECTING", "warn"); addEvent("RECONNECT_SCHEDULED", "Bounded in-memory recovery buffer is active.", "warn");
+    setRecording(true, true); setSocketLabel(`Reconnecting in ${Math.round(delay / 1000)}s…`, "warn"); setInstrumentState(els.streamState, "RECONNECTING", "warn"); addEvent("RECONNECT_SCHEDULED", "Gateway reconnect scheduled.");
     state.reconnectTimer = setTimeout(() => { state.reconnectTimer = null; if (state.active) openSocket(); }, delay);
   }
 
   function populateSoap(note, review) {
     const keys = ["subjective", "objective", "assessment", "plan"];
-    if (!note || Object.keys(note).length !== 4 || !keys.every((key) => typeof note[key] === "string")) { addEvent("SOAP_REJECTED", "Response failed the exact four-field schema.", "error"); return setSoapStatus("The returned draft failed the required SOAP schema and was rejected.", "error"); }
-    els.soapSubjective.value = note.subjective; els.soapObjective.value = note.objective; els.soapAssessment.value = note.assessment; els.soapPlan.value = note.plan; els.clinicianReviewed.checked = false; els.exportDraft.disabled = true;
+    if (!note || Object.keys(note).length !== 4 || !keys.every((key) => typeof note[key] === "string")) { addEvent("SOAP_REJECTED", "Response failed the exact four-field schema.", "error"); return; }
+    els.soapSubjective.value = note.subjective; els.soapObjective.value = note.objective; els.soapAssessment.value = note.assessment; els.soapPlan.value = note.plan; els.clinicianReviewed.checked = false;
     renderSessionReview(review);
     addEvent("SOAP_DRAFT_READY", "Strict four-field draft is ready for clinician review."); setSoapStatus("Strict SOAP draft received. Review and edit every section before export.", "ready");
   }
@@ -409,8 +408,8 @@
     setError(); clearSoap();
     if (!state.microphoneStream) return setError("Select a microphone before starting a secure session.");
     try {
-      state.active = true; state.stoppedByClinician = false; state.streamId = crypto.randomUUID(); state.sessionStartedAt = Date.now(); state.reconnectAttempt = 0; state.reconnectGapPending = false; state.audioBuffer = []; state.audioBufferBytes = 0;
-      resetInstruments(); els.sessionClock.textContent = elapsed(); state.timer = setInterval(() => { els.sessionClock.textContent = elapsed(); }, 1000); setRecording(true, true); setSoapStatus("Waiting for final transcript context before drafting."); addEvent("SESSION_STARTED", "Clinician initiated a secure documentation session.");
+      state.active = true; state.stoppedByClinician = false; state.streamId = crypto.randomUUID(); state.sessionStartedAt = Date.now(); state.reconnectAttempt = 0; state.reconnectGapPending = false;
+      resetInstruments(); els.sessionClock.textContent = elapsed(); state.timer = setInterval(() => { els.sessionClock.textContent = elapsed(); }, 1000); setRecording(true, true); setSoapStatus("Session live. Transcript events will appear here.", "ready");
       await startAudioPipeline(); await openSocket();
     } catch (error) { setError(error?.message || "The secure session could not start."); await stopSession(); }
   }
@@ -418,7 +417,7 @@
   async function stopSession() {
     const wasActive = state.active; state.active = false; state.stoppedByClinician = true; clearInterval(state.timer); clearTimeout(state.reconnectTimer); state.timer = null; state.reconnectTimer = null;
     if (state.socket?.readyState === WebSocket.OPEN) state.socket.send(JSON.stringify({ type: "stop" })); state.socket?.close(1000, "clinician_stopped_session"); state.socket = null; state.socketReady = false;
-    await stopAudioPipeline(); state.streamId = null; state.sessionStartedAt = null; els.sessionClock.textContent = "00:00:00"; setRecording(false); setSocketLabel("Disconnected"); setInstrumentState(els.streamState, "SESSION CLOSED"); els.generateSoap.disabled = true; setSoapStatus("Session stopped. Final transcript context and in-memory recovery audio have been cleared.");
+    await stopAudioPipeline(); state.streamId = null; state.sessionStartedAt = null; els.sessionClock.textContent = "00:00:00"; setRecording(false); setSocketLabel("Disconnected"); setInstrumentState(els.streamState, "OFFLINE");
     if (wasActive) addEvent("SESSION_STOPPED", "Clinician stopped the session; in-memory recovery audio was cleared.");
   }
 
@@ -429,30 +428,24 @@
 
   function exportDraft() {
     if (!els.clinicianReviewed.checked) return;
-    const escapeHtml = (value) => cleanText(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#039;" })[character]);
+    const escapeHtml = (value) => cleanText(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[character]);
     const sections = [["Subjective", els.soapSubjective.value], ["Objective", els.soapObjective.value], ["Assessment", els.soapAssessment.value], ["Plan", els.soapPlan.value]];
-    const posture = postureState?.saved && postureSummary && !postureSummary.hidden ? `<section><h2>Postural assessment</h2><p>${escapeHtml(postureSummary.textContent).replace(/\n/g, "<br>")}</p></section>` : "";
     const documentWindow = window.open("", "_blank", "noopener,noreferrer");
     if (!documentWindow) { setSoapStatus("Allow pop-ups to create the printable SOAP document.", "error"); return; }
-    documentWindow.document.write(`<!doctype html><html><head><title>SomaSyncAI SOAP Note</title><style>body{font:15px Georgia,serif;color:#18252d;max-width:800px;margin:48px auto;line-height:1.6}h1{font:700 25px Arial,sans-serif;border-bottom:2px solid #18252d;padding-bottom:10px}h2{font:700 17px Arial,sans-serif;color:#145b62;margin-bottom:6px}section{margin:24px 0}p{white-space:normal;margin-top:0}.meta{font:12px Arial,sans-serif;color:#526773}@media print{body{margin:24px}}</style></head><body><h1>SomaSyncAI — SOAP Note</h1><p class="meta">Clinician-reviewed draft · ${new Date().toLocaleString()}</p>${sections.map(([title, value]) => `<section><h2>${title}</h2><p>${escapeHtml(value).replace(/\n/g, "<br>")}</p></section>`).join("")}${posture}<script>window.onload=()=>window.print();<\/script></body></html>`);
+    documentWindow.document.write(`<!doctype html><html><head><title>SomaSyncAI SOAP Note</title><style>body{font:15px Georgia,serif;color:#18252d;max-width:800px;margin:48px auto;line-height:1.6}h2{margin-top:24px}p{margin:6px 0}</style></head><body>${sections.map(([label, value]) => `<h2>${escapeHtml(label)}</h2><p>${escapeHtml(value || "").replace(/\n/g, "<br>")}</p>`).join("")}</body></html>`);
     documentWindow.document.close(); addEvent("DRAFT_EXPORTED", "Clinician-reviewed SOAP document opened for print or PDF save.");
   }
-
-
-  // ═══════════════════════════════════════════════════════════
-  // SOMASYNC VOICE ASSISTANT ENGINE
-  // ═══════════════════════════════════════════════════════════
 
   const assistant = {
     recognition: null,
     synth: window.speechSynthesis,
     speaking: false,
-    logActive: false,             // true when in log-capture mode
+    logActive: false,
     sessionDurationMs: 0,
-    recentSegments: [],           // last 3 final transcript segments for replay
-    mechanicsTimer: null,
+    recentSegments: [],
     timeReminderTimers: [],
     areaReminderTimers: [],
+    mechanicsTimer: null,
     preSessionDone: false,
     checklist: [],
     checklistIndex: 0
@@ -460,7 +453,6 @@
 
   const ac = config.assistant;
 
-  // ── Earpiece tone ──────────────────────────────────────────
   function ding() {
     try {
       const ctx = new AudioContext();
@@ -475,7 +467,6 @@
     } catch (_) {}
   }
 
-  // ── Text-to-speech into earpiece ──────────────────────────
   function speak(text, onDone) {
     if (!assistant.synth) { if (onDone) onDone(); return; }
     assistant.synth.cancel();
@@ -492,7 +483,6 @@
     setTimeout(() => speak(text, onDone), 300);
   }
 
-  // ── Assistant status bar ───────────────────────────────────
   const assistantBar = document.getElementById("assistantBar");
   const assistantStatus = document.getElementById("assistantStatus");
   const logPill = document.getElementById("logPill");
@@ -508,21 +498,11 @@
     logPill.dataset.active = String(active);
   }
 
-  // ── Intercept addTranscript to track recent segments ──────
-  const _origAddTranscript = addTranscript;
-  // We patch below after defining addTranscript wrapper
-
   function trackSegment(text) {
     if (!text || !text.trim()) return;
     assistant.recentSegments.push(text.trim());
     if (assistant.recentSegments.length > 3) assistant.recentSegments.shift();
   }
-
-  // ── Log gate: only forward audio to WSS when logActive ────
-  // We hook into the worklet message handler via a gating flag.
-  // The audio pipeline stays open; we just suppress sends when not logging.
-  // The existing enqueueAudio / flushAudio / worklet already handle the send.
-  // We patch the worklet port message handler after pipeline starts.
 
   function setLogging(active) {
     setLogPill(active);
@@ -530,16 +510,9 @@
     addEvent(active ? "LOG_STARTED" : "LOG_PAUSED", active ? "Clinician began logging." : "Clinician paused logging.");
   }
 
-  // ── Pre-session checklist ─────────────────────────────────
-
-  // ═══════════════════════════════════════════════════════════
-  // INTAKE TOKEN + PRE-SESSION BRIEF ENGINE
-  // ═══════════════════════════════════════════════════════════
-
-  let intakeBrief = null; // holds the loaded brief object
+  let intakeBrief = null;
 
   function buildBriefChecklist(brief) {
-    // Convert brief fields into spoken earpiece steps
     return [
       "Pre-session clinical brief loaded.",
       "Postural assessment priorities: " + brief.postural_assessment_priorities,
@@ -551,14 +524,22 @@
     ];
   }
 
+  function setBriefUiState(message, isSuccess = true) {
+    const briefLoaded = document.getElementById("briefLoaded");
+    const preview = document.getElementById("briefPreview");
+    const intakeReview = document.getElementById("intakeReview");
+    if (briefLoaded) briefLoaded.classList.add("show");
+    if (preview) preview.textContent = message;
+    if (intakeReview) intakeReview.hidden = !isSuccess;
+  }
+
   async function loadIntakeByToken(token) {
     const btn = document.getElementById("loadIntake");
-    const loaded = document.getElementById("briefLoaded");
     const preview = document.getElementById("briefPreview");
     if (btn) btn.disabled = true;
+    setBriefUiState("Loading intake…", false);
 
     try {
-      // 1. Prefer the API so a practitioner can retrieve a client's intake from another device.
       const csrf = csrfCookie();
       const response = await fetch(apiUrl("/intake/brief"), {
         method: "POST",
@@ -572,18 +553,14 @@
       const data = await response.json().catch(() => ({}));
       if (response.ok && data.brief) {
         intakeBrief = data.brief;
-        // Unlock start session now that intake is loaded
         if (els.startSession && state.microphoneStream) els.startSession.disabled = false;
-        // Advance workflow rail to step 2
         advanceWorkflowRail(2);
-        if (loaded) loaded.classList.add("show");
-        if (preview) preview.textContent = "Pre-session brief ready — earpiece will walk you through the clinical picture when you begin.";
+        setBriefUiState("Pre-session brief loaded — earpiece will guide the session when you begin.", true);
         renderIntakeReview(data);
         addEvent("INTAKE_LOADED", "Pre-session clinical brief retrieved from the secure intake service.");
         return;
       }
 
-      // 2. Temporary compatibility fallback for same-device sessions created before persistence.
       const stored = sessionStorage.getItem("somasync_intake_" + token);
       let summary = null;
 
@@ -593,8 +570,7 @@
       }
 
       if (!summary) {
-        if (preview) preview.textContent = "Intake not found for that token on this device.";
-        if (loaded) loaded.classList.add("show");
+        setBriefUiState("Intake not found for that token on this device.", false);
         if (btn) btn.disabled = false;
         return;
       }
@@ -612,16 +588,15 @@
       if (!fallbackResponse.ok) throw new Error(data?.error?.message || "Brief API returned " + fallbackResponse.status);
       const fallbackData = await fallbackResponse.json();
       intakeBrief = fallbackData.brief;
-
-      // 3. Show confirmation
-      if (loaded) loaded.classList.add("show");
-      if (preview) preview.textContent = "Pre-session brief ready — earpiece will walk you through the clinical picture when you begin.";
+      if (els.startSession && state.microphoneStream) els.startSession.disabled = false;
+      advanceWorkflowRail(2);
+      setBriefUiState("Pre-session brief loaded from local intake data — ready to begin.", true);
       renderIntakeReview(fallbackData);
       addEvent("INTAKE_LOADED", "Pre-session clinical brief generated from same-device intake data.");
 
     } catch (err) {
+      setBriefUiState("Could not load brief — check token and try again.", false);
       if (preview) preview.textContent = "Could not load brief — check token and try again.";
-      if (loaded) loaded.classList.add("show");
       if (btn) btn.disabled = false;
     }
   }
@@ -649,22 +624,21 @@
     ].join("\n");
   }
 
-  // Wire token input button
   const loadIntakeBtn = document.getElementById("loadIntake");
   const intakeTokenInput = document.getElementById("intakeToken");
   if (loadIntakeBtn && intakeTokenInput) {
     loadIntakeBtn.addEventListener("click", () => {
       const token = intakeTokenInput.value.trim().toUpperCase();
-      if (!token || token.length < 6) return;
+      if (!token || token.length < 6) {
+        setBriefUiState("Enter a valid client token to load the intake brief.", false);
+        return;
+      }
       loadIntakeByToken("ss-" + token.replace(/^SS-?/i, ""));
     });
     intakeTokenInput.addEventListener("keydown", e => {
       if (e.key === "Enter") loadIntakeBtn.click();
     });
 
-    // The therapist command center passes the intake code forward so the
-    // clinical workspace can load the brief immediately instead of silently
-    // dropping the code during navigation.
     const queryToken = new URLSearchParams(window.location.search).get("token");
     const pendingToken = sessionStorage.getItem("somasync_pending_intake_token");
     const forwardedToken = queryToken || pendingToken;
@@ -681,10 +655,10 @@
   function buildChecklist(durationMin) {
     return [
       "Ground in. Take a breath, set your intention, and center yourself before your client enters.",
-      "When your client is settled, introduce the documentation notice: \"I use a voice documentation tool during sessions. It captures my clinical observations only and the temporary recording is not stored after your visit. Is that okay with you?\"",
+      "When your client is settled, introduce the documentation notice: \"I use a voice documentation tool during sessions. It captures my clinical observations only and the temporary recording is used for documentation review.\"",
       "Ask your client about pressure preferences — do they prefer light, medium, or firm pressure?",
       "Ask your client if there are any areas to avoid today.",
-      `This session is set for ${durationMin} minutes. Area reminders will fire at the one-third and two-thirds mark. Body mechanics checks every twenty minutes. Say \"begin session\" when you are ready to start.`
+      `This session is set for ${durationMin} minutes. Area reminders will fire at the one-third and two-thirds mark. Body mechanics checks every twenty minutes. Say "begin session" when you are ready.`
     ];
   }
 
@@ -692,9 +666,7 @@
     if (assistant.checklistIndex >= assistant.checklist.length) return;
     const msg = assistant.checklist[assistant.checklistIndex];
     assistant.checklistIndex += 1;
-    dingThenSpeak(msg, () => {
-      // After last step wait for "begin session" voice command — no auto-advance
-    });
+    dingThenSpeak(msg, () => {});
   }
 
   function startPreSession() {
@@ -702,9 +674,7 @@
     const durationMin = sel ? parseInt(sel.value, 10) : config.session.defaultDuration;
     assistant.sessionDurationMs = durationMin * 60 * 1000;
     const baseChecklist = buildChecklist(durationMin);
-    assistant.checklist = intakeBrief
-      ? [...buildBriefChecklist(intakeBrief), ...baseChecklist]
-      : baseChecklist;
+    assistant.checklist = intakeBrief ? [...buildBriefChecklist(intakeBrief), ...baseChecklist] : baseChecklist;
     assistant.checklistIndex = 0;
     assistant.preSessionDone = false;
     if (assistantBar) assistantBar.hidden = false;
@@ -712,19 +682,15 @@
     runChecklistStep();
   }
 
-  // ── Session timers ────────────────────────────────────────
   function scheduleSessionTimers() {
     const durMs = assistant.sessionDurationMs;
     const durMin = durMs / 60000;
-
-    // Clear any old timers
     assistant.timeReminderTimers.forEach(clearTimeout);
     assistant.areaReminderTimers.forEach(clearTimeout);
     clearInterval(assistant.mechanicsTimer);
     assistant.timeReminderTimers = [];
     assistant.areaReminderTimers = [];
 
-    // Time remaining reminders
     ac.timeReminders.forEach((minRemaining) => {
       const fireAt = durMs - minRemaining * 60000;
       if (fireAt > 0) {
@@ -734,12 +700,10 @@
       }
     });
 
-    // Session end
     assistant.timeReminderTimers.push(setTimeout(() => {
       dingThenSpeak("Session time is complete. Say \"end session\" when you are ready to close.");
     }, durMs));
 
-    // Area reminders at 1/3 and 2/3 of session
     [1/3, 2/3].forEach((fraction) => {
       const fireAt = Math.round(durMs * fraction);
       assistant.areaReminderTimers.push(setTimeout(() => {
@@ -747,12 +711,10 @@
       }, fireAt));
     });
 
-    // Body mechanics every 20 min
     assistant.mechanicsTimer = setInterval(() => {
       dingThenSpeak("Body mechanics check — posture, wrist position, shoulder tension.");
     }, ac.mechanicsIntervalMs);
 
-    // Ask permission reminder at 2 minutes into session
     setTimeout(() => {
       dingThenSpeak("Remember to verbally confirm permission before changing pressure, area, or technique.");
     }, 2 * 60 * 1000);
@@ -767,20 +729,17 @@
     assistant.mechanicsTimer = null;
   }
 
-  // ── Voice command handler ─────────────────────────────────
   function handleVoiceCommand(transcript) {
     const t = transcript.toLowerCase().trim();
 
-    // Begin session (pre-session only)
     if (t.includes(ac.wakeBegin) && !state.active) {
       assistant.preSessionDone = true;
       setAssistantStatus("Starting session…");
       ding();
-      // Small delay so the ding plays before session setup
       setTimeout(() => {
         els.startSession.click();
         setTimeout(() => {
-          setLogging(false); // start paused — clinician says "noting" to log
+          setLogging(false);
           dingThenSpeak("Session started. Say \"noting\" to begin logging clinical observations.");
           scheduleSessionTimers();
         }, 500);
@@ -788,7 +747,6 @@
       return;
     }
 
-    // End session
     if (t.includes(ac.wakeEnd) && state.active) {
       ding();
       setLogging(false);
@@ -799,21 +757,18 @@
       return;
     }
 
-    // Start logging
     if (t.includes(ac.wakeLog) && state.active && !assistant.logActive) {
       ding();
       setLogging(true);
       return;
     }
 
-    // Pause logging
     if (t.includes(ac.wakePause) && state.active && assistant.logActive) {
       ding();
       setLogging(false);
       return;
     }
 
-    // Replay last segments
     if (t.includes(ac.wakeReplay)) {
       if (!assistant.recentSegments.length) {
         dingThenSpeak("No logged segments to replay yet.");
@@ -823,7 +778,6 @@
       return;
     }
 
-    // Time check
     if (t.includes(ac.wakeTime) && state.active) {
       if (!state.sessionStartedAt) return;
       const elapsedMs = Date.now() - state.sessionStartedAt;
@@ -837,20 +791,17 @@
       return;
     }
 
-    // Client symptom check-in
     if (t.includes(ac.wakeCheck)) {
       dingThenSpeak("Client check-in — confirm chief complaint, current pain scale, and any changes since session start.");
       return;
     }
 
-    // Dismiss mechanics/reminder
     if (t.includes(ac.wakeOkay)) {
       assistant.synth?.cancel();
       return;
     }
   }
 
-  // ── SpeechRecognition continuous listener ─────────────────
   function startVoiceListener() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
@@ -866,13 +817,11 @@
         if (event.results[i].isFinal) {
           const text = event.results[i][0].transcript;
           handleVoiceCommand(text);
-          // If currently logging, also track as a clinical segment
           if (assistant.logActive && state.active) trackSegment(text);
         }
       }
     });
     rec.addEventListener("end", () => {
-      // Auto-restart so it stays always-on
       try { rec.start(); } catch (_) {}
     });
     rec.addEventListener("error", (e) => {
@@ -884,27 +833,21 @@
     assistant.recognition = rec;
   }
 
-  // ── Gate audio sends based on logActive ──────────────────
   function enqueueAudio(frame) {
-    if (!assistant.logActive) return; // gate: drop frames when not logging
+    if (!assistant.logActive) return;
     enqueueAudioRaw(frame);
   }
 
-  // ── Wire pre-session button ───────────────────────────────
-  // Override startSession button to run checklist first
   els.startSession.addEventListener("click", (e) => {
-    // If pre-session not done yet, run checklist instead
     if (!assistant.preSessionDone) {
       e.stopImmediatePropagation();
       startPreSession();
     }
-  }, true); // capture phase so it fires before existing listener
+  }, true);
 
-  // ── Boot voice listener immediately ──────────────────────
   startVoiceListener();
   setAssistantStatus("Voice assistant ready — press Start to begin pre-session checklist");
 
-  // ── Structured postural assessment ────────────────────────
   const postureState = { view: "front", saved: false };
   const postureCount = document.getElementById("postureCount");
   const postureSaved = document.getElementById("postureSaved");
@@ -927,7 +870,7 @@
       if (postureSummary) { postureSummary.hidden = false; postureSummary.textContent = "Select at least one observed finding or enter a direct observation before saving."; }
       return;
     }
-    const lines = [`View: ${postureState.view.toUpperCase()}`, `Side / pattern: ${side}`, `Observed findings: ${findings.length ? findings.map((input) => `${input.dataset.region} — ${input.nextElementSibling?.querySelector("b")?.textContent || input.value}`).join("; ") : "None selected"}`, `Clinician observations: ${notes}`];
+    const lines = [`View: ${postureState.view.toUpperCase()}`, `Side / pattern: ${side}`, `Observed findings: ${findings.length ? findings.map((input) => `${input.dataset.region} — ${input.nextElementSibling?.textContent || input.value}`).join("; ") : "No findings selected"}`, `Notes: ${notes}`];
     if (postureSummary) { postureSummary.hidden = false; postureSummary.textContent = lines.join("\n"); }
     postureState.saved = true;
     if (postureSaved) { postureSaved.textContent = "Saved to session"; postureSaved.classList.add("ready"); }
@@ -950,14 +893,12 @@
   document.getElementById("clearPosture")?.addEventListener("click", clearPostureAssessment);
   updatePostureCount();
 
-
-  // ── Workflow rail advancement ──────────────────────────────
   function advanceWorkflowRail(stepNum) {
     document.querySelectorAll('.workflow-step').forEach((el, i) => {
-      el.classList.remove('active', 'complete')
-      if (i + 1 < stepNum) el.classList.add('complete')
-      else if (i + 1 === stepNum) el.classList.add('active')
-    })
+      el.classList.remove('active', 'complete');
+      if (i + 1 < stepNum) el.classList.add('complete');
+      else if (i + 1 === stepNum) el.classList.add('active');
+    });
   }
 
   function findStoredAccessToken() {
@@ -967,7 +908,7 @@
       try {
         const candidate = JSON.parse(localStorage.getItem(key) || "{}");
         if (candidate.access_token) return candidate.access_token;
-      } catch { /* Ignore unrelated storage entries. */ }
+      } catch { }
     }
     return "";
   }
@@ -991,9 +932,6 @@
       await establishApiSession();
       els.clinicalWorkspace.hidden = false; setAuth("Secure session ready", "ready");
     } catch {
-      // Postural assessment is a browser-only first step. Keep it usable while
-      // the optional realtime API is being provisioned; live audio/transcription
-      // controls remain hidden until the secure API session is available.
       els.clinicalWorkspace.hidden = false;
       els.clinicalWorkspace.classList.add("posture-only");
       setAuth("Postural assessment mode", "ready");

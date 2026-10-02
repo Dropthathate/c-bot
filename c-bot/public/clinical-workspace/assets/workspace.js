@@ -360,9 +360,10 @@
     state.audioContext = null; state.audioBuffer = []; state.audioBufferBytes = 0; state.audioBufferLimit = 96_000;
   }
 
-  function openSocket() {
+  async function openSocket() {
+    try { await establishApiSession(); } catch { throw new Error("A valid therapist session is required. Return to Therapist Sign In and open a fresh magic link."); }
     const csrf = csrfCookie();
-    if (!csrf) throw new Error("Secure session verification is missing. Sign in again.");
+    if (!csrf) throw new Error("Secure session verification is missing. Return to Therapist Sign In and open a fresh magic link.");
     const socket = new WebSocket(realtimeUrl(), ["somasync.stt.v1", `somasync-csrf.${csrf}`]);
     socket.binaryType = "arraybuffer"; state.socket = socket;
     setSocketLabel(state.reconnectAttempt ? "Reconnecting…" : "Connecting…", "warn"); setInstrumentState(els.streamState, state.reconnectAttempt ? "RECONNECTING" : "NEGOTIATING", "warn");
@@ -410,7 +411,7 @@
     try {
       state.active = true; state.stoppedByClinician = false; state.streamId = crypto.randomUUID(); state.sessionStartedAt = Date.now(); state.reconnectAttempt = 0; state.reconnectGapPending = false; state.audioBuffer = []; state.audioBufferBytes = 0;
       resetInstruments(); els.sessionClock.textContent = elapsed(); state.timer = setInterval(() => { els.sessionClock.textContent = elapsed(); }, 1000); setRecording(true, true); setSoapStatus("Waiting for final transcript context before drafting."); addEvent("SESSION_STARTED", "Clinician initiated a secure documentation session.");
-      await startAudioPipeline(); openSocket();
+      await startAudioPipeline(); await openSocket();
     } catch (error) { setError(error?.message || "The secure session could not start."); await stopSession(); }
   }
 
@@ -959,28 +960,35 @@
     })
   }
 
+  function findStoredAccessToken() {
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index) || "";
+      if (!key.endsWith("-auth-token")) continue;
+      try {
+        const candidate = JSON.parse(localStorage.getItem(key) || "{}");
+        if (candidate.access_token) return candidate.access_token;
+      } catch { /* Ignore unrelated storage entries. */ }
+    }
+    return "";
+  }
+
+  async function establishApiSession() {
+    const accessToken = findStoredAccessToken();
+    if (accessToken) {
+      const exchange = await fetch(apiUrl("/auth/session/exchange"), {
+        method: "POST", credentials: "include", cache: "no-store",
+        headers: { Accept: "application/json", Authorization: `Bearer ${accessToken}` }
+      });
+      if (!exchange.ok) throw new Error("session_exchange_failed");
+    }
+    const response = await fetch(apiUrl("/auth/session"), { credentials: "include", cache: "no-store", headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error("missing_session");
+    return response;
+  }
+
   async function verifySession() {
     try {
-      let accessToken = "";
-      for (let index = 0; index < localStorage.length; index += 1) {
-        const key = localStorage.key(index) || "";
-        if (!key.startsWith("sb-") || !key.endsWith("-auth-token")) continue;
-        try {
-          const candidate = JSON.parse(localStorage.getItem(key) || "{}");
-          if (candidate.access_token) { accessToken = candidate.access_token; break; }
-        } catch { /* Ignore unrelated storage entries. */ }
-      }
-      if (accessToken) {
-        const exchange = await fetch(apiUrl("/auth/session/exchange"), {
-          method: "POST",
-          credentials: "include",
-          cache: "no-store",
-          headers: { Accept: "application/json", Authorization: `Bearer ${accessToken}` }
-        });
-        if (!exchange.ok) throw new Error("session_exchange_failed");
-      }
-      const response = await fetch(apiUrl("/auth/session"), { credentials: "include", cache: "no-store", headers: { Accept: "application/json" } });
-      if (!response.ok) throw new Error("missing_session");
+      await establishApiSession();
       els.clinicalWorkspace.hidden = false; setAuth("Secure session ready", "ready");
     } catch {
       // Postural assessment is a browser-only first step. Keep it usable while

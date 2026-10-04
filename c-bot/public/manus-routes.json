@@ -1,19 +1,68 @@
 {
   "routes": [
-    {"path":"/","title":"SomaSyncAI home"},
-    {"path":"/login","title":"Therapist sign-in"},
-    {"path":"/dashboard","title":"Therapist command center"},
-    {"path":"/dashboard/soap","title":"SOAP workflow"},
-    {"path":"/dashboard/icd","title":"ICD-10 reference"},
-    {"path":"/dashboard/analytics","title":"Practice analytics"},
-    {"path":"/dashboard/compliance","title":"Readiness"},
-    {"path":"/dashboard/settings","title":"Settings"},
-    {"path":"/clinical-workspace/","title":"Clinical workspace"},
-    {"path":"/intake/","title":"Client intake"},
-    {"path":"/about.html","title":"About SomaSyncAI"},
-    {"path":"/somasync_faq.html","title":"FAQ"},
-    {"path":"/privacy-policy.html","title":"Privacy policy"},
-    {"path":"/terms-and-conditions.html","title":"Terms and conditions"},
-    {"path":"/ai-disclaimer.html","title":"AI disclaimer"}
+    {
+      "path": "/",
+      "title": "SomaSyncAI home"
+    },
+    {
+      "path": "/login",
+      "title": "Therapist sign-in"
+    },
+    {
+      "path": "/dashboard",
+      "title": "Therapist command center"
+    },
+    {
+      "path": "/dashboard/soap",
+      "title": "SOAP workflow"
+    },
+    {
+      "path": "/dashboard/icd",
+      "title": "ICD-10 reference"
+    },
+    {
+      "path": "/dashboard/analytics",
+      "title": "Practice analytics"
+    },
+    {
+      "path": "/dashboard/compliance",
+      "title": "Readiness"
+    },
+    {
+      "path": "/dashboard/settings",
+      "title": "Settings"
+    },
+    {
+      "path": "/clinical-workspace/",
+      "title": "Clinical workspace"
+    },
+    {
+      "path": "/intake/",
+      "title": "Client intake"
+    },
+    {
+      "path": "/about.html",
+      "title": "About SomaSyncAI"
+    },
+    {
+      "path": "/somasync_faq.html",
+      "title": "FAQ"
+    },
+    {
+      "path": "/privacy-policy.html",
+      "title": "Privacy policy"
+    },
+    {
+      "path": "/therapist-guide.html",
+      "title": "Therapist quick-start guide"
+    },
+    {
+      "path": "/terms-and-conditions.html",
+      "title": "Terms and conditions"
+    },
+    {
+      "path": "/ai-disclaimer.html",
+      "title": "AI disclaimer"
+    }
   ]
 }

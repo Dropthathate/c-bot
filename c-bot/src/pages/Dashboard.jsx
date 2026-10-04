@@ -265,7 +265,7 @@ export default function Dashboard() {
             </Link>
           </div>
           <p style={{ fontSize: '.7rem', color: '#2a5a6a' }}>
-            Token comes from the intake email. Client sees it on their confirmation screen.
+            Client sees the code after submitting and sends it back to you through your agreed channel.
           </p>
         </div>
 
@@ -294,7 +294,7 @@ export default function Dashboard() {
           {[
             ['01', 'Send intake link', 'Copy and send the client link before the appointment.'],
             ['02', 'Client completes intake', 'The client completes the five-step synthetic/de-identified pre-session form.'],
-            ['03', 'Receive the session token', 'Your practice receives the notification and session code.'],
+            ['03', 'Client sends the session code', 'The client saves the code shown after submission and sends it to you.'],
             ['04', 'Review safety and intake', 'Enter the token in the clinical workspace and review the safety context before bodywork.'],
             ['05', 'Capture with consent', 'Select the microphone, provide required notice/consent, and begin only when ready.'],
             ['06', 'Review and export', 'Generate the SOAP draft, edit and verify every field, then export only after review.'],

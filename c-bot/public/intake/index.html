@@ -108,6 +108,8 @@
     .success-screen p{font-size:.95rem;color:var(--muted);line-height:1.75;max-width:460px;margin:0 auto 32px}
     .token-display{display:inline-block;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 28px;font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--teal);letter-spacing:.1em;margin-bottom:12px}
     .token-note{font-size:.75rem;color:var(--muted)}
+    .token-note strong{display:inline-block;color:var(--ink);font-weight:600;margin-bottom:5px}
+    .success-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px 0 4px}.success-actions .btn-next,.success-actions .btn-back{margin:0;padding:12px 18px;font-size:.78rem}
     .divider{height:1px;background:var(--line);margin:28px 0}
     .hint{font-size:.75rem;color:var(--muted);margin-top:8px;line-height:1.5}
     @media(max-width:600px){.body-map-container{flex-direction:column}.quality-grid{grid-template-columns:repeat(2,1fr)}.bps-grid{grid-template-columns:1fr}.function-grid{grid-template-columns:1fr}.coincide-grid{grid-template-columns:1fr}}
@@ -369,7 +371,12 @@
   <h2>You're all set.</h2>
   <p>Your therapist has everything they need. When you arrive, your session will begin with intention — they've already reviewed your assessment.</p>
   <div class="token-display" id="successToken"></div>
-  <p class="token-note">Your session code. Your therapist will use this to pull up your assessment.</p>
+  <p class="token-note"><strong>Save this code and send it to your therapist.</strong><br>Your therapist will use it to securely retrieve your pre-session assessment. Do not post it publicly. The code expires after the intake window.</p>
+  <div class="success-actions">
+    <button class="btn-next" type="button" onclick="copySessionCode()" id="copyCodeBtn">Copy session code</button>
+    <button class="btn-back" type="button" onclick="shareSessionCode()" id="shareCodeBtn">Send to therapist</button>
+  </div>
+  <p class="hint" id="codeActionStatus" role="status" aria-live="polite"></p>
 </div>
 
 <script>
@@ -558,6 +565,19 @@ async function submitIntake(){
   document.getElementById('successScreen').classList.add('show')
   document.getElementById('successToken').textContent=token
   window.scrollTo({top:0,behavior:'smooth'})
+}
+
+function sessionCode(){ return document.getElementById('successToken').textContent.trim() }
+function codeMessage(){ return 'My SomaSyncAI pre-session intake code is '+sessionCode()+'. Please use this code to retrieve my assessment.' }
+async function copySessionCode(){
+  const status=document.getElementById('codeActionStatus'), btn=document.getElementById('copyCodeBtn')
+  try { await navigator.clipboard.writeText(sessionCode()); btn.textContent='✓ Code copied'; status.textContent='Now send the code to your therapist by text, email, or your agreed practice channel.' }
+  catch { status.textContent='Select and copy the code above, then send it to your therapist.' }
+}
+async function shareSessionCode(){
+  const status=document.getElementById('codeActionStatus')
+  if(navigator.share){ try { await navigator.share({title:'SomaSyncAI intake code',text:codeMessage()}); status.textContent='Your therapist message is ready to send.'; return } catch(e){ if(e?.name==='AbortError') return } }
+  await copySessionCode(); status.textContent='The code was copied. Paste it into a message to your therapist.'
 }
 
 function buildSummary(p){
